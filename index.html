@@ -350,9 +350,12 @@ function limpar(){
   document.querySelectorAll("#tabelaCCU .cel.marcado, #tabelaCCU .th-col.marcado").forEach(c => c.classList.remove("marcado"));
 }
 
-/* Realce independente em cada cabeçalho de classe (I–VIII) */
+/* Uma seleção por linha, também no cabeçalho de classes (I–VIII) */
 function marcarHead(th){
-  th.classList.toggle("marcado");
+  const linha = th.parentElement;
+  const jaMarcado = th.classList.contains("marcado");
+  linha.querySelectorAll(".th-col").forEach(c => c.classList.remove("marcado"));
+  if(!jaMarcado) th.classList.add("marcado"); // clicar de novo remove
 }
 
 /* ---------------- Print em JPG ---------------- */
