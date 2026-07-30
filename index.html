@@ -217,8 +217,8 @@ const fatores = [
   ["1. Fertilidade natural ou produtividade aparente", [
     ["a. Muito alta > 70 %", 1],
     ["b. Alta - 50 % a 70 %", 1],
-    ["c. Média - 30 % a 50 %", 3],
-    ["d. Baixa - 10 % a 30 %", 4],
+    ["c. Média - 30 % a 50 %", 2],
+    ["c. Baixa - 10 % a 30 %", 3],
     ["d. Muito baixa < 10 %", 6],
   ]],
   ["2. Profundidade efetiva", [
@@ -229,63 +229,63 @@ const fatores = [
     ["d. Muito raso < 25 cm", 8],
   ]],
   ["3. Drenagem interna", [
-    ["a. Excessiva", 3],
-    ["b. Forte", 3],
-    ["c. Acentuada", 3],
+    ["a. Excessiva", 2],
+    ["b. Forte", 2],
+    ["c. Acentuada", 2],
     ["d. Bem drenado", 1],
-    ["e. Moderada", 3],
-    ["f. Imperfeita", 4],
-    ["g. Mal drenado", 6],
+    ["e. Moderada", 2],
+    ["f. Imperfeita", 3],
+    ["g. Mal drenado", 5],
     ["h. Muito mal drenado", 8],
   ]],
   ["4. Deflúvio superficial", [
-    ["a. Muito rápido", 5],
-    ["b. Rápido", 4],
-    ["c. Moderado", 3],
+    ["a. Muito rápido", 4],
+    ["b. Rápido", 3],
+    ["c. Moderado", 2],
     ["d. Lento", 1],
-    ["e. Muito lento", 3],
+    ["e. Muito lento", 2],
   ]],
   ["5. Pedregosidade", [
     ["a. Sem pedras", 1],
-    ["b. Ligeiramente pedregoso < 1%", 3],
-    ["c. Moderadamente pedregoso 1% a 10%", 4],
-    ["d. Pedregoso 10% a 30%", 5],
+    ["b. Ligeiramente pedregoso < 1%", 2],
+    ["c. Moderadamente pedregoso 1% a 10%", 3],
+    ["d. Pedregoso 10% a 30%", 4],
     ["e. Muito pedregoso 30% a 50%", 6],
     ["f. Extremamente pedregoso > 50%", 7],
   ]],
   ["6. Riscos de Inundação", [
     ["a. Ausente", 1],
-    ["b. Ocasional", 4],
-    ["c. Frequente", 6],
+    ["b. Ocasional", 3],
+    ["c. Frequente", 5],
     ["d. Muito frequente", 8],
   ]],
   ["7. Classe de declividade", [
     ["a. < 2%", 1],
-    ["b. 2% a 6%", 3],
-    ["c. 6% a 12%", 4],
-    ["d. 12% a 20%", 5],
+    ["b. 2% a 6%", 2],
+    ["c. 6% a 12%", 3],
+    ["d. 12% a 20%", 4],
     ["e. 20% a 40%", 6],
     ["f. > 40%", 7],
   ]],
   ["8. Grau de erosão laminar", [
     ["a. Não aparente", 1],
-    ["b. Ligeira", 3],
-    ["c. Moderada", 4],
+    ["b. Ligeira", 2],
+    ["c. Moderada", 3],
     ["d. Severa", 6],
     ["e. Muito severa", 8],
   ]],
   ["9. Sulcos rasos", [
-    ["a. Ocasionais", 3],
-    ["b. Frequentes", 4],
-    ["c. Muito frequentes", 5],
+    ["a. Ocasionais", 2],
+    ["b. Frequentes", 3],
+    ["c. Muito frequentes", 4],
   ]],
   ["10. Sulcos médios", [
     ["a. Ocasionais", 3],
-    ["b. Frequentes", 5],
+    ["b. Frequentes", 4],
     ["c. Muito frequentes", 6],
   ]],
   ["11. Sulcos profundos", [
-    ["a. Ocasionais", 5],
+    ["a. Ocasionais", 4],
     ["b. Frequentes", 6],
     ["c. Muito frequentes", 7],
   ]],
@@ -293,10 +293,10 @@ const fatores = [
     ["a. Crateras, buracos, fendas", 8],
   ]],
   ["13. Seca edafológica", [
-    ["a. Muito longa", 0],
-    ["b. Longa", 8],
-    ["c. Média", 6],
-    ["d. Curta", 4],
+    ["a. Muito longa", 6],
+    ["b. Longa", 4],
+    ["c. Média", 3],
+    ["d. Curta", 2],
     ["e. Muito curta", 1],
   ]],
 ];
@@ -338,11 +338,14 @@ function construirTabela(){
   t.innerHTML = html;
 }
 
-/* Marcação = realce amarelo. Os X ficam fixos e nunca se movem. */
+/* Marcação = realce amarelo. Uma marcação por FATOR limitante (bloco). Os X ficam fixos. */
 function marcar(cel){
   const linha = cel.parentElement;
+  const fator = linha.getAttribute("data-fator");
   const jaMarcado = cel.classList.contains("marcado");
-  linha.querySelectorAll(".cel").forEach(c => c.classList.remove("marcado"));
+  // remove qualquer marcação nas células de todas as linhas deste mesmo fator
+  document.querySelectorAll(`#tabelaCCU tr[data-fator="${fator}"] .cel.marcado`)
+    .forEach(c => c.classList.remove("marcado"));
   if(!jaMarcado) cel.classList.add("marcado"); // clicar de novo remove
 }
 
