@@ -18,6 +18,11 @@
   }
   *{box-sizing:border-box;}
   html,body{margin:0;}
+  .credito-dev{
+    position:fixed; top:10px; right:14px; z-index:1000;
+    font-size:14px; color:#8a97a6; letter-spacing:.2px;
+    pointer-events:none; user-select:none;
+  }
   body{
     font-family:"Segoe UI", Arial, Helvetica, sans-serif;
     background:#eef2f6;
@@ -149,6 +154,8 @@
 </head>
 <body>
 
+<div class="credito-dev">desenvolvido por Fernando Serafim</div>
+
 <div class="toolbar">
   <label class="btn btn-primary" for="inputFotos">📷 Inserir Fotos</label>
   <input type="file" id="inputFotos" accept="image/*" multiple onchange="adicionarFotos(event)">
@@ -204,15 +211,7 @@ function render(){
   const cont = document.getElementById("paginas");
   cont.innerHTML = "";
 
-  // ---- CAPA ----
-  const capa = document.createElement("div");
-  capa.className = "pagina";
-  capa.innerHTML = cabecalhoHTML() + `
-    <div class="capa-corpo">
-      <div class="capa-titulo" id="pvTitulo"></div>
-    </div>` + rodapeHTML();
-  cont.appendChild(capa);
-  atualizarCapa();
+  // A capa NÃO é exibida na tela — ela é incluída somente no PDF gerado.
 
   // ---- PÁGINAS DE FOTOS (2 por página) ----
   for(let i=0; i<fotos.length; i+=2){
@@ -246,10 +245,9 @@ function render(){
 }
 
 function atualizarCapa(){
-  const titulo = document.getElementById("cfgTitulo").value || "RELATÓRIO FOTOGRÁFICO";
   const t = document.getElementById("pvTitulo");
-  if(!t) return;
-  t.textContent = titulo;
+  if(!t) return; // preview da capa não é exibido na tela
+  t.textContent = document.getElementById("cfgTitulo").value || "RELATÓRIO FOTOGRÁFICO";
 }
 
 document.getElementById("cfgTitulo").addEventListener("input", atualizarCapa);
