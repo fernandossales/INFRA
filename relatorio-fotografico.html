@@ -64,13 +64,8 @@
     border-radius:12px;
     box-shadow:0 6px 18px rgba(30,50,80,.08);
     padding:16px 18px;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px 16px;
   }
-  .config h3{grid-column:1/-1; margin:0 0 2px; color:var(--azul-esc); font-size:15px;}
   .campo{display:flex; flex-direction:column; gap:4px;}
-  .campo.full{grid-column:1/-1;}
   .campo label{font-size:12px; font-weight:600; color:var(--cinza);}
   .campo input{
     border:1px solid var(--borda-forte); border-radius:7px; padding:8px 10px;
@@ -163,30 +158,9 @@
 </div>
 
 <div class="config">
-  <h3>Dados da Capa</h3>
   <div class="campo full">
     <label>Título do relatório</label>
     <input id="cfgTitulo" type="text" value="ANEXO 4: RELATÓRIO FOTOGRÁFICO">
-  </div>
-  <div class="campo full">
-    <label>Nome do imóvel / objeto</label>
-    <input id="cfgImovel" type="text" placeholder="Ex.: Fazenda Boa Vista">
-  </div>
-  <div class="campo">
-    <label>Município / UF</label>
-    <input id="cfgLocal" type="text" placeholder="Ex.: Fortaleza / CE">
-  </div>
-  <div class="campo">
-    <label>Data</label>
-    <input id="cfgData" type="text" placeholder="Ex.: Julho / 2026">
-  </div>
-  <div class="campo">
-    <label>Responsável</label>
-    <input id="cfgResp" type="text" placeholder="Ex.: Eng. Fulano de Tal">
-  </div>
-  <div class="campo">
-    <label>Nº do documento / processo</label>
-    <input id="cfgDoc" type="text" placeholder="Opcional">
   </div>
 </div>
 
@@ -236,8 +210,6 @@ function render(){
   capa.innerHTML = cabecalhoHTML() + `
     <div class="capa-corpo">
       <div class="capa-titulo" id="pvTitulo"></div>
-      <div class="capa-sub" id="pvImovel"></div>
-      <div class="capa-meta" id="pvMeta"></div>
     </div>` + rodapeHTML();
   cont.appendChild(capa);
   atualizarCapa();
@@ -275,29 +247,12 @@ function render(){
 
 function atualizarCapa(){
   const titulo = document.getElementById("cfgTitulo").value || "RELATÓRIO FOTOGRÁFICO";
-  const imovel = document.getElementById("cfgImovel").value;
-  const local  = document.getElementById("cfgLocal").value;
-  const data   = document.getElementById("cfgData").value;
-  const resp   = document.getElementById("cfgResp").value;
-  const doc    = document.getElementById("cfgDoc").value;
-
   const t = document.getElementById("pvTitulo");
-  const im = document.getElementById("pvImovel");
-  const mt = document.getElementById("pvMeta");
   if(!t) return;
   t.textContent = titulo;
-  im.textContent = imovel || "";
-  let meta = "";
-  if(local) meta += `<div><b>Local:</b> ${local}</div>`;
-  if(data)  meta += `<div><b>Data:</b> ${data}</div>`;
-  if(resp)  meta += `<div><b>Responsável:</b> ${resp}</div>`;
-  if(doc)   meta += `<div><b>Documento:</b> ${doc}</div>`;
-  mt.innerHTML = meta;
 }
 
-["cfgTitulo","cfgImovel","cfgLocal","cfgData","cfgResp","cfgDoc"].forEach(id=>{
-  document.getElementById(id).addEventListener("input", atualizarCapa);
-});
+document.getElementById("cfgTitulo").addEventListener("input", atualizarCapa);
 
 function adicionarFotos(ev){
   const arquivos = [...ev.target.files];
@@ -375,41 +330,10 @@ async function gerarPDF(){
   // ---- CAPA ----
   desenharCabecalho();
   const titulo = document.getElementById("cfgTitulo").value || "RELATÓRIO FOTOGRÁFICO";
-  const imovel = document.getElementById("cfgImovel").value;
-  const local  = document.getElementById("cfgLocal").value;
-  const data   = document.getElementById("cfgData").value;
-  const resp   = document.getElementById("cfgResp").value;
-  const doc    = document.getElementById("cfgDoc").value;
 
   pdf.setTextColor(36,52,71);
   pdf.setFont("helvetica","bold"); pdf.setFontSize(20);
-  pdf.text(titulo, W/2, 120, {align:"center", maxWidth:contentW});
-
-  if(imovel){
-    pdf.setFont("helvetica","normal"); pdf.setFontSize(14);
-    pdf.setTextColor(90,107,124);
-    pdf.text(imovel, W/2, 138, {align:"center", maxWidth:contentW});
-  }
-  let ym = 158;
-  pdf.setFontSize(11);
-  const metas = [];
-  if(local) metas.push(["Local", local]);
-  if(data)  metas.push(["Data", data]);
-  if(resp)  metas.push(["Responsável", resp]);
-  if(doc)   metas.push(["Documento", doc]);
-  metas.forEach(([k,v])=>{
-    pdf.setTextColor(23,90,159); pdf.setFont("helvetica","bold");
-    const kt = k+": ";
-    const kw = pdf.getTextWidth(kt);
-    pdf.setTextColor(90,107,124); pdf.setFont("helvetica","normal");
-    const vw = pdf.getTextWidth(v);
-    const startX = W/2 - (kw+vw)/2;
-    pdf.setTextColor(23,90,159); pdf.setFont("helvetica","bold");
-    pdf.text(kt, startX, ym);
-    pdf.setTextColor(90,107,124); pdf.setFont("helvetica","normal");
-    pdf.text(v, startX+kw, ym);
-    ym += 7;
-  });
+  pdf.text(titulo, W/2, H/2, {align:"center", maxWidth:contentW});
   desenharRodape();
 
   // ---- PÁGINAS DE FOTOS ----
@@ -478,9 +402,7 @@ async function gerarPDF(){
     desenharRodape();
   }
 
-  const nome = (document.getElementById("cfgImovel").value || "relatorio")
-    .replace(/[^\w\s-]/g,"").trim().replace(/\s+/g,"_") || "relatorio";
-  pdf.save("Relatorio_Fotografico_"+nome+".pdf");
+  pdf.save("Relatorio_Fotografico.pdf");
 }
 
 render();
