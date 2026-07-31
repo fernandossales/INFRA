@@ -768,10 +768,23 @@ async function construirPDFccu(){
   card.style.cssText = "box-shadow:none;padding:0;overflow:visible;max-width:none;";
   card.appendChild(clone);
   holder.appendChild(card);
-  document.body.appendChild(holder);
+  // Anexa DENTRO do painel CCU para que o CSS (prefixado com #panel-ccu) se aplique ao clone.
+  const painelCCU = document.getElementById("panel-ccu") || document.body;
+  // Se o painel estiver oculto (aba inativa), força-o a renderizar fora da tela durante a captura.
+  const estiloAnterior = painelCCU.getAttribute("style") || "";
+  const estavaOculto = getComputedStyle(painelCCU).display === "none";
+  if(estavaOculto){
+    painelCCU.style.display = "block";
+    painelCCU.style.position = "fixed";
+    painelCCU.style.left = "-10000px";
+    painelCCU.style.top = "0";
+    painelCCU.style.width = "1180px";
+  }
+  painelCCU.appendChild(holder);
 
   const canvas = await html2canvas(holder, {scale:2, backgroundColor:"#ffffff"});
-  document.body.removeChild(holder);
+  painelCCU.removeChild(holder);
+  if(estavaOculto){ painelCCU.setAttribute("style", estiloAnterior); }
 
   const imgData = canvas.toDataURL("image/jpeg", 0.95);
   const topTab = mT + 10 + 6;
@@ -804,8 +817,6 @@ atualizarCapa();
 window.CCU_atualizarCapa=atualizarCapa;
 window.CCU_carregarImg=carregarImg;
 window.CCU_construirTabela=construirTabela;
-window.CCU_desenharCabecalho=desenharCabecalho;
-window.CCU_desenharRodape=desenharRodape;
 window.CCU_gerarPDF=gerarPDF;
 window.CCU_limpar=limpar;
 window.CCU_marcar=marcar;
@@ -1262,8 +1273,6 @@ window.FOTO_adicionarFotos=adicionarFotos;
 window.FOTO_atualizarCapa=atualizarCapa;
 window.FOTO_cabecalhoHTML=cabecalhoHTML;
 window.FOTO_carregarImg=carregarImg;
-window.FOTO_desenharCabecalho=desenharCabecalho;
-window.FOTO_desenharRodape=desenharRodape;
 window.FOTO_gerarPDF=gerarPDF;
 window.FOTO_limparTudo=limparTudo;
 window.FOTO_removerFoto=removerFoto;
