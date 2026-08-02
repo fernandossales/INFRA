@@ -495,6 +495,212 @@
 
 
 #panel-drl .grid-1, #panel-docs .grid-1{grid-template-columns:1fr; max-width:620px;}#panel-drl .grid-1 .card, #panel-docs .grid-1 .card{margin:0 auto; width:100%;}
+
+  /* ===== Ficha de Vistoria + Avaliação ===== */
+  #panel-vistoria, #panel-avaliacao{
+    --azul:#1F6FC0; --azul-esc:#175a9f; --azul-inf:#0a4d7c;
+    --borda:#d3dbe4; --borda-forte:#b3bfcc; --texto:#243447;
+    --bg:#eef2f6; --card:#ffffff; --label:#5a6b7c; --suave:#f7f9fc;
+    font-family:"Segoe UI", Arial, Helvetica, sans-serif;
+    background:var(--bg); color:var(--texto); padding:26px 20px 80px;
+  }
+  #panel-vistoria *, #panel-avaliacao *{box-sizing:border-box;}
+  #panel-vistoria .vwrap, #panel-avaliacao .vwrap{max-width:1080px; margin:0 auto;}
+  #panel-vistoria .doc-head, #panel-avaliacao .doc-head{margin-bottom:18px;}
+  #panel-vistoria h1, #panel-avaliacao h1{font-size:23px; margin:0 0 4px; color:var(--azul-esc); letter-spacing:.3px;}
+  #panel-vistoria .sub, #panel-avaliacao .sub{font-size:13.5px; color:var(--label); margin:0;}
+
+  #panel-vistoria .vsec, #panel-avaliacao .vsec{
+    font-size:14px; font-weight:800; letter-spacing:.4px; text-transform:uppercase;
+    color:#fff; background:linear-gradient(180deg,#2478c9,var(--azul));
+    padding:9px 16px; border-radius:9px 9px 0 0; margin:22px 0 0;
+    box-shadow:0 2px 8px rgba(31,111,192,.22);
+  }
+  #panel-vistoria .vcard, #panel-avaliacao .vcard{
+    background:var(--card); border:1px solid var(--borda);
+    border-radius:0 0 12px 12px; padding:18px 18px 20px; margin-bottom:8px;
+    box-shadow:0 8px 22px rgba(30,50,80,.07);
+  }
+  /* cartão isolado (sem vsec antes) */
+  #panel-vistoria .vcard:first-of-type{border-radius:12px; margin-top:6px;}
+
+  #panel-vistoria .vsub, #panel-avaliacao .vsub{
+    font-size:12.5px; font-weight:700; color:var(--azul-esc);
+    letter-spacing:.3px; margin:16px 0 8px; padding-bottom:4px;
+    border-bottom:1px solid var(--borda); display:flex; align-items:center; justify-content:space-between;
+  }
+  #panel-vistoria .vsub:first-child, #panel-avaliacao .vsub:first-child{margin-top:0;}
+
+  #panel-vistoria .vrow, #panel-avaliacao .vrow{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:10px;}
+  #panel-vistoria .vfield, #panel-avaliacao .vfield{display:flex; flex-direction:column; gap:4px; min-width:150px;}
+  #panel-vistoria .vfield.grow, #panel-avaliacao .vfield.grow{flex:1; min-width:220px;}
+  #panel-vistoria label, #panel-avaliacao label,
+  #panel-vistoria .vlbl, #panel-avaliacao .vlbl{
+    font-size:11px; font-weight:700; color:var(--label); text-transform:uppercase; letter-spacing:.4px;
+  }
+  #panel-vistoria .vlbl, #panel-avaliacao .vlbl{display:block; margin:14px 0 5px;}
+
+  #panel-vistoria input[type=text], #panel-vistoria input[type=date], #panel-vistoria select, #panel-vistoria textarea,
+  #panel-avaliacao input[type=text], #panel-avaliacao input[type=date], #panel-avaliacao input[type=number], #panel-avaliacao select, #panel-avaliacao textarea{
+    width:100%; border:1px solid var(--borda-forte); border-radius:7px;
+    padding:8px 11px; font-size:13.5px; color:var(--texto); background:#fff;
+    font-family:inherit; outline:none; transition:border-color .15s, box-shadow .15s;
+  }
+  #panel-vistoria textarea, #panel-avaliacao textarea{resize:vertical; line-height:1.45;}
+  #panel-vistoria input:focus, #panel-vistoria select:focus, #panel-vistoria textarea:focus,
+  #panel-avaliacao input:focus, #panel-avaliacao select:focus, #panel-avaliacao textarea:focus{
+    border-color:var(--azul); box-shadow:0 0 0 3px rgba(31,111,192,.12);
+  }
+
+  /* botão mini adicionar */
+  #panel-vistoria .mini-add, #panel-avaliacao .mini-add{
+    border:1px solid var(--azul); background:#eaf3fc; color:var(--azul-esc);
+    font-size:11.5px; font-weight:700; padding:4px 12px; border-radius:14px; cursor:pointer;
+    text-transform:none; letter-spacing:0; transition:background .15s;
+  }
+  #panel-vistoria .mini-add:hover, #panel-avaliacao .mini-add:hover{background:#d8ebfb;}
+
+  /* linha de estaca dinâmica */
+  #panel-vistoria .estaca-linha{
+    display:flex; gap:10px; align-items:flex-end; margin-bottom:10px; flex-wrap:wrap;
+    background:var(--suave); border:1px solid var(--borda); border-radius:9px; padding:10px 12px;
+  }
+  #panel-vistoria .estaca-linha .rot{font-size:11px; font-weight:800; color:var(--azul-esc); align-self:center; min-width:64px;}
+  #panel-vistoria .estaca-linha .par{display:flex; flex-direction:column; gap:4px; flex:1; min-width:130px;}
+  #panel-vistoria .estaca-linha .par span{font-size:10px; font-weight:700; color:var(--label); text-transform:uppercase;}
+  #panel-vistoria .estaca-linha .rm{
+    border:none; background:#fdecec; color:#c0392b; font-weight:700;
+    width:30px; height:34px; border-radius:7px; cursor:pointer; font-size:15px;
+  }
+  #panel-vistoria .estaca-linha .rm:hover{background:#f8d7d7;}
+
+  /* barra de ação fixa */
+  #panel-vistoria .vactions, #panel-avaliacao .vactions{
+    position:sticky; bottom:0; margin-top:20px;
+    background:linear-gradient(180deg, rgba(238,242,246,0), var(--bg) 40%);
+    padding:14px 0 4px; display:flex; gap:10px; flex-wrap:wrap;
+  }
+  #panel-vistoria .vbtn, #panel-avaliacao .vbtn{
+    border:none; padding:11px 22px; font-size:14px; font-weight:700; border-radius:9px; cursor:pointer;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  #panel-vistoria .vbtn-primary, #panel-avaliacao .vbtn-primary{background:var(--azul); color:#fff; box-shadow:0 3px 10px rgba(31,111,192,.3);}
+  #panel-vistoria .vbtn-primary:hover, #panel-avaliacao .vbtn-primary:hover{background:var(--azul-esc);}
+  #panel-vistoria .vbtn-ghost, #panel-avaliacao .vbtn-ghost{background:#fff; color:var(--texto); border:1px solid var(--borda-forte);}
+
+
+  /* ===== Avaliação — componentes específicos ===== */
+  #panel-avaliacao .auto-tag{
+    font-size:9px; font-weight:800; background:#e3f0e6; color:#159a3c;
+    padding:1px 6px; border-radius:8px; letter-spacing:.3px; text-transform:uppercase; margin-left:5px;
+  }
+  #panel-avaliacao .av-estacas-view{display:flex; flex-direction:column; gap:6px;}
+  #panel-avaliacao .av-estaca-item{
+    background:var(--suave); border:1px solid var(--borda); border-radius:8px;
+    padding:8px 12px; font-size:13px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  }
+  #panel-avaliacao .av-estaca-item b{color:var(--azul-esc); min-width:62px;}
+  #panel-avaliacao .av-estaca-item .km{color:var(--texto);}
+  #panel-avaliacao .av-estaca-item .tag{
+    margin-left:auto; font-size:10px; font-weight:700; color:#fff; background:var(--azul);
+    padding:2px 9px; border-radius:10px;
+  }
+
+  /* upload de imagem */
+  #panel-avaliacao .img-drop{
+    display:flex; flex-direction:column; align-items:center; gap:5px;
+    border:2px dashed var(--borda-forte); border-radius:12px; padding:26px 16px;
+    cursor:pointer; background:var(--suave); transition:border-color .15s, background .15s; text-align:center;
+  }
+  #panel-avaliacao .img-drop:hover, #panel-avaliacao .img-drop.over{border-color:var(--azul); background:#eaf3fc;}
+  #panel-avaliacao .img-drop .ic{font-size:30px;}
+  #panel-avaliacao .img-drop .t{font-size:13.5px; font-weight:600; color:var(--texto);}
+  #panel-avaliacao .img-drop .h{font-size:11.5px; color:var(--label);}
+  #panel-avaliacao .img-drop input{display:none;}
+  #panel-avaliacao .img-preview{margin-top:12px; display:none;}
+  #panel-avaliacao .img-preview.show{display:block;}
+  #panel-avaliacao .img-preview img{max-width:100%; border-radius:10px; border:1px solid var(--borda); box-shadow:0 4px 14px rgba(30,50,80,.12);}
+  #panel-avaliacao .img-preview .rm-img{
+    margin-top:8px; border:1px solid var(--borda-forte); background:#fff; color:#c0392b;
+    font-size:12px; font-weight:700; padding:5px 14px; border-radius:8px; cursor:pointer;
+  }
+
+  /* área avaliada de referência */
+  #panel-avaliacao .av-area-aval{
+    background:#fff9e8; border:1px solid #e7d38a; border-radius:9px; padding:12px 14px; margin-bottom:12px;
+  }
+  #panel-avaliacao .av-area-aval label{color:#8a6d1a; margin-bottom:5px;}
+  #panel-avaliacao .av-area-aval input{max-width:200px; border-color:#e0b400;}
+  #panel-avaliacao .hint-inline{display:block; font-size:11px; color:#a08028; margin-top:5px; text-transform:none; letter-spacing:0; font-weight:400;}
+
+  /* glebas dinâmicas */
+  #panel-avaliacao .gleba-linha{
+    display:flex; gap:10px; align-items:flex-end; margin-bottom:10px; flex-wrap:wrap;
+    background:var(--suave); border:1px solid var(--borda); border-radius:9px; padding:11px 12px;
+  }
+  #panel-avaliacao .gleba-linha .rot{font-size:11px; font-weight:800; color:var(--azul-esc); align-self:center; min-width:70px;}
+  #panel-avaliacao .gleba-linha .cel{display:flex; flex-direction:column; gap:4px;}
+  #panel-avaliacao .gleba-linha .cel span{font-size:10px; font-weight:700; color:var(--label); text-transform:uppercase;}
+  #panel-avaliacao .gleba-linha .cel.classe{min-width:100px;}
+  #panel-avaliacao .gleba-linha .cel.area{min-width:110px;}
+  #panel-avaliacao .gleba-linha .cel.fator{flex:1; min-width:200px;}
+  #panel-avaliacao .gleba-linha .cel.pct{min-width:90px;}
+  #panel-avaliacao .gleba-linha .pct-val{
+    font-size:15px; font-weight:800; color:var(--azul-esc);
+    padding:7px 0; text-align:center; background:#eaf3fc; border-radius:7px;
+  }
+  #panel-avaliacao .gleba-linha .rm{
+    border:none; background:#fdecec; color:#c0392b; font-weight:700;
+    width:30px; height:34px; border-radius:7px; cursor:pointer; font-size:15px; align-self:flex-end;
+  }
+  #panel-avaliacao .gleba-linha .rm:hover{background:#f8d7d7;}
+
+  /* fórmula CCU */
+  #panel-avaliacao .ccu-formula{
+    background:linear-gradient(180deg,#f0f7ff,#e9f2fc); border:1px solid #bcd6f0;
+    border-radius:10px; padding:14px 18px; font-family:"Consolas","Courier New",monospace; font-size:14px; color:var(--azul-inf);
+  }
+  #panel-avaliacao .ccu-formula .linha3{font-weight:800; font-size:16px; margin-top:4px; color:var(--azul-esc);}
+
+  /* N.A. calc */
+  #panel-avaliacao .na-calc{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    background:#f0f7ff; border:1px solid #bcd6f0; border-radius:10px; padding:12px 16px; font-weight:700; color:var(--azul-esc);
+  }
+  #panel-avaliacao .na-calc input, #panel-avaliacao .na-calc select{max-width:120px; font-weight:700;}
+  #panel-avaliacao .na-calc .resultado{max-width:140px; background:#eaf3fc; border-color:var(--azul); color:var(--azul-inf); font-size:15px;}
+
+  /* memória de cálculo */
+  #panel-avaliacao table.memoria{width:100%; border-collapse:collapse; font-size:12.5px; margin-top:4px;}
+  #panel-avaliacao table.memoria th{background:var(--azul); color:#fff; padding:8px 10px; text-align:left; font-weight:700;}
+  #panel-avaliacao table.memoria td{border:1px solid var(--borda); padding:7px 10px; vertical-align:middle;}
+  #panel-avaliacao table.memoria td:first-child{font-weight:700; color:var(--azul-esc); background:#fbfcfe;}
+  #panel-avaliacao table.memoria input, #panel-avaliacao table.memoria select{max-width:120px; padding:5px 8px;}
+  #panel-avaliacao table.memoria span{font-weight:700;}
+
+  #panel-avaliacao .vtn-box{margin-top:14px; background:#fff4e6; border:1px solid #f0c891; border-radius:10px; padding:14px 16px;}
+  #panel-avaliacao .vtn-formula{font-family:"Consolas","Courier New",monospace; font-size:12px; color:#8a5a1a; line-height:1.5;}
+  #panel-avaliacao .vtn-result{margin-top:8px; font-size:16px; color:var(--texto);}
+  #panel-avaliacao .vtn-result strong{color:#c0700a; font-size:20px;}
+
+  /* calc lines 14 */
+  #panel-avaliacao .calc-line{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px;}
+  #panel-avaliacao .calc-line label{flex:1; min-width:240px;}
+  #panel-avaliacao .calc-line input{max-width:150px;}
+  #panel-avaliacao .calc-line strong{color:var(--azul-esc); font-size:16px; min-width:120px;}
+
+  /* resumo */
+  #panel-avaliacao table.resumo{width:100%; border-collapse:collapse; font-size:13px;}
+  #panel-avaliacao table.resumo td{border-bottom:1px solid var(--borda); padding:8px 12px;}
+  #panel-avaliacao table.resumo td.v{text-align:right; width:200px;}
+  #panel-avaliacao table.resumo td.v input{max-width:150px; text-align:right; margin-left:auto;}
+  #panel-avaliacao table.resumo tr.sub-tot td{background:#f0f5fb; font-weight:700; color:var(--azul-esc);}
+  #panel-avaliacao table.resumo tr.total td{background:var(--azul); color:#fff; font-weight:800; font-size:15px;}
+  #panel-avaliacao table.resumo tr.total strong{color:#fff;}
+
+  /* anexos */
+  #panel-avaliacao ol.anexos-list{margin:0; padding-left:22px; font-size:13px; color:var(--texto); line-height:1.9;}
+
 </style>
 </head>
 <body>
@@ -525,6 +731,8 @@
     </div>
     <button class="tab tab-solta" data-alvo="panel-drl"  onclick="trocarAba(this)">📜 DRL <span class="badge">Anexo 5</span></button>
     <button class="tab tab-solta" data-alvo="panel-docs" onclick="trocarAba(this)">🗂️ Documentos <span class="badge">Anexo 6</span></button>
+    <button class="tab tab-solta" data-alvo="panel-vistoria" onclick="trocarAba(this)">📋 Ficha de Vistoria</button>
+    <button class="tab tab-solta" data-alvo="panel-avaliacao" onclick="trocarAba(this)">📐 Avaliação</button>
   </nav>
 </header>
 
@@ -692,7 +900,556 @@
   </div>
 </div>
   </section>
+
+  <section class="tab-panel" id="panel-vistoria">
+<div class="vwrap">
+  <div class="doc-head">
+    <h1>Ficha de Vistoria</h1>
+    <p class="sub">Preencha os campos abaixo. Os dados marcados alimentam automaticamente a aba <strong>Avaliação</strong>.</p>
+  </div>
+
+  <!-- Cabeçalho processo -->
+  <div class="vcard">
+    <div class="vrow">
+      <div class="vfield grow">
+        <label>Processo Nº</label>
+        <input type="text" id="fv_processo" data-sync="processo" value="INFRA S.A. 295 LOTE 5F UF BA">
+      </div>
+      <div class="vfield">
+        <label>Data</label>
+        <input type="date" id="fv_data" data-sync="data">
+      </div>
+    </div>
+  </div>
+
+  <!-- 01 IDENTIFICAÇÃO -->
+  <h2 class="vsec">01 — Identificação</h2>
+  <div class="vcard">
+    <div class="vrow">
+      <div class="vfield">
+        <label>1.1 Documentos Dominiais</label>
+        <select id="fv_docdom" data-sync="docdom"><option>1 - Sim</option><option>2 - Não</option></select>
+      </div>
+      <div class="vfield">
+        <label>1.2 Documentos Proprietário</label>
+        <select id="fv_docprop"><option>1 - Sim</option><option>2 - Não</option></select>
+      </div>
+      <div class="vfield grow">
+        <label>Quais?</label>
+        <input type="text" id="fv_docquais" value="CERTIDAO INTEIRO TEOR">
+      </div>
+    </div>
+
+    <div class="vsub">1.3 Proprietário(a)</div>
+    <div class="vrow">
+      <div class="vfield grow"><label>Nome</label><input type="text" id="fv_nome" data-sync="nome" value="DOMINGA TEREZA PEREIRA"></div>
+      <div class="vfield"><label>RG</label><input type="text" id="fv_rg" data-sync="rg"></div>
+      <div class="vfield"><label>CPF</label><input type="text" id="fv_cpf" data-sync="cpf" value="964.047.445-20"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield"><label>Estado Civil</label>
+        <select id="fv_estcivil" data-sync="estcivil"><option>SOLTEIRO(A)</option><option>CASADO(A)</option><option>VIÚVO(A)</option><option selected>DIVORCIADO(A)</option></select>
+      </div>
+      <div class="vfield grow"><label>Cônjuge</label><input type="text" id="fv_conjuge" data-sync="conjuge"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield grow"><label>Endereço</label><input type="text" id="fv_endereco" data-sync="endereco" value="RUA ANTONIA GOMES SOBRINHO, 135, BELA VISTA"></div>
+      <div class="vfield"><label>CEP</label><input type="text" id="fv_cep" data-sync="cep"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield grow"><label>Município</label><input type="text" id="fv_municipio" data-sync="municipio" value="GUANAMBI/BA"></div>
+      <div class="vfield"><label>Telefone</label><input type="text" id="fv_telefone" data-sync="telefone" value="(77) 9 9173-4284"></div>
+    </div>
+
+    <div class="vsub">1.4 Informante</div>
+    <div class="vrow">
+      <div class="vfield grow"><label>Nome</label><input type="text" id="fv_inf_nome" value="DOMINGA TEREZA PEREIRA"></div>
+      <div class="vfield grow"><label>Dados Comp.</label><input type="text" id="fv_inf_dados"></div>
+    </div>
+
+    <div class="vsub">1.5 Propriedade</div>
+    <div class="vrow">
+      <div class="vfield grow"><label>Identificação</label><input type="text" id="fv_prop_id" data-sync="prop_id" value="SITIO CÔCOS"></div>
+      <div class="vfield"><label>Área Total (ha)</label><input type="text" id="fv_area_total" data-sync="area_total" value="4,1498"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield grow"><label>Endereço</label><input type="text" id="fv_prop_end" data-sync="prop_end" value="SITIO CÔCOS - DISTRITO DE CERAÍMA"></div>
+      <div class="vfield"><label>Área Desap. (ha)</label><input type="text" id="fv_area_desap" data-sync="area_desap" value="0,3101"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield grow"><label>Município</label><input type="text" id="fv_prop_mun" data-sync="prop_mun" value="GUANAMBI/BA"></div>
+      <div class="vfield"><label>Matrícula</label><input type="text" id="fv_matricula" data-sync="matricula" value="MAT. 28.001 - LIVRO 2/HV"></div>
+    </div>
+
+    <!-- Estacas / Áreas dinâmicas -->
+    <div class="vsub">Áreas — Estacas (Km)
+      <button type="button" class="mini-add" onclick="FV_addEstaca()">+ Adicionar área</button>
+    </div>
+    <div id="fv_estacas"></div>
+
+    <div class="vsub">1.6 Observações</div>
+    <textarea id="fv_obs" data-sync="obs" rows="3">FICHA DE VISTORIA RELATIVA AO PROCESSO DE DESAPROPRIAÇÃO DE ÁREA DESTINADA À FAIXA DE DOMÍNIO DA EF-334 (FIOL), VISANDO À IMPLANTAÇÃO DO NOVO TRAÇADO DA VARIANTE DE CERAÍMA.</textarea>
+  </div>
+
+  <!-- 02 CARACTERIZAÇÃO -->
+  <h2 class="vsec">02 — Caracterização do Imóvel</h2>
+  <div class="vcard">
+    <div class="vsub">2.1 Econômicas</div>
+    <textarea id="fv_economicas" rows="4">O IMÓVEL RURAL DENOMINADO SÍTIO CÔCOS TEM UTILIZAÇÃO CLASSIFICADA COMO AGRICULTURA, NÃO POSSUINDO FUNÇÃO SOCIAL DE MORADIA, UMA VEZ QUE A PROPRIETÁRIA RESIDE NO MUNICÍPIO DE GUANAMBI/BA. CONFORME DECLARADO DURANTE A ABORDAGEM SOCIAL, ATUALMENTE NÃO SÃO DESENVOLVIDAS ATIVIDADES PRODUTIVAS, ECONÔMICAS OU DE SUBSISTÊNCIA NA PROPRIEDADE. A GLEBA APRESENTA POTENCIAL PARA CULTIVO AGRÍCOLA SOB IRRIGAÇÃO OU EM REGIME DE SEQUEIRO DURANTE O PERÍODO CHUVOSO. A FONTE DE RENDA DECLARADA PELA PROPRIETÁRIA É PROVENIENTE DE APOSENTADORIA.</textarea>
+
+    <div class="vsub">2.2 Sociais</div>
+    <textarea id="fv_sociais" rows="3">O IMÓVEL SITUA-SE NA FAZENDA SITIO CÔCOS, NO MUNICÍPIO DE GUANAMBI, BA. O ÍNDICE DE DESENVOLVIMENTO HUMANO MUNICIPAL (IDH-M), APURADO PELO IBGE NO ANO DE 2010, FOI DE 0,673, SENDO CLASSIFICADO COMO DE NÍVEL MÉDIO.</textarea>
+
+    <div class="vsub">2.3 Ambientais</div>
+    <textarea id="fv_ambientais" rows="3">NÃO SE VERIFICAM RESTRIÇÕES AMBIENTAIS NA ÁREA OBJETO DE DESAPROPRIAÇÃO. CONFORME CONSULTA AO BANCO DE DADOS DO SICAR/BA, A ÁREA ABRANGIDA DO IMÓVEL NÃO POSSUI RESERVA LEGAL (RL) E/OU ÁREA DE PRESERVAÇÃO PERMANENTE (APP).</textarea>
+
+    <div class="vsub">2.4 Localização</div>
+    <textarea id="fv_localizacao" rows="3">O IMÓVEL SITUA-SE A CERCA DE 23 KM DA ÁREA URBANA DE GUANAMBI, BA. O ACESSO É REALIZADO INICIALMENTE PELA RODOVIA BA-938, NO TRECHO QUE CONECTA A SEDE MUNICIPAL AO DISTRITO DE CERAÍMA, E, POSTERIORMENTE, POR ESTRADA VICINAL QUE INTERLIGA AO SITIO CÔCOS.</textarea>
+
+    <div class="vsub">2.5 Características Físicas</div>
+    <textarea id="fv_fisicas" rows="3">O TERRENO NA ÁREA ABRANGIDA APRESENTA RELEVO ÍNGREME, COM DECLIVIDADE VARIANDO ENTRE 6,0% A 40,0%, O QUE FAVORECE O ESCOAMENTO SUPERFICIAL. A GLEBA AFETADA DO IMÓVEL APRESENTA SECA EDAFOLÓGICA DE INTENSIDADE MÉDIA, E A VEGETAÇÃO NATIVA DE CAATINGA ENCONTRA-SE ANTROPIZADA.</textarea>
+
+    <div class="vsub">2.6 Infraestrutura</div>
+    <textarea id="fv_infra" rows="3">A PROPRIEDADE POSSUI ENERGIA ELÉTRICA E ACESSO POR ESTRADA NÃO PAVIMENTADA EM ÓTIMAS CONDIÇÕES, COM PROXIMIDADE PARA RODOVIA BA-938, COM TRAFEGABILIDADE PERMANENTE, ALÉM DE COBERTURA DE TELEFONIA MÓVEL.</textarea>
+
+    <div class="vsub">2.7 Imóvel Rural</div>
+    <label class="vlbl">2.7.1 Características da terra</label>
+    <textarea id="fv_terra" rows="6">NA GLEBA AVALIADA, COMPOSTA PREDOMINANTEMENTE POR PLANOSSOLOS E NEOSSOLOS, FORAM IDENTIFICADAS ÁREAS DAS CLASSES DE CAPACIDADE DE USO III, VII E VIII, ASSIM DISTRIBUÍDAS: A GLEBA 01 (CLASSE III), COM 2,0500 ha (≈37,05% DO IMÓVEL), CUJO FATOR MAIS RESTRITIVO É A PROFUNDIDADE EFETIVA (SOLO RASO); A GLEBA 02 (CLASSE VII), COM 0,9609 ha (≈23,16%), LIMITADA PELA PEDREGOSIDADE MODERADA; E A GLEBA 03 (CLASSE VIII), COM 1,1389 ha (≈27,44%), CONDICIONADA PELA CLASSE DE DECLIVIDADE ENTRE 20% E 40%. ASSIM, A ÁREA DE MELHOR APTIDÃO (CLASSE III) COMPORTA CULTURAS ANUAIS DESDE QUE SOB MANEJO CONSERVACIONISTA INTENSO, ENQUANTO AS DEMAIS PORÇÕES SÃO RESTRITAS AO REFLORESTAMENTO E À VIDA SILVESTRE (CLASSE VII) OU DESTINADAS EXCLUSIVAMENTE À PRESERVAÇÃO AMBIENTAL (CLASSE VIII). TAIS CONDIÇÕES, ALIADAS ÀS RESTRIÇÕES NATURAIS DOS PLANOSSOLOS E NEOSSOLOS — COMO DRENAGEM IMPERFEITA E BARREIRAS FÍSICAS AO DESENVOLVIMENTO RADICULAR —, CONDICIONAM SEVERAMENTE A EXPLORAÇÃO AGRÍCOLA E EXIGEM TÉCNICAS ESPECÍFICAS DE ESCOAMENTO E CONDUÇÃO DE ÁGUA NA IMPLANTAÇÃO DE ROTAS DE ACESSO, DE MODO A EVITAR DEGRADAÇÃO.</textarea>
+    <label class="vlbl">2.7.2 Hidrografia (Vazão m³ ou L/s)</label>
+    <textarea id="fv_hidro" rows="3">HÁ UMA ÁREA COM DECLIVIDADE QUE FAVORECE O ESCOAMENTO DE ÁGUA. RESSALTA-SE, AINDA, QUE FORAM IDENTIFICADAS ESTRUTURAS DE CAPTAÇÃO SUBTERRÂNEA (POÇO) COMPARTILHADO NO INTERIOR DA PROPRIEDADE.</textarea>
+    <label class="vlbl">2.7.3 Informações Complementares</label>
+    <textarea id="fv_rural_comp" rows="2"></textarea>
+
+    <div class="vsub">2.8 Imóvel Urbano</div>
+    <label class="vlbl">2.8.1 Infraestrutura</label>
+    <textarea id="fv_urb_infra" rows="2"></textarea>
+    <label class="vlbl">2.8.2 Topografia</label>
+    <textarea id="fv_urb_topo" rows="2"></textarea>
+    <label class="vlbl">2.8.3 Distância ao centro</label>
+    <textarea id="fv_urb_dist" rows="2"></textarea>
+    <label class="vlbl">2.8.4 Informações Complementares</label>
+    <textarea id="fv_urb_comp" rows="2"></textarea>
+  </div>
+
+  <!-- 03 BENFEITORIAS -->
+  <h2 class="vsec">03 — Descrição das Benfeitorias</h2>
+  <div class="vcard">
+    <label class="vlbl">3.1 Não-Reprodutivas</label>
+    <textarea id="fv_ben_nr" rows="2">CERCAS</textarea>
+    <label class="vlbl">3.1.1 Benfeitorias não reprodutivas da faixa non aedificandi</label>
+    <input type="text" id="fv_ben_nr1" value="AUSENTES.">
+    <label class="vlbl">3.2 Informações Complementares</label>
+    <textarea id="fv_ben_comp2" rows="2"></textarea>
+    <label class="vlbl">3.3 Reprodutivas</label>
+    <textarea id="fv_ben_r" rows="2"></textarea>
+    <label class="vlbl">3.3.1 Benfeitorias não reprodutivas da faixa non aedificandi</label>
+    <input type="text" id="fv_ben_r1" value="AUSENTES.">
+    <label class="vlbl">3.4 Informações Complementares</label>
+    <textarea id="fv_ben_comp4" rows="2"></textarea>
+  </div>
+
+  <!-- 04 INFORMAÇÕES COMPLEMENTARES -->
+  <h2 class="vsec">04 — Informações Complementares</h2>
+  <div class="vcard">
+    <label class="vlbl">4.1 Obras e Melhorias das Terras</label>
+    <textarea id="fv_obras" rows="2">AUSENTES.</textarea>
+    <label class="vlbl">4.2 Outras Atividades</label>
+    <textarea id="fv_outras" rows="3">O IMÓVEL É DIVIDIDO PELA ANTIGA FAIXA DE DOMÍNIO DA FERROVIA FIOL (EF-334), SENDO PARTE DA ÁREA DESAPROPRIADA POR MEIO DO PROCESSO 275A-5F, EM 2014 E 275-5F, EM 2012.</textarea>
+    <label class="vlbl">4.3 Observações</label>
+    <textarea id="fv_obs4" rows="2"></textarea>
+    <label class="vlbl">4.4 Fotografias do Imóvel</label>
+    <input type="text" id="fv_fotos" value="VIDE RELATÓRIO FOTOGRÁFICO (ANEXO 4).">
+  </div>
+
+  <!-- ASSINATURA -->
+  <h2 class="vsec">Assinatura Técnica</h2>
+  <div class="vcard">
+    <div class="vrow">
+      <div class="vfield grow"><label>Nome do responsável</label><input type="text" id="fv_ass_nome" data-sync="ass_nome" value="ANTÔNIO CÉLITO DE ARAÚJO JÚNIOR"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield grow"><label>Cargo</label><input type="text" id="fv_ass_cargo" data-sync="ass_cargo" value="Engenheiro Agrônomo"></div>
+      <div class="vfield grow"><label>Registro (CREA)</label><input type="text" id="fv_ass_crea" data-sync="ass_crea" value="CREA 351993 V/MG"></div>
+    </div>
+  </div>
+
+</div>
+  </section>
+
+  <section class="tab-panel" id="panel-avaliacao">
+<div class="vwrap">
+  <div class="doc-head">
+    <h1>Laudo de Avaliação</h1>
+    <p class="sub">Itens marcados com <span class="auto-tag">auto</span> são preenchidos a partir da Ficha de Vistoria. Ajuste os demais conforme necessário.</p>
+  </div>
+
+  <!-- 01 RAZÃO -->
+  <h2 class="vsec">01 — Razão do Interesse</h2>
+  <div class="vcard">
+    <div class="vfield grow"><label>Razão do interesse</label><input type="text" id="av_razao" value="Área de Faixa de Domínio - EF-334 - FIOL"></div>
+  </div>
+
+  <!-- 02 LOCALIZAÇÃO -->
+  <h2 class="vsec">02 — Localização</h2>
+  <div class="vcard">
+    <div class="vrow">
+      <div class="vfield grow"><label>2.1 Localidade <span class="auto-tag">auto</span></label><input type="text" id="av_localidade" data-from="prop_end"></div>
+      <div class="vfield grow"><label>2.2 Município <span class="auto-tag">auto</span></label><input type="text" id="av_municipio" data-from="prop_mun"></div>
+      <div class="vfield"><label>2.3 UF</label><input type="text" id="av_uf" value="BA"></div>
+    </div>
+    <div class="vsub">2.4 Locação — Áreas <span class="auto-tag">auto (Ficha de Vistoria)</span></div>
+    <div id="av_estacas" class="av-estacas-view"></div>
+  </div>
+
+  <!-- 03 IDENTIFICAÇÃO DO OCUPANTE -->
+  <h2 class="vsec">03 — Identificação do Ocupante do Imóvel</h2>
+  <div class="vcard">
+    <div class="vrow">
+      <div class="vfield grow"><label>3.1 Nome <span class="auto-tag">auto</span></label><input type="text" id="av_nome" data-from="nome"></div>
+      <div class="vfield"><label>3.2 Apelido</label><input type="text" id="av_apelido" value="-"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield"><label>3.3 Nacionalidade</label><input type="text" id="av_nacion" value="BRASILEIRA"></div>
+      <div class="vfield grow"><label>3.4 Local de nascimento</label><input type="text" id="av_localnasc" value="GUANAMBI/BA"></div>
+      <div class="vfield"><label>3.5 Profissão</label><input type="text" id="av_profissao" value="APOSENTADA"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield"><label>3.6 Data de nascimento</label><input type="date" id="av_datanasc" value="1949-11-02"></div>
+      <div class="vfield"><label>3.7 Documento de identidade</label><input type="text" id="av_docid" value="-"></div>
+      <div class="vfield"><label>3.8 CPF Nº <span class="auto-tag">auto</span></label><input type="text" id="av_cpf" data-from="cpf"></div>
+    </div>
+    <div class="vfield grow"><label>3.9 Filiação</label><input type="text" id="av_filiacao" value="-"></div>
+    <div class="vrow">
+      <div class="vfield"><label>3.10 Estado civil <span class="auto-tag">auto</span></label><input type="text" id="av_estcivil" data-from="estcivil"></div>
+      <div class="vfield grow"><label>3.11 Regime de casamento</label><input type="text" id="av_regime" value="-"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield grow"><label>3.12 Nome do cônjuge</label><input type="text" id="av_conjuge" value="-"></div>
+      <div class="vfield"><label>3.13 Apelido</label><input type="text" id="av_conj_apelido" value="-"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield grow"><label>3.17 Endereço p/ correspondência <span class="auto-tag">auto</span></label><input type="text" id="av_endcorresp" data-from="endereco"></div>
+      <div class="vfield"><label>3.17.1 CEP</label><input type="text" id="av_cep" value="-"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield"><label>3.18 Telefone <span class="auto-tag">auto</span></label><input type="text" id="av_telefone" data-from="telefone"></div>
+      <div class="vfield grow"><label>3.19 Procurador(a)</label><input type="text" id="av_procurador"></div>
+    </div>
+    <div class="vsub">Imóvel</div>
+    <div class="vrow">
+      <div class="vfield grow"><label>3.21 Denominação <span class="auto-tag">auto</span></label><input type="text" id="av_denom" data-from="prop_id"></div>
+      <div class="vfield grow"><label>3.23 Município</label><input type="text" id="av_imun" value="GUANAMBI/BA"></div>
+      <div class="vfield grow"><label>3.24 Comarca</label><input type="text" id="av_comarca" value="GUANAMBI/BA"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield grow"><label>3.25 Imóvel adquirido de</label><input type="text" id="av_adqde" value="BENJAMIM MOISES PEREIRA"></div>
+      <div class="vfield"><label>3.26 Data de aquisição</label><input type="date" id="av_dataaq" value="2012-12-28"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield grow"><label>3.27 Doc. de aquisição</label><input type="text" id="av_docaq" value="CERTIDAO INTEIRO TEOR"></div>
+      <div class="vfield grow"><label>3.28 Cartório</label><input type="text" id="av_cartorio" value="TABELIONATO DE NOTAS DE GUANAMBI - BA"></div>
+      <div class="vfield"><label>3.29 Livro</label><input type="text" id="av_livro" value="2/HV"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield grow"><label>3.31 Cartório de registro</label><input type="text" id="av_cartreg" value="C.R.I.H. DE GUANAMBI - BA"></div>
+      <div class="vfield grow"><label>3.32 Nº de registro <span class="auto-tag">auto</span></label><input type="text" id="av_nreg" data-from="matricula"></div>
+      <div class="vfield"><label>3.33 Livro</label><input type="text" id="av_livro2" value="2/EG"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield grow"><label>3.35 Cadastro INCRA/Pref.</label><input type="text" id="av_incra" value="307.092.019.712"></div>
+      <div class="vfield"><label>3.36 Área total (ha) <span class="auto-tag">auto</span></label><input type="text" id="av_areatotal" data-from="area_total"></div>
+      <div class="vfield"><label>3.37 Área abrangida (ha) <span class="auto-tag">auto</span></label><input type="text" id="av_areaabr" data-from="area_desap"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield"><label>3.38 Outras áreas (ha)</label><input type="text" id="av_outrasareas" value="0,1914"></div>
+      <div class="vfield"><label>3.39 Categoria da ocupação</label><input type="text" id="av_categ" value="PROPRIETÁRIA"></div>
+      <div class="vfield"><label>3.40 Data da ocupação</label><input type="date" id="av_dataocup" value="2012-12-28"></div>
+    </div>
+  </div>
+
+  <!-- 04 SITUAÇÃO -->
+  <h2 class="vsec">04 — Situação do Imóvel</h2>
+  <div class="vcard">
+    <div class="vrow">
+      <div class="vfield"><label>4.1 Zona</label><select id="av_zona"><option>URBANA</option><option selected>RURAL</option></select></div>
+      <div class="vfield"><label>4.2 Terreno demarcado</label><select id="av_demarcado"><option selected>SIM</option><option>NÃO</option></select></div>
+      <div class="vfield"><label>4.6 Há litígio</label><select id="av_litigio"><option>SIM</option><option selected>NÃO</option></select></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield"><label>4.2.1 Geoprocessamento (INCRA)</label><select id="av_geo"><option>SIM</option><option selected>NÃO</option></select></div>
+      <div class="vfield"><label>4.2.2 CAR (Cadastro Ambiental Rural)</label><select id="av_car"><option selected>SIM</option><option>NÃO</option></select></div>
+      <div class="vfield grow"><label>Nº CAR</label><input type="text" id="av_ncar" value="BA-2911709-4CDF.32D1.DF12.414E.BE3C.BA1A.0C51.3253"></div>
+    </div>
+  </div>
+
+  <!-- 05 LIMITES -->
+  <h2 class="vsec">05 — Limites e Confrontações</h2>
+  <div class="vcard">
+    <div class="vsub">Área Abrangida</div>
+    <div class="vrow">
+      <div class="vfield grow"><label>5.1 Norte</label><input type="text" id="av_n1" value="EF-334 – FIOL"></div>
+      <div class="vfield grow"><label>5.2 Sul</label><input type="text" id="av_s1" value="DOMINGA TEREZA PEREIRA"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield grow"><label>5.3 Leste</label><input type="text" id="av_l1" value="ESPÓLIO DE MARILENE TEREZA PEREIRA SOUZA"></div>
+      <div class="vfield grow"><label>5.4 Oeste</label><input type="text" id="av_o1" value="JOSUÉ BENJAMIM PEREIRA"></div>
+    </div>
+    <div class="vsub">Área Remanescente</div>
+    <div class="vrow">
+      <div class="vfield grow"><label>5.9 Norte</label><input type="text" id="av_n2" value="DOMINGA TEREZA PEREIRA"></div>
+      <div class="vfield grow"><label>5.10 Sul</label><input type="text" id="av_s2" value="SEBASTIÃO JESULINO PEREIRA"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield grow"><label>5.11 Leste</label><input type="text" id="av_l2" value="ESPÓLIO DE MARILENE TEREZA PEREIRA SOUZA"></div>
+      <div class="vfield grow"><label>5.12 Oeste</label><input type="text" id="av_o2" value="JOSUÉ BENJAMIM PEREIRA"></div>
+    </div>
+  </div>
+
+  <!-- 06 VIAS -->
+  <h2 class="vsec">06 — Vias e Meios de Acesso</h2>
+  <div class="vcard">
+    <textarea id="av_vias" rows="5">LOCALIZAÇÃO LESTE ACESSO: SAINDO DE GUANAMBI SENTIDO CERAÍMA, A PARTIR DO FINAL DA AV. DEP. HIDEVALDO A BOA SORTE, SEGUE PELA RODOVIA BA-938 POR 9,60 KM ATÉ A BARRAGEM DE CERAIMA, CONTINUE EM FRENTE PELA ESTRADA VICINAL POR 7,1 KM, VIRE A DIREITA E CONTINUE POR 240M, VIRE A ESQUERDA E CONTINUE POR MAIS 350M, VIRE A DIREITA E CONTINUE POR MAIS 180M, VIRE DIRETIA E SIGUA POR 9M ENTÃO VIRE A ESQUERDA E CONTINUE POR MAIS 1,15KM, VIRE A DIREITA E SIGA POR MAIS 800M, VIRE A DIREITA E PERCORRA MAIS 300M, ATE O SITIO CÔCOS, LOCALIZADO AO LADO ESQUERDO DA ESTRADA VICINAL.</textarea>
+  </div>
+
+  <!-- 07 DESCRIÇÃO -->
+  <h2 class="vsec">07 — Descrição do Imóvel</h2>
+  <div class="vcard">
+    <textarea id="av_descricao" rows="8">PROPRIEDADE RURAL DENOMINADA SÍTIO CÔCOS, MATRÍCULA 28.001, SITUADA NO DISTRITO DE CERAÍMA, MUNICÍPIO DE GUANAMBI/BA, INSERIDA NO BIOMA CAATINGA, COM VEGETAÇÃO NATIVA EM PARTE ANTROPIZADA. SEU USO AGROPECUÁRIO VARIA CONFORME O GRAU DE RESTRIÇÃO DE CADA SETOR, IDENTIFICANDO-SE ÁREAS DAS CLASSES DE CAPACIDADE DE USO III, VII E VIII: A GLEBA 01 (CLASSE III), COM 2,0500 ha (≈37,05%), RESTRITA PELA PROFUNDIDADE EFETIVA (SOLO RASO); A GLEBA 02 (CLASSE VII), COM 0,9609 ha (≈23,16%), LIMITADA PELA PEDREGOSIDADE MODERADA; E A GLEBA 03 (CLASSE VIII), COM 1,1389 ha (≈27,44%), CONDICIONADA PELA DECLIVIDADE ENTRE 20% E 40%. O ACESSO É FEITO POR MEIO DA RODOVIA BA-938 E DE ESTRADA VICINAL, COM CONDIÇÕES DE TRÁFEGO MUITO BOAS E PERMANENTES. APRESENTA HIDROGRAFIA MARCADA POR RIO INTERMITENTE E DECLIVIDADE QUE FAVORECE O ESCOAMENTO SUPERFICIAL, COM LIMITAÇÕES NAS ÁREAS MAIS BAIXAS. O RELEVO É HETEROGÊNEO E ÍNGREME, E O SOLO É COMPOSTO PREDOMINANTEMENTE POR PLANOSSOLOS E NEOSSOLOS, COM RESTRIÇÕES NATURAIS COMO DRENAGEM IMPERFEITA E BARREIRAS FÍSICAS AO DESENVOLVIMENTO RADICULAR. ESSAS CONDIÇÕES CONDICIONAM SEVERAMENTE A EXPLORAÇÃO AGRÍCOLA E EXIGEM TÉCNICAS ESPECÍFICAS DE ESCOAMENTO E CONDUÇÃO DE ÁGUA NA IMPLANTAÇÃO DE ROTAS DE ACESSO OU EM QUALQUER INTERVENÇÃO.</textarea>
+  </div>
+
+  <!-- 08 CROQUI (imagem) -->
+  <h2 class="vsec">08 — Croqui de Acesso à Área Abrangida</h2>
+  <div class="vcard">
+    <label class="img-drop" id="av_croqui_drop">
+      <span class="ic">🗺️</span>
+      <span class="t">Clique ou arraste a imagem do croqui de acesso</span>
+      <span class="h">JPG ou PNG</span>
+      <input type="file" accept="image/*" id="av_croqui_file">
+    </label>
+    <div class="img-preview" id="av_croqui_prev"></div>
+  </div>
+
+  <!-- 09 OBJETIVO -->
+  <h2 class="vsec">09 — Objetivo e Finalidade da Avaliação</h2>
+  <div class="vcard">
+    <textarea id="av_objetivo" rows="3">Determinar o valor de mercado de parte do imóvel supramencionado, abrangido pela faixa de domínio e para ADME – Áreas de Depósito de Materiais Excedente da Ferrovia EF-334 – FIOL, para fins de desapropriação por Utilidade Pública.</textarea>
+  </div>
+
+  <!-- 10 MÉTODO -->
+  <h2 class="vsec">10 — Método Utilizado</h2>
+  <div class="vcard">
+    <label class="vlbl">Normas adotadas</label>
+    <textarea id="av_metodo_normas" rows="5">Foram adotadas para este laudo de avaliação as seguintes normas:
+*ABNT NBR 14.653-1:2019 (Avaliação de bens - Parte 1: Procedimentos gerais);
+*ABNT NBR 14653-3:2019 Versão Corrigida 2:2022 (Avaliação de bens - parte 3: Imóveis rurais);
+Resolução Normativa - VALEC nº 10/2022/DIREX-VALEC/PRESI-VALEC;
+RGV - Relatório Genérico de Valores - FIOL - Lote-5F - 4ª Revisão (SEI/MT nº 10340745) - Valor de Terra Nua - VTN e Valores de Benfeitorias - VB.</textarea>
+    <label class="vlbl">Método comparativo direto de dados de mercado</label>
+    <textarea id="av_metodo_comp" rows="2">Aquele cujo valor do imóvel ou de suas partes constitutivas é obtido através de comparação de dados de mercado relativos a outros de características similares.</textarea>
+    <label class="vlbl">Método de quantificação de custo</label>
+    <textarea id="av_metodo_custo" rows="2">Aquele cujo valor das benfeitorias resulta de orçamentos sintéticos ou analíticos, a partir das quantidades e serviços e respectivos custos diretos e indiretos.</textarea>
+    <label class="vlbl">Método evolutivo</label>
+    <textarea id="av_metodo_evol" rows="2">Aquele que identifica o valor do bem pelo somatório dos valores de seus componentes, neste caso do VTN e VB.</textarea>
+    <label class="vlbl">Tratamento dos dados</label>
+    <textarea id="av_metodo_trat" rows="2">Tratamento científico (inferência estatística), "tratamento de evidências empíricas pelo uso de metodologia científica que leve à indução de modelo validado para o comportamento do mercado", com a utilização de modelos de regressão linear.</textarea>
+  </div>
+
+  <!-- 11 JUSTIFICATIVAS -->
+  <h2 class="vsec">11 — Justificativas</h2>
+  <div class="vcard">
+    <div class="vsub">11.1 Fatores Limitantes <span class="auto-tag">texto padrão editável</span></div>
+    <textarea id="av_fatores" rows="16">a) A base de informações de valores é constituída pelo Relatório Genérico de Valores (RGV) do Lote 5F, FIOL, 4ª Revisão (SEI/MT nº 10340745), aprovado pela Diretoria Executiva da INFRA S.A. (DIREX) por meio da 44ª Reunião Ordinária da Diretoria Executiva, realizada em 19 de novembro de 2025. O documento de aprovação (Certidão de deliberação da diretoria executiva - SEI/MT nº 10549903) foi apresentado à Contratada ENPROL ENGENHARIA E PROJETOS LTDA pela Contratante INFRA S.A. junto ao processo SEI/MT nº 50050.005920/2025-63. O RGV é contemplado por fontes oficiais como SINAPI, SICRO, CONAB, CUB e pesquisas junto ao mercado e através da internet.
+
+b) Não foram considerados ativos ou passivos ambientais, visto que não se percebeu no mercado a valoração desse item.
+
+c) Como o proprietário NÃO é classificado como vulnerável de acordo com os critérios do Cadastro Socioeconômico exposto no relatório social, as benfeitorias abrangidas foram avaliadas pelo Método da Quantificação de Custo de Reedição. Isso significa que a depreciação foi aplicada conforme a condição física e funcional.
+
+d) A base de dados dos Despachos: 898 (SEI/MT nº 10466015), 214 (SEI/MT nº 10458968) e conforme processo SEI/MT nº 51402.100419/2020-21, que têm como assunto licenciamentos para o projeto e desapropriação para implementação da "Variante de Ceraíma" da faixa de domínio FIOL no segmento entre o km 929+000 ao km 941+300, que inclui o Projeto de Terraplenagem – Área de Depósito de Material Excedente – ADM (80-DES-0600G-20-6003) juntamente com o Projeto Geométrico – km 931+800 a km 933+200 (SEI/MT nº 10458975) indicados no Despacho nº 214/2025 (SEI/MT - 10458968) junto ao Processo SEI/MT nº 51402.100419/2020-21, em concomitância com o Projeto As Built de Desapropriação (SEI/MT nº 10869792) fornecidos pela INFRA S.A., e a base de dados topográficos e cartográficos disponibilizados e realizados pela Enprol Engenharia para fins de cadastro que subsidiaram na elaboração das plantas de desapropriação e memoriais descritivos.
+
+e) Os cálculos e valores presentes neste laudo de avaliação se restringem à sua razão de interesse, objeto, objetivo e finalidade, sendo vedada a utilização em conexão com outra avaliação ou estimativa de preços.
+
+f) A análise dos títulos e documentos concernentes ao imóvel se restringiu às informações básicas necessárias ao laudo para qualificação e descrição do proprietário e do bem.
+
+g) A avaliação foi realizada para desapropriação parcial em 1 (uma) gleba do imóvel, conforme os critérios estabelecidos no RGV do Lote 5F, FIOL, 4ª Revisão, documento elaborado de acordo com a Resolução Normativa VALEC nº 10/2022/DIREX-VALEC/PRESI-VALEC. Segundo o RGV supracitado, as áreas abrangidas estão situadas na Zona 4 (km 916+885,41 ao km 937+835,58) e Zona 05 (km 937+835,58 ao km 968+373,43), caracterizando-se como área rural. O segmento da Zona 4 está situado entre a localidade de Morro do Cangulo, situada no distrito de Ceraíma, no município de Guanambi - BA. O trecho intercepta as Rodovias BR-030 e a BA-938 (que atualmente não possui pavimentação asfáltica), além da adutora que transporta água da Barragem de Ceraíma para o distrito de Morrinhos. Assim, as variáveis empregadas neste Laudo de Avaliação também obedecem aos mesmos critérios, sendo assim justificados:</textarea>
+
+    <div class="vsub">Variável Área do Imóvel (ha) <span class="auto-tag">texto padrão editável</span></div>
+    <textarea id="av_var_area" rows="5">Levando em conta a dimensão do imóvel em questão, a área total da propriedade torna-se uma variável quantitativa, medida em hectares (ha). O valor do imóvel geralmente varia de acordo com seu tamanho; ou seja, quanto maior o imóvel, menor o preço por hectare, e vice-versa. Assim, a variável "área" visa ajustar as dimensões dos dados amostrais pesquisados à área do imóvel em avaliação.</textarea>
+
+    <div class="vsub">Variável Nota Agronômica (N.A.)</div>
+    <textarea id="av_var_na" rows="4">A Nota Agronômica (N.A.) é uma variável considerada uma variável qualitativa "proxy", composta por dois fatores principais: Situação de Acesso e Classe de Capacidade e Uso dos Solos (CCU), que juntas formam um índice único que avalia a qualidade agronômica de cada imóvel rural na amostra. A metodologia para determinar a N.A. segue o modelo proposto por Kozma (1984), que considera essas duas variáveis essenciais para mensurar a aptidão e as condições de uso da terra.
+A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos de 1 indicam melhor qualidade agronômica, refletindo condições ideais para o uso da terra, como acesso facilitado e solo com alta capacidade produtiva.</textarea>
+
+    <div class="vsub">I — Dimensionamento da Variável CCU</div>
+    <label class="img-drop" id="av_ccu_drop">
+      <span class="ic">🖼️</span>
+      <span class="t">Clique ou arraste a imagem (Figura 1 — glebas do imóvel)</span>
+      <span class="h">JPG ou PNG</span>
+      <input type="file" accept="image/*" id="av_ccu_file">
+    </label>
+    <div class="img-preview" id="av_ccu_prev"></div>
+
+    <!-- Classes / Glebas dinâmicas -->
+    <div class="vsub">Classes de Capacidade de Uso (CCU) por gleba
+      <button type="button" class="mini-add" onclick="AV_addGleba()">+ Adicionar gleba</button>
+    </div>
+    <div class="av-area-aval">
+      <label>Área avaliada de referência (ha) — base do cálculo de %</label>
+      <input type="text" id="av_area_aval" value="4,1498">
+      <span class="hint-inline">Usada para calcular o percentual de cada gleba automaticamente.</span>
+    </div>
+    <div id="av_glebas"></div>
+
+    <div class="vsub">Escala de Valor da CCU</div>
+    <div class="ccu-formula" id="av_ccu_formula">
+      <div class="linha1" id="av_ccu_l1">—</div>
+      <div class="linha2" id="av_ccu_l2">—</div>
+      <div class="linha3" id="av_ccu_l3">CCU = —</div>
+    </div>
+
+    <div class="vsub">II — Dimensionamento da Variável Situação</div>
+    <textarea id="av_situacao_txt" rows="3">Para o imóvel abrangido parcialmente, foi identificado que possui uma viabilidade de circulação boa, devido primeira classe não pavimentada e importância da distância significativa em relação à via pavimentada (BA-938) e com trafegabilidade permanente, com escala adotada de 0,90.</textarea>
+
+    <div class="vsub">III — Dimensionamento da Variável Nota Agronômica (N.A.)</div>
+    <div class="na-calc">
+      <span>N.A. =</span>
+      <input type="text" id="av_na_ccu" readonly title="CCU obtido acima">
+      <span>×</span>
+      <select id="av_na_escala">
+        <option value="1.00">1,00 (100)</option>
+        <option value="0.95">0,95 (95)</option>
+        <option value="0.90" selected>0,90 (90)</option>
+        <option value="0.85">0,85 (85)</option>
+        <option value="0.80">0,80 (80)</option>
+        <option value="0.75">0,75 (75)</option>
+        <option value="0.70">0,70 (70)</option>
+      </select>
+      <span>=</span>
+      <input type="text" id="av_na_result" readonly class="resultado">
+    </div>
+
+    <div class="vsub">Variável Zonas Homogêneas</div>
+    <textarea id="av_zonas_txt" rows="3">Variável qualitativa expressa por código alocado, dimensionada conforme a homogeneidade do campo amostral. Para os imóveis rurais no trajeto do Lote 5F da EF-334 - FIOL, existem características de regiões distintas em 5 (cinco) zonas, conforme detalha o mapa de localização no ANEXO 8. Assim, o imóvel avaliado está localizado na Zona 4 (km 916+885,41 ao km 937+835,58).</textarea>
+
+    <div class="vsub">i) Memória de Cálculo para Terra Nua</div>
+    <table class="memoria">
+      <thead><tr><th>Variáveis</th><th>Fragmentos modelo estatístico</th><th>Coef. variável</th><th>Result. individual</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>ÁREA DO IMÓVEL (ha)</td>
+          <td>e^(+0,7420810025 / Área (ha))</td>
+          <td><input type="text" id="av_mem_area" readonly></td>
+          <td><span id="av_mem_area_r">—</span></td>
+        </tr>
+        <tr>
+          <td>NOTA AGRONÔMICA (N.A.)</td>
+          <td>e^(-0,7754092498 / Nota agronômica²)</td>
+          <td><input type="text" id="av_mem_na" readonly></td>
+          <td><span id="av_mem_na_r">—</span></td>
+        </tr>
+        <tr>
+          <td>ZONA HOMOGÊNEA</td>
+          <td>e^(+0,3240766412 × Zona)</td>
+          <td>
+            <select id="av_mem_zona">
+              <option value="1">1</option><option value="2">2</option>
+              <option value="3">3</option><option value="4">4</option>
+              <option value="5" selected>5</option>
+            </select>
+          </td>
+          <td><span id="av_mem_zona_r">—</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="vtn-box">
+      <div class="vtn-formula">R$/ha = +170930,8028 × e^(+0,7420810025 / Área) × e^(-0,7754092498 / N.A.²) × e^(+0,3240766412 × Zona)</div>
+      <div class="vtn-result">VTN/ha = <strong id="av_vtn">R$ —</strong></div>
+    </div>
+  </div>
+
+  <!-- 14 CÁLCULO TERRA NUA -->
+  <h2 class="vsec">14 — Cálculo da Terra Nua</h2>
+  <div class="vcard">
+    <div class="calc-line">
+      <label>Faixa de domínio — Área desapropriada (ha) <span class="auto-tag">auto</span></label>
+      <input type="text" id="av_fd_area" data-from="area_desap">
+      <span>× VTN/ha =</span>
+      <strong id="av_fd_result">R$ —</strong>
+    </div>
+    <div class="calc-line">
+      <label>Outras áreas (Remanescente) — Área (ha)</label>
+      <input type="text" id="av_rem_area" value="0,1914">
+      <span>× VTN/ha =</span>
+      <strong id="av_rem_result">R$ —</strong>
+    </div>
+  </div>
+
+  <!-- 15 RESUMO -->
+  <h2 class="vsec">15 — Resumo dos Valores</h2>
+  <div class="vcard">
+    <table class="resumo">
+      <tbody>
+        <tr><td>01 - Faixa de domínio</td><td class="v"><strong id="rs_fd">R$ —</strong></td></tr>
+        <tr><td>02 - Outras áreas (remanescente)</td><td class="v"><strong id="rs_rem">R$ —</strong></td></tr>
+        <tr class="sub-tot"><td>03 - Sub-total (01)</td><td class="v"><strong id="rs_sub1">R$ —</strong></td></tr>
+        <tr><td>04 - Quadro 12.1 - Culturas permanentes</td><td class="v"><input type="text" id="rs_121" value="420,96"></td></tr>
+        <tr><td>05 - Quadro 12.2 - Culturas temporárias</td><td class="v"><input type="text" id="rs_122" value="0,00"></td></tr>
+        <tr><td>06 - Quadro 12.3 - Pastagens artificiais</td><td class="v"><input type="text" id="rs_123" value="4.767,63"></td></tr>
+        <tr><td>07 - Quadro 12.4 - Extrativismo</td><td class="v"><input type="text" id="rs_124" value="0,00"></td></tr>
+        <tr><td>08 - Quadro 12 - Benfeitorias reprodutivas</td><td class="v"><input type="text" id="rs_12" value="5.188,59"></td></tr>
+        <tr><td>09 - Quadro 13 - Benfeitorias não reprodutivas</td><td class="v"><input type="text" id="rs_13" value="0,00"></td></tr>
+        <tr class="sub-tot"><td>10 - Sub-total (02)</td><td class="v"><strong id="rs_sub2">R$ —</strong></td></tr>
+        <tr class="total"><td>11 - TOTAL (1+2)</td><td class="v"><strong id="rs_total">R$ —</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="vrow" style="margin-top:12px;">
+      <div class="vfield"><label>Mês base da avaliação</label><input type="text" id="av_mesbase" value="jul/26"></div>
+      <div class="vfield"><label>Limite inferior (-15%)</label><input type="text" id="av_lim_inf" readonly></div>
+      <div class="vfield"><label>Limite superior (+15%)</label><input type="text" id="av_lim_sup" readonly></div>
+    </div>
+  </div>
+
+  <!-- 16 ANEXOS -->
+  <h2 class="vsec">16 — Anexos</h2>
+  <div class="vcard">
+    <ol class="anexos-list">
+      <li>Tabela(s) da determinação da CCU da(s) gleba(s) do imóvel</li>
+      <li>Planta(s) planimétrica(s) da(s) área(s) abrangida(s) e planta geral</li>
+      <li>Memorial descritivo da(s) área(s) abrangida(s)</li>
+      <li>Relatório fotográfico</li>
+      <li>Declaração de respeito de limites</li>
+      <li>Cópia(s) de documentos de propriedade</li>
+      <li>Planilha de pesquisa de mercado</li>
+      <li>Mapa de localização e fichas dos elementos da amostra</li>
+      <li>Relatório estatístico</li>
+      <li>Especificação quanto à fundamentação e precisão</li>
+      <li>Anotação de responsabilidade técnica (ART)</li>
+    </ol>
+  </div>
+
+  <!-- 17 ASSINATURA -->
+  <h2 class="vsec">17 — Assinatura</h2>
+  <div class="vcard">
+    <div class="vrow">
+      <div class="vfield"><label>Local</label><input type="text" id="av_local" value="GUANAMBI - BA"></div>
+      <div class="vfield"><label>Data</label><input type="date" id="av_data_ass" value="2026-07-30"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield grow"><label>Responsável <span class="auto-tag">auto</span></label><input type="text" id="av_ass_nome" data-from="ass_nome"></div>
+      <div class="vfield grow"><label>Cargo <span class="auto-tag">auto</span></label><input type="text" id="av_ass_cargo" data-from="ass_cargo"></div>
+      <div class="vfield grow"><label>CREA <span class="auto-tag">auto</span></label><input type="text" id="av_ass_crea" data-from="ass_crea"></div>
+    </div>
+  </div>
+
+  <div class="vactions">
+    <button class="vbtn vbtn-primary" onclick="AV_gerarPDF()">📄 Gerar PDF — 01 Capa</button>
+    <button class="vbtn vbtn-ghost" onclick="AV_recalcular()">↻ Recalcular</button>
+  </div>
+
+</div>
+  </section>
 </main>
+
+
 
 <script>
 /* ---- Navegação por abas ---- */
@@ -1868,5 +2625,424 @@ window.FOTO_rodapeHTML=rodapeHTML;
   window.DOC_remover=remover;
 })();
 </script>
+
+<script>
+/* ===== JS Ficha de Vistoria ===== */
+(function(){
+  // valores iniciais das áreas/estacas (do modelo)
+  const estacasIniciais = [
+    {ini:"939+921,31", fim:"940+002,28"},
+    {ini:"939+916,62", fim:"939+993,69"},
+    {ini:"935+472,13", fim:"935+632,54"}
+  ];
+  let seq = 0;
+
+  function romano(n){
+    // usamos só numeração arábica 01,02,... para áreas
+    return String(n).padStart(2,"0");
+  }
+
+  window.FV_estacas = function(){
+    // retorna array [{num, ini, fim}] das linhas atuais, em ordem
+    const linhas = document.querySelectorAll("#fv_estacas .estaca-linha");
+    const out=[];
+    linhas.forEach((l,idx)=>{
+      out.push({
+        num: idx+1,
+        ini: l.querySelector(".e-ini").value.trim(),
+        fim: l.querySelector(".e-fim").value.trim()
+      });
+    });
+    return out;
+  };
+
+  function render(){
+    const linhas = document.querySelectorAll("#fv_estacas .estaca-linha");
+    linhas.forEach((l,idx)=>{
+      l.querySelector(".rot").textContent = "Área " + String(idx+1).padStart(2,"0");
+      const rm = l.querySelector(".rm");
+      rm.style.display = linhas.length>1 ? "block" : "none";
+    });
+    // sincroniza com Avaliação se existir
+    if(typeof window.AV_syncEstacas==="function") window.AV_syncEstacas();
+  }
+
+  function novaLinha(ini, fim){
+    const div = document.createElement("div");
+    div.className="estaca-linha";
+    div.innerHTML =
+      '<span class="rot"></span>'+
+      '<div class="par"><span>KM Inicial</span><input type="text" class="e-ini" value="'+(ini||"")+'" placeholder="939+921,31"></div>'+
+      '<div class="par"><span>KM Final</span><input type="text" class="e-fim" value="'+(fim||"")+'" placeholder="940+002,28"></div>'+
+      '<button type="button" class="rm" title="Remover área">✕</button>';
+    div.querySelector(".rm").addEventListener("click", ()=>{ div.remove(); render(); });
+    div.querySelectorAll("input").forEach(inp=> inp.addEventListener("input", ()=>{ if(typeof window.AV_syncEstacas==="function") window.AV_syncEstacas(); }));
+    document.getElementById("fv_estacas").appendChild(div);
+    render();
+  }
+
+  window.FV_addEstaca = function(){ novaLinha("",""); };
+
+  // init
+  document.addEventListener("DOMContentLoaded", ()=>{
+    const host=document.getElementById("fv_estacas");
+    if(host && !host.dataset.init){
+      host.dataset.init="1";
+      estacasIniciais.forEach(e=> novaLinha(e.ini, e.fim));
+    }
+    // data padrão
+    const d=document.getElementById("fv_data");
+    if(d && !d.value){ d.value="2026-04-14"; }
+  });
+})();
+</script>
+<script>
+/* ===== JS Avaliação — engine de cálculo, auto-fill, imagens ===== */
+(function(){
+  // valor da classe CCU (algarismo romano I..VIII -> escala de valor)
+  const CLASSE_VAL = {1:1.00, 2:0.95, 3:0.75, 4:0.55, 5:0.50, 6:0.40, 7:0.30, 8:0.20};
+  const ROMANOS = ["","I","II","III","IV","V","VI","VII","VIII"];
+  const VTN_A = 170930.8028, VTN_KA = 0.7420810025, VTN_KNA = 0.7754092498, VTN_KZ = 0.3240766412;
+
+  const imagens = { croqui:null, ccu:null };
+
+  // -------- utilidades numéricas (aceita vírgula BR) --------
+  function num(v){
+    if(v===null||v===undefined) return NaN;
+    v = String(v).trim().replace(/\./g,"").replace(",",".");
+    const n = parseFloat(v);
+    return isNaN(n)? NaN : n;
+  }
+  function fmtBR(n, dec){
+    if(!isFinite(n)) return "—";
+    return n.toLocaleString("pt-BR",{minimumFractionDigits:dec, maximumFractionDigits:dec});
+  }
+  function money(n){ return "R$ " + fmtBR(n,2); }
+
+  // ---------------- AUTO-FILL a partir da Ficha de Vistoria ----------------
+  function autoFill(){
+    document.querySelectorAll('#panel-avaliacao [data-from]').forEach(el=>{
+      const key = el.getAttribute("data-from");
+      const src = document.querySelector('#panel-vistoria [data-sync="'+key+'"]');
+      if(src){ el.value = src.value; }
+    });
+  }
+  // ligar listeners: quando um campo sync da vistoria muda, atualiza a avaliação
+  function bindSync(){
+    document.querySelectorAll('#panel-vistoria [data-sync]').forEach(src=>{
+      src.addEventListener("input", ()=>{
+        const key = src.getAttribute("data-sync");
+        document.querySelectorAll('#panel-avaliacao [data-from="'+key+'"]').forEach(el=> el.value = src.value);
+        recalc();
+      });
+    });
+  }
+
+  // ---------------- Estacas (view) sincronizadas ----------------
+  window.AV_syncEstacas = function(){
+    const host = document.getElementById("av_estacas");
+    if(!host) return;
+    const estacas = (typeof window.FV_estacas==="function") ? window.FV_estacas() : [];
+    if(!estacas.length){ host.innerHTML = '<div class="av-estaca-item"><span class="km">Nenhuma área cadastrada na Ficha de Vistoria.</span></div>'; return; }
+    host.innerHTML = estacas.map((e,i)=>{
+      const tag = i===0 ? "FAIXA DE DOMÍNIO" : (i===1 ? "ÁREA REMANESCENTE" : "FAIXA DE DOMÍNIO");
+      return '<div class="av-estaca-item"><b>Área '+String(e.num).padStart(2,"0")+'</b>'+
+             '<span class="km">KM Inicial '+ (e.ini||"—") +' ao KM Final '+ (e.fim||"—") +'</span>'+
+             '<span class="tag">'+tag+'</span></div>';
+    }).join("");
+  };
+
+  // ---------------- Glebas (classes CCU) ----------------
+  const glebasIniciais = [
+    {classe:3, area:"2,0500", fator:"SECA EDAFOLÓGICA MÉDIA"},
+    {classe:7, area:"0,9609", fator:"CLASSE DE DECLIVIDADE >40%"},
+    {classe:8, area:"1,1389", fator:"SOLO MUITO RASO < 25 cm"}
+  ];
+
+  function glebaLinha(g){
+    const div = document.createElement("div");
+    div.className = "gleba-linha";
+    let opts = "";
+    for(let i=1;i<=8;i++){ opts += '<option value="'+i+'"'+(g.classe===i?" selected":"")+'>'+ROMANOS[i]+'</option>'; }
+    div.innerHTML =
+      '<span class="rot"></span>'+
+      '<div class="cel classe"><span>Classe (I–VIII)</span><select class="g-classe">'+opts+'</select></div>'+
+      '<div class="cel area"><span>Área (ha)</span><input type="text" class="g-area" value="'+(g.area||"")+'"></div>'+
+      '<div class="cel fator"><span>Fator mais restritivo</span><input type="text" class="g-fator" value="'+(g.fator||"")+'"></div>'+
+      '<div class="cel pct"><span>% da área</span><div class="pct-val">—</div></div>'+
+      '<button type="button" class="rm" title="Remover gleba">✕</button>';
+    div.querySelector(".rm").addEventListener("click", ()=>{ div.remove(); renderGlebas(); });
+    div.querySelectorAll("select,input").forEach(el=> el.addEventListener("input", recalc));
+    document.getElementById("av_glebas").appendChild(div);
+  }
+
+  function renderGlebas(){
+    document.querySelectorAll("#av_glebas .gleba-linha").forEach((l,idx)=>{
+      l.querySelector(".rot").textContent = "Gleba " + String(idx+1).padStart(2,"0");
+      l.querySelector(".rm").style.display = document.querySelectorAll("#av_glebas .gleba-linha").length>1 ? "block":"none";
+    });
+    recalc();
+  }
+
+  window.AV_addGleba = function(){ glebaLinha({classe:1, area:"", fator:""}); renderGlebas(); };
+
+  // ---------------- Cálculo central ----------------
+  function recalc(){
+    const areaAval = num(document.getElementById("av_area_aval").value);
+    const linhas = [...document.querySelectorAll("#av_glebas .gleba-linha")];
+
+    // % por gleba e componentes CCU
+    let ccu = 0;
+    const comps = [];
+    linhas.forEach((l,idx)=>{
+      const classe = parseInt(l.querySelector(".g-classe").value,10);
+      const area = num(l.querySelector(".g-area").value);
+      const peso = (isFinite(area) && isFinite(areaAval) && areaAval>0) ? area/areaAval : NaN;
+      const pctEl = l.querySelector(".pct-val");
+      pctEl.textContent = isFinite(peso) ? fmtBR(peso*100,2)+"%" : "—";
+      const valClasse = CLASSE_VAL[classe] || 0;
+      if(isFinite(peso)){
+        const pesoR = Math.round(peso*10000)/10000; // peso arredondado a 4 casas
+        const prod = Math.floor(pesoR*valClasse*10000)/10000; // produto truncado a 4 casas (como o modelo)
+        comps.push({peso:pesoR, val:valClasse, prod:prod});
+        ccu += prod;
+      }
+    });
+    ccu = Math.round(ccu*10000)/10000;
+
+    // fórmula CCU (linhas)
+    const l1 = "CCU = " + comps.map(c=> "("+fmtBR(c.peso,4)+" × "+fmtBR(c.val,2)+")").join(" + ") + (comps.length?" =":"—");
+    const l2 = comps.length ? "CCU = ( " + comps.map(c=> fmtBR(c.prod,4)).join(" + ") + " )" : "—";
+    document.getElementById("av_ccu_l1").textContent = l1;
+    document.getElementById("av_ccu_l2").textContent = l2;
+    document.getElementById("av_ccu_l3").textContent = "CCU = " + (comps.length? fmtBR(ccu,4) : "—");
+
+    // N.A. = CCU × escala
+    document.getElementById("av_na_ccu").value = fmtBR(ccu,4);
+    const escala = parseFloat(document.getElementById("av_na_escala").value);
+    const na = Math.round(ccu*escala*10000)/10000;
+    document.getElementById("av_na_result").value = fmtBR(na,4);
+
+    // memória de cálculo
+    const areaImovel = num(document.getElementById("av_areatotal").value); // 3.36 área total
+    const areaMem = isFinite(areaImovel)? areaImovel : areaAval;
+    const zona = parseInt(document.getElementById("av_mem_zona").value,10);
+
+    document.getElementById("av_mem_area").value = fmtBR(areaMem,4);
+    document.getElementById("av_mem_na").value   = fmtBR(na,4);
+
+    const rArea = Math.exp(VTN_KA / areaMem);
+    const rNA   = Math.exp(-VTN_KNA / (na*na));
+    const rZona = Math.exp(VTN_KZ * zona);
+    document.getElementById("av_mem_area_r").textContent = isFinite(rArea)? fmtBR(rArea,6):"—";
+    document.getElementById("av_mem_na_r").textContent   = isFinite(rNA)? fmtBR(rNA,6):"—";
+    document.getElementById("av_mem_zona_r").textContent = isFinite(rZona)? fmtBR(rZona,6):"—";
+
+    // VTN/ha
+    const vtn = VTN_A * rArea * rNA * rZona;
+    document.getElementById("av_vtn").textContent = money(vtn);
+
+    // item 14 — cálculo terra nua
+    const fdArea = num(document.getElementById("av_fd_area").value);
+    const remArea = num(document.getElementById("av_rem_area").value);
+    const fdVal = isFinite(fdArea)? fdArea*vtn : NaN;
+    const remVal = isFinite(remArea)? remArea*vtn : NaN;
+    document.getElementById("av_fd_result").textContent = money(fdVal);
+    document.getElementById("av_rem_result").textContent = money(remVal);
+
+    // item 15 — resumo
+    document.getElementById("rs_fd").textContent = money(fdVal);
+    document.getElementById("rs_rem").textContent = money(remVal);
+    const sub1 = (isFinite(fdVal)?fdVal:0) + (isFinite(remVal)?remVal:0);
+    document.getElementById("rs_sub1").textContent = money(sub1);
+
+    const q121 = num(document.getElementById("rs_121").value)||0;
+    const q122 = num(document.getElementById("rs_122").value)||0;
+    const q123 = num(document.getElementById("rs_123").value)||0;
+    const q124 = num(document.getElementById("rs_124").value)||0;
+    const q12  = num(document.getElementById("rs_12").value)||0;
+    const q13  = num(document.getElementById("rs_13").value)||0;
+    const sub2 = q12 + q13; // conforme modelo: sub-total (02) = benfeitorias
+    document.getElementById("rs_sub2").textContent = money(sub2);
+
+    const total = sub1 + sub2;
+    document.getElementById("rs_total").textContent = money(total);
+    document.getElementById("av_lim_inf").value = money(total*0.85);
+    document.getElementById("av_lim_sup").value = money(total*1.15);
+
+    // guardar para o PDF
+    window.__AV_CALC__ = {ccu, na, escala, vtn, fdArea, remArea, fdVal, remVal, sub1, sub2, total, zona, areaMem, comps};
+  }
+  window.AV_recalcular = recalc;
+
+  // ---------------- Upload de imagem ----------------
+  function bindImg(inputId, dropId, prevId, slot){
+    const input = document.getElementById(inputId);
+    const drop  = document.getElementById(dropId);
+    const prev  = document.getElementById(prevId);
+    if(!input) return;
+    function set(file){
+      if(!file || !file.type.startsWith("image/")) return;
+      const rd = new FileReader();
+      rd.onload = e=>{
+        imagens[slot] = e.target.result;
+        prev.innerHTML = '<img src="'+e.target.result+'"><br><button type="button" class="rm-img">Remover imagem</button>';
+        prev.classList.add("show");
+        prev.querySelector(".rm-img").addEventListener("click", ()=>{
+          imagens[slot]=null; prev.innerHTML=""; prev.classList.remove("show"); input.value="";
+        });
+      };
+      rd.readAsDataURL(file);
+    }
+    input.addEventListener("change", e=> set(e.target.files[0]));
+    ["dragenter","dragover"].forEach(ev=> drop.addEventListener(ev, e=>{e.preventDefault(); drop.classList.add("over");}));
+    ["dragleave","drop"].forEach(ev=> drop.addEventListener(ev, e=>{e.preventDefault(); drop.classList.remove("over");}));
+    drop.addEventListener("drop", e=> set(e.dataTransfer.files[0]));
+  }
+  window.__AV_IMAGENS__ = imagens;
+
+  // ---------------- Init ----------------
+  document.addEventListener("DOMContentLoaded", ()=>{
+    // glebas iniciais
+    const gh = document.getElementById("av_glebas");
+    if(gh && !gh.dataset.init){ gh.dataset.init="1"; glebasIniciais.forEach(glebaLinha); renderGlebas(); }
+    // imagens
+    bindImg("av_croqui_file","av_croqui_drop","av_croqui_prev","croqui");
+    bindImg("av_ccu_file","av_ccu_drop","av_ccu_prev","ccu");
+    // auto-fill + sync
+    autoFill(); bindSync();
+    // listeners de recálculo em campos que afetam contas
+    ["av_area_aval","av_na_escala","av_mem_zona","av_areatotal","av_fd_area","av_rem_area",
+     "rs_121","rs_122","rs_123","rs_124","rs_12","rs_13"].forEach(id=>{
+      const el=document.getElementById(id); if(el) el.addEventListener("input", recalc);
+    });
+    // estacas view
+    if(typeof window.AV_syncEstacas==="function") window.AV_syncEstacas();
+    recalc();
+  });
+})();
+</script>
+<script>
+/* ===== JS Avaliação — Gerador de PDF (Capa 01) ===== */
+(function(){
+  function val(id){ const e=document.getElementById(id); return e? e.value.trim() : ""; }
+
+  function estacasTexto(){
+    const est = (typeof window.FV_estacas==="function") ? window.FV_estacas() : [];
+    return est.map((e,i)=>{
+      const rot = i===0 ? "Área 01" : "Área " + String(e.num).padStart(2,"0");
+      const tipo = i===0 ? "(Faixa de Domínio)" : (i===1 ? "(Área Remanescente)" : "(Faixa de Domínio)");
+      return rot + ": KM Inicial " + (e.ini||"—") + " ao KM Final " + (e.fim||"—") + " " + tipo;
+    });
+  }
+
+  window.AV_gerarPDF = async function(){
+    if(typeof window.AV_recalcular==="function") window.AV_recalcular();
+    const btn = document.querySelector("#panel-avaliacao .vbtn-primary");
+    const txtOrig = btn ? btn.innerHTML : "";
+    if(btn){ btn.disabled=true; btn.innerHTML="⏳ Gerando..."; }
+    try{
+      const {jsPDF} = window.jspdf;
+      const doc = new jsPDF({unit:"pt", format:"a4"});
+      const W = doc.internal.pageSize.getWidth();
+      const H = doc.internal.pageSize.getHeight();
+
+      // logos (reaproveitados dos globais expostos pelo bloco de anexos)
+      const LOGO_INFRA  = window.__LOGO_INFRA__  || null;
+      const LOGO_ENPROL = window.__LOGO_ENPROL__ || null;
+
+      // ---- Barra lateral azul (como no modelo) ----
+      doc.setFillColor(31,111,192);
+      doc.rect(0,0,150,H,"F");
+
+      // ---- Logos no topo (à direita da barra) ----
+      const topo = 40;
+      if(LOGO_ENPROL){ try{ doc.addImage(LOGO_ENPROL,"JPEG",210,topo,120,34); }catch(e){} }
+      if(LOGO_INFRA){ try{ doc.addImage(LOGO_INFRA,"JPEG",360,topo,120,34); }catch(e){} }
+
+      // ---- Título INFRA ----
+      let y=150;
+      doc.setTextColor(20,30,45);
+      doc.setFont("helvetica","bold"); doc.setFontSize(20);
+      doc.text("INFRA S.A.", (W+150)/2, y, {align:"center"}); y+=22;
+      doc.setFontSize(10);
+      doc.text("VALEC – ENGENHARIA, CONSTRUÇÕES E FERROVIAS S.A.", (W+150)/2, y, {align:"center"}); y+=14;
+      doc.text("SUGAT – SUPERINTENDÊNCIA DE GESTÃO AMBIENTAL E", (W+150)/2, y, {align:"center"}); y+=13;
+      doc.text("TERRITORIAL INTEGRADA", (W+150)/2, y, {align:"center"}); y+=40;
+
+      // ---- LAUDO DE AVALIAÇÃO ----
+      doc.setFontSize(19);
+      doc.text("LAUDO DE AVALIAÇÃO", (W+150)/2, y, {align:"center"}); y+=34;
+
+      doc.setFontSize(10);
+      const subt = [
+        "- VALOR DE MERCADO DE BENS E BENFEITORIAS",
+        "- PARA PAGAMENTO DE DESAPROPRIAÇÃO DE ÁREA DESTINADA",
+        "À FAIXA DE DOMÍNIO PARA IMPLANTAÇÃO DA VARIANTE",
+        "CERAÍMA."
+      ];
+      subt.forEach(l=>{ doc.text(l,(W+150)/2,y,{align:"center"}); y+=14; });
+      y+=18;
+
+      doc.setFont("helvetica","normal"); doc.setFontSize(13);
+      doc.text("FERROVIA DE INTEGRAÇÃO OESTE-LESTE", (W+150)/2, y, {align:"center"}); y+=17;
+      doc.setFont("helvetica","bold");
+      doc.text("EF-334 – FIOL", (W+150)/2, y, {align:"center"}); y+=34;
+
+      // processo
+      const processo = val("fv_processo") || "INFRA S.A. 295-5F";
+      doc.setFont("helvetica","normal"); doc.setFontSize(12);
+      doc.text("PROCESSO ADMINISTRATIVO: ", (W+150)/2 - 60, y, {align:"center"});
+      doc.setFont("helvetica","bold");
+      doc.text(processo.replace(/LOTE 5F UF BA/,"295-5F").replace(/INFRA S\.A\. /,"INFRA S.A. "), (W+150)/2 + 95, y, {align:"center"});
+      y+=28;
+
+      // expropriado
+      doc.setFont("helvetica","normal");
+      const nome = val("av_nome") || val("fv_nome");
+      doc.text("EXPROPRIADO(A): ", (W+150)/2 - 70, y, {align:"center"});
+      doc.setFont("helvetica","bold");
+      doc.text(nome, (W+150)/2 + 40, y, {align:"center"});
+      y+=36;
+
+      // áreas / estacas
+      doc.setFont("helvetica","normal"); doc.setFontSize(11);
+      estacasTexto().forEach(l=>{
+        const linhas = doc.splitTextToSize(l, W-210);
+        linhas.forEach(ln=>{ doc.text(ln,(W+150)/2,y,{align:"center"}); y+=15; });
+      });
+
+      // contrato (rodapé direito)
+      doc.setFontSize(8); doc.setTextColor(60,60,60);
+      const contrato = "Contrato nº 037/2024 – Cujo objeto é a prestação de serviços especializados de engenharia consultiva para a execução das atividades de desapropriação, ocupação temporária ou constituição de servidão administrativa de imóveis, gestão fundiária e regularização de passivos de desapropriação.";
+      const cl = doc.splitTextToSize(contrato, 240);
+      let cy = H-190;
+      doc.text(cl, W-56, cy, {align:"left", maxWidth:240});
+
+      // DESP-3 na barra lateral
+      doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); doc.setFontSize(16);
+      doc.text("DESP-3", 75, H-120, {align:"center"});
+      const mesData = val("av_data_ass");
+      let mesAno = "JULHO/2026";
+      if(mesData){
+        const d=new Date(mesData+"T00:00:00");
+        const meses=["JANEIRO","FEVEREIRO","MARÇO","ABRIL","MAIO","JUNHO","JULHO","AGOSTO","SETEMBRO","OUTUBRO","NOVEMBRO","DEZEMBRO"];
+        mesAno = meses[d.getMonth()]+"/"+d.getFullYear();
+      }
+      doc.setFontSize(15);
+      doc.text(mesAno, 75, H-100, {align:"center"});
+
+      // salvar
+      doc.save("01 - Capa.pdf");
+    }catch(err){
+      console.error(err);
+      alert("Erro ao gerar o PDF: "+err.message);
+    }
+    if(btn){ btn.disabled=false; btn.innerHTML=txtOrig; }
+  };
+})();
+</script>
 </body>
+
+
 </html>
