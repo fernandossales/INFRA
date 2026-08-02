@@ -1450,7 +1450,7 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
         <option value="0.70">Péssima (70)</option>
       </select>
       <span>=</span>
-      <input type="text" id="av_na_result" readonly class="resultado">
+      <input type="text" id="av_na_result" readonly class="resultado bloqueado">
     </div>
 
     <div class="vsub">Variável Zonas Homogêneas</div>
@@ -1463,13 +1463,13 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
         <tr>
           <td>ÁREA DO IMÓVEL (ha)</td>
           <td>e^(+0,7420810025 / Área (ha))</td>
-          <td><input type="text" id="av_mem_area" readonly></td>
+          <td><input type="text" id="av_mem_area" readonly class="bloqueado"></td>
           <td><span id="av_mem_area_r">—</span></td>
         </tr>
         <tr>
           <td>NOTA AGRONÔMICA (N.A.)</td>
           <td>e^(-0,7754092498 / Nota agronômica²)</td>
-          <td><input type="text" id="av_mem_na" readonly></td>
+          <td><input type="text" id="av_mem_na" readonly class="bloqueado"></td>
           <td><span id="av_mem_na_r">—</span></td>
         </tr>
         <tr>
