@@ -774,6 +774,18 @@
   #panel-avaliacao table.na-tabela .sit-cell:hover{background:#eaf7ee;}
   #panel-avaliacao table.na-tabela .sit-cell.sel{background:#159a3c; color:#fff; font-weight:700;}
   #panel-avaliacao table.na-tabela .sit-na{font-weight:700; color:#159a3c;}
+
+  /* auto-glebas e tabela NA editável */
+  #panel-avaliacao .hint-auto{font-size:10.5px; font-weight:600; color:#159a3c; text-transform:none; letter-spacing:0;}
+  #panel-avaliacao table.na-tabela td.area-edit{padding:2px;}
+  #panel-avaliacao table.na-tabela td.area-edit input.na-area{
+    width:100%; border:1px solid var(--borda-forte); border-radius:5px;
+    padding:4px 6px; font-size:12px; text-align:center; color:var(--texto); background:#fff;
+  }
+  #panel-avaliacao table.na-tabela td.area-edit input.na-area:focus{border-color:var(--azul); outline:none; box-shadow:0 0 0 2px rgba(31,111,192,.15);}
+  #panel-avaliacao table.na-tabela td.area-edit.na-area-preenchida input.na-area{background:#fff9e8; font-weight:600;}
+  #panel-avaliacao .gleba-linha .g-classe-disp{text-align:center; font-weight:700;}
+  #panel-avaliacao .gleba-vazia{padding:14px; text-align:center; color:#8a97a6; font-style:italic; background:var(--suave); border-radius:8px;}
 </style>
 </head>
 <body>
@@ -1373,7 +1385,7 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
 
     <!-- Classes / Glebas dinâmicas -->
     <div class="vsub">Classes de Capacidade de Uso (CCU) por gleba
-      <button type="button" class="mini-add" onclick="AV_addGleba()">+ Adicionar gleba</button>
+      <span class="hint-auto">preenchida automaticamente pela Tabela de Nota Agronômica — edite apenas o Fator mais restritivo</span>
     </div>
     <div class="antes-depois-sel">
       <label class="ad-lbl">Cálculo de Nota Agronômica com "Antes e Depois"?</label>
@@ -2038,18 +2050,15 @@ function CCU_puxarDados(){
   const denomEl=document.getElementById("fv_prop_id");
   const denom=denomEl? denomEl.value.trim() : "";
   // glebas da Avaliação
-  const linhas=[...document.querySelectorAll("#av_glebas .gleba-linha")];
-  if(!linhas.length){ alert("Nenhuma gleba cadastrada na aba Avaliação."); return; }
+  const glebasAv = (typeof window.AV_lerGlebas==="function") ? window.AV_lerGlebas() : [];
+  if(!glebasAv.length){ alert("Nenhuma gleba na aba Avaliação. Preencha as áreas na Tabela de Nota Agronômica."); return; }
   salvarAtual();
   glebas=[];
-  linhas.forEach((l,idx)=>{
-    const classe=parseInt(l.querySelector(".g-classe").value,10);
-    const area=l.querySelector(".g-area").value.trim();
+  glebasAv.forEach((gv,idx)=>{
     const nGleba=String(idx+1).padStart(2,"0");
-    const nome=[denom||"Imóvel", "Gleba "+nGleba, area+" ha", "Classe "+ROMANOS_CCU[classe]].join(" - ");
+    const nome=[denom||"Imóvel", "Gleba "+nGleba, gv.area+" ha", "Classe "+gv.classeRom].join(" - ");
     const g=novaGleba();
     g.nome=nome;
-    // marcar automaticamente a coluna da classe no cabeçalho (I..VIII)
     glebas.push(g);
   });
   ativa=0;
@@ -2950,32 +2959,46 @@ window.FOTO_rodapeHTML=rodapeHTML;
     {classe:8, area:"1,1389", fator:"SOLO MUITO RASO < 25 cm"}
   ];
 
-  function glebaLinha(g){
-    const div = document.createElement("div");
-    div.className = "gleba-linha";
-    let opts = "";
-    for(let i=1;i<=8;i++){ opts += '<option value="'+i+'"'+(g.classe===i?" selected":"")+'>'+ROMANOS[i]+'</option>'; }
-    div.innerHTML =
-      '<span class="rot"></span>'+
-      '<div class="cel classe"><span>Classe (I–VIII)</span><select class="g-classe">'+opts+'</select></div>'+
-      '<div class="cel area"><span>Área (ha)</span><input type="text" class="g-area" value="'+(g.area||"")+'"></div>'+
-      '<div class="cel fator"><span>Fator mais restritivo</span><input type="text" class="g-fator" value="'+(g.fator||"")+'"></div>'+
-      '<div class="cel pct"><span>% da área</span><div class="pct-val">—</div></div>'+
-      '<button type="button" class="rm" title="Remover gleba">✕</button>';
-    div.querySelector(".rm").addEventListener("click", ()=>{ div.remove(); renderGlebas(); });
-    div.querySelectorAll("select,input").forEach(el=> el.addEventListener("input", recalc));
-    document.getElementById("av_glebas").appendChild(div);
-  }
 
-  function renderGlebas(){
-    document.querySelectorAll("#av_glebas .gleba-linha").forEach((l,idx)=>{
-      l.querySelector(".rot").textContent = "Gleba " + String(idx+1).padStart(2,"0");
-      l.querySelector(".rm").style.display = document.querySelectorAll("#av_glebas .gleba-linha").length>1 ? "block":"none";
+  // fatores mais restritivos persistidos por classe
+  const FATORES_CLASSE = {3:"SECA EDAFOLÓGICA MÉDIA", 7:"CLASSE DE DECLIVIDADE >40%", 8:"SOLO MUITO RASO < 25 cm"};
+
+  // gera as glebas automaticamente a partir da tabela NA (classe/área/% travados; só fator editável)
+  function gerarGlebasAuto(lista, areaAval){
+    const host = document.getElementById("av_glebas");
+    if(!host) return;
+    // preservar fatores digitados antes de recriar
+    host.querySelectorAll(".gleba-linha").forEach(l=>{
+      const cls=parseInt(l.dataset.classe,10);
+      const fatorInp=l.querySelector(".g-fator");
+      if(fatorInp && !isNaN(cls)) FATORES_CLASSE[cls]=fatorInp.value;
     });
-    recalc();
+    host.innerHTML="";
+    lista.forEach((g,idx)=>{
+      const rom = ROMANOS[g.classe];
+      const pct = (isFinite(areaAval)&&areaAval>0)? fmtBR(g.area/areaAval*100,2)+"%" : "—";
+      const fator = FATORES_CLASSE[g.classe] || "";
+      const div=document.createElement("div");
+      div.className="gleba-linha";
+      div.dataset.classe=g.classe;
+      div.innerHTML =
+        '<span class="rot">Gleba '+String(idx+1).padStart(2,"0")+'</span>'+
+        '<div class="cel classe"><span>Classe (I–VIII)</span><input type="text" class="g-classe-disp bloqueado" value="'+rom+'" readonly></div>'+
+        '<div class="cel area"><span>Área (ha)</span><input type="text" class="g-area-disp bloqueado" value="'+fmtBR(g.area,4)+'" readonly></div>'+
+        '<div class="cel fator"><span>Fator mais restritivo</span><input type="text" class="g-fator" value="'+fator.replace(/"/g,"&quot;")+'"></div>'+
+        '<div class="cel pct"><span>% da área</span><div class="pct-val">'+pct+'</div></div>';
+      // guardar valores para leitura pelo PDF/mem (classe e área "ocultas")
+      div.dataset.area = g.area;
+      div.querySelector(".g-fator").addEventListener("input", (e)=>{ FATORES_CLASSE[g.classe]=e.target.value; });
+      host.appendChild(div);
+    });
+    if(!lista.length){
+      host.innerHTML='<div class="gleba-vazia">Preencha as áreas na Tabela de Nota Agronômica acima para gerar as glebas.</div>';
+    }
   }
 
-  window.AV_addGleba = function(){ glebaLinha({classe:1, area:"", fator:""}); renderGlebas(); };
+  // (glebas agora são geradas automaticamente pela Tabela de Nota Agronômica — ver gerarGlebasAuto)
+  window.AV_addGleba = function(){ /* obsoleto: as glebas vêm da tabela NA */ };
 
   // ---------------- Cálculo central ----------------
   function recalc(){
@@ -2984,28 +3007,33 @@ window.FOTO_rodapeHTML=rodapeHTML;
     const areaAvalEl = document.getElementById("av_area_aval");
     if(areaTotalEl && areaAvalEl && areaTotalEl.value.trim()) areaAvalEl.value = areaTotalEl.value.trim();
     const areaAval = num(areaAvalEl.value);
-    const linhas = [...document.querySelectorAll("#av_glebas .gleba-linha")];
 
-    // % por gleba e componentes CCU
+    // FONTE DE DADOS: áreas por classe vêm da Tabela de Nota Agronômica (editável)
+    const areasNA = (typeof lerAreasNA==="function") ? lerAreasNA() : {};
+
+    // % e componentes CCU por classe (a partir da tabela NA)
     let ccu = 0;
     const comps = [];
     let somaAreas = 0;
-    linhas.forEach((l,idx)=>{
-      const classe = parseInt(l.querySelector(".g-classe").value,10);
-      const area = num(l.querySelector(".g-area").value);
-      if(isFinite(area)) somaAreas += area;
-      const peso = (isFinite(area) && isFinite(areaAval) && areaAval>0) ? area/areaAval : NaN;
-      const pctEl = l.querySelector(".pct-val");
-      pctEl.textContent = isFinite(peso) ? fmtBR(peso*100,2)+"%" : "—";
-      const valClasse = CLASSE_VAL[classe] || 0;
+    const glebasAuto = []; // para reconstruir as glebas abaixo
+    NA_CLASSES.forEach(c=>{
+      const area = areasNA[c.n] || 0;
+      if(!(area>0)) return;
+      somaAreas += area;
+      const peso = (isFinite(areaAval) && areaAval>0) ? area/areaAval : NaN;
+      const valClasse = c.val;
       if(isFinite(peso)){
-        const pesoR = Math.round(peso*10000)/10000; // peso arredondado a 4 casas
-        const prod = Math.floor(pesoR*valClasse*10000)/10000; // produto truncado a 4 casas (como o modelo)
-        comps.push({peso:pesoR, val:valClasse, prod:prod});
+        const pesoR = Math.round(peso*10000)/10000;
+        const prod = Math.floor(pesoR*valClasse*10000)/10000;
+        comps.push({peso:pesoR, val:valClasse, prod:prod, classe:c.n});
         ccu += prod;
+        glebasAuto.push({classe:c.n, area:area, peso:pesoR});
       }
     });
     ccu = Math.round(ccu*10000)/10000;
+
+    // reconstruir as glebas (auto) a partir da tabela NA
+    if(typeof gerarGlebasAuto==="function") gerarGlebasAuto(glebasAuto, areaAval);
 
     // área restante para fechar 100%
     const restEl = document.getElementById("av_ar_valor");
@@ -3031,7 +3059,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
     document.getElementById("av_ccu_l3").textContent = "CCU = " + (comps.length? fmtBR(ccu,4) : "—");
 
     // atualizar tabela de Nota Agronômica
-    renderNATabela(areaAval, ccu);
+    atualizarNATabela(areaAval, ccu);
 
     // N.A. = CCU × escala
     document.getElementById("av_na_ccu").value = fmtBR(ccu,4);
@@ -3148,57 +3176,104 @@ window.FOTO_rodapeHTML=rodapeHTML;
     recalc();
   };
 
-  function renderNATabela(areaAval, ccu){
+  function construirNATabela(){
     const tbody = document.getElementById("av_na_tbody");
-    if(!tbody) return;
-    // somar áreas por classe a partir das glebas
-    const areaPorClasse = {};
-    document.querySelectorAll("#av_glebas .gleba-linha").forEach(l=>{
-      const classe = parseInt(l.querySelector(".g-classe").value,10);
-      const area = num(l.querySelector(".g-area").value);
-      if(isFinite(area)) areaPorClasse[classe] = (areaPorClasse[classe]||0) + area;
-    });
-    const escAtual = document.getElementById("av_na_escala") ? document.getElementById("av_na_escala").value : "0.90";
-    const naResult = document.getElementById("av_na_result") ? document.getElementById("av_na_result").value : "";
-
+    if(!tbody || tbody.dataset.pronto) return;
+    // valores iniciais de área por classe (modelo)
+    const areaInicial = {3:"2,0500", 7:"0,9609", 8:"1,1389"};
     let html = "";
     NA_CLASSES.forEach((c,idx)=>{
-      const area = areaPorClasse[c.n] || 0;
-      const temArea = area>0;
-      const peso = (temArea && areaAval>0) ? Math.round(area/areaAval*10000)/10000 : 0;
-      const pct = temArea ? fmtBR(peso*100,4) : "0";
-      const prod = temArea ? Math.floor(peso*c.val*10000)/10000 : 0;
-      const ccuCel = temArea ? fmtBR(prod,4) : "0";
-      // célula de situação (só nas 6 primeiras linhas)
       let sitCell = "";
       if(idx < NA_SITUACOES.length){
         const s = NA_SITUACOES[idx];
-        const sel = (s.esc===escAtual) ? " sel" : "";
-        const naVal = (sel) ? '<span class="sit-na">'+naResult+'</span>' : "";
-        sitCell = '<td class="sit-cell'+sel+'" onclick="AV_selecionarSituacao(\''+s.esc+'\')" title="Clique para selecionar">'+s.nome+' ('+fmtBR(s.val*100,0)+')</td>'+
-                  '<td class="sit-na">'+naVal+'</td>';
+        sitCell = '<td class="sit-cell" data-esc="'+s.esc+'" onclick="AV_selecionarSituacao(\''+s.esc+'\')" title="Clique para selecionar">'+s.nome+' ('+fmtBR(s.val*100,0)+')</td>'+
+                  '<td class="sit-na" data-na-cell="'+s.esc+'"></td>';
       } else {
         sitCell = '<td></td><td></td>';
       }
-      html += '<tr>'+
+      html += '<tr data-classe="'+c.n+'">'+
         '<td class="classe">'+c.rom+'</td>'+
         '<td>'+fmtBR(c.val,2)+'</td>'+
-        '<td class="'+(temArea?"na-area-preenchida":"")+'">'+(temArea?fmtBR(area,4):"0")+'</td>'+
-        '<td>'+pct+'</td>'+
-        '<td>'+ccuCel+'</td>'+
+        '<td class="area-edit"><input type="text" class="na-area" data-classe="'+c.n+'" value="'+(areaInicial[c.n]||"")+'" placeholder="0"></td>'+
+        '<td class="na-pct">0</td>'+
+        '<td class="na-ccu">0</td>'+
         sitCell+
         '</tr>';
     });
-    // linha total
-    let somaArea=0; Object.values(areaPorClasse).forEach(a=>somaArea+=a);
     html += '<tr class="total">'+
       '<td>Total</td><td></td>'+
-      '<td>'+fmtBR(somaArea,4)+'</td>'+
-      '<td>'+(areaAval>0?fmtBR(somaArea/areaAval*100,0):"0")+'</td>'+
-      '<td>'+fmtBR(ccu,4)+'</td>'+
+      '<td class="na-total-area">—</td>'+
+      '<td class="na-total-pct">—</td>'+
+      '<td class="na-total-ccu">—</td>'+
       '<td></td><td></td></tr>';
     tbody.innerHTML = html;
+    tbody.dataset.pronto = "1";
+    // listeners nas áreas editáveis -> recalcula e regenera glebas
+    tbody.querySelectorAll(".na-area").forEach(inp=>{
+      inp.addEventListener("input", ()=>{ recalc(); });
+    });
   }
+
+  // lê as áreas por classe da própria tabela NA (fonte de dados)
+  function lerAreasNA(){
+    const map={};
+    document.querySelectorAll("#av_na_tbody .na-area").forEach(inp=>{
+      const cls=parseInt(inp.dataset.classe,10);
+      const a=num(inp.value);
+      map[cls]= isFinite(a)? a : 0;
+    });
+    return map;
+  }
+
+  // atualiza as células calculadas da tabela NA (sem recriar inputs)
+  function atualizarNATabela(areaAval, ccu){
+    const tbody=document.getElementById("av_na_tbody");
+    if(!tbody) return;
+    const escAtual = document.getElementById("av_na_escala") ? document.getElementById("av_na_escala").value : "0.90";
+    const naResult = document.getElementById("av_na_result") ? document.getElementById("av_na_result").value : "";
+    let somaArea=0;
+    NA_CLASSES.forEach(c=>{
+      const tr=tbody.querySelector('tr[data-classe="'+c.n+'"]');
+      if(!tr) return;
+      const inp=tr.querySelector(".na-area");
+      const area=num(inp.value); const temArea=isFinite(area)&&area>0;
+      if(temArea) somaArea+=area;
+      const peso=(temArea && areaAval>0)? Math.round(area/areaAval*10000)/10000 : 0;
+      const prod=temArea? Math.floor(peso*c.val*10000)/10000 : 0;
+      tr.querySelector(".na-pct").textContent = temArea? fmtBR(peso*100,4) : "0";
+      tr.querySelector(".na-ccu").textContent = temArea? fmtBR(prod,4) : "0";
+      tr.querySelector(".area-edit").classList.toggle("na-area-preenchida", temArea);
+    });
+    // situação selecionada
+    tbody.querySelectorAll(".sit-cell").forEach(td=>{
+      const sel = td.dataset.esc===escAtual;
+      td.classList.toggle("sel", sel);
+      const naTd=tbody.querySelector('[data-na-cell="'+td.dataset.esc+'"]');
+      if(naTd) naTd.innerHTML = sel ? '<span class="sit-na">'+naResult+'</span>' : "";
+    });
+    // total
+    const tArea=tbody.querySelector(".na-total-area");
+    const tPct=tbody.querySelector(".na-total-pct");
+    const tCcu=tbody.querySelector(".na-total-ccu");
+    if(tArea) tArea.textContent=fmtBR(somaArea,4);
+    if(tPct) tPct.textContent=areaAval>0? fmtBR(somaArea/areaAval*100,0):"0";
+    if(tCcu) tCcu.textContent=fmtBR(ccu,4);
+  }
+
+  window.AV_lerGlebas = function(){
+    const out=[];
+    const areaAvalEl=document.getElementById("av_area_aval");
+    const areaAval = areaAvalEl ? (function(v){v=String(v).replace(/\./g,"").replace(",",".");return parseFloat(v);})(areaAvalEl.value) : NaN;
+    document.querySelectorAll("#av_glebas .gleba-linha").forEach((l,idx)=>{
+      const classeNum = parseInt(l.dataset.classe,10);
+      const areaNum = parseFloat(String(l.dataset.area).replace(/\./g,m=>m)) ;
+      const areaStr = l.querySelector(".g-area-disp") ? l.querySelector(".g-area-disp").value : "";
+      const fator = l.querySelector(".g-fator") ? l.querySelector(".g-fator").value : "";
+      const pct = l.querySelector(".pct-val") ? l.querySelector(".pct-val").textContent : "";
+      out.push({idx:idx+1, classeNum, classeRom: ROMANOS[classeNum]||"", area:areaStr, areaNum: parseFloat(l.dataset.area), fator, pct});
+    });
+    return out;
+  };
   window.AV_recalcular = recalc;
 
   // ---------------- Upload de imagem ----------------
@@ -3231,7 +3306,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
   document.addEventListener("DOMContentLoaded", ()=>{
     // glebas iniciais
     const gh = document.getElementById("av_glebas");
-    if(gh && !gh.dataset.init){ gh.dataset.init="1"; glebasIniciais.forEach(glebaLinha); renderGlebas(); }
+    if(gh && !gh.dataset.init){ gh.dataset.init="1"; if(typeof construirNATabela==="function") construirNATabela(); }
     // imagens
     bindImg("av_croqui_file","av_croqui_drop","av_croqui_prev","croqui");
     bindImg("av_ccu_file","av_ccu_drop","av_ccu_prev","ccu");
@@ -3986,15 +4061,15 @@ window.FOTO_rodapeHTML=rodapeHTML;
     // classes por gleba
     subLbl(doc,ctx,"Classes de Capacidade de Uso (CCU) por gleba");
     const C = window.__AV_CALC__ || {};
-    const linhas = [...document.querySelectorAll("#av_glebas .gleba-linha")];
+    const glebasLidas = (typeof window.AV_lerGlebas==="function") ? window.AV_lerGlebas() : [];
     const areaAval = document.getElementById("av_area_aval") ? document.getElementById("av_area_aval").value : "";
     doc.setFont("helvetica","normal"); doc.setFontSize(9); doc.setTextColor(35,45,60);
     const letras=["a","b","c","d","e","f","g","h"];
-    linhas.forEach((l,idx)=>{
-      const classe = parseInt(l.querySelector(".g-classe").value,10);
-      const area = l.querySelector(".g-area").value;
-      const fator = l.querySelector(".g-fator").value;
-      const pct = l.querySelector(".pct-val").textContent;
+    glebasLidas.forEach((gl,idx)=>{
+      const classe = gl.classeNum;
+      const area = gl.area;
+      const fator = gl.fator;
+      const pct = gl.pct;
       const txt = letras[idx]+". CLASSE "+ROMANOS[classe]+" – GLEBA "+String(idx+1).padStart(2,"0")+" ("+area+" ha) - FATOR MAIS RESTRITIVO: "+fator+" = ~"+pct+" DA ÁREA AVALIADA;";
       doc.splitTextToSize(txt, ctx.MR-ctx.ML).forEach(ln=>{ ensure(doc,ctx,12); doc.text(ln,ctx.ML,ctx.y+9); ctx.y+=12; });
     });
