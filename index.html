@@ -759,6 +759,21 @@
     background:#fff; border:2px solid #c0700a; border-radius:8px; padding:12px 16px; margin-top:12px;
   }
   #panel-avaliacao .desval-result .v{font-size:18px; font-weight:800; color:#c0700a;}
+
+  /* Tabela de Nota Agronômica */
+  #panel-avaliacao .na-tabela-wrap{overflow-x:auto; margin-bottom:16px;}
+  #panel-avaliacao table.na-tabela{width:100%; border-collapse:collapse; font-size:12px; min-width:720px;}
+  #panel-avaliacao table.na-tabela th{background:var(--azul); color:#fff; padding:6px 8px; text-align:center; font-weight:700; border:1px solid #fff; line-height:1.25;}
+  #panel-avaliacao table.na-tabela th.grp-ccu{background:#175a9f;}
+  #panel-avaliacao table.na-tabela th.grp-na{background:#159a3c;}
+  #panel-avaliacao table.na-tabela td{border:1px solid var(--borda); padding:5px 8px; text-align:center; vertical-align:middle;}
+  #panel-avaliacao table.na-tabela td.classe{font-weight:700; color:var(--azul-esc); background:#f0f5fb;}
+  #panel-avaliacao table.na-tabela tr.total td{background:#e3f0fc; font-weight:800; color:var(--azul-esc);}
+  #panel-avaliacao table.na-tabela td.na-area-preenchida{background:#fff9e8;}
+  #panel-avaliacao table.na-tabela .sit-cell{cursor:pointer; transition:background .12s;}
+  #panel-avaliacao table.na-tabela .sit-cell:hover{background:#eaf7ee;}
+  #panel-avaliacao table.na-tabela .sit-cell.sel{background:#159a3c; color:#fff; font-weight:700;}
+  #panel-avaliacao table.na-tabela .sit-na{font-weight:700; color:#159a3c;}
 </style>
 </head>
 <body>
@@ -1370,6 +1385,29 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
       <input type="text" id="av_area_aval" value="4,1498" readonly class="bloqueado">
       <span class="hint-inline">Repete automaticamente a Área Total do Imóvel (item 3.36). Bloqueada para edição.</span>
     </div>
+
+    <div class="vsub">Tabela de Nota Agronômica (CCU × Situação/Circulação)</div>
+    <div class="na-tabela-wrap">
+      <table class="na-tabela" id="av_na_tabela">
+        <thead>
+          <tr>
+            <th colspan="5" class="grp-ccu">Classe de Capacidade de Uso do Solo — CCU</th>
+            <th colspan="2" class="grp-na">Nota Agronômica — NA</th>
+          </tr>
+          <tr>
+            <th>Classe de uso do solo</th>
+            <th>Escala de valor (%)</th>
+            <th>Área do Imóvel (ha)</th>
+            <th>Classificação % imóvel avaliando</th>
+            <th>CCU</th>
+            <th>Situação / Circulação</th>
+            <th>N.A.</th>
+          </tr>
+        </thead>
+        <tbody id="av_na_tbody"><!-- preenchido por JS --></tbody>
+      </table>
+    </div>
+
     <div id="av_glebas"></div>
     <div class="area-restante" id="av_area_restante">
       <span class="ar-txt">Área restante para fechar 100%: <strong id="av_ar_valor">—</strong></span>
@@ -1381,7 +1419,9 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
       <div class="linha3" id="av_ccu_l3">CCU = —</div>
     </div>
 
-    <div class="vsub">II — Dimensionamento da Variável Situação</div>
+    <div class="vsub">II — Dimensionamento da Variável Situação
+      <button type="button" class="mini-add" onclick="AV_gerarDescSituacao()" title="Gera o texto conforme a Situação/Circulação selecionada">↻ Preencher automático</button>
+    </div>
     <textarea id="av_situacao_txt" rows="3">Para o imóvel abrangido parcialmente, foi identificado que possui uma viabilidade de circulação boa, devido primeira classe não pavimentada e importância da distância significativa em relação à via pavimentada (BA-938) e com trafegabilidade permanente, com escala adotada de 0,90.</textarea>
 
     <div class="vsub">III — Dimensionamento da Variável Nota Agronômica (N.A.)</div>
@@ -2990,6 +3030,9 @@ window.FOTO_rodapeHTML=rodapeHTML;
     document.getElementById("av_ccu_l2").textContent = l2;
     document.getElementById("av_ccu_l3").textContent = "CCU = " + (comps.length? fmtBR(ccu,4) : "—");
 
+    // atualizar tabela de Nota Agronômica
+    renderNATabela(areaAval, ccu);
+
     // N.A. = CCU × escala
     document.getElementById("av_na_ccu").value = fmtBR(ccu,4);
     const escala = parseFloat(document.getElementById("av_na_escala").value);
@@ -3078,6 +3121,84 @@ window.FOTO_rodapeHTML=rodapeHTML;
     // guardar para o PDF
     window.__AV_CALC__ = {ccu, na, escala, vtn, fdArea, remArea, fdVal, remVal, sub1, sub2, total, zona, areaMem, comps};
   }
+  
+  // ===== Tabela de Nota Agronômica (render/sincronização) =====
+  const NA_CLASSES = [
+    {rom:"I",   n:1, val:1.00},
+    {rom:"II",  n:2, val:0.95},
+    {rom:"III", n:3, val:0.75},
+    {rom:"IV",  n:4, val:0.55},
+    {rom:"V",   n:5, val:0.50},
+    {rom:"VI",  n:6, val:0.40},
+    {rom:"VII", n:7, val:0.30},
+    {rom:"VIII",n:8, val:0.20}
+  ];
+  const NA_SITUACOES = [
+    {nome:"Ótima",        val:1.00, esc:"1.00"},
+    {nome:"Muito Boa",    val:0.95, esc:"0.95"},
+    {nome:"Boa",          val:0.90, esc:"0.90"},
+    {nome:"Desfavorável", val:0.80, esc:"0.80"},
+    {nome:"Má",           val:0.75, esc:"0.75"},
+    {nome:"Péssima",      val:0.70, esc:"0.70"}
+  ];
+
+  window.AV_selecionarSituacao = function(esc){
+    const sel = document.getElementById("av_na_escala");
+    if(sel){ sel.value = esc; }
+    recalc();
+  };
+
+  function renderNATabela(areaAval, ccu){
+    const tbody = document.getElementById("av_na_tbody");
+    if(!tbody) return;
+    // somar áreas por classe a partir das glebas
+    const areaPorClasse = {};
+    document.querySelectorAll("#av_glebas .gleba-linha").forEach(l=>{
+      const classe = parseInt(l.querySelector(".g-classe").value,10);
+      const area = num(l.querySelector(".g-area").value);
+      if(isFinite(area)) areaPorClasse[classe] = (areaPorClasse[classe]||0) + area;
+    });
+    const escAtual = document.getElementById("av_na_escala") ? document.getElementById("av_na_escala").value : "0.90";
+    const naResult = document.getElementById("av_na_result") ? document.getElementById("av_na_result").value : "";
+
+    let html = "";
+    NA_CLASSES.forEach((c,idx)=>{
+      const area = areaPorClasse[c.n] || 0;
+      const temArea = area>0;
+      const peso = (temArea && areaAval>0) ? Math.round(area/areaAval*10000)/10000 : 0;
+      const pct = temArea ? fmtBR(peso*100,4) : "0";
+      const prod = temArea ? Math.floor(peso*c.val*10000)/10000 : 0;
+      const ccuCel = temArea ? fmtBR(prod,4) : "0";
+      // célula de situação (só nas 6 primeiras linhas)
+      let sitCell = "";
+      if(idx < NA_SITUACOES.length){
+        const s = NA_SITUACOES[idx];
+        const sel = (s.esc===escAtual) ? " sel" : "";
+        const naVal = (sel) ? '<span class="sit-na">'+naResult+'</span>' : "";
+        sitCell = '<td class="sit-cell'+sel+'" onclick="AV_selecionarSituacao(\''+s.esc+'\')" title="Clique para selecionar">'+s.nome+' ('+fmtBR(s.val*100,0)+')</td>'+
+                  '<td class="sit-na">'+naVal+'</td>';
+      } else {
+        sitCell = '<td></td><td></td>';
+      }
+      html += '<tr>'+
+        '<td class="classe">'+c.rom+'</td>'+
+        '<td>'+fmtBR(c.val,2)+'</td>'+
+        '<td class="'+(temArea?"na-area-preenchida":"")+'">'+(temArea?fmtBR(area,4):"0")+'</td>'+
+        '<td>'+pct+'</td>'+
+        '<td>'+ccuCel+'</td>'+
+        sitCell+
+        '</tr>';
+    });
+    // linha total
+    let somaArea=0; Object.values(areaPorClasse).forEach(a=>somaArea+=a);
+    html += '<tr class="total">'+
+      '<td>Total</td><td></td>'+
+      '<td>'+fmtBR(somaArea,4)+'</td>'+
+      '<td>'+(areaAval>0?fmtBR(somaArea/areaAval*100,0):"0")+'</td>'+
+      '<td>'+fmtBR(ccu,4)+'</td>'+
+      '<td></td><td></td></tr>';
+    tbody.innerHTML = html;
+  }
   window.AV_recalcular = recalc;
 
   // ---------------- Upload de imagem ----------------
@@ -3121,6 +3242,11 @@ window.FOTO_rodapeHTML=rodapeHTML;
      "rs_121","rs_122","rs_123","rs_124","rs_12","rs_13"].forEach(id=>{
       const el=document.getElementById(id); if(el) el.addEventListener("input", recalc);
     });
+    // ao mudar a Situação/Circulação, regenerar a descrição automática (item II)
+    const escSel=document.getElementById("av_na_escala");
+    if(escSel){ escSel.addEventListener("change", ()=>{ if(typeof AV_gerarDescSituacao==="function") AV_gerarDescSituacao(); }); }
+    // gerar descrição inicial coerente com a situação padrão
+    if(typeof AV_gerarDescSituacao==="function") AV_gerarDescSituacao();
     // estacas view
     if(typeof window.AV_syncEstacas==="function") window.AV_syncEstacas();
     recalc();
@@ -4138,6 +4264,32 @@ function AV_antesDepoisToggle(){
   const box=document.getElementById("av_depois_box");
   if(box) box.style.display = sim ? "block" : "none";
   if(typeof window.AV_recalcular==="function") window.AV_recalcular();
+}
+</script>
+
+<script>
+/* ===== Avaliação: descrição automática da Situação ===== */
+function AV_gerarDescSituacao(){
+  const sel=document.getElementById("av_na_escala");
+  if(!sel) return;
+  const esc=sel.value;
+  // atributos de cada situação (Tabela Situação/Circulação)
+  const MAP={
+    "1.00":{nome:"ótima", estrada:"asfaltada", dist:"limitada", prat:"permanente"},
+    "0.95":{nome:"muito boa", estrada:"de primeira classe não asfaltada", dist:"relativa", prat:"permanente"},
+    "0.90":{nome:"boa", estrada:"não pavimentada", dist:"significativa", prat:"permanente"},
+    "0.80":{nome:"desfavorável", estrada:"por estradas e servidões de passagem", dist:"com vias e distâncias se equivalendo", prat:"sem condições satisfatórias"},
+    "0.75":{nome:"má", estrada:"com fechos nas servidões", dist:"com distâncias e classes se equivalendo", prat:"com problemas sérios na estação chuvosa"},
+    "0.70":{nome:"péssima", estrada:"com fechos e interceptada por córregos sem pontes", dist:"", prat:"com problemas sérios mesmo na seca"}
+  };
+  const m=MAP[esc]||MAP["0.90"];
+  const escNum = parseFloat(esc).toFixed(2).replace(".",",");
+  let txt = "Para o imóvel abrangido parcialmente, foi identificado que possui uma viabilidade de circulação "+m.nome+
+            ", devido estrada "+m.estrada;
+  if(m.dist) txt += " e importância da distância "+m.dist;
+  txt += ", com trafegabilidade "+m.prat+", com escala adotada de "+escNum+".";
+  const ta=document.getElementById("av_situacao_txt");
+  if(ta) ta.value=txt;
 }
 </script>
 </body>
