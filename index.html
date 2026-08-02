@@ -66,19 +66,25 @@
   /* Abas */
   .tabs{display:flex; gap:4px; flex-wrap:wrap;}
   .tabs{align-items:flex-end;}
-  .grupo-fiol{
-    display:flex; flex-direction:column; gap:0;
-    border:1px solid var(--shell-borda); border-bottom:none;
-    border-radius:12px 12px 0 0;
-    background:linear-gradient(180deg,#f0f5fb,#e9f0f8);
-    padding:5px 6px 0; margin-right:6px;
+  .dropdown{position:relative; display:inline-block;}
+  .tab-drop{display:inline-flex; align-items:center; gap:6px;}
+  .tab-drop .caret{font-size:11px; transition:transform .15s;}
+  .dropdown.aberto .tab-drop .caret{transform:rotate(180deg);}
+  .dropdown-menu{
+    position:absolute; top:100%; left:0; z-index:2500;
+    min-width:250px; background:#fff; border:1px solid var(--shell-borda);
+    border-radius:10px; box-shadow:0 10px 30px rgba(30,50,80,.18);
+    padding:6px; display:none; margin-top:2px;
   }
-  .grupo-rot{
-    font-size:10.5px; font-weight:800; letter-spacing:1.2px;
-    color:var(--marca-azul-esc); text-transform:uppercase;
-    padding:1px 8px 3px; opacity:.85;
+  .dropdown.aberto .dropdown-menu{display:block; animation:fadePanel .15s ease;}
+  .drop-item{
+    display:flex; align-items:center; gap:8px; width:100%;
+    border:none; background:transparent; color:var(--shell-texto);
+    padding:9px 12px; font-size:13.5px; font-weight:600; cursor:pointer;
+    border-radius:7px; text-align:left; letter-spacing:.1px;
   }
-  .grupo-abas{display:flex; gap:4px; flex-wrap:wrap;}
+  .drop-item:hover{background:#eef4fa;}
+  .drop-item.ativa{background:#e3f0fc; color:var(--marca-azul-esc);}
   .tab-solta{align-self:flex-end;}
 
   .tab{
@@ -701,6 +707,58 @@
   /* anexos */
   #panel-avaliacao ol.anexos-list{margin:0; padding-left:22px; font-size:13px; color:var(--texto); line-height:1.9;}
 
+
+  /* ===== Acordeão Ficha de Vistoria ===== */
+  #panel-vistoria .vsec.acc{
+    display:flex; align-items:center; justify-content:space-between;
+    cursor:pointer; user-select:none;
+  }
+  #panel-vistoria .vsec.acc .acc-chevron{font-size:13px; transition:transform .2s;}
+  #panel-vistoria .vsec.acc.fechado{border-radius:9px;}
+  #panel-vistoria .vsec.acc.fechado .acc-chevron{transform:rotate(-90deg);}
+  #panel-vistoria .vcard.oculto{display:none;}
+  #panel-vistoria .estaca-linha .rot-tipo{font-size:9px; font-weight:700; color:#159a3c; text-transform:uppercase; letter-spacing:.3px;}
+
+  /* campos bloqueados (auto-preenchidos / repetidos) */
+  #panel-avaliacao input.bloqueado, #panel-avaliacao select.bloqueado,
+  #panel-vistoria input.bloqueado{
+    background:#eef1f4 !important; color:#5a6b7c !important; cursor:not-allowed;
+    border-color:#d3dbe4 !important;
+  }
+
+  /* seletor de ocupante (item 03) */
+  #panel-avaliacao .ocupante-sel{
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    background:#eef4fa; border:1px solid #cfe0f0; border-radius:8px;
+    padding:10px 14px; margin-bottom:14px;
+  }
+  #panel-avaliacao .ocup-lbl{font-weight:700; color:var(--azul-esc); font-size:12px; text-transform:none; letter-spacing:0;}
+  #panel-avaliacao .ocup-opt{display:flex; align-items:center; gap:6px; font-size:13px; color:var(--texto); text-transform:none; letter-spacing:0; font-weight:500; cursor:pointer;}
+  #panel-avaliacao .ocup-opt input{width:15px; height:15px;}
+
+  /* Antes/Depois + área restante */
+  #panel-avaliacao .antes-depois-sel{
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    background:#fff4e6; border:1px solid #f0c891; border-radius:8px;
+    padding:10px 14px; margin-bottom:12px;
+  }
+  #panel-avaliacao .ad-lbl{font-weight:700; color:#8a5a1a; font-size:12px; text-transform:none; letter-spacing:0;}
+  #panel-avaliacao .ad-opt{display:flex; align-items:center; gap:6px; font-size:13px; color:var(--texto); text-transform:none; letter-spacing:0; font-weight:500; cursor:pointer;}
+  #panel-avaliacao .ad-opt input{width:15px; height:15px;}
+  #panel-avaliacao .area-restante{
+    background:#f0f5fb; border:1px solid #cfe0f0; border-radius:8px;
+    padding:8px 14px; margin:10px 0 14px; font-size:13px; color:var(--texto);
+  }
+  #panel-avaliacao .area-restante strong{color:var(--azul-esc);}
+  #panel-avaliacao .depois-box{
+    background:#fdf3e8; border:1px solid #f0c891; border-radius:10px;
+    padding:14px 16px; margin:12px 0;
+  }
+  #panel-avaliacao .depois-box h4{margin:0 0 10px; color:#8a5a1a; font-size:13px;}
+  #panel-avaliacao .desval-result{
+    background:#fff; border:2px solid #c0700a; border-radius:8px; padding:12px 16px; margin-top:12px;
+  }
+  #panel-avaliacao .desval-result .v{font-size:18px; font-weight:800; color:#c0700a;}
 </style>
 </head>
 <body>
@@ -721,23 +779,23 @@
   </div>
   <div class="unir-status" id="unirStatus"></div>
   <nav class="tabs" id="tabs">
-    <div class="grupo grupo-fiol">
-      <span class="grupo-rot">FIOL</span>
-      <div class="grupo-abas">
-        <button class="tab ativa" data-alvo="panel-ccu"   onclick="trocarAba(this)">📊 Tabela CCU <span class="badge">Anexo 1</span></button>
-        <button class="tab"        data-alvo="panel-anexo" onclick="trocarAba(this)">📎 Unificar Anexos <span class="badge">2 e 3</span></button>
-        <button class="tab"        data-alvo="panel-foto"  onclick="trocarAba(this)">📷 Relatório Fotográfico <span class="badge">Anexo 4</span></button>
+    <button class="tab ativa" data-alvo="panel-vistoria" onclick="trocarAba(this)">📋 Ficha de Vistoria</button>
+    <button class="tab" data-alvo="panel-avaliacao" onclick="trocarAba(this)">📐 Avaliação</button>
+    <div class="dropdown" id="dropAnexos">
+      <button class="tab tab-drop" onclick="FIOL_toggleDrop(event)">🗂️ Anexos <span class="caret">▾</span></button>
+      <div class="dropdown-menu" id="dropAnexosMenu">
+        <button class="drop-item" data-alvo="panel-ccu"   onclick="trocarAba(this)">📊 Tabela CCU <span class="badge">Anexo 1</span></button>
+        <button class="drop-item" data-alvo="panel-anexo" onclick="trocarAba(this)">📎 Unificar Anexos <span class="badge">2 e 3</span></button>
+        <button class="drop-item" data-alvo="panel-foto"  onclick="trocarAba(this)">📷 Relatório Fotográfico <span class="badge">Anexo 4</span></button>
+        <button class="drop-item" data-alvo="panel-drl"   onclick="trocarAba(this)">📜 DRL <span class="badge">Anexo 5</span></button>
+        <button class="drop-item" data-alvo="panel-docs"  onclick="trocarAba(this)">🗂️ Documentos <span class="badge">Anexo 6</span></button>
       </div>
     </div>
-    <button class="tab tab-solta" data-alvo="panel-drl"  onclick="trocarAba(this)">📜 DRL <span class="badge">Anexo 5</span></button>
-    <button class="tab tab-solta" data-alvo="panel-docs" onclick="trocarAba(this)">🗂️ Documentos <span class="badge">Anexo 6</span></button>
-    <button class="tab tab-solta" data-alvo="panel-vistoria" onclick="trocarAba(this)">📋 Ficha de Vistoria</button>
-    <button class="tab tab-solta" data-alvo="panel-avaliacao" onclick="trocarAba(this)">📐 Avaliação</button>
   </nav>
 </header>
 
 <main>
-  <section class="tab-panel ativa" id="panel-ccu">
+  <section class="tab-panel" id="panel-ccu">
 <div class="toolbar">
   <button class="btn btn-verde" onclick="CCU_gerarPDF()">📄 Gerar PDF Unificado</button>
   <button class="btn btn-ghost" onclick="CCU_limpar()">Limpar realces</button>
@@ -748,6 +806,10 @@
   <div class="campo">
     <label>Título da capa</label>
     <input id="cfgTituloCCU" type="text" value="ANEXO 1: TABELA(S) DA DETERMINAÇÃO DA CCU DA(S) GLEBA(S) DO IMÓVEL">
+  </div>
+  <div class="campo">
+    <label>Preenchimento automático</label>
+    <button class="btn btn-ghost" onclick="CCU_puxarDados()" style="margin-top:2px;">↧ Puxar dados da Ficha / Avaliação</button>
   </div>
 </div>
 
@@ -901,7 +963,7 @@
 </div>
   </section>
 
-  <section class="tab-panel" id="panel-vistoria">
+  <section class="tab-panel ativa" id="panel-vistoria">
 <div class="vwrap">
   <div class="doc-head">
     <h1>Ficha de Vistoria</h1>
@@ -923,7 +985,7 @@
   </div>
 
   <!-- 01 IDENTIFICAÇÃO -->
-  <h2 class="vsec">01 — Identificação</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>01 — Identificação</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <div class="vrow">
       <div class="vfield">
@@ -992,7 +1054,7 @@
   </div>
 
   <!-- 02 CARACTERIZAÇÃO -->
-  <h2 class="vsec">02 — Caracterização do Imóvel</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>02 — Caracterização do Imóvel</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <div class="vsub">2.1 Econômicas</div>
     <textarea id="fv_economicas" rows="4">O IMÓVEL RURAL DENOMINADO SÍTIO CÔCOS TEM UTILIZAÇÃO CLASSIFICADA COMO AGRICULTURA, NÃO POSSUINDO FUNÇÃO SOCIAL DE MORADIA, UMA VEZ QUE A PROPRIETÁRIA RESIDE NO MUNICÍPIO DE GUANAMBI/BA. CONFORME DECLARADO DURANTE A ABORDAGEM SOCIAL, ATUALMENTE NÃO SÃO DESENVOLVIDAS ATIVIDADES PRODUTIVAS, ECONÔMICAS OU DE SUBSISTÊNCIA NA PROPRIEDADE. A GLEBA APRESENTA POTENCIAL PARA CULTIVO AGRÍCOLA SOB IRRIGAÇÃO OU EM REGIME DE SEQUEIRO DURANTE O PERÍODO CHUVOSO. A FONTE DE RENDA DECLARADA PELA PROPRIETÁRIA É PROVENIENTE DE APOSENTADORIA.</textarea>
@@ -1032,7 +1094,7 @@
   </div>
 
   <!-- 03 BENFEITORIAS -->
-  <h2 class="vsec">03 — Descrição das Benfeitorias</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>03 — Descrição das Benfeitorias</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <label class="vlbl">3.1 Não-Reprodutivas</label>
     <textarea id="fv_ben_nr" rows="2">CERCAS</textarea>
@@ -1049,7 +1111,7 @@
   </div>
 
   <!-- 04 INFORMAÇÕES COMPLEMENTARES -->
-  <h2 class="vsec">04 — Informações Complementares</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>04 — Informações Complementares</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <label class="vlbl">4.1 Obras e Melhorias das Terras</label>
     <textarea id="fv_obras" rows="2">AUSENTES.</textarea>
@@ -1062,7 +1124,7 @@
   </div>
 
   <!-- ASSINATURA -->
-  <h2 class="vsec">Assinatura Técnica</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>Assinatura Técnica</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <div class="vrow">
       <div class="vfield grow"><label>Nome do responsável</label><input type="text" id="fv_ass_nome" data-sync="ass_nome" value="ANTÔNIO CÉLITO DE ARAÚJO JÚNIOR"></div>
@@ -1093,8 +1155,8 @@
   <h2 class="vsec">02 — Localização</h2>
   <div class="vcard">
     <div class="vrow">
-      <div class="vfield grow"><label>2.1 Localidade <span class="auto-tag">auto</span></label><input type="text" id="av_localidade" data-from="prop_end"></div>
-      <div class="vfield grow"><label>2.2 Município <span class="auto-tag">auto</span></label><input type="text" id="av_municipio" data-from="prop_mun"></div>
+      <div class="vfield grow"><label>2.1 Localidade <span class="auto-tag">auto</span></label><input type="text" readonly id="av_localidade" data-from="prop_end" class="bloqueado"></div>
+      <div class="vfield grow"><label>2.2 Município <span class="auto-tag">auto</span></label><input type="text" readonly id="av_municipio" data-from="prop_mun" class="bloqueado"></div>
       <div class="vfield"><label>2.3 UF</label><input type="text" id="av_uf" value="BA"></div>
     </div>
     <div class="vsub">2.4 Locação — Áreas <span class="auto-tag">auto (Ficha de Vistoria)</span></div>
@@ -1104,8 +1166,13 @@
   <!-- 03 IDENTIFICAÇÃO DO OCUPANTE -->
   <h2 class="vsec">03 — Identificação do Ocupante do Imóvel</h2>
   <div class="vcard">
+    <div class="ocupante-sel">
+      <label class="ocup-lbl">O ocupante é:</label>
+      <label class="ocup-opt"><input type="radio" name="av_ocup_tipo" value="mesmo" checked onchange="AV_ocupanteTipo()"> Os mesmos dados do proprietário</label>
+      <label class="ocup-opt"><input type="radio" name="av_ocup_tipo" value="outro" onchange="AV_ocupanteTipo()"> Outro (preencher abaixo)</label>
+    </div>
     <div class="vrow">
-      <div class="vfield grow"><label>3.1 Nome <span class="auto-tag">auto</span></label><input type="text" id="av_nome" data-from="nome"></div>
+      <div class="vfield grow"><label>3.1 Nome <span class="auto-tag">auto</span></label><input type="text" readonly id="av_nome" data-from="nome" class="bloqueado"></div>
       <div class="vfield"><label>3.2 Apelido</label><input type="text" id="av_apelido" value="-"></div>
     </div>
     <div class="vrow">
@@ -1116,11 +1183,11 @@
     <div class="vrow">
       <div class="vfield"><label>3.6 Data de nascimento</label><input type="date" id="av_datanasc" value="1949-11-02"></div>
       <div class="vfield"><label>3.7 Documento de identidade</label><input type="text" id="av_docid" value="-"></div>
-      <div class="vfield"><label>3.8 CPF Nº <span class="auto-tag">auto</span></label><input type="text" id="av_cpf" data-from="cpf"></div>
+      <div class="vfield"><label>3.8 CPF Nº <span class="auto-tag">auto</span></label><input type="text" readonly id="av_cpf" data-from="cpf" class="bloqueado"></div>
     </div>
     <div class="vfield grow"><label>3.9 Filiação</label><input type="text" id="av_filiacao" value="-"></div>
     <div class="vrow">
-      <div class="vfield"><label>3.10 Estado civil <span class="auto-tag">auto</span></label><input type="text" id="av_estcivil" data-from="estcivil"></div>
+      <div class="vfield"><label>3.10 Estado civil <span class="auto-tag">auto</span></label><input type="text" readonly id="av_estcivil" data-from="estcivil" class="bloqueado"></div>
       <div class="vfield grow"><label>3.11 Regime de casamento</label><input type="text" id="av_regime" value="-"></div>
     </div>
     <div class="vrow">
@@ -1128,16 +1195,16 @@
       <div class="vfield"><label>3.13 Apelido</label><input type="text" id="av_conj_apelido" value="-"></div>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>3.17 Endereço p/ correspondência <span class="auto-tag">auto</span></label><input type="text" id="av_endcorresp" data-from="endereco"></div>
+      <div class="vfield grow"><label>3.17 Endereço p/ correspondência <span class="auto-tag">auto</span></label><input type="text" readonly id="av_endcorresp" data-from="endereco" class="bloqueado"></div>
       <div class="vfield"><label>3.17.1 CEP</label><input type="text" id="av_cep" value="-"></div>
     </div>
     <div class="vrow">
-      <div class="vfield"><label>3.18 Telefone <span class="auto-tag">auto</span></label><input type="text" id="av_telefone" data-from="telefone"></div>
+      <div class="vfield"><label>3.18 Telefone <span class="auto-tag">auto</span></label><input type="text" readonly id="av_telefone" data-from="telefone" class="bloqueado"></div>
       <div class="vfield grow"><label>3.19 Procurador(a)</label><input type="text" id="av_procurador"></div>
     </div>
     <div class="vsub">Imóvel</div>
     <div class="vrow">
-      <div class="vfield grow"><label>3.21 Denominação <span class="auto-tag">auto</span></label><input type="text" id="av_denom" data-from="prop_id"></div>
+      <div class="vfield grow"><label>3.21 Denominação <span class="auto-tag">auto</span></label><input type="text" readonly id="av_denom" data-from="prop_id" class="bloqueado"></div>
       <div class="vfield grow"><label>3.23 Município</label><input type="text" id="av_imun" value="GUANAMBI/BA"></div>
       <div class="vfield grow"><label>3.24 Comarca</label><input type="text" id="av_comarca" value="GUANAMBI/BA"></div>
     </div>
@@ -1152,13 +1219,13 @@
     </div>
     <div class="vrow">
       <div class="vfield grow"><label>3.31 Cartório de registro</label><input type="text" id="av_cartreg" value="C.R.I.H. DE GUANAMBI - BA"></div>
-      <div class="vfield grow"><label>3.32 Nº de registro <span class="auto-tag">auto</span></label><input type="text" id="av_nreg" data-from="matricula"></div>
+      <div class="vfield grow"><label>3.32 Nº de registro <span class="auto-tag">auto</span></label><input type="text" readonly id="av_nreg" data-from="matricula" class="bloqueado"></div>
       <div class="vfield"><label>3.33 Livro</label><input type="text" id="av_livro2" value="2/EG"></div>
     </div>
     <div class="vrow">
       <div class="vfield grow"><label>3.35 Cadastro INCRA/Pref.</label><input type="text" id="av_incra" value="307.092.019.712"></div>
-      <div class="vfield"><label>3.36 Área total (ha) <span class="auto-tag">auto</span></label><input type="text" id="av_areatotal" data-from="area_total"></div>
-      <div class="vfield"><label>3.37 Área abrangida (ha) <span class="auto-tag">auto</span></label><input type="text" id="av_areaabr" data-from="area_desap"></div>
+      <div class="vfield"><label>3.36 Área total (ha) <span class="auto-tag">auto</span></label><input type="text" readonly id="av_areatotal" data-from="area_total" class="bloqueado"></div>
+      <div class="vfield"><label>3.37 Área abrangida (ha) <span class="auto-tag">auto</span></label><input type="text" readonly id="av_areaabr" data-from="area_desap" class="bloqueado"></div>
     </div>
     <div class="vrow">
       <div class="vfield"><label>3.38 Outras áreas (ha)</label><input type="text" id="av_outrasareas" value="0,1914"></div>
@@ -1176,7 +1243,8 @@
       <div class="vfield"><label>4.6 Há litígio</label><select id="av_litigio"><option>SIM</option><option selected>NÃO</option></select></div>
     </div>
     <div class="vrow">
-      <div class="vfield"><label>4.2.1 Geoprocessamento (INCRA)</label><select id="av_geo"><option>SIM</option><option selected>NÃO</option></select></div>
+      <div class="vfield"><label>4.2.1 Geoprocessamento (INCRA)</label><select id="av_geo" onchange="AV_geoToggle()"><option>SIM</option><option selected>NÃO</option></select></div>
+      <div class="vfield grow" id="av_geo_cod_wrap" style="display:none;"><label>Código do Geoprocessamento (INCRA)</label><input type="text" id="av_geo_cod" placeholder="Informe o código"></div>
       <div class="vfield"><label>4.2.2 CAR (Cadastro Ambiental Rural)</label><select id="av_car"><option selected>SIM</option><option>NÃO</option></select></div>
       <div class="vfield grow"><label>Nº CAR</label><input type="text" id="av_ncar" value="BA-2911709-4CDF.32D1.DF12.414E.BE3C.BA1A.0C51.3253"></div>
     </div>
@@ -1292,13 +1360,20 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
     <div class="vsub">Classes de Capacidade de Uso (CCU) por gleba
       <button type="button" class="mini-add" onclick="AV_addGleba()">+ Adicionar gleba</button>
     </div>
+    <div class="antes-depois-sel">
+      <label class="ad-lbl">Cálculo de Nota Agronômica com "Antes e Depois"?</label>
+      <label class="ad-opt"><input type="radio" name="av_antesdepois" value="nao" checked onchange="AV_antesDepoisToggle()"> Não</label>
+      <label class="ad-opt"><input type="radio" name="av_antesdepois" value="sim" onchange="AV_antesDepoisToggle()"> Sim</label>
+    </div>
     <div class="av-area-aval">
       <label>Área avaliada de referência (ha) — base do cálculo de %</label>
-      <input type="text" id="av_area_aval" value="4,1498">
-      <span class="hint-inline">Usada para calcular o percentual de cada gleba automaticamente.</span>
+      <input type="text" id="av_area_aval" value="4,1498" readonly class="bloqueado">
+      <span class="hint-inline">Repete automaticamente a Área Total do Imóvel (item 3.36). Bloqueada para edição.</span>
     </div>
     <div id="av_glebas"></div>
-
+    <div class="area-restante" id="av_area_restante">
+      <span class="ar-txt">Área restante para fechar 100%: <strong id="av_ar_valor">—</strong></span>
+    </div>
     <div class="vsub">Escala de Valor da CCU</div>
     <div class="ccu-formula" id="av_ccu_formula">
       <div class="linha1" id="av_ccu_l1">—</div>
@@ -1312,16 +1387,15 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
     <div class="vsub">III — Dimensionamento da Variável Nota Agronômica (N.A.)</div>
     <div class="na-calc">
       <span>N.A. =</span>
-      <input type="text" id="av_na_ccu" readonly title="CCU obtido acima">
+      <input type="text" id="av_na_ccu" readonly class="bloqueado" title="CCU obtido acima — bloqueado">
       <span>×</span>
-      <select id="av_na_escala">
-        <option value="1.00">1,00 (100)</option>
-        <option value="0.95">0,95 (95)</option>
-        <option value="0.90" selected>0,90 (90)</option>
-        <option value="0.85">0,85 (85)</option>
-        <option value="0.80">0,80 (80)</option>
-        <option value="0.75">0,75 (75)</option>
-        <option value="0.70">0,70 (70)</option>
+      <select id="av_na_escala" title="Situação / Circulação">
+        <option value="1.00">Ótima (100)</option>
+        <option value="0.95">Muito Boa (95)</option>
+        <option value="0.90" selected>Boa (90)</option>
+        <option value="0.80">Desfavorável (80)</option>
+        <option value="0.75">Má (75)</option>
+        <option value="0.70">Péssima (70)</option>
       </select>
       <span>=</span>
       <input type="text" id="av_na_result" readonly class="resultado">
@@ -1364,6 +1438,41 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
       <div class="vtn-formula">R$/ha = +170930,8028 × e^(+0,7420810025 / Área) × e^(-0,7754092498 / N.A.²) × e^(+0,3240766412 × Zona)</div>
       <div class="vtn-result">VTN/ha = <strong id="av_vtn">R$ —</strong></div>
     </div>
+
+    <div class="depois-box" id="av_depois_box" style="display:none;">
+      <h4>Cálculo de Desvalorização da Área Remanescente (Antes × Depois)</h4>
+      <div class="na-calc" style="background:#fff;">
+        <span><strong>ANTES</strong> — Situação:</span>
+        <input type="text" id="av_antes_sit" readonly class="bloqueado" title="Situação atual (item III)">
+        <span>N.A. =</span>
+        <input type="text" id="av_antes_na" readonly class="resultado">
+        <span>V.U./ha =</span>
+        <input type="text" id="av_antes_vu" readonly class="resultado">
+      </div>
+      <div class="na-calc" style="background:#fff; margin-top:8px;">
+        <span><strong>DEPOIS</strong> — Situação:</span>
+        <select id="av_depois_sit" onchange="AV_recalcular()" title="Situação após a intervenção">
+          <option value="1.00">Ótima (100)</option>
+          <option value="0.95">Muito Boa (95)</option>
+          <option value="0.90">Boa (90)</option>
+          <option value="0.80">Desfavorável (80)</option>
+          <option value="0.75" selected>Má (75)</option>
+          <option value="0.70">Péssima (70)</option>
+        </select>
+        <span>N.A. =</span>
+        <input type="text" id="av_depois_na" readonly class="resultado">
+        <span>V.U./ha =</span>
+        <input type="text" id="av_depois_vu" readonly class="resultado">
+      </div>
+      <div class="desval-result">
+        <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+          <span>Área remanescente: <strong id="av_desval_area">—</strong> ha</span>
+          <span>V.T.N. Antes: <strong id="av_desval_antes">R$ —</strong></span>
+          <span>V.T.N. Depois: <strong id="av_desval_depois">R$ —</strong></span>
+        </div>
+        <div style="margin-top:8px;">Valor total da desvalorização: <span class="v" id="av_desval_total">R$ —</span></div>
+      </div>
+    </div>
   </div>
 
   <!-- 14 CÁLCULO TERRA NUA -->
@@ -1371,13 +1480,13 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
   <div class="vcard">
     <div class="calc-line">
       <label>Faixa de domínio — Área desapropriada (ha) <span class="auto-tag">auto</span></label>
-      <input type="text" id="av_fd_area" data-from="area_desap">
+      <input type="text" readonly id="av_fd_area" data-from="area_desap" class="bloqueado">
       <span>× VTN/ha =</span>
       <strong id="av_fd_result">R$ —</strong>
     </div>
     <div class="calc-line">
-      <label>Outras áreas (Remanescente) — Área (ha)</label>
-      <input type="text" id="av_rem_area" value="0,1914">
+      <label>Outras áreas (Remanescente) — Área (ha) <span class="auto-tag">auto</span></label>
+      <input type="text" id="av_rem_area" value="0,1914" readonly class="bloqueado">
       <span>× VTN/ha =</span>
       <strong id="av_rem_result">R$ —</strong>
     </div>
@@ -1434,9 +1543,9 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
       <div class="vfield"><label>Data</label><input type="date" id="av_data_ass" value="2026-07-30"></div>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>Responsável <span class="auto-tag">auto</span></label><input type="text" id="av_ass_nome" data-from="ass_nome"></div>
-      <div class="vfield grow"><label>Cargo <span class="auto-tag">auto</span></label><input type="text" id="av_ass_cargo" data-from="ass_cargo"></div>
-      <div class="vfield grow"><label>CREA <span class="auto-tag">auto</span></label><input type="text" id="av_ass_crea" data-from="ass_crea"></div>
+      <div class="vfield grow"><label>Responsável <span class="auto-tag">auto</span></label><input type="text" readonly id="av_ass_nome" data-from="ass_nome" class="bloqueado"></div>
+      <div class="vfield grow"><label>Cargo <span class="auto-tag">auto</span></label><input type="text" readonly id="av_ass_cargo" data-from="ass_cargo" class="bloqueado"></div>
+      <div class="vfield grow"><label>CREA <span class="auto-tag">auto</span></label><input type="text" readonly id="av_ass_crea" data-from="ass_crea" class="bloqueado"></div>
     </div>
   </div>
 
@@ -1454,11 +1563,27 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
 <script>
 /* ---- Navegação por abas ---- */
 function trocarAba(btn){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('ativa'));
+  document.querySelectorAll('.tab, .drop-item').forEach(t=>t.classList.remove('ativa'));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('ativa'));
   btn.classList.add('ativa');
   document.getElementById(btn.dataset.alvo).classList.add('ativa');
+  // se for item do dropdown, destacar a aba-mãe e fechar o menu
+  const drop=document.getElementById('dropAnexos');
+  if(drop){
+    const dentro=drop.contains(btn);
+    const tabDrop=drop.querySelector('.tab-drop');
+    if(dentro){ tabDrop.classList.add('ativa'); }
+    drop.classList.remove('aberto');
+  }
 }
+function FIOL_toggleDrop(ev){
+  ev.stopPropagation();
+  document.getElementById('dropAnexos').classList.toggle('aberto');
+}
+document.addEventListener('click', function(e){
+  const drop=document.getElementById('dropAnexos');
+  if(drop && !drop.contains(e.target)) drop.classList.remove('aberto');
+});
 </script>
 
 <!-- ===== JS TABELA CCU (versão validada + múltiplas glebas) ===== -->
@@ -1866,6 +1991,31 @@ async function gerarPDF(){
   pdf.save("Tabela_CCU.pdf");
 }
 
+
+const ROMANOS_CCU=["","I","II","III","IV","V","VI","VII","VIII"];
+function CCU_puxarDados(){
+  // denominação do imóvel (Ficha de Vistoria)
+  const denomEl=document.getElementById("fv_prop_id");
+  const denom=denomEl? denomEl.value.trim() : "";
+  // glebas da Avaliação
+  const linhas=[...document.querySelectorAll("#av_glebas .gleba-linha")];
+  if(!linhas.length){ alert("Nenhuma gleba cadastrada na aba Avaliação."); return; }
+  salvarAtual();
+  glebas=[];
+  linhas.forEach((l,idx)=>{
+    const classe=parseInt(l.querySelector(".g-classe").value,10);
+    const area=l.querySelector(".g-area").value.trim();
+    const nGleba=String(idx+1).padStart(2,"0");
+    const nome=[denom||"Imóvel", "Gleba "+nGleba, area+" ha", "Classe "+ROMANOS_CCU[classe]].join(" - ");
+    const g=novaGleba();
+    g.nome=nome;
+    // marcar automaticamente a coluna da classe no cabeçalho (I..VIII)
+    glebas.push(g);
+  });
+  ativa=0;
+  aplicarGleba();
+}
+window.CCU_puxarDados=CCU_puxarDados;
 window.CCU_addGleba=CCU_addGleba;
 window.CCU_removerGleba=CCU_removerGleba;
 window.CCU_irGleba=CCU_irGleba;
@@ -2659,7 +2809,8 @@ window.FOTO_rodapeHTML=rodapeHTML;
   function render(){
     const linhas = document.querySelectorAll("#fv_estacas .estaca-linha");
     linhas.forEach((l,idx)=>{
-      l.querySelector(".rot").textContent = "Área " + String(idx+1).padStart(2,"0");
+      const tipo = idx===0 ? "Faixa de Domínio" : "Área Remanescente";
+      l.querySelector(".rot").innerHTML = "Área " + String(idx+1).padStart(2,"0") + '<br><span class="rot-tipo">'+tipo+'</span>';
       const rm = l.querySelector(".rm");
       rm.style.display = linhas.length>1 ? "block" : "none";
     });
@@ -2788,15 +2939,21 @@ window.FOTO_rodapeHTML=rodapeHTML;
 
   // ---------------- Cálculo central ----------------
   function recalc(){
-    const areaAval = num(document.getElementById("av_area_aval").value);
+    // área avaliada de referência repete a Área Total do Imóvel (3.36) e fica bloqueada
+    const areaTotalEl = document.getElementById("av_areatotal");
+    const areaAvalEl = document.getElementById("av_area_aval");
+    if(areaTotalEl && areaAvalEl && areaTotalEl.value.trim()) areaAvalEl.value = areaTotalEl.value.trim();
+    const areaAval = num(areaAvalEl.value);
     const linhas = [...document.querySelectorAll("#av_glebas .gleba-linha")];
 
     // % por gleba e componentes CCU
     let ccu = 0;
     const comps = [];
+    let somaAreas = 0;
     linhas.forEach((l,idx)=>{
       const classe = parseInt(l.querySelector(".g-classe").value,10);
       const area = num(l.querySelector(".g-area").value);
+      if(isFinite(area)) somaAreas += area;
       const peso = (isFinite(area) && isFinite(areaAval) && areaAval>0) ? area/areaAval : NaN;
       const pctEl = l.querySelector(".pct-val");
       pctEl.textContent = isFinite(peso) ? fmtBR(peso*100,2)+"%" : "—";
@@ -2809,6 +2966,22 @@ window.FOTO_rodapeHTML=rodapeHTML;
       }
     });
     ccu = Math.round(ccu*10000)/10000;
+
+    // área restante para fechar 100%
+    const restEl = document.getElementById("av_ar_valor");
+    if(restEl){
+      if(isFinite(areaAval) && areaAval>0){
+        const rest = Math.round((areaAval - somaAreas)*10000)/10000;
+        const pctPreench = fmtBR(somaAreas/areaAval*100,2);
+        if(Math.abs(rest)<0.0001){
+          restEl.innerHTML = '<span style="color:#159a3c;">0,0000 ha — 100% preenchido ✓</span>';
+        } else if(rest>0){
+          restEl.innerHTML = fmtBR(rest,4)+' ha ('+fmtBR(100-somaAreas/areaAval*100,2)+'% restante) — preenchido '+pctPreench+'%';
+        } else {
+          restEl.innerHTML = '<span style="color:#c0392b;">excedeu em '+fmtBR(-rest,4)+' ha ('+pctPreench+'% da área)</span>';
+        }
+      } else { restEl.textContent = "—"; }
+    }
 
     // fórmula CCU (linhas)
     const l1 = "CCU = " + comps.map(c=> "("+fmtBR(c.peso,4)+" × "+fmtBR(c.val,2)+")").join(" + ") + (comps.length?" =":"—");
@@ -2844,7 +3017,11 @@ window.FOTO_rodapeHTML=rodapeHTML;
 
     // item 14 — cálculo terra nua
     const fdArea = num(document.getElementById("av_fd_area").value);
-    const remArea = num(document.getElementById("av_rem_area").value);
+    // área remanescente repete "Outras áreas (ha)" (3.38)
+    const outrasEl = document.getElementById("av_outrasareas");
+    const remEl = document.getElementById("av_rem_area");
+    if(outrasEl && remEl && outrasEl.value.trim()) remEl.value = outrasEl.value.trim();
+    const remArea = num(remEl.value);
     const fdVal = isFinite(fdArea)? fdArea*vtn : NaN;
     const remVal = isFinite(remArea)? remArea*vtn : NaN;
     document.getElementById("av_fd_result").textContent = money(fdVal);
@@ -2869,6 +3046,34 @@ window.FOTO_rodapeHTML=rodapeHTML;
     document.getElementById("rs_total").textContent = money(total);
     document.getElementById("av_lim_inf").value = money(total*0.85);
     document.getElementById("av_lim_sup").value = money(total*1.15);
+
+    // ===== Antes e Depois (desvalorização da remanescente) =====
+    const adSim = document.querySelector('input[name="av_antesdepois"]:checked');
+    if(adSim && adSim.value==="sim"){
+      const sitAntes = escala; // situação atual (item III)
+      const naAntes = na;
+      const rNAa = Math.exp(-VTN_KNA/(naAntes*naAntes));
+      const vuAntes = VTN_A * rArea * rNAa * rZona;
+      const depoisSel = document.getElementById("av_depois_sit");
+      const sitDepois = depoisSel ? parseFloat(depoisSel.value) : 0.75;
+      const naDepois = Math.round(ccu*sitDepois*10000)/10000;
+      const rNAd = Math.exp(-VTN_KNA/(naDepois*naDepois));
+      const vuDepois = VTN_A * rArea * rNAd * rZona;
+      const areaRem = remArea;
+      const vtnAntes = isFinite(areaRem)? areaRem*vuAntes : NaN;
+      const vtnDepois = isFinite(areaRem)? areaRem*vuDepois : NaN;
+      const desval = vtnAntes - vtnDepois;
+      const setTxt=(id,v)=>{ const e=document.getElementById(id); if(e){ if(e.tagName==="INPUT") e.value=v; else e.textContent=v; } };
+      setTxt("av_antes_sit", document.getElementById("av_na_escala").options[document.getElementById("av_na_escala").selectedIndex].text);
+      setTxt("av_antes_na", fmtBR(naAntes,4));
+      setTxt("av_antes_vu", money(vuAntes));
+      setTxt("av_depois_na", fmtBR(naDepois,4));
+      setTxt("av_depois_vu", money(vuDepois));
+      setTxt("av_desval_area", fmtBR(areaRem,4));
+      setTxt("av_desval_antes", money(vtnAntes));
+      setTxt("av_desval_depois", money(vtnDepois));
+      setTxt("av_desval_total", money(desval));
+    }
 
     // guardar para o PDF
     window.__AV_CALC__ = {ccu, na, escala, vtn, fdArea, remArea, fdVal, remVal, sub1, sub2, total, zona, areaMem, comps};
@@ -3223,6 +3428,9 @@ window.FOTO_rodapeHTML=rodapeHTML;
     secBar(doc,ctx,"04 — SITUAÇÃO DO IMÓVEL");
     campo2(doc,ctx,"4.1 Zona", val("av_zona"), "4.2 Terreno demarcado", val("av_demarcado"));
     campo2(doc,ctx,"4.6 Há litígio", val("av_litigio"), "4.2.1 Geoprocessamento (INCRA)", val("av_geo"));
+    if(val("av_geo")==="SIM" && val("av_geo_cod")){
+      campo(doc,ctx,"Código do Geoprocessamento (INCRA)", val("av_geo_cod"));
+    }
     campo2(doc,ctx,"4.2.2 CAR", val("av_car"), "Nº CAR", val("av_ncar"));
 
     secBar(doc,ctx,"05 — LIMITES E CONFRONTAÇÕES");
@@ -3731,6 +3939,33 @@ window.FOTO_rodapeHTML=rodapeHTML;
     doc.setFont("helvetica","bold"); doc.setFontSize(13); doc.setTextColor(192,112,10);
     doc.text("VTN/ha = "+document.getElementById("av_vtn").textContent, ctx.ML+8, ctx.y+31);
     ctx.y+=46; doc.setTextColor(30,40,55);
+
+    // Antes e Depois — desvalorização da remanescente
+    const adSel = document.querySelector('input[name="av_antesdepois"]:checked');
+    if(adSel && adSel.value==="sim"){
+      subLbl(doc,ctx,"Cálculo de Desvalorização da Área Remanescente (Antes × Depois)");
+      const vAntesSit = val("av_antes_sit");
+      const vAntesNA = val("av_antes_na");
+      const vAntesVU = val("av_antes_vu");
+      const depSel = document.getElementById("av_depois_sit");
+      const vDepoisSit = depSel ? depSel.options[depSel.selectedIndex].text : "";
+      const vDepoisNA = val("av_depois_na");
+      const vDepoisVU = val("av_depois_vu");
+      campo2(doc,ctx,"Antes — Situação/Circulação", vAntesSit, "N.A. (Antes)", vAntesNA);
+      campo(doc,ctx,"V.U. (R$/ha) — Antes", vAntesVU);
+      campo2(doc,ctx,"Depois — Situação/Circulação", vDepoisSit, "N.A. (Depois)", vDepoisNA);
+      campo(doc,ctx,"V.U. (R$/ha) — Depois", vDepoisVU);
+      campo2(doc,ctx,"Área remanescente (ha)", (document.getElementById("av_desval_area")||{}).textContent||"-", "V.T.N. Antes", (document.getElementById("av_desval_antes")||{}).textContent||"-");
+      campo(doc,ctx,"V.T.N. Depois", (document.getElementById("av_desval_depois")||{}).textContent||"-");
+      // caixa destaque desvalorização total
+      ensure(doc,ctx,30);
+      const larg=ctx.MR-ctx.ML;
+      doc.setFillColor(255,244,230); doc.setDrawColor(192,112,10); doc.setLineWidth(1);
+      doc.roundedRect(ctx.ML,ctx.y,larg,26,4,4,"FD");
+      doc.setFont("helvetica","bold"); doc.setFontSize(11); doc.setTextColor(192,112,10);
+      doc.text("VALOR TOTAL DA DESVALORIZAÇÃO: "+((document.getElementById("av_desval_total")||{}).textContent||"-"), ctx.ML+10, ctx.y+17);
+      ctx.y+=34; doc.setTextColor(30,40,55);
+    }
   }
 
 
@@ -3847,6 +4082,63 @@ window.FOTO_rodapeHTML=rodapeHTML;
     if(btn){btn.disabled=false; btn.innerHTML=orig;}
   };
 })();
+</script>
+
+<script>
+/* ===== Acordeão Ficha de Vistoria ===== */
+function FV_toggleSec(h2){
+  h2.classList.toggle("fechado");
+  // o corpo é o próximo .vcard irmão
+  let el=h2.nextElementSibling;
+  while(el && !el.classList.contains("vcard")) el=el.nextElementSibling;
+  if(el) el.classList.toggle("oculto");
+}
+</script>
+
+<script>
+/* ===== Avaliação: ocupante mesmo/outro ===== */
+function AV_ocupanteTipo(){
+  const outro = document.querySelector('input[name="av_ocup_tipo"]:checked').value==="outro";
+  // campos do item 03 que espelham o proprietário
+  const ids=["av_nome","av_cpf","av_estcivil","av_endcorresp","av_telefone"];
+  ids.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    if(outro){
+      el.readOnly=false; el.classList.remove("bloqueado");
+      el.removeAttribute("data-from-paused");
+      // "desligar" temporariamente o auto-fill: mover data-from p/ data-from-paused
+      if(el.hasAttribute("data-from")){ el.setAttribute("data-from-paused", el.getAttribute("data-from")); el.removeAttribute("data-from"); }
+    } else {
+      el.readOnly=true; el.classList.add("bloqueado");
+      // religar auto-fill
+      if(el.hasAttribute("data-from-paused")){ el.setAttribute("data-from", el.getAttribute("data-from-paused")); el.removeAttribute("data-from-paused"); }
+      // repuxar valor do proprietário
+      const key=el.getAttribute("data-from");
+      const src=document.querySelector('#panel-vistoria [data-sync="'+key+'"]');
+      if(src) el.value=src.value;
+    }
+  });
+}
+</script>
+
+<script>
+/* ===== Avaliação: código INCRA condicional ===== */
+function AV_geoToggle(){
+  const sim=document.getElementById("av_geo").value==="SIM";
+  const wrap=document.getElementById("av_geo_cod_wrap");
+  if(wrap) wrap.style.display = sim ? "flex" : "none";
+}
+</script>
+
+<script>
+/* ===== Avaliação: Antes e Depois ===== */
+function AV_antesDepoisToggle(){
+  const sim=document.querySelector('input[name="av_antesdepois"]:checked').value==="sim";
+  const box=document.getElementById("av_depois_box");
+  if(box) box.style.display = sim ? "block" : "none";
+  if(typeof window.AV_recalcular==="function") window.AV_recalcular();
+}
 </script>
 </body>
 
