@@ -825,6 +825,27 @@
   #panel-avaliacao table.ia-tab td.ia-destaque{font-weight:800; color:var(--azul-esc); background:#eaf3fc;}
   #panel-avaliacao table.ia-tab td.ia-centro{text-align:center;}
   #panel-avaliacao .ia-mapa .img-drop{flex:1; border-radius:0 0 6px 6px; margin:0;}
+
+  /* Itens 12 e 13 — Benfeitorias */
+  #panel-avaliacao .bnf-sub{font-weight:800; color:var(--azul-esc); margin:14px 0 6px; font-size:13px; border-left:4px solid var(--azul); padding-left:8px;}
+  #panel-avaliacao .bnf-tab-wrap{overflow-x:auto; margin-bottom:8px;}
+  #panel-avaliacao table.bnf-tab{width:100%; border-collapse:collapse; font-size:11.5px; min-width:760px;}
+  #panel-avaliacao table.bnf-tab th{background:var(--azul); color:#fff; padding:6px 7px; text-align:center; font-weight:700; border:1px solid #fff; line-height:1.2;}
+  #panel-avaliacao table.bnf-tab td{border:1px solid var(--borda); padding:3px 5px; vertical-align:middle;}
+  #panel-avaliacao table.bnf-tab textarea.bnf-disc{width:100%; min-width:200px; min-height:38px; border:1px solid var(--borda-forte); border-radius:5px; padding:5px; font-size:11px; resize:vertical; font-family:inherit;}
+  #panel-avaliacao table.bnf-tab input{width:100%; border:1px solid var(--borda-forte); border-radius:5px; padding:5px 6px; font-size:11.5px; text-align:center;}
+  #panel-avaliacao table.bnf-tab input:focus, #panel-avaliacao table.bnf-tab textarea:focus{border-color:var(--azul); outline:none; box-shadow:0 0 0 2px rgba(31,111,192,.12);}
+  #panel-avaliacao table.bnf-tab .bnf-vtotal{font-weight:700; color:var(--azul-esc); text-align:right; white-space:nowrap;}
+  #panel-avaliacao table.bnf-tab tfoot .bnf-tot-lbl{text-align:right; font-weight:800; background:#eef4fa; color:var(--azul-esc);}
+  #panel-avaliacao table.bnf-tab tfoot .bnf-tot{font-weight:800; background:#e3f0fc; color:var(--azul-esc); text-align:right; white-space:nowrap;}
+  #panel-avaliacao .bnf-rm{border:none; background:#fbe9e9; color:#c0392b; border-radius:5px; width:26px; height:26px; cursor:pointer; font-weight:700;}
+  #panel-avaliacao .bnf-rm:hover{background:#f5d5d5;}
+  #panel-avaliacao .bnf-add{background:#eef4fa; border:1px dashed var(--azul); color:var(--azul-esc); border-radius:7px; padding:7px 14px; font-size:12px; font-weight:600; cursor:pointer; margin-top:4px;}
+  #panel-avaliacao .bnf-add:hover{background:#e3f0fc;}
+  #panel-avaliacao .bnf-total-geral{margin-top:16px; padding:12px 16px; background:#e3f0fc; border:2px solid var(--azul); border-radius:9px; font-size:14px; font-weight:700; color:var(--azul-esc); text-align:right;}
+  #panel-avaliacao .bnf-nota{font-size:11px; color:var(--label); margin-top:8px; font-style:italic;}
+  #panel-avaliacao .bnf-col-dep{width:110px;}
+  #panel-avaliacao .bnf-col-un{width:70px;} #panel-avaliacao .bnf-col-qtd{width:80px;} #panel-avaliacao .bnf-col-vu{width:100px;}
 </style>
 </head>
 <body>
@@ -1625,6 +1646,76 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
         <div style="margin-top:8px;">Valor total da desvalorização: <span class="v" id="av_desval_total">R$ —</span></div>
       </div>
     </div>
+  </div>
+
+  <!-- 12 BENFEITORIAS REPRODUTIVAS -->
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>12 — Benfeitorias Reprodutivas</span><span class="acc-chevron">▾</span></h2>
+  <div class="vcard">
+    <div class="bnf-sub">12.1 — Culturas Permanentes</div>
+    <div class="bnf-tab-wrap">
+      <table class="bnf-tab" data-grupo="121">
+        <thead>
+          <tr><th>Discriminação</th><th>Depreciação</th><th>Estado Fitossanitário</th><th>Unidade</th><th>Qtd.</th><th>Vl. Unitário (R$)</th><th>Vl. Total (R$)</th><th></th></tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot><tr><td colspan="6" class="bnf-tot-lbl">TOTAL 12.1</td><td class="bnf-tot" id="bnf_tot_121">R$ 0,00</td><td></td></tr></tfoot>
+      </table>
+      <button type="button" class="bnf-add" onclick="BNF_addLinha('121')">+ Adicionar cultura permanente</button>
+    </div>
+
+    <div class="bnf-sub">12.2 — Culturas Temporárias</div>
+    <div class="bnf-tab-wrap">
+      <table class="bnf-tab" data-grupo="122">
+        <thead>
+          <tr><th>Discriminação</th><th>Depreciação</th><th>Estado Fitossanitário</th><th>Unidade</th><th>Qtd.</th><th>Vl. Unitário (R$)</th><th>Vl. Total (R$)</th><th></th></tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot><tr><td colspan="6" class="bnf-tot-lbl">TOTAL 12.2</td><td class="bnf-tot" id="bnf_tot_122">R$ 0,00</td><td></td></tr></tfoot>
+      </table>
+      <button type="button" class="bnf-add" onclick="BNF_addLinha('122')">+ Adicionar cultura temporária</button>
+    </div>
+
+    <div class="bnf-sub">12.3 — Pastagem</div>
+    <div class="bnf-tab-wrap">
+      <table class="bnf-tab" data-grupo="123">
+        <thead>
+          <tr><th>Discriminação</th><th>Depreciação</th><th>Estado Fitossanitário / Idade</th><th>Unidade</th><th>Qtd.</th><th>Vl. Unitário (R$)</th><th>Vl. Total (R$)</th><th></th></tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot><tr><td colspan="6" class="bnf-tot-lbl">TOTAL 12.3</td><td class="bnf-tot" id="bnf_tot_123">R$ 0,00</td><td></td></tr></tfoot>
+      </table>
+      <button type="button" class="bnf-add" onclick="BNF_addLinha('123')">+ Adicionar pastagem</button>
+    </div>
+
+    <div class="bnf-sub">12.4 — Extrativismo</div>
+    <div class="bnf-tab-wrap">
+      <table class="bnf-tab" data-grupo="124">
+        <thead>
+          <tr><th>Discriminação</th><th>Depreciação</th><th>Estado Fitossanitário</th><th>Unidade</th><th>Qtd.</th><th>Vl. Unitário (R$)</th><th>Vl. Total (R$)</th><th></th></tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot><tr><td colspan="6" class="bnf-tot-lbl">TOTAL 12.4</td><td class="bnf-tot" id="bnf_tot_124">R$ 0,00</td><td></td></tr></tfoot>
+      </table>
+      <button type="button" class="bnf-add" onclick="BNF_addLinha('124')">+ Adicionar extrativismo</button>
+    </div>
+
+    <div class="bnf-total-geral">TOTAL 12 (12.1 + 12.2 + 12.3 + 12.4): <strong id="bnf_tot_12">R$ 0,00</strong></div>
+  </div>
+
+  <!-- 13 BENFEITORIAS NÃO REPRODUTIVAS -->
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>13 — Benfeitorias Não Reprodutivas</span><span class="acc-chevron">▾</span></h2>
+  <div class="vcard">
+    <div class="bnf-tab-wrap">
+      <table class="bnf-tab bnf-tab13" data-grupo="13">
+        <thead>
+          <tr><th>Discriminação</th><th>Unidade</th><th>Depreciação</th><th>Qtd.</th><th>Vl. Unitário (R$)</th><th>Vl. Total (R$)</th><th></th></tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot><tr><td colspan="5" class="bnf-tot-lbl">TOTAL 13</td><td class="bnf-tot" id="bnf_tot_13">R$ 0,00</td><td></td></tr></tfoot>
+      </table>
+      <button type="button" class="bnf-add" onclick="BNF_addLinha('13')">+ Adicionar benfeitoria não reprodutiva</button>
+    </div>
+    <p class="bnf-nota">A depreciação segue o método Ross-Heidecke: D = (100 − k) / 100. O Valor Total = Quantidade × Valor Unitário × Depreciação.</p>
   </div>
 
   <!-- 14 CÁLCULO TERRA NUA -->
@@ -4812,6 +4903,118 @@ function AV_gerarDescSituacao(){
   document.addEventListener("DOMContentLoaded", function(){
     bindMapa();
     if(typeof window.AV_atualizarImovelAvaliando==="function") window.AV_atualizarImovelAvaliando();
+  });
+})();
+</script>
+
+<script>
+/* ===== Itens 12 e 13 — Benfeitorias (reprodutivas e não reprodutivas) ===== */
+(function(){
+  function brnum(s){ if(s==null) return NaN; return parseFloat(String(s).replace(/\./g,"").replace(",",".")); }
+  function money(n){ return isFinite(n)? "R$ "+n.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2}) : "R$ 0,00"; }
+
+  // linha do item 12 (grupos 121..124): Discriminação, Depreciação, Estado, Unidade, Qtd, Unitário, Total
+  function linha12(){
+    const tr=document.createElement("tr");
+    tr.innerHTML =
+      '<td><textarea class="bnf-disc" placeholder="Discriminação da benfeitoria"></textarea></td>'+
+      '<td class="bnf-col-dep"><input type="text" class="bnf-dep" placeholder="ex: 0,60 ou PRODUTIVA"></td>'+
+      '<td><input type="text" class="bnf-estado" placeholder="ex: BOM"></td>'+
+      '<td class="bnf-col-un"><input type="text" class="bnf-unid" placeholder="und."></td>'+
+      '<td class="bnf-col-qtd"><input type="text" class="bnf-qtd" placeholder="0"></td>'+
+      '<td class="bnf-col-vu"><input type="text" class="bnf-vu" placeholder="0,00"></td>'+
+      '<td class="bnf-vtotal">R$ 0,00</td>'+
+      '<td><button type="button" class="bnf-rm" title="Remover">✕</button></td>';
+    return tr;
+  }
+  // linha do item 13: Discriminação, Unidade, Depreciação, Qtd, Unitário, Total
+  function linha13(){
+    const tr=document.createElement("tr");
+    tr.innerHTML =
+      '<td><textarea class="bnf-disc" placeholder="Discriminação + memória de cálculo"></textarea></td>'+
+      '<td class="bnf-col-un"><input type="text" class="bnf-unid" placeholder="m"></td>'+
+      '<td class="bnf-col-dep"><input type="text" class="bnf-dep" placeholder="ex: 0,42"></td>'+
+      '<td class="bnf-col-qtd"><input type="text" class="bnf-qtd" placeholder="0"></td>'+
+      '<td class="bnf-col-vu"><input type="text" class="bnf-vu" placeholder="0,00"></td>'+
+      '<td class="bnf-vtotal">R$ 0,00</td>'+
+      '<td><button type="button" class="bnf-rm" title="Remover">✕</button></td>';
+    return tr;
+  }
+
+  window.BNF_addLinha = function(grupo, dados){
+    const tbody = document.querySelector('.bnf-tab[data-grupo="'+grupo+'"] tbody');
+    if(!tbody) return;
+    const tr = (grupo==="13") ? linha13() : linha12();
+    tbody.appendChild(tr);
+    tr.querySelector(".bnf-rm").addEventListener("click", ()=>{ tr.remove(); BNF_recalc(); });
+    tr.querySelectorAll("input,textarea").forEach(el=> el.addEventListener("input", BNF_recalc));
+    if(dados){
+      const set=(cls,v)=>{ const e=tr.querySelector(cls); if(e&&v!=null) e.value=v; };
+      set(".bnf-disc",dados.disc); set(".bnf-dep",dados.dep); set(".bnf-estado",dados.estado);
+      set(".bnf-unid",dados.unid); set(".bnf-qtd",dados.qtd); set(".bnf-vu",dados.vu);
+    }
+    BNF_recalc();
+  };
+
+  window.BNF_recalc = function(){
+    let tot12=0;
+    ["121","122","123","124","13"].forEach(grupo=>{
+      const tab=document.querySelector('.bnf-tab[data-grupo="'+grupo+'"]');
+      if(!tab) return;
+      let soma=0;
+      tab.querySelectorAll("tbody tr").forEach(tr=>{
+        const qtd=brnum(tr.querySelector(".bnf-qtd")?.value);
+        const vu=brnum(tr.querySelector(".bnf-vu")?.value);
+        const depStr=tr.querySelector(".bnf-dep")?.value || "";
+        const depNum=brnum(depStr);
+        // se depreciação for número (fator), multiplica; se for texto (PRODUTIVA/IMATURO), ignora
+        const fator = isFinite(depNum) ? depNum : 1;
+        const total = (isFinite(qtd)?qtd:0) * (isFinite(vu)?vu:0) * fator;
+        const cel=tr.querySelector(".bnf-vtotal");
+        if(cel) cel.textContent = money(total);
+        soma += total;
+      });
+      const totEl=document.getElementById("bnf_tot_"+grupo);
+      if(totEl) totEl.textContent = money(soma);
+      if(grupo!=="13") tot12 += soma;
+    });
+    const tot12El=document.getElementById("bnf_tot_12");
+    if(tot12El) tot12El.textContent = money(tot12);
+    // expor para o PDF
+    window.__AV_BENF__ = {
+      tot121: document.getElementById("bnf_tot_121")?.textContent,
+      tot122: document.getElementById("bnf_tot_122")?.textContent,
+      tot123: document.getElementById("bnf_tot_123")?.textContent,
+      tot124: document.getElementById("bnf_tot_124")?.textContent,
+      tot12: document.getElementById("bnf_tot_12")?.textContent,
+      tot13: document.getElementById("bnf_tot_13")?.textContent
+    };
+  };
+
+  // helper p/ o PDF: ler as linhas de um grupo
+  window.BNF_lerLinhas = function(grupo){
+    const tab=document.querySelector('.bnf-tab[data-grupo="'+grupo+'"]');
+    if(!tab) return [];
+    return [...tab.querySelectorAll("tbody tr")].map(tr=>({
+      disc: tr.querySelector(".bnf-disc")?.value||"",
+      dep: tr.querySelector(".bnf-dep")?.value||"",
+      estado: tr.querySelector(".bnf-estado")?.value||"",
+      unid: tr.querySelector(".bnf-unid")?.value||"",
+      qtd: tr.querySelector(".bnf-qtd")?.value||"",
+      vu: tr.querySelector(".bnf-vu")?.value||"",
+      total: tr.querySelector(".bnf-vtotal")?.textContent||""
+    }));
+  };
+
+  document.addEventListener("DOMContentLoaded", function(){
+    // linhas iniciais do modelo (exemplo do Lote 5F)
+    if(!document.querySelector('.bnf-tab[data-grupo="121"] tbody tr')){
+      BNF_addLinha("121",{disc:"COQUEIRO LICURI. NOTA: MESMA FAMÍLIA DO COCO ANÃO - ARECACEAE (PALMEIRAS). (RGV Lote 5F - 4ª Revisão, pág. 161)", dep:"PRODUTIVA", estado:"BOM", unid:"und.", qtd:"5", vu:"52,62"});
+      BNF_addLinha("121",{disc:"COQUEIRO LICURI. NOTA: MESMA FAMÍLIA DO COCO ANÃO - ARECACEAE (PALMEIRAS). (RGV Lote 5F - 4ª Revisão, pág. 161)", dep:"IMATURO", estado:"BOM", unid:"und.", qtd:"3", vu:"52,62"});
+      BNF_addLinha("123",{disc:"CUSTO DE PREPARO DE ÁREA PARA FORMAÇÃO DE PASTAGEM. (RGV Lote 5F - 4ª Revisão, pág. 260)", dep:"0,60", estado:"REGULAR", unid:"ha", qtd:"1,9327", vu:"4.111,37"});
+      BNF_addLinha("13",{disc:"CERCA DE MADEIRA DE LEI OU SIMILAR COM 9 FIOS DE ARAME FARPADO E ESPAÇAMENTO DE 1,50 METROS ENTRE ESTACAS. (RGV Lote 5F - 4ª Revisão, pág. 154)", dep:"0,61", unid:"m", qtd:"246,70", vu:"72,24"});
+    }
+    BNF_recalc();
   });
 })();
 </script>
