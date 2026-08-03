@@ -709,14 +709,14 @@
 
 
   /* ===== Acordeão Ficha de Vistoria ===== */
-  #panel-vistoria .vsec.acc{
+  #panel-vistoria .vsec.acc, #panel-avaliacao .vsec.acc{
     display:flex; align-items:center; justify-content:space-between;
     cursor:pointer; user-select:none;
   }
-  #panel-vistoria .vsec.acc .acc-chevron{font-size:13px; transition:transform .2s;}
-  #panel-vistoria .vsec.acc.fechado{border-radius:9px;}
-  #panel-vistoria .vsec.acc.fechado .acc-chevron{transform:rotate(-90deg);}
-  #panel-vistoria .vcard.oculto{display:none;}
+  #panel-vistoria .vsec.acc .acc-chevron, #panel-avaliacao .vsec.acc .acc-chevron{font-size:13px; transition:transform .2s;}
+  #panel-vistoria .vsec.acc.fechado, #panel-avaliacao .vsec.acc.fechado{border-radius:9px;}
+  #panel-vistoria .vsec.acc.fechado .acc-chevron, #panel-avaliacao .vsec.acc.fechado .acc-chevron{transform:rotate(-90deg);}
+  #panel-vistoria .vcard.oculto, #panel-avaliacao .vcard.oculto{display:none;}
   #panel-vistoria .estaca-linha .rot-tipo{font-size:9px; font-weight:700; color:#159a3c; text-transform:uppercase; letter-spacing:.3px;}
 
   /* campos bloqueados (auto-preenchidos / repetidos) */
@@ -786,6 +786,20 @@
   #panel-avaliacao table.na-tabela td.area-edit.na-area-preenchida input.na-area{background:#fff9e8; font-weight:600;}
   #panel-avaliacao .gleba-linha .g-classe-disp{text-align:center; font-weight:700;}
   #panel-avaliacao .gleba-vazia{padding:14px; text-align:center; color:#8a97a6; font-style:italic; background:var(--suave); border-radius:8px;}
+
+  /* gleba em bloco com dropdowns de fator/característica */
+  #panel-avaliacao .gleba-bloco{flex-direction:column; align-items:stretch; gap:10px;}
+  #panel-avaliacao .gleba-topo{display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;}
+  #panel-avaliacao .gleba-selecoes{display:flex; gap:12px; flex-wrap:wrap;}
+  #panel-avaliacao .gleba-selecoes .cel{flex:1; min-width:240px;}
+  #panel-avaliacao .cel.selfator, #panel-avaliacao .cel.selcaract{display:flex; flex-direction:column; gap:4px;}
+  #panel-avaliacao .cel.selfator span, #panel-avaliacao .cel.selcaract span,
+  #panel-avaliacao .cel.fator.full span{font-size:10px; font-weight:700; color:var(--label); text-transform:uppercase; letter-spacing:.3px;}
+  #panel-avaliacao .cel.fator.full{display:flex; flex-direction:column; gap:4px;}
+  #panel-avaliacao .g-fatorlim, #panel-avaliacao .g-caract{
+    width:100%; border:1px solid var(--borda-forte); border-radius:7px; padding:7px 9px; font-size:12.5px; background:#fff; color:var(--texto);
+  }
+  #panel-avaliacao .g-fatorlim:focus, #panel-avaliacao .g-caract:focus{border-color:var(--azul); outline:none; box-shadow:0 0 0 2px rgba(31,111,192,.15);}
 </style>
 </head>
 <body>
@@ -806,16 +820,16 @@
   </div>
   <div class="unir-status" id="unirStatus"></div>
   <nav class="tabs" id="tabs">
-    <button class="tab ativa" data-alvo="panel-vistoria" onclick="trocarAba(this)">📋 Ficha de Vistoria</button>
-    <button class="tab" data-alvo="panel-avaliacao" onclick="trocarAba(this)">📐 Avaliação</button>
+    <button class="tab ativa" data-alvo="panel-vistoria" onclick="trocarAba(this)">Ficha de Vistoria</button>
+    <button class="tab" data-alvo="panel-avaliacao" onclick="trocarAba(this)">Avaliação</button>
     <div class="dropdown" id="dropAnexos">
-      <button class="tab tab-drop" onclick="FIOL_toggleDrop(event)">🗂️ Anexos <span class="caret">▾</span></button>
+      <button class="tab tab-drop" onclick="FIOL_toggleDrop(event)">Anexos <span class="caret">▾</span></button>
       <div class="dropdown-menu" id="dropAnexosMenu">
-        <button class="drop-item" data-alvo="panel-ccu"   onclick="trocarAba(this)">📊 Tabela CCU <span class="badge">Anexo 1</span></button>
-        <button class="drop-item" data-alvo="panel-anexo" onclick="trocarAba(this)">📎 Unificar Anexos <span class="badge">2 e 3</span></button>
-        <button class="drop-item" data-alvo="panel-foto"  onclick="trocarAba(this)">📷 Relatório Fotográfico <span class="badge">Anexo 4</span></button>
-        <button class="drop-item" data-alvo="panel-drl"   onclick="trocarAba(this)">📜 DRL <span class="badge">Anexo 5</span></button>
-        <button class="drop-item" data-alvo="panel-docs"  onclick="trocarAba(this)">🗂️ Documentos <span class="badge">Anexo 6</span></button>
+        <button class="drop-item" data-alvo="panel-ccu"   onclick="trocarAba(this)">Anexo 01 - Tabela CCU</button>
+        <button class="drop-item" data-alvo="panel-anexo" onclick="trocarAba(this)">Anexos 02 e 03 - Unificar</button>
+        <button class="drop-item" data-alvo="panel-foto"  onclick="trocarAba(this)">Anexo 04 - Relatório Fotográfico</button>
+        <button class="drop-item" data-alvo="panel-drl"   onclick="trocarAba(this)">Anexo 05 - DRL</button>
+        <button class="drop-item" data-alvo="panel-docs"  onclick="trocarAba(this)">Anexo 06 - Documentos</button>
       </div>
     </div>
   </nav>
@@ -1173,13 +1187,13 @@
   </div>
 
   <!-- 01 RAZÃO -->
-  <h2 class="vsec">01 — Razão do Interesse</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>01 — Razão do Interesse</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <div class="vfield grow"><label>Razão do interesse</label><input type="text" id="av_razao" value="Área de Faixa de Domínio - EF-334 - FIOL"></div>
   </div>
 
   <!-- 02 LOCALIZAÇÃO -->
-  <h2 class="vsec">02 — Localização</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>02 — Localização</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <div class="vrow">
       <div class="vfield grow"><label>2.1 Localidade <span class="auto-tag">auto</span></label><input type="text" readonly id="av_localidade" data-from="prop_end" class="bloqueado"></div>
@@ -1191,7 +1205,7 @@
   </div>
 
   <!-- 03 IDENTIFICAÇÃO DO OCUPANTE -->
-  <h2 class="vsec">03 — Identificação do Ocupante do Imóvel</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>03 — Identificação do Ocupante do Imóvel</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <div class="ocupante-sel">
       <label class="ocup-lbl">O ocupante é:</label>
@@ -1262,7 +1276,7 @@
   </div>
 
   <!-- 04 SITUAÇÃO -->
-  <h2 class="vsec">04 — Situação do Imóvel</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>04 — Situação do Imóvel</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <div class="vrow">
       <div class="vfield"><label>4.1 Zona</label><select id="av_zona"><option>URBANA</option><option selected>RURAL</option></select></div>
@@ -1278,7 +1292,7 @@
   </div>
 
   <!-- 05 LIMITES -->
-  <h2 class="vsec">05 — Limites e Confrontações</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>05 — Limites e Confrontações</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <div class="vsub">Área Abrangida</div>
     <div class="vrow">
@@ -1301,19 +1315,19 @@
   </div>
 
   <!-- 06 VIAS -->
-  <h2 class="vsec">06 — Vias e Meios de Acesso</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>06 — Vias e Meios de Acesso</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <textarea id="av_vias" rows="5">LOCALIZAÇÃO LESTE ACESSO: SAINDO DE GUANAMBI SENTIDO CERAÍMA, A PARTIR DO FINAL DA AV. DEP. HIDEVALDO A BOA SORTE, SEGUE PELA RODOVIA BA-938 POR 9,60 KM ATÉ A BARRAGEM DE CERAIMA, CONTINUE EM FRENTE PELA ESTRADA VICINAL POR 7,1 KM, VIRE A DIREITA E CONTINUE POR 240M, VIRE A ESQUERDA E CONTINUE POR MAIS 350M, VIRE A DIREITA E CONTINUE POR MAIS 180M, VIRE DIRETIA E SIGUA POR 9M ENTÃO VIRE A ESQUERDA E CONTINUE POR MAIS 1,15KM, VIRE A DIREITA E SIGA POR MAIS 800M, VIRE A DIREITA E PERCORRA MAIS 300M, ATE O SITIO CÔCOS, LOCALIZADO AO LADO ESQUERDO DA ESTRADA VICINAL.</textarea>
   </div>
 
   <!-- 07 DESCRIÇÃO -->
-  <h2 class="vsec">07 — Descrição do Imóvel</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>07 — Descrição do Imóvel</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <textarea id="av_descricao" rows="8">PROPRIEDADE RURAL DENOMINADA SÍTIO CÔCOS, MATRÍCULA 28.001, SITUADA NO DISTRITO DE CERAÍMA, MUNICÍPIO DE GUANAMBI/BA, INSERIDA NO BIOMA CAATINGA, COM VEGETAÇÃO NATIVA EM PARTE ANTROPIZADA. SEU USO AGROPECUÁRIO VARIA CONFORME O GRAU DE RESTRIÇÃO DE CADA SETOR, IDENTIFICANDO-SE ÁREAS DAS CLASSES DE CAPACIDADE DE USO III, VII E VIII: A GLEBA 01 (CLASSE III), COM 2,0500 ha (≈37,05%), RESTRITA PELA PROFUNDIDADE EFETIVA (SOLO RASO); A GLEBA 02 (CLASSE VII), COM 0,9609 ha (≈23,16%), LIMITADA PELA PEDREGOSIDADE MODERADA; E A GLEBA 03 (CLASSE VIII), COM 1,1389 ha (≈27,44%), CONDICIONADA PELA DECLIVIDADE ENTRE 20% E 40%. O ACESSO É FEITO POR MEIO DA RODOVIA BA-938 E DE ESTRADA VICINAL, COM CONDIÇÕES DE TRÁFEGO MUITO BOAS E PERMANENTES. APRESENTA HIDROGRAFIA MARCADA POR RIO INTERMITENTE E DECLIVIDADE QUE FAVORECE O ESCOAMENTO SUPERFICIAL, COM LIMITAÇÕES NAS ÁREAS MAIS BAIXAS. O RELEVO É HETEROGÊNEO E ÍNGREME, E O SOLO É COMPOSTO PREDOMINANTEMENTE POR PLANOSSOLOS E NEOSSOLOS, COM RESTRIÇÕES NATURAIS COMO DRENAGEM IMPERFEITA E BARREIRAS FÍSICAS AO DESENVOLVIMENTO RADICULAR. ESSAS CONDIÇÕES CONDICIONAM SEVERAMENTE A EXPLORAÇÃO AGRÍCOLA E EXIGEM TÉCNICAS ESPECÍFICAS DE ESCOAMENTO E CONDUÇÃO DE ÁGUA NA IMPLANTAÇÃO DE ROTAS DE ACESSO OU EM QUALQUER INTERVENÇÃO.</textarea>
   </div>
 
   <!-- 08 CROQUI (imagem) -->
-  <h2 class="vsec">08 — Croqui de Acesso à Área Abrangida</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>08 — Croqui de Acesso à Área Abrangida</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <label class="img-drop" id="av_croqui_drop">
       <span class="ic">🗺️</span>
@@ -1325,13 +1339,13 @@
   </div>
 
   <!-- 09 OBJETIVO -->
-  <h2 class="vsec">09 — Objetivo e Finalidade da Avaliação</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>09 — Objetivo e Finalidade da Avaliação</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <textarea id="av_objetivo" rows="3">Determinar o valor de mercado de parte do imóvel supramencionado, abrangido pela faixa de domínio e para ADME – Áreas de Depósito de Materiais Excedente da Ferrovia EF-334 – FIOL, para fins de desapropriação por Utilidade Pública.</textarea>
   </div>
 
   <!-- 10 MÉTODO -->
-  <h2 class="vsec">10 — Método Utilizado</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>10 — Método Utilizado</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <label class="vlbl">Normas adotadas</label>
     <textarea id="av_metodo_normas" rows="5">Foram adotadas para este laudo de avaliação as seguintes normas:
@@ -1350,7 +1364,7 @@ RGV - Relatório Genérico de Valores - FIOL - Lote-5F - 4ª Revisão (SEI/MT n�
   </div>
 
   <!-- 11 JUSTIFICATIVAS -->
-  <h2 class="vsec">11 — Justificativas</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>11 — Justificativas</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <div class="vsub">11.1 Fatores Limitantes <span class="auto-tag">texto padrão editável</span></div>
     <textarea id="av_fatores" rows="16">a) A base de informações de valores é constituída pelo Relatório Genérico de Valores (RGV) do Lote 5F, FIOL, 4ª Revisão (SEI/MT nº 10340745), aprovado pela Diretoria Executiva da INFRA S.A. (DIREX) por meio da 44ª Reunião Ordinária da Diretoria Executiva, realizada em 19 de novembro de 2025. O documento de aprovação (Certidão de deliberação da diretoria executiva - SEI/MT nº 10549903) foi apresentado à Contratada ENPROL ENGENHARIA E PROJETOS LTDA pela Contratante INFRA S.A. junto ao processo SEI/MT nº 50050.005920/2025-63. O RGV é contemplado por fontes oficiais como SINAPI, SICRO, CONAB, CUB e pesquisas junto ao mercado e através da internet.
@@ -1528,7 +1542,7 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
   </div>
 
   <!-- 14 CÁLCULO TERRA NUA -->
-  <h2 class="vsec">14 — Cálculo da Terra Nua</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>14 — Cálculo da Terra Nua</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <div class="calc-line">
       <label>Faixa de domínio — Área desapropriada (ha) <span class="auto-tag">auto</span></label>
@@ -1545,7 +1559,7 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
   </div>
 
   <!-- 15 RESUMO -->
-  <h2 class="vsec">15 — Resumo dos Valores</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>15 — Resumo dos Valores</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <table class="resumo">
       <tbody>
@@ -1570,7 +1584,7 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
   </div>
 
   <!-- 16 ANEXOS -->
-  <h2 class="vsec">16 — Anexos</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>16 — Anexos</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <ol class="anexos-list">
       <li>Tabela(s) da determinação da CCU da(s) gleba(s) do imóvel</li>
@@ -1588,7 +1602,7 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
   </div>
 
   <!-- 17 ASSINATURA -->
-  <h2 class="vsec">17 — Assinatura</h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>17 — Assinatura</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <div class="vrow">
       <div class="vfield"><label>Local</label><input type="text" id="av_local" value="GUANAMBI - BA"></div>
@@ -2960,37 +2974,199 @@ window.FOTO_rodapeHTML=rodapeHTML;
   ];
 
 
+  const AV_FATORES = [
+  ["1. Fertilidade natural ou produtividade aparente", [
+    ["a. Muito alta > 70 %", 1],
+    ["b. Alta - 50 % a 70 %", 1],
+    ["c. Média - 30 % a 50 %", 2],
+    ["c. Baixa - 10 % a 30 %", 3],
+    ["d. Muito baixa < 10 %", 6],
+  ]],
+  ["2. Profundidade efetiva", [
+    ["a. Muito profundo > 200 cm", 1],
+    ["b. Profundo - 100cm a 200 cm", 2],
+    ["c. Moderadamente profundo - 50 cm a 100cm", 3],
+    ["e. Raso - 25 cm 50 cm", 4],
+    ["d. Muito raso < 25 cm", 8],
+  ]],
+  ["3. Drenagem interna", [
+    ["a. Excessiva", 2],
+    ["b. Forte", 2],
+    ["c. Acentuada", 2],
+    ["d. Bem drenado", 1],
+    ["e. Moderada", 2],
+    ["f. Imperfeita", 3],
+    ["g. Mal drenado", 5],
+    ["h. Muito mal drenado", 8],
+  ]],
+  ["4. Deflúvio superficial", [
+    ["a. Muito rápido", 4],
+    ["b. Rápido", 3],
+    ["c. Moderado", 2],
+    ["d. Lento", 1],
+    ["e. Muito lento", 2],
+  ]],
+  ["5. Pedregosidade", [
+    ["a. Sem pedras", 1],
+    ["b. Ligeiramente pedregoso < 1%", 2],
+    ["c. Moderadamente pedregoso 1% a 10%", 3],
+    ["d. Pedregoso 10% a 30%", 4],
+    ["e. Muito pedregoso 30% a 50%", 6],
+    ["f. Extremamente pedregoso > 50%", 7],
+  ]],
+  ["6. Riscos de Inundação", [
+    ["a. Ausente", 1],
+    ["b. Ocasional", 3],
+    ["c. Frequente", 5],
+    ["d. Muito frequente", 8],
+  ]],
+  ["7. Classe de declividade", [
+    ["a. < 2%", 1],
+    ["b. 2% a 6%", 2],
+    ["c. 6% a 12%", 3],
+    ["d. 12% a 20%", 4],
+    ["e. 20% a 40%", 6],
+    ["f. > 40%", 7],
+  ]],
+  ["8. Grau de erosão laminar", [
+    ["a. Não aparente", 1],
+    ["b. Ligeira", 2],
+    ["c. Moderada", 3],
+    ["d. Severa", 6],
+    ["e. Muito severa", 8],
+  ]],
+  ["9. Sulcos rasos", [
+    ["a. Ocasionais", 2],
+    ["b. Frequentes", 3],
+    ["c. Muito frequentes", 4],
+  ]],
+  ["10. Sulcos médios", [
+    ["a. Ocasionais", 3],
+    ["b. Frequentes", 4],
+    ["c. Muito frequentes", 6],
+  ]],
+  ["11. Sulcos profundos", [
+    ["a. Ocasionais", 4],
+    ["b. Frequentes", 6],
+    ["c. Muito frequentes", 7],
+  ]],
+  ["12. Voçorocas", [
+    ["a. Crateras, buracos, fendas", 8],
+  ]],
+  ["13. Seca edafológica", [
+    ["a. Muito longa", 6],
+    ["b. Longa", 4],
+    ["c. Média", 3],
+    ["d. Curta", 2],
+    ["e. Muito curta", 1],
+  ]],
+];
+
   // fatores mais restritivos persistidos por classe
   const FATORES_CLASSE = {3:"SECA EDAFOLÓGICA MÉDIA", 7:"CLASSE DE DECLIVIDADE >40%", 8:"SOLO MUITO RASO < 25 cm"};
 
   // gera as glebas automaticamente a partir da tabela NA (classe/área/% travados; só fator editável)
+  // seleções (fator limitante / característica) persistidas por classe
+  const SELECOES_CLASSE = {}; // {classe: {fatorIdx, caractIdx}}
+
+  // popula o <select> de característica conforme o fator escolhido; marca a que casa com a classe
+  window.AV_popularCaract = function(sel){
+    const linha = sel.closest(".gleba-linha");
+    const classe = parseInt(linha.dataset.classe,10);
+    const fatorIdx = parseInt(sel.value,10);
+    const caractSel = linha.querySelector(".g-caract");
+    caractSel.innerHTML = "";
+    if(isNaN(fatorIdx) || !AV_FATORES[fatorIdx]){ caractSel.innerHTML='<option value="">—</option>'; return; }
+    const linhas = AV_FATORES[fatorIdx][1];
+    let autoIdx = -1;
+    linhas.forEach((ln,i)=>{
+      const [texto, col] = ln;
+      const opt=document.createElement("option");
+      opt.value=i; opt.textContent=texto;
+      if(col===classe && autoIdx<0) autoIdx=i; // característica que casa com a classe da gleba
+      caractSel.appendChild(opt);
+    });
+    // pré-selecionar a característica que corresponde à classe
+    if(autoIdx>=0) caractSel.value=autoIdx;
+    // persistir
+    SELECOES_CLASSE[classe] = {fatorIdx, caractIdx: parseInt(caractSel.value,10)};
+    AV_atualizarFatorTexto(linha);
+  };
+
+  window.AV_onCaractChange = function(sel){
+    const linha = sel.closest(".gleba-linha");
+    const classe = parseInt(linha.dataset.classe,10);
+    const fatorSel = linha.querySelector(".g-fatorlim");
+    SELECOES_CLASSE[classe] = {fatorIdx: parseInt(fatorSel.value,10), caractIdx: parseInt(sel.value,10)};
+    AV_atualizarFatorTexto(linha);
+  };
+
+  // monta o texto do "Fator mais restritivo" a partir das seleções (fator + característica)
+  function AV_atualizarFatorTexto(linha){
+    const fatorSel = linha.querySelector(".g-fatorlim");
+    const caractSel = linha.querySelector(".g-caract");
+    const classe = parseInt(linha.dataset.classe,10);
+    const fIdx = parseInt(fatorSel.value,10);
+    const cIdx = parseInt(caractSel.value,10);
+    if(!isNaN(fIdx) && AV_FATORES[fIdx]){
+      const fatorNome = AV_FATORES[fIdx][0].replace(/^\d+\.\s*/,"");
+      let caractTxt = "";
+      if(!isNaN(cIdx) && AV_FATORES[fIdx][1][cIdx]){
+        caractTxt = AV_FATORES[fIdx][1][cIdx][0].replace(/^[a-z]\.\s*/i,"");
+      }
+      const txt = (fatorNome + (caractTxt? ": "+caractTxt : "")).toUpperCase();
+      const fatorInp = linha.querySelector(".g-fator");
+      if(fatorInp){ fatorInp.value = txt; FATORES_CLASSE[classe]=txt; }
+    }
+  }
+
   function gerarGlebasAuto(lista, areaAval){
     const host = document.getElementById("av_glebas");
     if(!host) return;
-    // preservar fatores digitados antes de recriar
+    // preservar fatores digitados e seleções antes de recriar
     host.querySelectorAll(".gleba-linha").forEach(l=>{
       const cls=parseInt(l.dataset.classe,10);
       const fatorInp=l.querySelector(".g-fator");
       if(fatorInp && !isNaN(cls)) FATORES_CLASSE[cls]=fatorInp.value;
+      const fl=l.querySelector(".g-fatorlim"), cc=l.querySelector(".g-caract");
+      if(fl && !isNaN(cls)) SELECOES_CLASSE[cls]={fatorIdx:parseInt(fl.value,10), caractIdx: cc?parseInt(cc.value,10):-1};
     });
     host.innerHTML="";
     lista.forEach((g,idx)=>{
       const rom = ROMANOS[g.classe];
       const pct = (isFinite(areaAval)&&areaAval>0)? fmtBR(g.area/areaAval*100,2)+"%" : "—";
       const fator = FATORES_CLASSE[g.classe] || "";
+      // opções do select de fator limitante
+      let optsFator = '<option value="">— selecione —</option>';
+      AV_FATORES.forEach((f,i)=>{ optsFator += '<option value="'+i+'">'+f[0]+'</option>'; });
+
       const div=document.createElement("div");
-      div.className="gleba-linha";
+      div.className="gleba-linha gleba-bloco";
       div.dataset.classe=g.classe;
-      div.innerHTML =
-        '<span class="rot">Gleba '+String(idx+1).padStart(2,"0")+'</span>'+
-        '<div class="cel classe"><span>Classe (I–VIII)</span><input type="text" class="g-classe-disp bloqueado" value="'+rom+'" readonly></div>'+
-        '<div class="cel area"><span>Área (ha)</span><input type="text" class="g-area-disp bloqueado" value="'+fmtBR(g.area,4)+'" readonly></div>'+
-        '<div class="cel fator"><span>Fator mais restritivo</span><input type="text" class="g-fator" value="'+fator.replace(/"/g,"&quot;")+'"></div>'+
-        '<div class="cel pct"><span>% da área</span><div class="pct-val">'+pct+'</div></div>';
-      // guardar valores para leitura pelo PDF/mem (classe e área "ocultas")
       div.dataset.area = g.area;
+      div.innerHTML =
+        '<div class="gleba-topo">'+
+          '<span class="rot">Gleba '+String(idx+1).padStart(2,"0")+'</span>'+
+          '<div class="cel classe"><span>Classe (I–VIII)</span><input type="text" class="g-classe-disp bloqueado" value="'+rom+'" readonly></div>'+
+          '<div class="cel area"><span>Área (ha)</span><input type="text" class="g-area-disp bloqueado" value="'+fmtBR(g.area,4)+'" readonly></div>'+
+          '<div class="cel pct"><span>% da área</span><div class="pct-val">'+pct+'</div></div>'+
+        '</div>'+
+        '<div class="gleba-selecoes">'+
+          '<div class="cel selfator"><span>Fator limitante (CCU – Anexo 01)</span><select class="g-fatorlim" onchange="AV_popularCaract(this)">'+optsFator+'</select></div>'+
+          '<div class="cel selcaract"><span>Característica (conforme a classe '+rom+')</span><select class="g-caract" onchange="AV_onCaractChange(this)"><option value="">— selecione o fator primeiro —</option></select></div>'+
+        '</div>'+
+        '<div class="cel fator full"><span>Fator mais restritivo (texto final)</span><input type="text" class="g-fator" value="'+fator.replace(/"/g,"&quot;")+'"></div>';
       div.querySelector(".g-fator").addEventListener("input", (e)=>{ FATORES_CLASSE[g.classe]=e.target.value; });
       host.appendChild(div);
+
+      // restaurar seleção salva ou pré-selecionar pela classe
+      const fatorSel = div.querySelector(".g-fatorlim");
+      const sv = SELECOES_CLASSE[g.classe];
+      if(sv && !isNaN(sv.fatorIdx) && sv.fatorIdx>=0){
+        fatorSel.value = sv.fatorIdx;
+        window.AV_popularCaract(fatorSel);
+        if(sv.caractIdx>=0){ const cc=div.querySelector(".g-caract"); if(cc){ cc.value=sv.caractIdx; window.AV_onCaractChange(cc); } }
+      }
     });
     if(!lista.length){
       host.innerHTML='<div class="gleba-vazia">Preencha as áreas na Tabela de Nota Agronômica acima para gerar as glebas.</div>';
@@ -4294,6 +4470,17 @@ function FV_toggleSec(h2){
   while(el && !el.classList.contains("vcard")) el=el.nextElementSibling;
   if(el) el.classList.toggle("oculto");
 }
+// por padrão, todas as seções retráteis começam recolhidas
+document.addEventListener("DOMContentLoaded", function(){
+  document.querySelectorAll("#panel-vistoria .vsec.acc, #panel-avaliacao .vsec.acc").forEach(h2=>{
+    if(!h2.classList.contains("fechado")){
+      h2.classList.add("fechado");
+      let el=h2.nextElementSibling;
+      while(el && !el.classList.contains("vcard")) el=el.nextElementSibling;
+      if(el) el.classList.add("oculto");
+    }
+  });
+});
 </script>
 
 <script>
