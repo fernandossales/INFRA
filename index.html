@@ -849,6 +849,15 @@
 
   /* aviso Anexo 09 */
   #panel-relest .rel-aviso{margin:10px 0; padding:9px 13px; background:#f0f5fb; border:1px solid #cfe0f0; border-radius:8px; font-size:12.5px; color:var(--texto);}
+
+  /* Anexo 09 — exibição de dados */
+  #panel-relest .rel-dados{margin-top:6px;}
+  #panel-relest .rel-vazio{padding:14px; background:#f7f9fc; border:1px dashed #cfd9e4; border-radius:8px; color:#7a8797; font-size:13px;}
+  #panel-relest table.rel-tab{width:100%; border-collapse:collapse; font-size:12.5px;}
+  #panel-relest table.rel-tab td{border:1px solid #d7e0ea; padding:6px 10px;}
+  #panel-relest table.rel-tab td:first-child{color:#334; font-weight:600; width:58%;}
+  #panel-relest table.rel-tab td:last-child{text-align:right; color:var(--azul-esc); font-weight:600;}
+  #panel-relest table.rel-tab tr.rel-h td{background:#1F6FC0; color:#fff; font-weight:700; text-align:center;}
 </style>
 </head>
 <body>
@@ -1057,29 +1066,30 @@
   <section class="tab-panel" id="panel-relest">
 <div class="wrap">
   <h1>Anexo 09 — Relatório Estatístico</h1>
-  <p class="sub">Carregue o relatório estatístico (saída do SisDEA) em PDF. O sistema insere a capa do Anexo 9 no início e acrescenta automaticamente, ao final, a <b>página da amostra importada</b> (penúltima) e a <b>página de simulação do Imóvel Avaliando</b> (última) — esta gerada a partir dos dados já lançados na aba Avaliação.</p>
+  <p class="sub">Abaixo estão os dados coletados que preenchem <b>apenas a penúltima e a última página</b> do modelo do relatório estatístico. A penúltima página corresponde à <b>amostra importada</b> e a última à <b>simulação do Imóvel Avaliando</b>. As demais páginas do modelo não são alteradas.</p>
 
   <div class="grid grid-1">
     <div class="card">
-      <h2>Relatório estatístico (SisDEA)</h2>
-      <p class="desc">Anexe o PDF do relatório estatístico. As duas páginas finais (amostra e simulação) são geradas automaticamente e acrescentadas ao final.</p>
-      <label class="drop" id="drop-9">
-        <span class="ic">📊</span>
-        <span class="t">Clique ou arraste o PDF do relatório estatístico</span>
-        <span class="h">Um ou mais arquivos • apenas .pdf</span>
-        <input type="file" accept="application/pdf" multiple id="file-9">
-      </label>
-      <ul class="lista" id="lista-9"></ul>
+      <h2>Penúltima página — Amostra (Nível de Confiança 80%)</h2>
+      <div class="rel-dados" id="rel-dados-amostra">
+        <div class="rel-vazio">Nenhuma amostra importada. Use o botão "Importar dados da amostra" na aba <b>Avaliação</b>.</div>
+      </div>
+    </div>
 
-      <div class="opts"><input type="checkbox" id="capa-9" checked><label for="capa-9">Incluir capa do Anexo 9</label></div>
-      <div class="opts"><input type="checkbox" id="pag-amostra-9" checked><label for="pag-amostra-9">Gerar página da amostra (penúltima)</label></div>
-      <div class="opts"><input type="checkbox" id="pag-simulacao-9" checked><label for="pag-simulacao-9">Gerar página de simulação do Imóvel Avaliando (última)</label></div>
+    <div class="card">
+      <h2>Última página — Simulação do Imóvel Avaliando</h2>
+      <div class="rel-dados" id="rel-dados-simulacao">
+        <div class="rel-vazio">Preencha os dados na aba <b>Avaliação</b> para visualizar a simulação.</div>
+      </div>
+    </div>
 
-      <div class="rel-aviso" id="rel-aviso-9">Importe os dados da amostra na aba <b>Avaliação</b> (botão "Importar dados da amostra") para preencher as duas páginas finais.</div>
-
+    <div class="card">
+      <h2>Download do Anexo 09</h2>
+      <p class="desc">Gera o PDF do Anexo 09 (capa + as duas páginas com os dados acima). As páginas fixas do relatório estatístico do SisDEA devem ser anexadas ao documento final por fora, se necessário.</p>
+      <div class="rel-aviso" id="rel-aviso-9">—</div>
       <div class="acoes">
-        <button class="btn btn-primary" id="ger-9" onclick="REL_gerar()">📊 Montar e baixar Anexo 09</button>
-        <button class="btn btn-ghost" onclick="REL_limpar()">Limpar</button>
+        <button class="btn btn-primary" id="ger-9" onclick="REL_gerar()">⬇️ Baixar PDF do Anexo 09</button>
+        <button class="btn btn-ghost" onclick="REL_atualizarTela()">↻ Atualizar dados</button>
       </div>
     </div>
   </div>
@@ -3539,6 +3549,8 @@ window.FOTO_rodapeHTML=rodapeHTML;
     window.__AV_CALC__ = {ccu, na, escala, vtn, fdArea, remArea, fdVal, remVal, sub1, sub2, total, zona, areaMem, comps};
 
     if(typeof window.AV_atualizarImovelAvaliando==="function") window.AV_atualizarImovelAvaliando();
+
+    if(typeof window.REL_atualizarTela==="function") window.REL_atualizarTela();
   }
   
   // ===== Tabela de Nota Agronômica (render/sincronização) =====
@@ -3859,54 +3871,93 @@ window.FOTO_rodapeHTML=rodapeHTML;
   // ---------- CAPA (página 1) ----------
   function desenharCapa(doc,ctx){
     const {W,H}=ctx;
-    doc.setFillColor(31,111,192); doc.rect(0,0,150,H,"F");
+    // barra vertical azul-marinho à esquerda (como o modelo)
+    const BARRA=64;
+    doc.setFillColor(31,73,125); doc.rect(0,0,BARRA,H,"F");
+    // área de conteúdo
+    const ML=BARRA+34, MR=W-40;
+    const cx=(ML+MR)/2;
+    // logos no topo (ENPROL à esquerda, INFRA à direita), centralizados
     const LI=window.__LOGO_INFRA__, LE=window.__LOGO_ENPROL__;
-    if(LE){ try{ doc.addImage(LE,"JPEG",205,40,118,33);}catch(e){} }
-    if(LI){ try{ doc.addImage(LI,"JPEG",355,40,118,33);}catch(e){} }
-    const cx=(W+150)/2;
-    let y=155;
+    const logoH=30, logoW=104, gap=26;
+    const totalLogos=logoW*2+gap;
+    const lx=cx-totalLogos/2;
+    if(LE){ try{ doc.addImage(LE,"JPEG",lx,42,logoW,logoH);}catch(e){} }
+    if(LI){ try{ doc.addImage(LI,"JPEG",lx+logoW+gap,42,logoW,logoH);}catch(e){} }
+
+    let y=175;
     doc.setTextColor(20,30,45); doc.setFont("helvetica","bold"); doc.setFontSize(20);
-    doc.text("INFRA S.A.", cx, y, {align:"center"}); y+=22;
-    doc.setFontSize(10);
+    doc.text("INFRA S.A.", cx, y, {align:"center"}); y+=24;
+    doc.setFontSize(10.5);
     doc.text("VALEC – ENGENHARIA, CONSTRUÇÕES E FERROVIAS S.A.", cx, y, {align:"center"}); y+=13;
-    doc.text("SUGAT – SUPERINTENDÊNCIA DE GESTÃO AMBIENTAL E", cx, y, {align:"center"}); y+=12;
-    doc.text("TERRITORIAL INTEGRADA", cx, y, {align:"center"}); y+=42;
-    doc.setFontSize(19); doc.text("LAUDO DE AVALIAÇÃO", cx, y, {align:"center"}); y+=32;
-    doc.setFontSize(9.5);
+    doc.text("SUGAT – SUPERINTENDÊNCIA DE GESTÃO AMBIENTAL E", cx, y, {align:"center"}); y+=13;
+    doc.text("TERRITORIAL INTEGRADA", cx, y, {align:"center"}); y+=10;
+    // linha divisória
+    doc.setDrawColor(120,120,120); doc.setLineWidth(0.6); doc.line(ML,y,MR,y); y+=34;
+
+    doc.setFontSize(19); doc.text("LAUDO DE AVALIAÇÃO", cx, y, {align:"center"}); y+=34;
+    doc.setFontSize(10.5);
     ["- VALOR DE MERCADO DE BENS E BENFEITORIAS",
      "- PARA PAGAMENTO DE DESAPROPRIAÇÃO DE ÁREA DESTINADA",
      "À FAIXA DE DOMÍNIO PARA IMPLANTAÇÃO DA VARIANTE",
-     "CERAÍMA."].forEach(l=>{ doc.text(l,cx,y,{align:"center"}); y+=13; });
-    y+=20;
-    doc.setFont("helvetica","normal"); doc.setFontSize(13);
-    doc.text("FERROVIA DE INTEGRAÇÃO OESTE-LESTE", cx, y, {align:"center"}); y+=17;
-    doc.setFont("helvetica","bold"); doc.text("EF-334 – FIOL", cx, y, {align:"center"}); y+=34;
-    doc.setFont("helvetica","normal"); doc.setFontSize(12);
+     "CERAÍMA."].forEach(l=>{ doc.text(l,cx,y,{align:"center"}); y+=14; });
+    y+=24;
+
+    doc.setFont("helvetica","normal"); doc.setFontSize(14);
+    doc.text("FERROVIA DE INTEGRAÇÃO OESTE-LESTE", cx, y, {align:"center"}); y+=19;
+    doc.setFont("helvetica","bold"); doc.text("EF-334 – FIOL", cx, y, {align:"center"}); y+=44;
+
+    // PROCESSO ADMINISTRATIVO (label normal + valor bold, medindo largura p/ não sobrepor)
+    doc.setFontSize(14);
     let proc = val("fv_processo") || "INFRA S.A. 295-5F";
-    doc.text("PROCESSO ADMINISTRATIVO: "+proc, cx, y, {align:"center"}); y+=26;
-    const nome = val("av_nome") || val("fv_nome");
-    doc.text("EXPROPRIADO(A): ", cx-72, y, {align:"center"});
-    doc.setFont("helvetica","bold"); doc.text(nome, cx+38, y, {align:"center"}); y+=34;
-    doc.setFont("helvetica","normal"); doc.setFontSize(11);
+    (function(){
+      const lbl="PROCESSO ADMINISTRATIVO:  ";
+      doc.setFont("helvetica","normal"); const wl=doc.getTextWidth(lbl);
+      doc.setFont("helvetica","bold");   const wv=doc.getTextWidth(proc);
+      const x0=cx-(wl+wv)/2;
+      doc.setFont("helvetica","normal"); doc.text(lbl, x0, y);
+      doc.setFont("helvetica","bold");   doc.text(proc, x0+wl+2, y);
+    })(); y+=30;
+
+    // EXPROPRIADO(A) (mesma técnica de medição para evitar sobreposição)
+    const nome = (val("av_nome") || val("fv_nome") || "").toUpperCase();
+    (function(){
+      const lbl="EXPROPRIADO(A):  ";
+      doc.setFont("helvetica","normal"); const wl=doc.getTextWidth(lbl);
+      doc.setFont("helvetica","bold");   const wv=doc.getTextWidth(nome);
+      const x0=cx-(wl+wv)/2;
+      doc.setFont("helvetica","normal"); doc.text(lbl, x0, y);
+      doc.setFont("helvetica","bold");   doc.text(nome, x0+wl+2, y);
+    })(); y+=42;
+
+    // Áreas (faixa de domínio / remanescentes)
+    doc.setFont("helvetica","normal"); doc.setFontSize(13);
     estacas().forEach((e,i)=>{
       const rot = "Área "+String(e.num).padStart(2,"0");
-      const tipo = i===0? "(Faixa de Domínio)" : "(Área Remanescente)";
-      const l = rot+": KM Inicial "+(e.ini||"—")+" ao KM Final "+(e.fim||"—")+" "+tipo;
-      doc.splitTextToSize(l, W-210).forEach(ln=>{ doc.text(ln,cx,y,{align:"center"}); y+=15; });
+      const tipo = i===0? "Faixa de Domínio" : "Área Remanescente";
+      doc.text(rot+": KM Inicial "+(e.ini||"—")+" ao KM Final "+(e.fim||"—"), cx, y, {align:"center"}); y+=17;
+      doc.text("("+tipo+")", cx, y, {align:"center"}); y+=20;
     });
-    // contrato
-    doc.setFontSize(8); doc.setTextColor(60,60,60);
+
+    // Bloco do contrato (canto inferior direito, dentro das margens, alinhado à esquerda)
+    doc.setFont("helvetica","normal"); doc.setFontSize(8); doc.setTextColor(70,70,70);
     const contrato="Contrato nº 037/2024 – Cujo objeto é a prestação de serviços especializados de engenharia consultiva para a execução das atividades de desapropriação, ocupação temporária ou constituição de servidão administrativa de imóveis, gestão fundiária e regularização de passivos de desapropriação.";
-    doc.text(doc.splitTextToSize(contrato,240), W-56, H-190, {align:"left", maxWidth:240});
-    // DESP-3
-    doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); doc.setFontSize(16);
-    doc.text("DESP-3", 75, H-120, {align:"center"});
+    const cw=210;
+    const cLines=doc.splitTextToSize(contrato, cw);
+    const cx0=MR-cw;
+    let cy=H-90-cLines.length*10.5;
+    // primeira parte "Contrato nº 037/2024" em negrito
+    cLines.forEach((ln,idx)=>{ doc.text(ln, cx0, cy, {align:"left"}); cy+=10.5; });
+
+    // DESP-3 / mês-ano na barra azul (branco)
+    doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); doc.setFontSize(13);
+    doc.text("DESP-3", BARRA/2, H-108, {align:"center"});
     let mesAno="JULHO/2026";
     const md=val("av_data_ass");
     if(md){ const d=new Date(md+"T00:00:00");
       const M=["JANEIRO","FEVEREIRO","MARÇO","ABRIL","MAIO","JUNHO","JULHO","AGOSTO","SETEMBRO","OUTUBRO","NOVEMBRO","DEZEMBRO"];
       mesAno=M[d.getMonth()]+"/"+d.getFullYear(); }
-    doc.setFontSize(15); doc.text(mesAno, 75, H-100, {align:"center"});
+    doc.setFontSize(10.5); doc.text(mesAno, BARRA/2, H-92, {align:"center"});
   }
 
   // ---------- FICHA DE VISTORIA ----------
@@ -4925,6 +4976,7 @@ function AV_gerarDescSituacao(){
 
     // guardar para o PDF
     window.__AV_AMOSTRA__ = d;
+    if(typeof window.REL_atualizarTela==="function") window.REL_atualizarTela();
   };
 
   // grau de fundamentação pela amplitude do intervalo (NBR 14.653)
@@ -5050,40 +5102,62 @@ function AV_gerarDescSituacao(){
 </script>
 
 <script>
-/* ===== Anexo 09 — Relatório Estatístico (upload + capa + 2 páginas geradas) ===== */
+/* ===== Anexo 09 — Relatório Estatístico ===== */
 (function(){
-  const arquivos = [];
   function el(id){ return document.getElementById(id); }
+  let __relPronto=false;
 
-  function bind(){
-    const input=el("file-9"), drop=el("drop-9");
-    if(!input) return;
-    input.addEventListener("change", e=> addFiles(e.target.files));
-    ["dragenter","dragover"].forEach(ev=> drop.addEventListener(ev,e=>{e.preventDefault(); drop.classList.add("over");}));
-    ["dragleave","drop"].forEach(ev=> drop.addEventListener(ev,e=>{e.preventDefault(); drop.classList.remove("over");}));
-    drop.addEventListener("drop", e=>{ e.preventDefault(); addFiles(e.dataTransfer.files); });
-  }
-  function addFiles(fl){
-    [...fl].forEach(f=>{ if(f.type==="application/pdf") arquivos.push(f); });
-    el("file-9").value="";
-    render();
-  }
-  function render(){
-    const ul=el("lista-9"); ul.innerHTML="";
-    arquivos.forEach((a,i)=>{
-      const li=document.createElement("li");
-      li.innerHTML='<span class="nm">'+a.name+'</span>'+
-        '<span class="ac">'+
-          '<button onclick="REL_mover('+i+',-1)" title="Subir">▲</button>'+
-          '<button onclick="REL_mover('+i+',1)" title="Descer">▼</button>'+
-          '<button onclick="REL_remover('+i+')" title="Remover">✕</button>'+
-        '</span>';
-      ul.appendChild(li);
-    });
-  }
-  window.REL_mover=function(i,d){ const j=i+d; if(j<0||j>=arquivos.length) return; const t=arquivos[i]; arquivos[i]=arquivos[j]; arquivos[j]=t; render(); };
-  window.REL_remover=function(i){ arquivos.splice(i,1); render(); };
-  window.REL_limpar=function(){ arquivos.length=0; render(); const st=el("rel-aviso-9"); };
+  // atualiza os dados exibidos em tela (penúltima e última página)
+  window.REL_atualizarTela = function(){
+    const g=id=>{ const e=document.getElementById(id); return e? (e.textContent||e.value||"").trim() : ""; };
+    const a=window.__AV_AMOSTRA__||{};
+    // ---- Amostra (penúltima) ----
+    const boxA=document.getElementById("rel-dados-amostra");
+    if(boxA){
+      const temAmostra = a && (a.vu_med || a.vt_med);
+      if(temAmostra){
+        boxA.innerHTML =
+          '<table class="rel-tab">'+
+          '<tr class="rel-h"><td colspan="2">Dados para a projeção de valores</td></tr>'+
+          '<tr><td>Área (ha)</td><td>'+(a.area||"—")+'</td></tr>'+
+          '<tr><td>Nota agronômica</td><td>'+(a.na||"—")+'</td></tr>'+
+          '<tr><td>Zona</td><td>'+(a.zona||"—")+'</td></tr>'+
+          '<tr class="rel-h"><td colspan="2">Valores da Moda — Nível de Confiança 80%</td></tr>'+
+          '<tr><td>Valor Unitário — Mínimo'+(a.vu_min_pct?" ("+a.vu_min_pct+"%)":"")+'</td><td>'+(a.vu_min||"—")+'</td></tr>'+
+          '<tr><td>Valor Unitário — Médio</td><td>'+(a.vu_med||"—")+'</td></tr>'+
+          '<tr><td>Valor Unitário — Máximo'+(a.vu_max_pct?" ("+a.vu_max_pct+"%)":"")+'</td><td>'+(a.vu_max||"—")+'</td></tr>'+
+          '<tr><td>Valor Total — Mín / Méd / Máx</td><td>'+(a.vt_min||"—")+' / '+(a.vt_med||"—")+' / '+(a.vt_max||"—")+'</td></tr>'+
+          '<tr><td>Intervalo Predição — Mín / Máx</td><td>'+(a.ip_min||"—")+' / '+(a.ip_max||"—")+'</td></tr>'+
+          '<tr><td>Campo de Arbítrio — RL Mín / RL Máx</td><td>'+(a.ca_min||"—")+' / '+(a.ca_max||"—")+'</td></tr>'+
+          '</table>';
+      } else {
+        boxA.innerHTML='<div class="rel-vazio">Nenhuma amostra importada. Use o botão "Importar dados da amostra" na aba <b>Avaliação</b>.</div>';
+      }
+    }
+    // ---- Simulação (última) ----
+    const boxS=document.getElementById("rel-dados-simulacao");
+    if(boxS){
+      const temSim = g("ia_ic_med") && g("ia_ic_med")!=="—";
+      if(temSim){
+        boxS.innerHTML =
+          '<table class="rel-tab">'+
+          '<tr class="rel-h"><td colspan="2">Características do imóvel</td></tr>'+
+          '<tr><td>Área (ha)</td><td>'+g("ia_area")+'</td></tr>'+
+          '<tr><td>N.A.</td><td>'+g("ia_na")+'</td></tr>'+
+          '<tr><td>Zona</td><td>'+g("ia_zona")+'</td></tr>'+
+          '<tr><td>Município</td><td>'+g("ia_municipio")+'</td></tr>'+
+          '<tr class="rel-h"><td colspan="2">Valores Unitário / Hectare (R$)</td></tr>'+
+          '<tr><td>Intervalo de confiança — Mín / Méd / Máx</td><td>'+g("ia_ic_min")+' / '+g("ia_ic_med")+' / '+g("ia_ic_max")+'</td></tr>'+
+          '<tr><td>Amplitude</td><td>'+g("ia_amplitude")+'</td></tr>'+
+          '<tr><td>Campo de Arbítrio — Mín / Méd / Máx</td><td>'+g("ia_ca_min")+' / '+g("ia_ca_med")+' / '+g("ia_ca_max")+'</td></tr>'+
+          '<tr class="rel-h"><td colspan="2">Valor de Avaliação da Terra Nua (R$)</td></tr>'+
+          '<tr><td>VTN — Mín / Méd / Máx</td><td>'+g("ia_vtn_min")+' / '+g("ia_vtn_med")+' / '+g("ia_vtn_max")+'</td></tr>'+
+          '</table>';
+      } else {
+        boxS.innerHTML='<div class="rel-vazio">Preencha os dados na aba <b>Avaliação</b> para visualizar a simulação.</div>';
+      }
+    }
+  };
 
   // desenha as 2 páginas finais (amostra + simulação) com jsPDF e devolve bytes
   function gerarPaginasFinais(incluirAmostra, incluirSimulacao){
@@ -5226,39 +5300,22 @@ function AV_gerarDescSituacao(){
   }
 
   window.REL_gerar = async function(){
-    const btn=el("ger-9"); const aviso=el("rel-aviso-9");
-    const incluirCapa = el("capa-9").checked;
-    const incluirAmostra = el("pag-amostra-9").checked;
-    const incluirSimulacao = el("pag-simulacao-9").checked;
-    if(!arquivos.length && !incluirAmostra && !incluirSimulacao){ aviso.textContent="Anexe o PDF do relatório ou marque as páginas a gerar."; aviso.style.color="#c0392b"; return; }
-    btn.disabled=true; if(aviso){ aviso.textContent="Montando o Anexo 09..."; aviso.style.color=""; }
+    const btn=document.getElementById("ger-9"); const aviso=document.getElementById("rel-aviso-9");
+    btn.disabled=true; if(aviso){ aviso.textContent="Gerando o PDF do Anexo 09..."; aviso.style.color=""; }
     try{
       const out = await PDFLib.PDFDocument.create();
-      // capa
-      if(incluirCapa && typeof window.ANX_desenharCapa==="function"){
-        // reaproveita o desenho de capa dos anexos (título via CAPAS) — desenha capa 9 manualmente
-        await desenharCapa9(out);
-      }
-      // PDFs do relatório
-      for(const f of arquivos){
-        const buf=await f.arrayBuffer();
-        const src=await PDFLib.PDFDocument.load(buf);
-        const pgs=await out.copyPages(src, src.getPageIndices());
-        pgs.forEach(p=>out.addPage(p));
-      }
-      // 2 páginas finais geradas
-      if(incluirAmostra || incluirSimulacao){
-        const finBytes = gerarPaginasFinais(incluirAmostra, incluirSimulacao);
-        const fin = await PDFLib.PDFDocument.load(finBytes);
-        const pgs = await out.copyPages(fin, fin.getPageIndices());
-        pgs.forEach(p=>out.addPage(p));
-      }
+      await desenharCapa9(out);
+      // 2 páginas com os dados (amostra + simulação)
+      const finBytes = gerarPaginasFinais(true, true);
+      const fin = await PDFLib.PDFDocument.load(finBytes);
+      const pgs = await out.copyPages(fin, fin.getPageIndices());
+      pgs.forEach(p=>out.addPage(p));
       const bytes = await out.save();
       const blob=new Blob([bytes],{type:"application/pdf"});
       const url=URL.createObjectURL(blob);
       const a=document.createElement("a"); a.href=url; a.download="Anexo_9_Relatorio_Estatistico.pdf"; a.click();
       setTimeout(()=>URL.revokeObjectURL(url),4000);
-      if(aviso){ aviso.textContent="✓ Anexo 09 gerado com "+out.getPageCount()+" páginas."; aviso.style.color="#159a3c"; }
+      if(aviso){ aviso.textContent="✓ PDF do Anexo 09 gerado ("+out.getPageCount()+" páginas)."; aviso.style.color="#159a3c"; }
     }catch(err){
       console.error(err);
       if(aviso){ aviso.textContent="Erro ao gerar: "+err.message; aviso.style.color="#c0392b"; }
@@ -5284,10 +5341,7 @@ function AV_gerarDescSituacao(){
   }
 
   document.addEventListener("DOMContentLoaded", function(){
-    bind();
-    // atualizar aviso quando houver amostra importada
-    const aviso=el("rel-aviso-9");
-    if(aviso && window.__AV_AMOSTRA__){ aviso.textContent="Amostra importada disponível — as páginas finais serão preenchidas."; aviso.style.color="#159a3c"; }
+    window.REL_atualizarTela();
   });
 })();
 </script>
