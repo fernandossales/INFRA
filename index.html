@@ -800,6 +800,30 @@
     width:100%; border:1px solid var(--borda-forte); border-radius:7px; padding:7px 9px; font-size:12.5px; background:#fff; color:var(--texto);
   }
   #panel-avaliacao .g-fatorlim:focus, #panel-avaliacao .g-caract:focus{border-color:var(--azul); outline:none; box-shadow:0 0 0 2px rgba(31,111,192,.15);}
+
+  /* Importação de amostra + tabela Imóvel Avaliando */
+  #panel-avaliacao .import-amostra{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:14px 0;
+    background:#f0f5fb; border:1px solid #cfe0f0; border-radius:9px; padding:12px 16px;
+  }
+  #panel-avaliacao .import-hint{font-size:12px; color:var(--label);}
+  #panel-avaliacao .imovel-avaliando{margin:12px 0;}
+  #panel-avaliacao .ia-grid{display:flex; gap:14px; flex-wrap:wrap;}
+  #panel-avaliacao .ia-tabela{flex:2; min-width:420px;}
+  #panel-avaliacao .ia-mapa{flex:1; min-width:240px; display:flex; flex-direction:column;}
+  #panel-avaliacao .ia-titulo{
+    background:#1F6FC0; color:#fff; font-weight:800; text-align:center;
+    padding:7px; font-size:13px; letter-spacing:.4px; border-radius:6px 6px 0 0;
+  }
+  #panel-avaliacao table.ia-tab{width:100%; border-collapse:collapse; font-size:12.5px;}
+  #panel-avaliacao table.ia-tab td{border:1px solid #c3d3e2; padding:6px 9px; text-align:center; vertical-align:middle;}
+  #panel-avaliacao table.ia-tab tr.ia-sub td{background:#175a9f; color:#fff; font-weight:700; text-align:center;}
+  #panel-avaliacao table.ia-tab tr.ia-cols td{background:#eef4fa; font-weight:700; color:var(--azul-esc);}
+  #panel-avaliacao table.ia-tab td.ia-lbl{background:#f7f9fc; font-weight:700; color:var(--texto); text-align:center;}
+  #panel-avaliacao table.ia-tab td.ia-eq{font-size:10.5px; text-align:center; line-height:1.5; color:#243447;}
+  #panel-avaliacao table.ia-tab td.ia-destaque{font-weight:800; color:var(--azul-esc); background:#eaf3fc;}
+  #panel-avaliacao table.ia-tab td.ia-centro{text-align:center;}
+  #panel-avaliacao .ia-mapa .img-drop{flex:1; border-radius:0 0 6px 6px; margin:0;}
 </style>
 </head>
 <body>
@@ -1503,6 +1527,67 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
     <div class="vtn-box">
       <div class="vtn-formula">R$/ha = +170930,8028 × e^(+0,7420810025 / Área) × e^(-0,7754092498 / N.A.²) × e^(+0,3240766412 × Zona)</div>
       <div class="vtn-result">VTN/ha = <strong id="av_vtn">R$ —</strong></div>
+    </div>
+
+    <div class="import-amostra">
+      <button type="button" class="vbtn vbtn-primary" onclick="document.getElementById('av_amostra_file').click()">↧ Importar dados da amostra</button>
+      <input type="file" id="av_amostra_file" accept=".txt,.csv" style="display:none" onchange="AV_importarAmostra(this)">
+      <span class="import-hint" id="av_amostra_status">Selecione o arquivo de texto do relatório estatístico (Nível de Confiança 80%).</span>
+    </div>
+
+    <div class="imovel-avaliando">
+      <div class="ia-grid">
+        <div class="ia-tabela">
+          <div class="ia-titulo">IMÓVEL AVALIANDO</div>
+          <table class="ia-tab">
+            <tr class="ia-sub"><td colspan="4">Características do imóvel</td></tr>
+            <tr>
+              <td class="ia-lbl">Área (ha)</td><td id="ia_area">—</td>
+              <td class="ia-lbl">N.A.</td><td id="ia_na">—</td>
+            </tr>
+            <tr>
+              <td class="ia-lbl">Zona</td><td id="ia_zona">—</td>
+              <td class="ia-lbl">Município</td><td id="ia_municipio">—</td>
+            </tr>
+            <tr>
+              <td class="ia-lbl">Equação</td>
+              <td colspan="3" id="ia_equacao" class="ia-eq">Unitário (R$/ha) = +170930,8028 × e^(+0,7420810025 / Área (ha)) × e^(−0,7754092498 / Nota agronômica²) × e^(+0,3240766412 × Zona)</td>
+            </tr>
+
+            <tr class="ia-sub"><td colspan="4">Valores Unitário / Hectare (R$)</td></tr>
+            <tr class="ia-cols"><td>Valores</td><td>Mínimo</td><td>Médio</td><td>Máximo</td></tr>
+            <tr>
+              <td class="ia-lbl">Intervalo de confiança</td>
+              <td id="ia_ic_min">—</td><td id="ia_ic_med" class="ia-destaque">—</td><td id="ia_ic_max">—</td>
+            </tr>
+            <tr>
+              <td class="ia-lbl">Amplitude</td>
+              <td colspan="3" id="ia_amplitude" class="ia-centro">—</td>
+            </tr>
+            <tr>
+              <td class="ia-lbl">Campo de Arbítrio</td>
+              <td id="ia_ca_min">—</td><td id="ia_ca_med" class="ia-destaque">—</td><td id="ia_ca_max">—</td>
+            </tr>
+
+            <tr class="ia-sub"><td colspan="4">Valor de Avaliação da Terra Nua (R$)</td></tr>
+            <tr>
+              <td class="ia-lbl">VTN</td>
+              <td id="ia_vtn_min">—</td><td id="ia_vtn_med" class="ia-destaque">—</td><td id="ia_vtn_max">—</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="ia-mapa">
+          <div class="ia-titulo">Mapa de Situação</div>
+          <label class="img-drop" id="av_mapa_drop">
+            <span class="ic">🗺️</span>
+            <span class="t">Clique ou arraste a imagem do Mapa de Situação</span>
+            <span class="h">JPG ou PNG</span>
+            <input type="file" accept="image/*" id="av_mapa_file">
+          </label>
+          <div class="img-preview" id="av_mapa_prev"></div>
+        </div>
+      </div>
     </div>
 
     <div class="depois-box" id="av_depois_box" style="display:none;">
@@ -2959,7 +3044,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
     const estacas = (typeof window.FV_estacas==="function") ? window.FV_estacas() : [];
     if(!estacas.length){ host.innerHTML = '<div class="av-estaca-item"><span class="km">Nenhuma área cadastrada na Ficha de Vistoria.</span></div>'; return; }
     host.innerHTML = estacas.map((e,i)=>{
-      const tag = i===0 ? "FAIXA DE DOMÍNIO" : (i===1 ? "ÁREA REMANESCENTE" : "FAIXA DE DOMÍNIO");
+      const tag = i===0 ? "FAIXA DE DOMÍNIO" : "ÁREA REMANESCENTE";
       return '<div class="av-estaca-item"><b>Área '+String(e.num).padStart(2,"0")+'</b>'+
              '<span class="km">KM Inicial '+ (e.ini||"—") +' ao KM Final '+ (e.fim||"—") +'</span>'+
              '<span class="tag">'+tag+'</span></div>';
@@ -3324,6 +3409,8 @@ window.FOTO_rodapeHTML=rodapeHTML;
 
     // guardar para o PDF
     window.__AV_CALC__ = {ccu, na, escala, vtn, fdArea, remArea, fdVal, remVal, sub1, sub2, total, zona, areaMem, comps};
+
+    if(typeof window.AV_atualizarImovelAvaliando==="function") window.AV_atualizarImovelAvaliando();
   }
   
   // ===== Tabela de Nota Agronômica (render/sincronização) =====
@@ -3675,7 +3762,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
     doc.setFont("helvetica","normal"); doc.setFontSize(11);
     estacas().forEach((e,i)=>{
       const rot = "Área "+String(e.num).padStart(2,"0");
-      const tipo = i===0? "(Faixa de Domínio)" : (i===1? "(Área Remanescente)":"(Faixa de Domínio)");
+      const tipo = i===0? "(Faixa de Domínio)" : "(Área Remanescente)";
       const l = rot+": KM Inicial "+(e.ini||"—")+" ao KM Final "+(e.fim||"—")+" "+tipo;
       doc.splitTextToSize(l, W-210).forEach(ln=>{ doc.text(ln,cx,y,{align:"center"}); y+=15; });
     });
@@ -3778,7 +3865,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
     campo(doc,ctx,"2.3 UF", val("av_uf"));
     subLbl(doc,ctx,"2.4 Locação — Áreas");
     estacas().forEach((e,i)=>{
-      const tipo = i===0? "FAIXA DE DOMÍNIO" : (i===1? "ÁREA REMANESCENTE":"FAIXA DE DOMÍNIO");
+      const tipo = i===0? "FAIXA DE DOMÍNIO" : "ÁREA REMANESCENTE";
       campo(doc,ctx,"Área "+String(e.num).padStart(2,"0")+" - Estaca (Km) — "+tipo, "KM Inicial "+(e.ini||"—")+" ao KM Final "+(e.fim||"—"));
     });
 
@@ -4553,6 +4640,112 @@ function AV_gerarDescSituacao(){
   const ta=document.getElementById("av_situacao_txt");
   if(ta) ta.value=txt;
 }
+</script>
+
+<script>
+/* ===== Avaliação: tabela Imóvel Avaliando + importação de amostra ===== */
+(function(){
+  function el(id){ return document.getElementById(id); }
+  function txt(id,v){ const e=el(id); if(e) e.textContent=v; }
+
+  // preenche as "Características do imóvel" a partir dos campos já existentes
+  window.AV_atualizarImovelAvaliando = function(){
+    const area = el("av_areatotal") ? el("av_areatotal").value : "";
+    const na   = el("av_na_result") ? el("av_na_result").value : "";
+    const zona = el("av_mem_zona") ? el("av_mem_zona").value : "";
+    const mun  = el("av_municipio") ? el("av_municipio").value : "";
+    txt("ia_area", area||"—");
+    txt("ia_na", na||"—");
+    txt("ia_zona", zona||"—");
+    txt("ia_municipio", mun||"—");
+  };
+
+  // imagem do Mapa de Situação
+  const imgs = (window.__AV_IMAGENS__ = window.__AV_IMAGENS__ || {});
+  function bindMapa(){
+    const input=el("av_mapa_file"), drop=el("av_mapa_drop"), prev=el("av_mapa_prev");
+    if(!input) return;
+    function set(file){
+      if(!file || !file.type.startsWith("image/")) return;
+      const rd=new FileReader();
+      rd.onload=e=>{
+        imgs.mapa=e.target.result;
+        prev.innerHTML='<img src="'+e.target.result+'"><br><button type="button" class="rm-img">Remover imagem</button>';
+        prev.classList.add("show");
+        prev.querySelector(".rm-img").addEventListener("click",()=>{ imgs.mapa=null; prev.innerHTML=""; prev.classList.remove("show"); input.value=""; });
+      };
+      rd.readAsDataURL(file);
+    }
+    input.addEventListener("change", e=> set(e.target.files[0]));
+    ["dragenter","dragover"].forEach(ev=> drop.addEventListener(ev,e=>{e.preventDefault(); drop.classList.add("over");}));
+    ["dragleave","drop"].forEach(ev=> drop.addEventListener(ev,e=>{e.preventDefault(); drop.classList.remove("over");}));
+    drop.addEventListener("drop", e=> set(e.dataTransfer.files[0]));
+  }
+
+  // importação do arquivo de amostra (texto) — parsing a ajustar conforme o formato real
+  window.AV_importarAmostra = function(input){
+    const file = input.files && input.files[0];
+    if(!file) return;
+    const status = el("av_amostra_status");
+    const rd = new FileReader();
+    rd.onload = function(e){
+      const texto = e.target.result;
+      try{
+        const dados = AV_parseAmostra(texto);
+        AV_preencherAmostra(dados);
+        if(status){ status.textContent = "Arquivo \""+file.name+"\" importado com sucesso."; status.style.color="#159a3c"; }
+      }catch(err){
+        console.error(err);
+        if(status){ status.textContent = "Não foi possível ler o arquivo: "+err.message; status.style.color="#c0392b"; }
+      }
+    };
+    rd.readAsText(file, "utf-8");
+  };
+
+  // PARSER — extrai os valores da seção "Nível de Confiança de 80%"
+  // (ajustável quando o formato exato do arquivo for conhecido)
+  window.AV_parseAmostra = function(texto){
+    const t = texto.replace(/\r/g,"");
+    const dados = {};
+    // helper: procura número BR após um rótulo
+    function acharNums(rotulo, qtd){
+      const re = new RegExp(rotulo+"[^0-9\\-]*((?:[\\d\\.]+,\\d+\\s*%?\\s*){1,"+qtd+"})","i");
+      const m = t.match(re);
+      if(!m) return null;
+      return (m[1].match(/[\d\.]+,\d+\s*%?/g)||[]).map(s=>s.trim());
+    }
+    // tenta capturar Valor Unitário (min, médio, máx)
+    const vu = acharNums("Valor Unit[áa]rio", 3);
+    if(vu){ dados.vu_min=vu[0]; dados.vu_med=vu[1]; dados.vu_max=vu[2]; }
+    const vt = acharNums("Valor Total", 3);
+    if(vt){ dados.vt_min=vt[0]; dados.vt_med=vt[1]; dados.vt_max=vt[2]; }
+    const ip = acharNums("Intervalo de predi[çc][ãa]o", 3);
+    if(ip){ dados.ip_min=ip[0]; dados.ip_med=ip[1]; dados.ip_max=ip[2]; }
+    const ca = acharNums("Campo de Arb[íi]trio", 3);
+    if(ca){ dados.ca_min=ca[0]; dados.ca_med=ca[1]; dados.ca_max=ca[2]; }
+    return dados;
+  };
+
+  window.AV_preencherAmostra = function(d){
+    if(d.vu_min) txt("ia_ic_min", d.vu_min);
+    if(d.vu_med) txt("ia_ic_med", d.vu_med);
+    if(d.vu_max) txt("ia_ic_max", d.vu_max);
+    if(d.ca_min) txt("ia_ca_min", d.ca_min);
+    if(d.ca_med) txt("ia_ca_med", d.ca_med);
+    if(d.ca_max) txt("ia_ca_max", d.ca_max);
+    // amplitude = soma das % mínima e máxima do Valor Unitário (se disponíveis)
+    if(d.amplitude) txt("ia_amplitude", d.amplitude);
+    // VTN (Valor Total) min/med/max
+    if(d.vt_min) txt("ia_vtn_min", d.vt_min);
+    if(d.vt_med) txt("ia_vtn_med", d.vt_med);
+    if(d.vt_max) txt("ia_vtn_max", d.vt_max);
+  };
+
+  document.addEventListener("DOMContentLoaded", function(){
+    bindMapa();
+    if(typeof window.AV_atualizarImovelAvaliando==="function") window.AV_atualizarImovelAvaliando();
+  });
+})();
 </script>
 </body>
 
