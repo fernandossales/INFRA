@@ -846,6 +846,9 @@
   #panel-avaliacao .bnf-nota{font-size:11px; color:var(--label); margin-top:8px; font-style:italic;}
   #panel-avaliacao .bnf-col-dep{width:110px;}
   #panel-avaliacao .bnf-col-un{width:70px;} #panel-avaliacao .bnf-col-qtd{width:80px;} #panel-avaliacao .bnf-col-vu{width:100px;}
+
+  /* aviso Anexo 09 */
+  #panel-relest .rel-aviso{margin:10px 0; padding:9px 13px; background:#f0f5fb; border:1px solid #cfe0f0; border-radius:8px; font-size:12.5px; color:var(--texto);}
 </style>
 </head>
 <body>
@@ -876,6 +879,7 @@
         <button class="drop-item" data-alvo="panel-foto"  onclick="trocarAba(this)">Anexo 04 - Relatório Fotográfico</button>
         <button class="drop-item" data-alvo="panel-drl"   onclick="trocarAba(this)">Anexo 05 - DRL</button>
         <button class="drop-item" data-alvo="panel-docs"  onclick="trocarAba(this)">Anexo 06 - Documentos</button>
+        <button class="drop-item" data-alvo="panel-relest" onclick="trocarAba(this)">Anexo 09 - Relatório Estatístico</button>
       </div>
     </div>
   </nav>
@@ -1045,6 +1049,38 @@
         <button class="btn btn-ghost" onclick="DOC_limpar(6)">Limpar</button>
       </div>
       <div class="status" id="st-6"></div>
+    </div>
+  </div>
+</div>
+  </section>
+
+  <section class="tab-panel" id="panel-relest">
+<div class="wrap">
+  <h1>Anexo 09 — Relatório Estatístico</h1>
+  <p class="sub">Carregue o relatório estatístico (saída do SisDEA) em PDF. O sistema insere a capa do Anexo 9 no início e acrescenta automaticamente, ao final, a <b>página da amostra importada</b> (penúltima) e a <b>página de simulação do Imóvel Avaliando</b> (última) — esta gerada a partir dos dados já lançados na aba Avaliação.</p>
+
+  <div class="grid grid-1">
+    <div class="card">
+      <h2>Relatório estatístico (SisDEA)</h2>
+      <p class="desc">Anexe o PDF do relatório estatístico. As duas páginas finais (amostra e simulação) são geradas automaticamente e acrescentadas ao final.</p>
+      <label class="drop" id="drop-9">
+        <span class="ic">📊</span>
+        <span class="t">Clique ou arraste o PDF do relatório estatístico</span>
+        <span class="h">Um ou mais arquivos • apenas .pdf</span>
+        <input type="file" accept="application/pdf" multiple id="file-9">
+      </label>
+      <ul class="lista" id="lista-9"></ul>
+
+      <div class="opts"><input type="checkbox" id="capa-9" checked><label for="capa-9">Incluir capa do Anexo 9</label></div>
+      <div class="opts"><input type="checkbox" id="pag-amostra-9" checked><label for="pag-amostra-9">Gerar página da amostra (penúltima)</label></div>
+      <div class="opts"><input type="checkbox" id="pag-simulacao-9" checked><label for="pag-simulacao-9">Gerar página de simulação do Imóvel Avaliando (última)</label></div>
+
+      <div class="rel-aviso" id="rel-aviso-9">Importe os dados da amostra na aba <b>Avaliação</b> (botão "Importar dados da amostra") para preencher as duas páginas finais.</div>
+
+      <div class="acoes">
+        <button class="btn btn-primary" id="ger-9" onclick="REL_gerar()">📊 Montar e baixar Anexo 09</button>
+        <button class="btn btn-ghost" onclick="REL_limpar()">Limpar</button>
+      </div>
     </div>
   </div>
 </div>
@@ -5007,14 +5043,251 @@ function AV_gerarDescSituacao(){
   };
 
   document.addEventListener("DOMContentLoaded", function(){
-    // linhas iniciais do modelo (exemplo do Lote 5F)
-    if(!document.querySelector('.bnf-tab[data-grupo="121"] tbody tr')){
-      BNF_addLinha("121",{disc:"COQUEIRO LICURI. NOTA: MESMA FAMÍLIA DO COCO ANÃO - ARECACEAE (PALMEIRAS). (RGV Lote 5F - 4ª Revisão, pág. 161)", dep:"PRODUTIVA", estado:"BOM", unid:"und.", qtd:"5", vu:"52,62"});
-      BNF_addLinha("121",{disc:"COQUEIRO LICURI. NOTA: MESMA FAMÍLIA DO COCO ANÃO - ARECACEAE (PALMEIRAS). (RGV Lote 5F - 4ª Revisão, pág. 161)", dep:"IMATURO", estado:"BOM", unid:"und.", qtd:"3", vu:"52,62"});
-      BNF_addLinha("123",{disc:"CUSTO DE PREPARO DE ÁREA PARA FORMAÇÃO DE PASTAGEM. (RGV Lote 5F - 4ª Revisão, pág. 260)", dep:"0,60", estado:"REGULAR", unid:"ha", qtd:"1,9327", vu:"4.111,37"});
-      BNF_addLinha("13",{disc:"CERCA DE MADEIRA DE LEI OU SIMILAR COM 9 FIOS DE ARAME FARPADO E ESPAÇAMENTO DE 1,50 METROS ENTRE ESTACAS. (RGV Lote 5F - 4ª Revisão, pág. 154)", dep:"0,61", unid:"m", qtd:"246,70", vu:"72,24"});
-    }
+    // por padrão, as tabelas iniciam vazias (usuário adiciona as linhas)
     BNF_recalc();
+  });
+})();
+</script>
+
+<script>
+/* ===== Anexo 09 — Relatório Estatístico (upload + capa + 2 páginas geradas) ===== */
+(function(){
+  const arquivos = [];
+  function el(id){ return document.getElementById(id); }
+
+  function bind(){
+    const input=el("file-9"), drop=el("drop-9");
+    if(!input) return;
+    input.addEventListener("change", e=> addFiles(e.target.files));
+    ["dragenter","dragover"].forEach(ev=> drop.addEventListener(ev,e=>{e.preventDefault(); drop.classList.add("over");}));
+    ["dragleave","drop"].forEach(ev=> drop.addEventListener(ev,e=>{e.preventDefault(); drop.classList.remove("over");}));
+    drop.addEventListener("drop", e=>{ e.preventDefault(); addFiles(e.dataTransfer.files); });
+  }
+  function addFiles(fl){
+    [...fl].forEach(f=>{ if(f.type==="application/pdf") arquivos.push(f); });
+    el("file-9").value="";
+    render();
+  }
+  function render(){
+    const ul=el("lista-9"); ul.innerHTML="";
+    arquivos.forEach((a,i)=>{
+      const li=document.createElement("li");
+      li.innerHTML='<span class="nm">'+a.name+'</span>'+
+        '<span class="ac">'+
+          '<button onclick="REL_mover('+i+',-1)" title="Subir">▲</button>'+
+          '<button onclick="REL_mover('+i+',1)" title="Descer">▼</button>'+
+          '<button onclick="REL_remover('+i+')" title="Remover">✕</button>'+
+        '</span>';
+      ul.appendChild(li);
+    });
+  }
+  window.REL_mover=function(i,d){ const j=i+d; if(j<0||j>=arquivos.length) return; const t=arquivos[i]; arquivos[i]=arquivos[j]; arquivos[j]=t; render(); };
+  window.REL_remover=function(i){ arquivos.splice(i,1); render(); };
+  window.REL_limpar=function(){ arquivos.length=0; render(); const st=el("rel-aviso-9"); };
+
+  // desenha as 2 páginas finais (amostra + simulação) com jsPDF e devolve bytes
+  function gerarPaginasFinais(incluirAmostra, incluirSimulacao){
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({unit:"pt", format:"a4"});
+    const W=doc.internal.pageSize.getWidth();
+    let primeira=true;
+
+    function cab(){
+      // logos
+      try{ if(window.__LOGO_INFRA__) doc.addImage(window.__LOGO_INFRA__, "JPEG", 40, 28, 90, 26); }catch(e){}
+      try{ if(window.__LOGO_ENPROL__) doc.addImage(window.__LOGO_ENPROL__, "JPEG", W-40-95, 28, 95, 26); }catch(e){}
+    }
+    function novaPag(){ if(!primeira){ doc.addPage(); } primeira=false; cab(); }
+
+    function tabelaImovel(titulo, dados){
+      novaPag();
+      let y=90;
+      doc.setFillColor(31,111,192); doc.rect(40,y,W-80,20,"F");
+      doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(255,255,255);
+      doc.text(titulo, W/2, y+14, {align:"center"});
+      y+=20;
+      const larg=W-80, cA=40, meio=cA+larg*0.62;
+      // Características do imóvel | Mapa de Situação
+      doc.setFillColor(23,90,159);
+      doc.rect(cA,y,larg*0.62,16,"F"); doc.rect(meio,y,larg*0.38,16,"F");
+      doc.setFontSize(8.5); doc.setTextColor(255,255,255);
+      doc.text("Características do imóvel", cA+larg*0.31, y+11, {align:"center"});
+      doc.text("Mapa de Situação", meio+larg*0.19, y+11, {align:"center"});
+      y+=16;
+      const linhas=[
+        ["Área (ha)", dados.area||"—", "N.A.", dados.na||"—"],
+        ["Zona", dados.zona||"—", "Município", dados.municipio||"—"]
+      ];
+      doc.setTextColor(35,45,60); doc.setFontSize(8);
+      const q=larg*0.62/4;
+      const mapaY=y;
+      linhas.forEach(row=>{
+        doc.setDrawColor(180,195,210);
+        for(let k=0;k<4;k++){
+          const x=cA+k*q;
+          if(k%2===0){ doc.setFillColor(240,245,250); doc.rect(x,y,q,16,"F"); }
+          doc.rect(x,y,q,16);
+          doc.setFont("helvetica", k%2===0?"bold":"normal");
+          doc.text(String(row[k]), x+q/2, y+11, {align:"center"});
+        }
+        y+=16;
+      });
+      // equação
+      doc.setDrawColor(180,195,210); doc.rect(cA,y,larg*0.62,44);
+      doc.setFillColor(240,245,250); doc.rect(cA,y,q,44,"F"); doc.rect(cA,y,q,44);
+      doc.setFont("helvetica","bold"); doc.text("Equação", cA+q/2, y+25, {align:"center"});
+      doc.setFont("helvetica","normal"); doc.setFontSize(6.8);
+      const eq="Unitário (R$/ha) = +170930,8028 × e^(+0,7420810025 / Área) × e^(−0,7754092498 / N.A.²) × e^(+0,3240766412 × Zona)";
+      doc.text(doc.splitTextToSize(eq, larg*0.62-q-8), cA+q+5, y+14);
+      // moldura do mapa (imagem se houver)
+      const mapaH=(y+44)-mapaY;
+      doc.setDrawColor(180,195,210); doc.rect(meio,mapaY,larg*0.38,mapaH);
+      if(window.__AV_IMAGENS__ && window.__AV_IMAGENS__.mapa){
+        try{ doc.addImage(window.__AV_IMAGENS__.mapa, "JPEG", meio+2, mapaY+2, larg*0.38-4, mapaH-4); }catch(e){}
+      }
+      y+=44;
+      // Valores Unitário / Hectare
+      doc.setFillColor(31,111,192); doc.rect(cA,y,larg*0.62,15,"F");
+      doc.setFont("helvetica","bold"); doc.setTextColor(255,255,255); doc.setFontSize(8);
+      doc.text("Valores Unitário / Hectare (R$)", cA+larg*0.31, y+10, {align:"center"});
+      y+=15;
+      function linhaVal(lbl, a, b, c, destaque){
+        doc.setDrawColor(180,195,210); doc.setTextColor(35,45,60);
+        const cols=[[cA,q,lbl,"bold"],[cA+q,q,a,destaque?"bold":"normal"],[cA+2*q,q,b,"bold"],[cA+3*q,q,c,destaque?"bold":"normal"]];
+        cols.forEach(cc=>{ doc.rect(cc[0],y,cc[1],14); doc.setFont("helvetica",cc[3]); doc.setFontSize(7.5); doc.text(String(cc[2]),cc[0]+cc[1]/2,y+9,{align:"center"}); });
+        y+=14;
+      }
+      // cabeçalho colunas
+      doc.setFillColor(238,244,250); doc.rect(cA,y,larg*0.62,14,"F");
+      doc.setDrawColor(180,195,210); doc.setTextColor(23,90,159); doc.setFont("helvetica","bold"); doc.setFontSize(7.5);
+      ["Valores","Mínimo","Médio","Máximo"].forEach((h,k)=>{ doc.rect(cA+k*q,y,q,14); doc.text(h,cA+k*q+q/2,y+9,{align:"center"}); });
+      y+=14;
+      linhaVal("Intervalo de confiança", dados.ic_min||"—", dados.ic_med||"—", dados.ic_max||"—", true);
+      // amplitude (linha mesclada)
+      doc.setDrawColor(180,195,210); doc.rect(cA,y,q,14); doc.setFillColor(240,245,250); doc.rect(cA,y,q,14,"F"); doc.rect(cA,y,q,14);
+      doc.setFont("helvetica","bold"); doc.setTextColor(35,45,60); doc.setFontSize(7.5); doc.text("Amplitude", cA+q/2, y+9, {align:"center"});
+      doc.rect(cA+q,y,q*3,14); doc.setFont("helvetica","normal"); doc.text(String(dados.amplitude||"—"), cA+q+ (q*3)/2, y+9, {align:"center"});
+      y+=14;
+      linhaVal("Campo de Arbítrio:", dados.ca_min||"—", dados.ca_med||"—", dados.ca_max||"—", true);
+      // VTN
+      doc.setFillColor(31,111,192); doc.rect(cA,y,larg*0.62,15,"F");
+      doc.setFont("helvetica","bold"); doc.setTextColor(255,255,255); doc.setFontSize(8);
+      doc.text("Valor de Avaliação da Terra Nua (R$)", cA+larg*0.31, y+10, {align:"center"});
+      y+=15;
+      linhaVal("VTN", dados.vtn_min||"—", dados.vtn_med||"—", dados.vtn_max||"—", true);
+    }
+
+    // Página da AMOSTRA (penúltima) — dados brutos da moda 80%
+    function paginaAmostra(){
+      novaPag();
+      const a=window.__AV_AMOSTRA__||{};
+      let y=90;
+      doc.setFont("helvetica","bold"); doc.setFontSize(11); doc.setTextColor(23,90,159);
+      doc.text("Modelo: RGV - FIOL - LOTE 5F", 40, y); y+=16;
+      doc.setFont("helvetica","normal"); doc.setFontSize(9); doc.setTextColor(35,45,60);
+      doc.text("Data de Referência: quarta-feira, 12 de março de 2025", 40, y); y+=20;
+      doc.setFont("helvetica","bold"); doc.text("Dados para a projeção de valores:", 40, y); y+=15;
+      doc.setFont("helvetica","normal");
+      doc.text("Área (ha) = "+(a.area||"—"), 60, y); y+=13;
+      doc.text("Nota agronômica = "+(a.na||"—"), 60, y); y+=13;
+      doc.text("Zona = "+(a.zona||"—"), 60, y); y+=22;
+      doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(23,90,159);
+      doc.text("Valores da Moda para Nível de Confiança de 80%", 40, y); y+=18;
+      doc.setTextColor(35,45,60); doc.setFontSize(9);
+      function bloco(tit, pares){
+        doc.setFont("helvetica","bold"); doc.text(tit, 50, y); y+=13;
+        doc.setFont("helvetica","normal");
+        pares.forEach(p=>{ doc.text(p, 70, y); y+=12; });
+        y+=4;
+      }
+      bloco("Valor Unitário", [
+        "Mínimo"+(a.vu_min_pct?" ("+a.vu_min_pct+"%)":"")+" = "+(a.vu_min||"—"),
+        "Médio = "+(a.vu_med||"—"),
+        "Máximo"+(a.vu_max_pct?" ("+a.vu_max_pct+"%)":"")+" = "+(a.vu_max||"—")
+      ]);
+      bloco("Valor Total", ["Mínimo = "+(a.vt_min||"—"), "Médio = "+(a.vt_med||"—"), "Máximo = "+(a.vt_max||"—")]);
+      bloco("Intervalo Predição", ["Mínimo = "+(a.ip_min||"—"), "Máximo = "+(a.ip_max||"—")]);
+      bloco("Campo de Arbítrio", ["RL Mínimo = "+(a.ca_min||"—"), "RL Máximo = "+(a.ca_max||"—")]);
+    }
+
+    if(incluirAmostra) paginaAmostra();
+    if(incluirSimulacao){
+      // Simulação = tabela Imóvel Avaliando (lê da aba Avaliação)
+      const g=id=>{ const e=el(id); return e? e.textContent.trim() : "—"; };
+      tabelaImovel("SIMULAÇÃO DO MODELO PARA O IMÓVEL AVALIANDO — IMÓVEL AVALIANDO", {
+        area:g("ia_area"), na:g("ia_na"), zona:g("ia_zona"), municipio:g("ia_municipio"),
+        ic_min:g("ia_ic_min"), ic_med:g("ia_ic_med"), ic_max:g("ia_ic_max"),
+        amplitude:g("ia_amplitude"),
+        ca_min:g("ia_ca_min"), ca_med:g("ia_ca_med"), ca_max:g("ia_ca_max"),
+        vtn_min:g("ia_vtn_min"), vtn_med:g("ia_vtn_med"), vtn_max:g("ia_vtn_max")
+      });
+    }
+    return doc.output("arraybuffer");
+  }
+
+  window.REL_gerar = async function(){
+    const btn=el("ger-9"); const aviso=el("rel-aviso-9");
+    const incluirCapa = el("capa-9").checked;
+    const incluirAmostra = el("pag-amostra-9").checked;
+    const incluirSimulacao = el("pag-simulacao-9").checked;
+    if(!arquivos.length && !incluirAmostra && !incluirSimulacao){ aviso.textContent="Anexe o PDF do relatório ou marque as páginas a gerar."; aviso.style.color="#c0392b"; return; }
+    btn.disabled=true; if(aviso){ aviso.textContent="Montando o Anexo 09..."; aviso.style.color=""; }
+    try{
+      const out = await PDFLib.PDFDocument.create();
+      // capa
+      if(incluirCapa && typeof window.ANX_desenharCapa==="function"){
+        // reaproveita o desenho de capa dos anexos (título via CAPAS) — desenha capa 9 manualmente
+        await desenharCapa9(out);
+      }
+      // PDFs do relatório
+      for(const f of arquivos){
+        const buf=await f.arrayBuffer();
+        const src=await PDFLib.PDFDocument.load(buf);
+        const pgs=await out.copyPages(src, src.getPageIndices());
+        pgs.forEach(p=>out.addPage(p));
+      }
+      // 2 páginas finais geradas
+      if(incluirAmostra || incluirSimulacao){
+        const finBytes = gerarPaginasFinais(incluirAmostra, incluirSimulacao);
+        const fin = await PDFLib.PDFDocument.load(finBytes);
+        const pgs = await out.copyPages(fin, fin.getPageIndices());
+        pgs.forEach(p=>out.addPage(p));
+      }
+      const bytes = await out.save();
+      const blob=new Blob([bytes],{type:"application/pdf"});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a"); a.href=url; a.download="Anexo_9_Relatorio_Estatistico.pdf"; a.click();
+      setTimeout(()=>URL.revokeObjectURL(url),4000);
+      if(aviso){ aviso.textContent="✓ Anexo 09 gerado com "+out.getPageCount()+" páginas."; aviso.style.color="#159a3c"; }
+    }catch(err){
+      console.error(err);
+      if(aviso){ aviso.textContent="Erro ao gerar: "+err.message; aviso.style.color="#c0392b"; }
+    }
+    btn.disabled=false;
+  };
+
+  // capa do Anexo 9 (usa logos e rodapé globais se existirem)
+  async function desenharCapa9(pdfDoc){
+    const { rgb, StandardFonts } = PDFLib;
+    const A4W=595.28, A4H=841.89;
+    const page=pdfDoc.addPage([A4W,A4H]);
+    const fontB=await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const fontR=await pdfDoc.embedFont(StandardFonts.Helvetica);
+    try{
+      if(window.__LOGO_INFRA__){ const infra=await pdfDoc.embedJpg(window.__LOGO_INFRA__); const h=34,w=infra.width*(h/infra.height); page.drawImage(infra,{x:56,y:A4H-60,width:w,height:h}); }
+      if(window.__LOGO_ENPROL__){ const en=await pdfDoc.embedJpg(window.__LOGO_ENPROL__); const h=34,w=en.width*(h/en.height); page.drawImage(en,{x:A4W-56-w,y:A4H-60,width:w,height:h}); }
+    }catch(e){}
+    const titulo="ANEXO 9: RELATÓRIO ESTATÍSTICO";
+    const w=fontB.widthOfTextAtSize(titulo,15);
+    page.drawText(titulo,{x:(A4W-w)/2,y:A4H/2,size:15,font:fontB,color:rgb(0.14,0.20,0.28)});
+    page.drawLine({start:{x:56,y:70},end:{x:A4W-56,y:70},thickness:1,color:rgb(0.12,0.44,0.75)});
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    bind();
+    // atualizar aviso quando houver amostra importada
+    const aviso=el("rel-aviso-9");
+    if(aviso && window.__AV_AMOSTRA__){ aviso.textContent="Amostra importada disponível — as páginas finais serão preenchidas."; aviso.style.color="#159a3c"; }
   });
 })();
 </script>
