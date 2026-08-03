@@ -6,6 +6,7 @@
 <title>INFRA · Ferramentas de Anexos</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <style>
 
@@ -4687,59 +4688,126 @@ function AV_gerarDescSituacao(){
     const file = input.files && input.files[0];
     if(!file) return;
     const status = el("av_amostra_status");
-    const rd = new FileReader();
-    rd.onload = function(e){
-      const texto = e.target.result;
+    if(status){ status.textContent = "Lendo \""+file.name+"\"..."; status.style.color=""; }
+    const nome=(file.name||"").toLowerCase();
+
+    function processar(texto){
       try{
         const dados = AV_parseAmostra(texto);
         AV_preencherAmostra(dados);
         if(status){ status.textContent = "Arquivo \""+file.name+"\" importado com sucesso."; status.style.color="#159a3c"; }
       }catch(err){
         console.error(err);
-        if(status){ status.textContent = "Não foi possível ler o arquivo: "+err.message; status.style.color="#c0392b"; }
+        if(status){ status.textContent = "Não foi possível interpretar o arquivo: "+err.message; status.style.color="#c0392b"; }
       }
-    };
-    rd.readAsText(file, "utf-8");
+    }
+
+    if(nome.endsWith(".docx")){
+      if(typeof mammoth==="undefined"){ if(status){ status.textContent="Biblioteca de leitura .docx não carregada (verifique a conexão)."; status.style.color="#c0392b"; } return; }
+      const rd=new FileReader();
+      rd.onload=function(e){
+        mammoth.extractRawText({arrayBuffer:e.target.result})
+          .then(function(r){ processar(r.value); })
+          .catch(function(err){ if(status){ status.textContent="Erro ao ler .docx: "+err.message; status.style.color="#c0392b"; } });
+      };
+      rd.readAsArrayBuffer(file);
+    } else {
+      const rd=new FileReader();
+      rd.onload=function(e){ processar(e.target.result); };
+      rd.readAsText(file, "utf-8");
+    }
   };
 
-  // PARSER — extrai os valores da seção "Nível de Confiança de 80%"
-  // (ajustável quando o formato exato do arquivo for conhecido)
+  // converte "18.832,80" -> número; e formata de volta em pt-BR
+  function bnum(s){ if(s==null) return NaN; return parseFloat(String(s).replace(/\./g,"").replace(",",".")); }
+  function bfmt(n){ return isFinite(n)? n.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2}) : "—"; }
+  function pctnum(s){ if(s==null) return NaN; return parseFloat(String(s).replace("%","").replace(".","").replace(",",".")); }
+
+  // PARSER — formato do relatório (Nível de Confiança de 80%)
   window.AV_parseAmostra = function(texto){
-    const t = texto.replace(/\r/g,"");
-    const dados = {};
-    // helper: procura número BR após um rótulo
-    function acharNums(rotulo, qtd){
-      const re = new RegExp(rotulo+"[^0-9\\-]*((?:[\\d\\.]+,\\d+\\s*%?\\s*){1,"+qtd+"})","i");
+    const t = texto.replace(/\r/g," ").replace(/\u00a0/g," ");
+    const d = {};
+    // captura genérica: rótulo seguido de "= valor"
+    function val(rotulo){
+      const re = new RegExp(rotulo+"\\s*(?:\\(([\\d.,]+)\\s*%\\))?\\s*=\\s*([\\d.,]+)","i");
       const m = t.match(re);
       if(!m) return null;
-      return (m[1].match(/[\d\.]+,\d+\s*%?/g)||[]).map(s=>s.trim());
+      return {pct:m[1]||null, valor:m[2]};
     }
-    // tenta capturar Valor Unitário (min, médio, máx)
-    const vu = acharNums("Valor Unit[áa]rio", 3);
-    if(vu){ dados.vu_min=vu[0]; dados.vu_med=vu[1]; dados.vu_max=vu[2]; }
-    const vt = acharNums("Valor Total", 3);
-    if(vt){ dados.vt_min=vt[0]; dados.vt_med=vt[1]; dados.vt_max=vt[2]; }
-    const ip = acharNums("Intervalo de predi[çc][ãa]o", 3);
-    if(ip){ dados.ip_min=ip[0]; dados.ip_med=ip[1]; dados.ip_max=ip[2]; }
-    const ca = acharNums("Campo de Arb[íi]trio", 3);
-    if(ca){ dados.ca_min=ca[0]; dados.ca_med=ca[1]; dados.ca_max=ca[2]; }
-    return dados;
+    // Dados de projeção
+    const area=val("Área\\s*\\(ha\\)"); if(area) d.area=area.valor;
+    const na=val("Nota agron[ôo]mica"); if(na) d.na=na.valor;
+    const zona=val("Zona"); if(zona) d.zona=zona.valor;
+
+    // Valor Unitário: procurar bloco após "Valor Unitário"
+    function bloco(nomeBloco, campos){
+      const idx=t.search(new RegExp(nomeBloco,"i"));
+      if(idx<0) return {};
+      const trecho=t.slice(idx, idx+400);
+      const out={};
+      campos.forEach(c=>{
+        const re=new RegExp(c.rot+"\\s*(?:\\(([\\d.,]+)\\s*%\\))?\\s*=\\s*([\\d.,]+)","i");
+        const m=trecho.match(re);
+        if(m) out[c.key]={pct:m[1]||null, valor:m[2]};
+      });
+      return out;
+    }
+    const vu=bloco("Valor Unit[áa]rio",[{rot:"M[íi]nimo",key:"min"},{rot:"M[ée]dio",key:"med"},{rot:"M[áa]ximo",key:"max"}]);
+    if(vu.min){ d.vu_min=vu.min.valor; d.vu_min_pct=vu.min.pct; }
+    if(vu.med){ d.vu_med=vu.med.valor; }
+    if(vu.max){ d.vu_max=vu.max.valor; d.vu_max_pct=vu.max.pct; }
+
+    const vt=bloco("Valor Total",[{rot:"M[íi]nimo",key:"min"},{rot:"M[ée]dio",key:"med"},{rot:"M[áa]ximo",key:"max"}]);
+    if(vt.min) d.vt_min=vt.min.valor;
+    if(vt.med) d.vt_med=vt.med.valor;
+    if(vt.max) d.vt_max=vt.max.valor;
+
+    const ip=bloco("Intervalo\\s*Predi[çc][ãa]o",[{rot:"M[íi]nimo",key:"min"},{rot:"M[áa]ximo",key:"max"}]);
+    if(ip.min) d.ip_min=ip.min.valor;
+    if(ip.max) d.ip_max=ip.max.valor;
+
+    const ca=bloco("Campo de Arb[íi]trio",[{rot:"RL\\s*M[íi]nimo",key:"min"},{rot:"RL\\s*M[áa]ximo",key:"max"}]);
+    if(ca.min) d.ca_min=ca.min.valor;
+    if(ca.max) d.ca_max=ca.max.valor;
+
+    return d;
   };
 
   window.AV_preencherAmostra = function(d){
-    if(d.vu_min) txt("ia_ic_min", d.vu_min);
-    if(d.vu_med) txt("ia_ic_med", d.vu_med);
-    if(d.vu_max) txt("ia_ic_max", d.vu_max);
-    if(d.ca_min) txt("ia_ca_min", d.ca_min);
-    if(d.ca_med) txt("ia_ca_med", d.ca_med);
-    if(d.ca_max) txt("ia_ca_max", d.ca_max);
-    // amplitude = soma das % mínima e máxima do Valor Unitário (se disponíveis)
-    if(d.amplitude) txt("ia_amplitude", d.amplitude);
-    // VTN (Valor Total) min/med/max
-    if(d.vt_min) txt("ia_vtn_min", d.vt_min);
-    if(d.vt_med) txt("ia_vtn_med", d.vt_med);
-    if(d.vt_max) txt("ia_vtn_max", d.vt_max);
+    // Intervalo de confiança = Valor Unitário (min/med/max)
+    if(d.vu_min) txt("ia_ic_min", "R$ "+d.vu_min);
+    if(d.vu_med) txt("ia_ic_med", "R$ "+d.vu_med);
+    if(d.vu_max) txt("ia_ic_max", "R$ "+d.vu_max);
+
+    // Amplitude = soma das % mínima e máxima do Valor Unitário + Grau (CCU)
+    if(d.vu_min_pct && d.vu_max_pct){
+      const soma = pctnum(d.vu_min_pct)+pctnum(d.vu_max_pct);
+      const grau = AV_grauFundamentacao(soma);
+      txt("ia_amplitude", soma.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+"% "+grau);
+    }
+
+    // Campo de Arbítrio: min = RL Mínimo, médio = Valor Unitário médio, max = RL Máximo
+    if(d.ca_min) txt("ia_ca_min", "R$ "+d.ca_min);
+    if(d.vu_med) txt("ia_ca_med", "R$ "+d.vu_med);
+    if(d.ca_max) txt("ia_ca_max", "R$ "+d.ca_max);
+
+    // VTN = Valor Total (min/med/max)
+    if(d.vt_min) txt("ia_vtn_min", "R$ "+d.vt_min);
+    if(d.vt_med) txt("ia_vtn_med", "R$ "+d.vt_med);
+    if(d.vt_max) txt("ia_vtn_max", "R$ "+d.vt_max);
+
+    // guardar para o PDF
+    window.__AV_AMOSTRA__ = d;
   };
+
+  // grau de fundamentação pela amplitude do intervalo (NBR 14.653)
+  function AV_grauFundamentacao(amplitudePct){
+    if(!isFinite(amplitudePct)) return "";
+    if(amplitudePct <= 30) return "(Grau III)";
+    if(amplitudePct <= 40) return "(Grau II)";
+    if(amplitudePct <= 50) return "(Grau I)";
+    return "(fora do intervalo)";
+  }
 
   document.addEventListener("DOMContentLoaded", function(){
     bindMapa();
