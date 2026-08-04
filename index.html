@@ -858,6 +858,22 @@
   #panel-relest table.rel-tab td:first-child{color:#334; font-weight:600; width:58%;}
   #panel-relest table.rel-tab td:last-child{text-align:right; color:var(--azul-esc); font-weight:600;}
   #panel-relest table.rel-tab tr.rel-h td{background:#1F6FC0; color:#fff; font-weight:700; text-align:center;}
+
+  /* ===== Modal de unificação ===== */
+  .unir-modal-overlay{position:fixed; inset:0; background:rgba(20,30,45,.55); z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px;}
+  .unir-modal{background:#fff; border-radius:14px; max-width:520px; width:100%; padding:26px 26px 20px; box-shadow:0 20px 60px rgba(0,0,0,.3); font-family:inherit;}
+  .unir-modal h3{margin:0 0 6px; font-size:18px; color:#1a2a3d;}
+  .unir-modal .unir-modal-sub{margin:0 0 16px; font-size:13px; color:#68757f;}
+  .unir-check-list{display:flex; flex-direction:column; gap:10px; margin-bottom:22px; max-height:52vh; overflow-y:auto;}
+  .unir-check-list label{display:flex; align-items:flex-start; gap:10px; font-size:13.5px; color:#2a3742; cursor:pointer; padding:9px 12px; border:1px solid #e2e9f0; border-radius:9px; transition:background .15s;}
+  .unir-check-list label:hover{background:#f4f8fc;}
+  .unir-check-list input[type=checkbox]{width:17px; height:17px; margin-top:1px; accent-color:#1F6FC0; cursor:pointer;}
+  .unir-modal-acoes{display:flex; justify-content:flex-end; gap:10px;}
+  .unir-modal-acoes .btn{padding:9px 18px; border-radius:8px; font-size:13.5px; font-weight:600; cursor:pointer; border:none;}
+  .unir-modal-acoes .btn-ghost{background:#eef1f4; color:#445;}
+  .unir-modal-acoes .btn-ghost:hover{background:#e2e7ec;}
+  .unir-modal-acoes .btn-primary{background:#1F6FC0; color:#fff;}
+  .unir-modal-acoes .btn-primary:hover{background:#1a5da3;}
 </style>
 </head>
 <body>
@@ -877,6 +893,28 @@
     </button>
   </div>
   <div class="unir-status" id="unirStatus"></div>
+
+  <!-- Modal de seleção de anexos para unificação -->
+  <div class="unir-modal-overlay" id="unirModal" style="display:none;">
+    <div class="unir-modal">
+      <h3>Selecione o que incluir no PDF unificado</h3>
+      <p class="unir-modal-sub">Os anexos marcados serão renumerados em sequência (Anexo 01, 02, 03...) no documento final.</p>
+      <div class="unir-check-list" id="unirCheckList">
+        <label><input type="checkbox" value="laudo" data-nome="Laudo de Avaliação" checked> Laudo de Avaliação (capa + laudo completo)</label>
+        <label><input type="checkbox" value="ccu" data-nome="Tabela de Determinação da CCU" checked> Anexo — Tabela CCU</label>
+        <label><input type="checkbox" value="a2" data-nome="Planta(s) planimétrica(s)" checked> Anexo — Plantas Planimétricas</label>
+        <label><input type="checkbox" value="a3" data-nome="Memorial descritivo" checked> Anexo — Memoriais Descritivos</label>
+        <label><input type="checkbox" value="foto" data-nome="Relatório fotográfico" checked> Anexo — Relatório Fotográfico</label>
+        <label><input type="checkbox" value="drl" data-nome="Declaração de respeito de limites" checked> Anexo — DRL</label>
+        <label><input type="checkbox" value="docs" data-nome="Cópias de documentos de propriedade" checked> Anexo — Documentos de Propriedade</label>
+        <label><input type="checkbox" value="relest" data-nome="Relatório estatístico" checked> Anexo — Relatório Estatístico</label>
+      </div>
+      <div class="unir-modal-acoes">
+        <button class="btn btn-ghost" onclick="UNIR_fecharModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="UNIR_confirmar()">Gerar PDF unificado</button>
+      </div>
+    </div>
+  </div>
   <nav class="tabs" id="tabs">
     <button class="tab ativa" data-alvo="panel-vistoria" onclick="trocarAba(this)">Ficha de Vistoria</button>
     <button class="tab" data-alvo="panel-avaliacao" onclick="trocarAba(this)">Avaliação</button>
@@ -1209,7 +1247,7 @@
 
     <div class="vsub">2.7 Imóvel Rural</div>
     <label class="vlbl">2.7.1 Características da terra</label>
-    <textarea id="fv_terra" rows="6">NA GLEBA AVALIADA, COMPOSTA PREDOMINANTEMENTE POR PLANOSSOLOS E NEOSSOLOS, FORAM IDENTIFICADAS ÁREAS DAS CLASSES DE CAPACIDADE DE USO III, VII E VIII, ASSIM DISTRIBUÍDAS: A GLEBA 01 (CLASSE III), COM 2,0500 ha (≈37,05% DO IMÓVEL), CUJO FATOR MAIS RESTRITIVO É A PROFUNDIDADE EFETIVA (SOLO RASO); A GLEBA 02 (CLASSE VII), COM 0,9609 ha (≈23,16%), LIMITADA PELA PEDREGOSIDADE MODERADA; E A GLEBA 03 (CLASSE VIII), COM 1,1389 ha (≈27,44%), CONDICIONADA PELA CLASSE DE DECLIVIDADE ENTRE 20% E 40%. ASSIM, A ÁREA DE MELHOR APTIDÃO (CLASSE III) COMPORTA CULTURAS ANUAIS DESDE QUE SOB MANEJO CONSERVACIONISTA INTENSO, ENQUANTO AS DEMAIS PORÇÕES SÃO RESTRITAS AO REFLORESTAMENTO E À VIDA SILVESTRE (CLASSE VII) OU DESTINADAS EXCLUSIVAMENTE À PRESERVAÇÃO AMBIENTAL (CLASSE VIII). TAIS CONDIÇÕES, ALIADAS ÀS RESTRIÇÕES NATURAIS DOS PLANOSSOLOS E NEOSSOLOS — COMO DRENAGEM IMPERFEITA E BARREIRAS FÍSICAS AO DESENVOLVIMENTO RADICULAR —, CONDICIONAM SEVERAMENTE A EXPLORAÇÃO AGRÍCOLA E EXIGEM TÉCNICAS ESPECÍFICAS DE ESCOAMENTO E CONDUÇÃO DE ÁGUA NA IMPLANTAÇÃO DE ROTAS DE ACESSO, DE MODO A EVITAR DEGRADAÇÃO.</textarea>
+    <textarea id="fv_terra" rows="6">NA GLEBA AVALIADA, COMPOSTA PREDOMINANTEMENTE POR PLANOSSOLOS E NEOSSOLOS, FORAM IDENTIFICADAS ÁREAS DAS CLASSES DE CAPACIDADE DE USO III, VII E VIII, ASSIM DISTRIBUÍDAS: A GLEBA 01 (CLASSE III), COM 2,0500 ha (aprox. 37,05% DO IMÓVEL), CUJO FATOR MAIS RESTRITIVO É A PROFUNDIDADE EFETIVA (SOLO RASO); A GLEBA 02 (CLASSE VII), COM 0,9609 ha (aprox. 23,16%), LIMITADA PELA PEDREGOSIDADE MODERADA; E A GLEBA 03 (CLASSE VIII), COM 1,1389 ha (aprox. 27,44%), CONDICIONADA PELA CLASSE DE DECLIVIDADE ENTRE 20% E 40%. ASSIM, A ÁREA DE MELHOR APTIDÃO (CLASSE III) COMPORTA CULTURAS ANUAIS DESDE QUE SOB MANEJO CONSERVACIONISTA INTENSO, ENQUANTO AS DEMAIS PORÇÕES SÃO RESTRITAS AO REFLORESTAMENTO E À VIDA SILVESTRE (CLASSE VII) OU DESTINADAS EXCLUSIVAMENTE À PRESERVAÇÃO AMBIENTAL (CLASSE VIII). TAIS CONDIÇÕES, ALIADAS ÀS RESTRIÇÕES NATURAIS DOS PLANOSSOLOS E NEOSSOLOS — COMO DRENAGEM IMPERFEITA E BARREIRAS FÍSICAS AO DESENVOLVIMENTO RADICULAR —, CONDICIONAM SEVERAMENTE A EXPLORAÇÃO AGRÍCOLA E EXIGEM TÉCNICAS ESPECÍFICAS DE ESCOAMENTO E CONDUÇÃO DE ÁGUA NA IMPLANTAÇÃO DE ROTAS DE ACESSO, DE MODO A EVITAR DEGRADAÇÃO.</textarea>
     <label class="vlbl">2.7.2 Hidrografia (Vazão m³ ou L/s)</label>
     <textarea id="fv_hidro" rows="3">HÁ UMA ÁREA COM DECLIVIDADE QUE FAVORECE O ESCOAMENTO DE ÁGUA. RESSALTA-SE, AINDA, QUE FORAM IDENTIFICADAS ESTRUTURAS DE CAPTAÇÃO SUBTERRÂNEA (POÇO) COMPARTILHADO NO INTERIOR DA PROPRIEDADE.</textarea>
     <label class="vlbl">2.7.3 Informações Complementares</label>
@@ -1415,7 +1453,7 @@
   <!-- 07 DESCRIÇÃO -->
   <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>07 — Descrição do Imóvel</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
-    <textarea id="av_descricao" rows="8">PROPRIEDADE RURAL DENOMINADA SÍTIO CÔCOS, MATRÍCULA 28.001, SITUADA NO DISTRITO DE CERAÍMA, MUNICÍPIO DE GUANAMBI/BA, INSERIDA NO BIOMA CAATINGA, COM VEGETAÇÃO NATIVA EM PARTE ANTROPIZADA. SEU USO AGROPECUÁRIO VARIA CONFORME O GRAU DE RESTRIÇÃO DE CADA SETOR, IDENTIFICANDO-SE ÁREAS DAS CLASSES DE CAPACIDADE DE USO III, VII E VIII: A GLEBA 01 (CLASSE III), COM 2,0500 ha (≈37,05%), RESTRITA PELA PROFUNDIDADE EFETIVA (SOLO RASO); A GLEBA 02 (CLASSE VII), COM 0,9609 ha (≈23,16%), LIMITADA PELA PEDREGOSIDADE MODERADA; E A GLEBA 03 (CLASSE VIII), COM 1,1389 ha (≈27,44%), CONDICIONADA PELA DECLIVIDADE ENTRE 20% E 40%. O ACESSO É FEITO POR MEIO DA RODOVIA BA-938 E DE ESTRADA VICINAL, COM CONDIÇÕES DE TRÁFEGO MUITO BOAS E PERMANENTES. APRESENTA HIDROGRAFIA MARCADA POR RIO INTERMITENTE E DECLIVIDADE QUE FAVORECE O ESCOAMENTO SUPERFICIAL, COM LIMITAÇÕES NAS ÁREAS MAIS BAIXAS. O RELEVO É HETEROGÊNEO E ÍNGREME, E O SOLO É COMPOSTO PREDOMINANTEMENTE POR PLANOSSOLOS E NEOSSOLOS, COM RESTRIÇÕES NATURAIS COMO DRENAGEM IMPERFEITA E BARREIRAS FÍSICAS AO DESENVOLVIMENTO RADICULAR. ESSAS CONDIÇÕES CONDICIONAM SEVERAMENTE A EXPLORAÇÃO AGRÍCOLA E EXIGEM TÉCNICAS ESPECÍFICAS DE ESCOAMENTO E CONDUÇÃO DE ÁGUA NA IMPLANTAÇÃO DE ROTAS DE ACESSO OU EM QUALQUER INTERVENÇÃO.</textarea>
+    <textarea id="av_descricao" rows="8">PROPRIEDADE RURAL DENOMINADA SÍTIO CÔCOS, MATRÍCULA 28.001, SITUADA NO DISTRITO DE CERAÍMA, MUNICÍPIO DE GUANAMBI/BA, INSERIDA NO BIOMA CAATINGA, COM VEGETAÇÃO NATIVA EM PARTE ANTROPIZADA. SEU USO AGROPECUÁRIO VARIA CONFORME O GRAU DE RESTRIÇÃO DE CADA SETOR, IDENTIFICANDO-SE ÁREAS DAS CLASSES DE CAPACIDADE DE USO III, VII E VIII: A GLEBA 01 (CLASSE III), COM 2,0500 ha (aprox. 37,05%), RESTRITA PELA PROFUNDIDADE EFETIVA (SOLO RASO); A GLEBA 02 (CLASSE VII), COM 0,9609 ha (aprox. 23,16%), LIMITADA PELA PEDREGOSIDADE MODERADA; E A GLEBA 03 (CLASSE VIII), COM 1,1389 ha (aprox. 27,44%), CONDICIONADA PELA DECLIVIDADE ENTRE 20% E 40%. O ACESSO É FEITO POR MEIO DA RODOVIA BA-938 E DE ESTRADA VICINAL, COM CONDIÇÕES DE TRÁFEGO MUITO BOAS E PERMANENTES. APRESENTA HIDROGRAFIA MARCADA POR RIO INTERMITENTE E DECLIVIDADE QUE FAVORECE O ESCOAMENTO SUPERFICIAL, COM LIMITAÇÕES NAS ÁREAS MAIS BAIXAS. O RELEVO É HETEROGÊNEO E ÍNGREME, E O SOLO É COMPOSTO PREDOMINANTEMENTE POR PLANOSSOLOS E NEOSSOLOS, COM RESTRIÇÕES NATURAIS COMO DRENAGEM IMPERFEITA E BARREIRAS FÍSICAS AO DESENVOLVIMENTO RADICULAR. ESSAS CONDIÇÕES CONDICIONAM SEVERAMENTE A EXPLORAÇÃO AGRÍCOLA E EXIGEM TÉCNICAS ESPECÍFICAS DE ESCOAMENTO E CONDUÇÃO DE ÁGUA NA IMPLANTAÇÃO DE ROTAS DE ACESSO OU EM QUALQUER INTERVENÇÃO.</textarea>
   </div>
 
   <!-- 08 CROQUI (imagem) -->
@@ -1882,17 +1920,11 @@ const LOGO_INFRA = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCABUA
 const LOGO_ENPROL = "data:image/jpeg;base64,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";
 const RODAPE_END = [
   "Av. Des. Moreira, n° 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE",
-  "Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE",
   "Rua Araguari, nº 358, Conj.1903/1904, Barro Preto, 30.190-110, Belo Horizonte-MG",
-  "Rua Des. Mário da Silva Nunes, nº 120, Sala 201, Enseada do Suá, 29.050-240, Vitória-ES",
-  "Rua Avertano Rocha, n°192, Campina, 66.023-120, Belém-PA",
 ];
 const RODAPE_TEL = [
   "(+55 85) 3289-6363   comercial@enprol.com.br",
-  "(+55 85) 3289-6363   comercial@enprol.com.br",
   "(+55 31) 3253-5500   comercial@enprol.com.br",
-  "(+55 27) 3029-5540   comercial@enprol.com.br",
-  "(+55 94) 3346-8994   comercial@enprol.com.br",
 ];
 const romanos = ["I","II","III","IV","V","VI","VII","VIII"];
 const fatores = [
@@ -2338,10 +2370,7 @@ const CAPAS = {
 };
 const RODAPE = [
   "Av. Des. Moreira, n° 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE   (+55 85) 3289-6363   comercial@enprol.com.br",
-  "Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE   (+55 85) 3289-6363   comercial@enprol.com.br",
-  "Rua Araguari, nº 358, Conj.1903/1904, Barro Preto, 30.190-110, Belo Horizonte-MG   (+55 31) 3253-5500   comercial@enprol.com.br",
-  "Rua Des. Mário da Silva Nunes, nº 120, Sala 201, Enseada do Suá, 29.050-240, Vitória-ES   (+55 27) 3029-5540   comercial@enprol.com.br",
-  "Rua Avertano Rocha, n°192, Campina, 66.023-120, Belém-PA   (+55 94) 3346-8994   comercial@enprol.com.br"
+  "Rua Araguari, nº 358, Conj.1903/1904, Barro Preto, 30.190-110, Belo Horizonte-MG   (+55 31) 3253-5500   comercial@enprol.com.br"
 ];
 
 const arquivos = {2:[], 3:[]};
@@ -2525,17 +2554,11 @@ const LOGO_ENPROL = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCABU
 
 const RODAPE_END = [
   "Av. Des. Moreira, n° 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE",
-  "Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE",
   "Rua Araguari, nº 358, Conj.1903/1904, Barro Preto, 30.190-110, Belo Horizonte-MG",
-  "Rua Des. Mário da Silva Nunes, nº 120, Sala 201, Enseada do Suá, 29.050-240, Vitória-ES",
-  "Rua Avertano Rocha, n°192, Campina, 66.023-120, Belém-PA",
 ];
 const RODAPE_TEL = [
   "(+55 85) 3289-6363   comercial@enprol.com.br",
-  "(+55 85) 3289-6363   comercial@enprol.com.br",
   "(+55 31) 3253-5500   comercial@enprol.com.br",
-  "(+55 27) 3029-5540   comercial@enprol.com.br",
-  "(+55 94) 3346-8994   comercial@enprol.com.br",
 ];
 
 let fotos = []; // {src, legenda}
@@ -2784,17 +2807,11 @@ window.FOTO_rodapeHTML=rodapeHTML;
   const LOGO_ENPROL = "data:image/jpeg;base64,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";
   const RODAPE_END = [
     "Av. Des. Moreira, n° 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE",
-    "Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE",
     "Rua Araguari, nº 358, Conj.1903/1904, Barro Preto, 30.190-110, Belo Horizonte-MG",
-    "Rua Des. Mário da Silva Nunes, nº 120, Sala 201, Enseada do Suá, 29.050-240, Vitória-ES",
-    "Rua Avertano Rocha, n°192, Campina, 66.023-120, Belém-PA",
   ];
   const RODAPE_TEL = [
     "(+55 85) 3289-6363   comercial@enprol.com.br",
-    "(+55 85) 3289-6363   comercial@enprol.com.br",
     "(+55 31) 3253-5500   comercial@enprol.com.br",
-    "(+55 27) 3029-5540   comercial@enprol.com.br",
-    "(+55 94) 3346-8994   comercial@enprol.com.br",
   ];
   const TITULO_CCU = "ANEXO 1: TABELA(S) DA DETERMINAÇÃO DA CCU DA(S) GLEBA(S) DO IMÓVEL";
 
@@ -2814,51 +2831,89 @@ window.FOTO_rodapeHTML=rodapeHTML;
     el.textContent=msg||"";
   }
 
-  window.unirTudo = async function(){
-    const btn=document.getElementById("btnUnirTudo");
-    btn.disabled=true;
-    setStatus("work","Gerando material… reunindo Anexos 1, 2, 3, 4, 5 e 6.");
+  // abre o modal de seleção
+  window.unirTudo = function(){
+    const m=document.getElementById("unirModal");
+    if(m) m.style.display="flex";
+  };
+  window.UNIR_fecharModal = function(){
+    const m=document.getElementById("unirModal");
+    if(m) m.style.display="none";
+  };
+
+  // desenha uma capa de anexo renumerada (ANEXO NN: título) num PDFDocument pdf-lib
+  async function desenharCapaAnexoNum(pdfDoc, numero, titulo){
+    const { rgb, StandardFonts } = PDFLib;
+    const A4W=595.28, A4H=841.89;
+    const page=pdfDoc.addPage([A4W,A4H]);
+    const fontB=await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const fontR=await pdfDoc.embedFont(StandardFonts.Helvetica);
     try{
+      if(window.__LOGO_INFRA__){ const infra=await pdfDoc.embedJpg(window.__LOGO_INFRA__); const h=34,w=infra.width*(h/infra.height); page.drawImage(infra,{x:56,y:A4H-60,width:w,height:h}); }
+      if(window.__LOGO_ENPROL__){ const en=await pdfDoc.embedJpg(window.__LOGO_ENPROL__); const h=34,w=en.width*(h/en.height); page.drawImage(en,{x:A4W-56-w,y:A4H-60,width:w,height:h}); }
+    }catch(e){}
+    const txt="ANEXO "+String(numero).padStart(2,"0")+": "+titulo.toUpperCase();
+    const size=15, maxW=A4W-130;
+    // quebra em linhas
+    const palavras=txt.split(" ");
+    let linhas=[], atual="";
+    for(const p of palavras){
+      const teste=atual? atual+" "+p : p;
+      if(fontB.widthOfTextAtSize(teste,size)>maxW){ linhas.push(atual); atual=p; } else atual=teste;
+    }
+    if(atual) linhas.push(atual);
+    let y=A4H/2 + (linhas.length-1)*11;
+    for(const ln of linhas){
+      const w=fontB.widthOfTextAtSize(ln,size);
+      page.drawText(ln,{x:(A4W-w)/2,y,size,font:fontB,color:rgb(0.14,0.20,0.28)});
+      y-=22;
+    }
+    page.drawLine({start:{x:56,y:70},end:{x:A4W-56,y:70},thickness:1,color:rgb(0.12,0.44,0.75)});
+  }
+
+  // confirma a seleção e gera o PDF unificado com renumeração sequencial
+  window.UNIR_confirmar = async function(){
+    window.UNIR_fecharModal();
+    const btn=document.getElementById("btnUnirTudo");
+    if(btn) btn.disabled=true;
+    setStatus("work","Gerando material unificado...");
+    try{
+      const marcados=[...document.querySelectorAll("#unirCheckList input:checked")].map(c=>c.value);
+      if(!marcados.length){ setStatus("err","Selecione ao menos um item para gerar."); if(btn) btn.disabled=false; return; }
+
       const out = await PDFLib.PDFDocument.create();
       const incluidos=[];
+      let nAnexo=0; // contador de anexos (renumeração)
 
-      // ANEXO 1 — Tabela CCU (usa o gerador validado da própria aba)
-      try{
-        if(typeof window.CCU_buildBytes==="function"){
-          const b1 = await window.CCU_buildBytes();
-          if(b1){ await mergeInto(out, b1); incluidos.push("1 (CCU)"); }
-        }
-      }catch(e){ console.warn("CCU:", e); }
+      // helper: adiciona um anexo (capa renumerada + conteúdo)
+      async function addAnexo(titulo, bytesPromise){
+        const bytes = await bytesPromise;
+        if(!bytes) return false;
+        nAnexo++;
+        await desenharCapaAnexoNum(out, nAnexo, titulo);
+        await mergeInto(out, bytes);
+        incluidos.push("Anexo "+String(nAnexo).padStart(2,"0")+" — "+titulo);
+        return true;
+      }
 
-      // ANEXO 2 — Plantas
-      if(typeof window.ANX_buildBytes==="function"){
-        const b2 = await window.ANX_buildBytes(2);
-        if(b2){ await mergeInto(out, b2); incluidos.push("2 (Plantas)"); }
+      // 1) Laudo de Avaliação (não é "anexo", entra sem renumeração, no início)
+      if(marcados.includes("laudo") && typeof window.AV_buildBytes==="function"){
+        const bl = window.AV_buildBytes();
+        if(bl){ await mergeInto(out, bl); incluidos.push("Laudo de Avaliação"); }
       }
-      // ANEXO 3 — Memoriais
-      if(typeof window.ANX_buildBytes==="function"){
-        const b3 = await window.ANX_buildBytes(3);
-        if(b3){ await mergeInto(out, b3); incluidos.push("3 (Memoriais)"); }
-      }
-      // ANEXO 4 — Relatório Fotográfico
-      if(typeof window.FOTO_buildBytes==="function"){
-        const b4 = await window.FOTO_buildBytes();
-        if(b4){ await mergeInto(out, b4); incluidos.push("4 (Fotográfico)"); }
-      }
-      // ANEXO 5 — Declaração de Respeito de Limites (DRL)
-      if(typeof window.DOC_buildBytes==="function"){
-        const b5 = await window.DOC_buildBytes(5);
-        if(b5){ await mergeInto(out, b5); incluidos.push("5 (DRL)"); }
-      }
-      // ANEXO 6 — Cópias de Documentos de Propriedade
-      if(typeof window.DOC_buildBytes==="function"){
-        const b6 = await window.DOC_buildBytes(6);
-        if(b6){ await mergeInto(out, b6); incluidos.push("6 (Documentos)"); }
-      }
+
+      // Anexos (renumerados na ordem em que aparecem, conforme marcados)
+      if(marcados.includes("ccu")  && typeof window.CCU_buildBytes==="function")  await addAnexo("Tabela(s) da determinação da CCU da(s) gleba(s) do imóvel", window.CCU_buildBytes());
+      if(marcados.includes("a2")   && typeof window.ANX_buildBytes==="function")  await addAnexo("Planta(s) planimétrica(s) da(s) área(s) abrangida(s) e planta geral", window.ANX_buildBytes(2, false));
+      if(marcados.includes("a3")   && typeof window.ANX_buildBytes==="function")  await addAnexo("Memorial descritivo da(s) área(s) abrangida(s)", window.ANX_buildBytes(3, false));
+      if(marcados.includes("foto") && typeof window.FOTO_buildBytes==="function") await addAnexo("Relatório fotográfico", window.FOTO_buildBytes());
+      if(marcados.includes("drl")  && typeof window.DOC_buildBytes==="function")  await addAnexo("Declaração de respeito de limites", window.DOC_buildBytes(5, false));
+      if(marcados.includes("docs") && typeof window.DOC_buildBytes==="function")  await addAnexo("Cópia(s) de documentos de propriedade", window.DOC_buildBytes(6, false));
+      if(marcados.includes("relest") && typeof window.REL_buildBytes==="function") await addAnexo("Relatório estatístico", window.REL_buildBytes(true));
 
       if(out.getPageCount()===0){
-        setStatus("err","Nada para unir ainda. Preencha ao menos uma das ferramentas (marque a tabela, carregue PDFs dos anexos ou insira fotos).");
-        btn.disabled=false; return;
+        setStatus("err","Nada foi gerado. Verifique se os itens marcados têm conteúdo preenchido.");
+        if(btn) btn.disabled=false; return;
       }
 
       const bytes = await out.save();
@@ -2868,12 +2923,12 @@ window.FOTO_rodapeHTML=rodapeHTML;
       a.href=url; a.download="Material_Unificado.pdf"; a.click();
       setTimeout(()=>URL.revokeObjectURL(url), 5000);
 
-      setStatus("ok","✓ Material unificado gerado ("+out.getPageCount()+" páginas). Anexos incluídos: "+incluidos.join(", ")+".");
+      setStatus("ok","✓ Material unificado gerado ("+out.getPageCount()+" páginas). "+incluidos.join(" • ")+".");
     }catch(err){
       console.error(err);
       setStatus("err","Erro ao unificar: "+err.message);
     }
-    btn.disabled=false;
+    if(btn) btn.disabled=false;
   };
 })();
 </script>
@@ -2892,10 +2947,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
   };
   const RODAPE = [
     "Av. Des. Moreira, n° 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE   (+55 85) 3289-6363   comercial@enprol.com.br",
-    "Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE   (+55 85) 3289-6363   comercial@enprol.com.br",
-    "Rua Araguari, nº 358, Conj.1903/1904, Barro Preto, 30.190-110, Belo Horizonte-MG   (+55 31) 3253-5500   comercial@enprol.com.br",
-    "Rua Des. Mário da Silva Nunes, nº 120, Sala 201, Enseada do Suá, 29.050-240, Vitória-ES   (+55 27) 3029-5540   comercial@enprol.com.br",
-    "Rua Avertano Rocha, n°192, Campina, 66.023-120, Belém-PA   (+55 94) 3346-8994   comercial@enprol.com.br"
+    "Rua Araguari, nº 358, Conj.1903/1904, Barro Preto, 30.190-110, Belo Horizonte-MG   (+55 31) 3253-5500   comercial@enprol.com.br"
   ];
 
   const arquivos = {5:[], 6:[]};
@@ -3083,10 +3135,12 @@ window.FOTO_rodapeHTML=rodapeHTML;
     const linhas = document.querySelectorAll("#fv_estacas .estaca-linha");
     const out=[];
     linhas.forEach((l,idx)=>{
+      const st=l.querySelector(".e-tipo");
       out.push({
         num: idx+1,
         ini: l.querySelector(".e-ini").value.trim(),
-        fim: l.querySelector(".e-fim").value.trim()
+        fim: l.querySelector(".e-fim").value.trim(),
+        tipo: st? st.value : (idx===0?"Faixa de Domínio":"Área Remanescente")
       });
     });
     return out;
@@ -3095,24 +3149,34 @@ window.FOTO_rodapeHTML=rodapeHTML;
   function render(){
     const linhas = document.querySelectorAll("#fv_estacas .estaca-linha");
     linhas.forEach((l,idx)=>{
-      const tipo = idx===0 ? "Faixa de Domínio" : "Área Remanescente";
+      const sel=l.querySelector(".e-tipo");
+      // se o select ainda não foi tocado, sugere o padrão (1ª = Faixa de Domínio)
+      if(sel && !sel.dataset.tocado){ sel.value = idx===0 ? "Faixa de Domínio" : "Área Remanescente"; }
+      const tipo = sel ? sel.value : (idx===0 ? "Faixa de Domínio" : "Área Remanescente");
       l.querySelector(".rot").innerHTML = "Área " + String(idx+1).padStart(2,"0") + '<br><span class="rot-tipo">'+tipo+'</span>';
       const rm = l.querySelector(".rm");
       rm.style.display = linhas.length>1 ? "block" : "none";
+      if(sel && !sel._bound){ sel._bound=true; sel.addEventListener("change", ()=>{ sel.dataset.tocado="1"; render(); }); }
     });
     // sincroniza com Avaliação se existir
     if(typeof window.AV_syncEstacas==="function") window.AV_syncEstacas();
   }
 
-  function novaLinha(ini, fim){
+  function novaLinha(ini, fim, tipo){
     const div = document.createElement("div");
     div.className="estaca-linha";
     div.innerHTML =
       '<span class="rot"></span>'+
       '<div class="par"><span>KM Inicial</span><input type="text" class="e-ini" value="'+(ini||"")+'" placeholder="939+921,31"></div>'+
       '<div class="par"><span>KM Final</span><input type="text" class="e-fim" value="'+(fim||"")+'" placeholder="940+002,28"></div>'+
+      '<div class="par"><span>Tipo da área</span><select class="e-tipo">'+
+        '<option value="Faixa de Domínio">Faixa de Domínio</option>'+
+        '<option value="Área Remanescente">Área Remanescente</option>'+
+      '</select></div>'+
       '<button type="button" class="rm" title="Remover área">✕</button>';
+    if(tipo){ const s=div.querySelector(".e-tipo"); if(s) s.value=tipo; }
     div.querySelector(".rm").addEventListener("click", ()=>{ div.remove(); render(); });
+    div.querySelectorAll("input,select").forEach(el=> el.addEventListener("input", ()=>{ if(typeof window.AV_syncEstacas==="function") window.AV_syncEstacas(); }));
     div.querySelectorAll("input").forEach(inp=> inp.addEventListener("input", ()=>{ if(typeof window.AV_syncEstacas==="function") window.AV_syncEstacas(); }));
     document.getElementById("fv_estacas").appendChild(div);
     render();
@@ -3182,7 +3246,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
     const estacas = (typeof window.FV_estacas==="function") ? window.FV_estacas() : [];
     if(!estacas.length){ host.innerHTML = '<div class="av-estaca-item"><span class="km">Nenhuma área cadastrada na Ficha de Vistoria.</span></div>'; return; }
     host.innerHTML = estacas.map((e,i)=>{
-      const tag = i===0 ? "FAIXA DE DOMÍNIO" : "ÁREA REMANESCENTE";
+      const tag = (e.tipo ? e.tipo : (i===0 ? "FAIXA DE DOMÍNIO" : "ÁREA REMANESCENTE")).toUpperCase();
       return '<div class="av-estaca-item"><b>Área '+String(e.num).padStart(2,"0")+'</b>'+
              '<span class="km">KM Inicial '+ (e.ini||"—") +' ao KM Final '+ (e.fim||"—") +'</span>'+
              '<span class="tag">'+tag+'</span></div>';
@@ -3736,10 +3800,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
 (function(){
   const RODAPE = [
     "Av. Des. Moreira, n° 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE   (+55 85) 3289-6363   comercial@enprol.com.br",
-    "Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE   (+55 85) 3289-6363   comercial@enprol.com.br",
-    "Rua Araguari, nº 358, Conj.1903/1904, Barro Preto, 30.190-110, Belo Horizonte-MG   (+55 31) 3253-5500   comercial@enprol.com.br",
-    "Rua Des. Mário da Silva Nunes, nº 120, Sala 201, Enseada do Suá, 29.050-240, Vitória-ES   (+55 27) 3029-5540   comercial@enprol.com.br",
-    "Rua Avertano Rocha, n°192, Campina, 66.023-120, Belém-PA   (+55 94) 3346-8994   comercial@enprol.com.br"
+    "Rua Araguari, nº 358, Conj.1903/1904, Barro Preto, 30.190-110, Belo Horizonte-MG   (+55 31) 3253-5500   comercial@enprol.com.br"
   ];
   const ROMANOS=["","I","II","III","IV","V","VI","VII","VIII"];
 
@@ -3760,9 +3821,12 @@ window.FOTO_rodapeHTML=rodapeHTML;
     if(LI){ try{ doc.addImage(LI,"JPEG",MR-86,26,86,24);}catch(e){} }
     doc.setDrawColor(31,111,192); doc.setLineWidth(1);
     doc.line(ML,58,MR,58);
-    // título central + ref processo à direita
-    doc.setFont("helvetica","bold"); doc.setFontSize(12); doc.setTextColor(20,30,45);
-    doc.text("LAUDO DE AVALIAÇÃO", W/2, 74, {align:"center"});
+    // "LAUDO DE AVALIAÇÃO" só aparece na 1ª página do laudo (quando ctx.tituloLaudo=true)
+    if(ctx.tituloLaudo){
+      doc.setFont("helvetica","bold"); doc.setFontSize(12); doc.setTextColor(20,30,45);
+      doc.text("LAUDO DE AVALIAÇÃO", W/2, 74, {align:"center"});
+      ctx.tituloLaudo=false; // consome: apenas a primeira vez
+    }
     doc.setFont("helvetica","normal"); doc.setFontSize(7); doc.setTextColor(90,100,110);
     doc.text(ctx.procRef, MR, 86, {align:"right"});
   }
@@ -3824,7 +3888,19 @@ window.FOTO_rodapeHTML=rodapeHTML;
     ctx.y += 12 + n*11 + 4;
   }
   // parágrafo de texto
+  function sanTxt(s){
+    return String(s==null?"":s)
+      .replace(/aprox. /g,"aprox. ")
+      .replace(/[≅≃]/g,"aprox. ")
+      .replace(/–/g,"-").replace(/—/g,"—")
+      .replace(/[""]/g,'"').replace(/['']/g,"'")
+      .replace(/…/g,"...")
+      .replace(/[\u2264]/g,"<=").replace(/[\u2265]/g,">=")
+      .replace(/[\u00b2]/g,"²").replace(/[\u00b3]/g,"³")
+      .replace(/[^\x00-\xFF\u0100-\u017F]/g, ""); // remove demais fora de Latin-1/Latin Ext-A
+  }
   function paragrafo(doc,ctx,txt,size){
+    txt = sanTxt(txt);
     size=size||9;
     doc.setFont("helvetica","normal"); doc.setFontSize(size); doc.setTextColor(35,45,60);
     const larg = ctx.MR-ctx.ML;
@@ -3850,20 +3926,29 @@ window.FOTO_rodapeHTML=rodapeHTML;
   }
   // justifica uma linha distribuindo o espaço extra entre as palavras
   function justificarLinha(doc, linha, x, y, larg, size){
-    const palavras = linha.split(" ").filter(w=>w.length>0);
+    const palavras = linha.split(/\s+/).filter(w=>w.length>0);
     if(palavras.length<=1){ doc.text(linha, x, y); return; }
-    const larguraTexto = doc.getStringUnitWidth(palavras.join(" "))*size;
-    // largura real com getTextWidth
-    let somaPalavras=0;
-    palavras.forEach(w=> somaPalavras += doc.getTextWidth(w));
+    // mede cada palavra e o espaço normal no tamanho atual da fonte
+    const wPal = palavras.map(w=> doc.getTextWidth(w));
+    const somaPalavras = wPal.reduce((a,b)=>a+b,0);
+    const espacoNormal = doc.getTextWidth(" ");
+    const nGaps = palavras.length-1;
     const espacoLivre = larg - somaPalavras;
-    const gap = espacoLivre/(palavras.length-1);
-    if(gap<=0 || gap>size*2.2){ doc.text(linha, x, y); return; } // evita distorção em linhas curtas
+    // gap por espaço; nunca menor que o espaço normal (evita sobreposição)
+    let gap = espacoLivre / nGaps;
+    if(!isFinite(gap) || gap < espacoNormal){
+      // linha não comporta justificação segura: alinha à esquerda com espaço normal
+      let cx=x;
+      palavras.forEach((w,i)=>{ doc.text(w, cx, y); cx += wPal[i] + espacoNormal; });
+      return;
+    }
+    if(gap > espacoNormal*4){ // linha muito curta (ex: última) — não estica demais
+      let cx=x;
+      palavras.forEach((w,i)=>{ doc.text(w, cx, y); cx += wPal[i] + espacoNormal; });
+      return;
+    }
     let cx=x;
-    palavras.forEach((w,i)=>{
-      doc.text(w, cx, y);
-      cx += doc.getTextWidth(w) + gap;
-    });
+    palavras.forEach((w,i)=>{ doc.text(w, cx, y); cx += wPal[i] + gap; });
   }
 
   function estacas(){ return (typeof window.FV_estacas==="function") ? window.FV_estacas() : []; }
@@ -3871,93 +3956,110 @@ window.FOTO_rodapeHTML=rodapeHTML;
   // ---------- CAPA (página 1) ----------
   function desenharCapa(doc,ctx){
     const {W,H}=ctx;
-    // barra vertical azul-marinho à esquerda (como o modelo)
-    const BARRA=64;
-    doc.setFillColor(31,73,125); doc.rect(0,0,BARRA,H,"F");
-    // área de conteúdo
-    const ML=BARRA+34, MR=W-40;
-    const cx=(ML+MR)/2;
-    // logos no topo (ENPROL à esquerda, INFRA à direita), centralizados
+    // barra vertical azul-marinho larga à esquerda (~1/3 da página, como o modelo)
+    const BARRA=184;
+    doc.setFillColor(38,74,120); doc.rect(0,0,BARRA,H,"F");
+    // área de conteúdo à direita da barra
+    const ML=BARRA+18, MR=W-40;
+    const cx=(BARRA+W)/2;   // centro da área de conteúdo (~390)
+
+    // logos no topo (ENPROL à esquerda, INFRA à direita), sobre a área de conteúdo
     const LI=window.__LOGO_INFRA__, LE=window.__LOGO_ENPROL__;
-    const logoH=30, logoW=104, gap=26;
+    const logoH=34, logoW=118, gap=22;
     const totalLogos=logoW*2+gap;
     const lx=cx-totalLogos/2;
-    if(LE){ try{ doc.addImage(LE,"JPEG",lx,42,logoW,logoH);}catch(e){} }
-    if(LI){ try{ doc.addImage(LI,"JPEG",lx+logoW+gap,42,logoW,logoH);}catch(e){} }
+    if(LE){ try{ doc.addImage(LE,"JPEG",lx,34,logoW,logoH);}catch(e){} }
+    if(LI){ try{ doc.addImage(LI,"JPEG",lx+logoW+gap,34,logoW,logoH);}catch(e){} }
 
-    let y=175;
-    doc.setTextColor(20,30,45); doc.setFont("helvetica","bold"); doc.setFontSize(20);
+    let y=138;
+    doc.setTextColor(20,30,45); doc.setFont("helvetica","bold"); doc.setFontSize(21);
     doc.text("INFRA S.A.", cx, y, {align:"center"}); y+=24;
     doc.setFontSize(10.5);
     doc.text("VALEC – ENGENHARIA, CONSTRUÇÕES E FERROVIAS S.A.", cx, y, {align:"center"}); y+=13;
     doc.text("SUGAT – SUPERINTENDÊNCIA DE GESTÃO AMBIENTAL E", cx, y, {align:"center"}); y+=13;
-    doc.text("TERRITORIAL INTEGRADA", cx, y, {align:"center"}); y+=10;
-    // linha divisória
-    doc.setDrawColor(120,120,120); doc.setLineWidth(0.6); doc.line(ML,y,MR,y); y+=34;
+    doc.text("TERRITORIAL INTEGRADA", cx, y, {align:"center"}); y+=9;
+    doc.setDrawColor(120,120,120); doc.setLineWidth(0.6); doc.line(ML,y,MR,y); y+=36;
 
-    doc.setFontSize(19); doc.text("LAUDO DE AVALIAÇÃO", cx, y, {align:"center"}); y+=34;
+    doc.setFontSize(20); doc.text("LAUDO DE AVALIAÇÃO", cx, y, {align:"center"}); y+=36;
     doc.setFontSize(10.5);
     ["- VALOR DE MERCADO DE BENS E BENFEITORIAS",
      "- PARA PAGAMENTO DE DESAPROPRIAÇÃO DE ÁREA DESTINADA",
      "À FAIXA DE DOMÍNIO PARA IMPLANTAÇÃO DA VARIANTE",
      "CERAÍMA."].forEach(l=>{ doc.text(l,cx,y,{align:"center"}); y+=14; });
-    y+=24;
+    y+=26;
 
-    doc.setFont("helvetica","normal"); doc.setFontSize(14);
-    doc.text("FERROVIA DE INTEGRAÇÃO OESTE-LESTE", cx, y, {align:"center"}); y+=19;
-    doc.setFont("helvetica","bold"); doc.text("EF-334 – FIOL", cx, y, {align:"center"}); y+=44;
+    doc.setFont("helvetica","normal"); doc.setFontSize(15);
+    doc.text("FERROVIA DE INTEGRAÇÃO OESTE-LESTE", cx, y, {align:"center"}); y+=20;
+    doc.setFont("helvetica","bold"); doc.text("EF-334 – FIOL", cx, y, {align:"center"}); y+=46;
 
-    // PROCESSO ADMINISTRATIVO (label normal + valor bold, medindo largura p/ não sobrepor)
-    doc.setFontSize(14);
+    // PROCESSO ADMINISTRATIVO (label normal + valor bold, medindo p/ não sobrepor nem estourar)
     let proc = val("fv_processo") || "INFRA S.A. 295-5F";
     (function(){
-      const lbl="PROCESSO ADMINISTRATIVO:  ";
+      const lbl="PROCESSO ADMINISTRATIVO: ";
+      const dispon = MR-ML;
+      let fs=15;
+      // reduz a fonte até caber na largura disponível
+      for(; fs>=9; fs--){
+        doc.setFontSize(fs);
+        doc.setFont("helvetica","normal"); const wl=doc.getTextWidth(lbl);
+        doc.setFont("helvetica","bold");   const wv=doc.getTextWidth(proc);
+        if(wl+wv <= dispon) break;
+      }
+      doc.setFontSize(fs);
       doc.setFont("helvetica","normal"); const wl=doc.getTextWidth(lbl);
       doc.setFont("helvetica","bold");   const wv=doc.getTextWidth(proc);
       const x0=cx-(wl+wv)/2;
       doc.setFont("helvetica","normal"); doc.text(lbl, x0, y);
       doc.setFont("helvetica","bold");   doc.text(proc, x0+wl+2, y);
-    })(); y+=30;
+    })(); y+=34;
 
-    // EXPROPRIADO(A) (mesma técnica de medição para evitar sobreposição)
+    // EXPROPRIADO(A)
     const nome = (val("av_nome") || val("fv_nome") || "").toUpperCase();
     (function(){
-      const lbl="EXPROPRIADO(A):  ";
+      const lbl="EXPROPRIADO(A): ";
+      const dispon = MR-ML;
+      let fs=14;
+      for(; fs>=9; fs--){
+        doc.setFontSize(fs);
+        doc.setFont("helvetica","normal"); const wl=doc.getTextWidth(lbl);
+        doc.setFont("helvetica","bold");   const wv=doc.getTextWidth(nome);
+        if(wl+wv <= dispon) break;
+      }
+      doc.setFontSize(fs);
       doc.setFont("helvetica","normal"); const wl=doc.getTextWidth(lbl);
       doc.setFont("helvetica","bold");   const wv=doc.getTextWidth(nome);
       const x0=cx-(wl+wv)/2;
       doc.setFont("helvetica","normal"); doc.text(lbl, x0, y);
       doc.setFont("helvetica","bold");   doc.text(nome, x0+wl+2, y);
-    })(); y+=42;
+    })(); y+=44;
 
-    // Áreas (faixa de domínio / remanescentes)
+    // Áreas (Faixa de domínio / Remanescentes) — usa o tipo definido na Ficha
     doc.setFont("helvetica","normal"); doc.setFontSize(13);
     estacas().forEach((e,i)=>{
       const rot = "Área "+String(e.num).padStart(2,"0");
-      const tipo = i===0? "Faixa de Domínio" : "Área Remanescente";
+      const tipo = (e.tipo) ? e.tipo : (i===0? "Faixa de Domínio" : "Área Remanescente");
       doc.text(rot+": KM Inicial "+(e.ini||"—")+" ao KM Final "+(e.fim||"—"), cx, y, {align:"center"}); y+=17;
-      doc.text("("+tipo+")", cx, y, {align:"center"}); y+=20;
+      doc.text("("+tipo+")", cx, y, {align:"center"}); y+=18;
     });
 
-    // Bloco do contrato (canto inferior direito, dentro das margens, alinhado à esquerda)
+    // Bloco do contrato (canto inferior direito, dentro das margens)
     doc.setFont("helvetica","normal"); doc.setFontSize(8); doc.setTextColor(70,70,70);
     const contrato="Contrato nº 037/2024 – Cujo objeto é a prestação de serviços especializados de engenharia consultiva para a execução das atividades de desapropriação, ocupação temporária ou constituição de servidão administrativa de imóveis, gestão fundiária e regularização de passivos de desapropriação.";
-    const cw=210;
+    const cw=205;
     const cLines=doc.splitTextToSize(contrato, cw);
     const cx0=MR-cw;
-    let cy=H-90-cLines.length*10.5;
-    // primeira parte "Contrato nº 037/2024" em negrito
-    cLines.forEach((ln,idx)=>{ doc.text(ln, cx0, cy, {align:"left"}); cy+=10.5; });
+    let cy=H-150;
+    cLines.forEach((ln)=>{ doc.text(ln, cx0, cy, {align:"left"}); cy+=10.5; });
 
-    // DESP-3 / mês-ano na barra azul (branco)
-    doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); doc.setFontSize(13);
-    doc.text("DESP-3", BARRA/2, H-108, {align:"center"});
+    // DESP-3 / mês-ano na barra azul (branco), centralizado na barra
+    doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); doc.setFontSize(18);
+    doc.text("DESP-3", BARRA/2, H-135, {align:"center"});
     let mesAno="JULHO/2026";
     const md=val("av_data_ass");
     if(md){ const d=new Date(md+"T00:00:00");
       const M=["JANEIRO","FEVEREIRO","MARÇO","ABRIL","MAIO","JUNHO","JULHO","AGOSTO","SETEMBRO","OUTUBRO","NOVEMBRO","DEZEMBRO"];
       mesAno=M[d.getMonth()]+"/"+d.getFullYear(); }
-    doc.setFontSize(10.5); doc.text(mesAno, BARRA/2, H-92, {align:"center"});
+    doc.text(mesAno, BARRA/2, H-114, {align:"center"});
   }
 
   // ---------- FICHA DE VISTORIA ----------
@@ -4473,7 +4575,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
 
   // ---------- LAUDO 11 ----------
   function desenharLaudo11(doc,ctx){
-    novaPagina(doc,ctx);
+    ensure(doc,ctx,60); ctx.y+=6;
     secBar(doc,ctx,"11 — JUSTIFICATIVAS");
     subLbl(doc,ctx,"11.1 Fatores Limitantes");
     paragrafo(doc,ctx, val("av_fatores"));
@@ -4676,12 +4778,14 @@ window.FOTO_rodapeHTML=rodapeHTML;
 
     secBar(doc,ctx,"17 — ASSINATURA");
     campo2(doc,ctx,"Local", val("av_local"), "Data", dataBR(val("av_data_ass")));
-    ctx.y+=24; ensure(doc,ctx,56);
+    // garante que todo o bloco de assinatura caiba na mesma página
+    ensure(doc,ctx,120);
+    ctx.y+=58; // espaço para assinatura manuscrita
     const cx=ctx.W/2;
     doc.setDrawColor(60,60,60); doc.setLineWidth(0.5);
-    doc.line(cx-130, ctx.y, cx+130, ctx.y); ctx.y+=13;
-    doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(30,40,55);
-    doc.text(val("av_ass_nome"), cx, ctx.y, {align:"center"}); ctx.y+=13;
+    doc.line(cx-140, ctx.y, cx+140, ctx.y); ctx.y+=14;
+    doc.setFont("helvetica","bold"); doc.setFontSize(10.5); doc.setTextColor(30,40,55);
+    doc.text(val("av_ass_nome"), cx, ctx.y, {align:"center"}); ctx.y+=14;
     doc.setFont("helvetica","normal"); doc.setFontSize(9);
     doc.text(val("av_ass_cargo"), cx, ctx.y, {align:"center"}); ctx.y+=12;
     doc.text(val("av_ass_crea"), cx, ctx.y, {align:"center"});
@@ -4694,28 +4798,36 @@ window.FOTO_rodapeHTML=rodapeHTML;
     return bytes;
   }
 
-  window.AV_gerarPDF = async function(){
+  function AV_montarDoc(){
     if(typeof window.AV_recalcular==="function") window.AV_recalcular();
+    const {jsPDF}=window.jspdf;
+    const doc=new jsPDF({unit:"pt",format:"a4"});
+    const ctx=makeCtx(doc);
+    // 1) Capa (página já existente)
+    desenharCapa(doc,ctx);
+    // 2) Ficha
+    desenharFicha(doc,ctx);
+    // 3) Laudo 1-10 (o título "LAUDO DE AVALIAÇÃO" aparece só a partir daqui)
+    ctx.tituloLaudo=true;
+    desenharLaudo1a10(doc,ctx);
+    // 4) Laudo 11
+    desenharLaudo11(doc,ctx);
+    // 5) Tabelas de depreciação (nativas)
+    desenharTabelasDepreciacao(doc,ctx);
+    // 6) Laudo 14-17
+    desenharLaudo14a17(doc,ctx);
+    return doc;
+  }
+  window.AV_buildBytes = function(){
+    try{ const doc=AV_montarDoc(); return doc.output("arraybuffer"); }
+    catch(e){ console.error("AV_buildBytes:", e); return null; }
+  };
+
+  window.AV_gerarPDF = async function(){
     const btn=document.querySelector("#panel-avaliacao .vbtn-primary");
     const orig=btn?btn.innerHTML:""; if(btn){btn.disabled=true; btn.innerHTML="⏳ Gerando documento...";}
     try{
-      const {jsPDF}=window.jspdf;
-      const doc=new jsPDF({unit:"pt",format:"a4"});
-      const ctx=makeCtx(doc);
-
-      // 1) Capa (página já existente)
-      desenharCapa(doc,ctx);
-      // 2) Ficha
-      desenharFicha(doc,ctx);
-      // 3) Laudo 1-10
-      desenharLaudo1a10(doc,ctx);
-      // 4) Laudo 11
-      desenharLaudo11(doc,ctx);
-      // 5) Tabelas de depreciação (nativas)
-      desenharTabelasDepreciacao(doc,ctx);
-      // 6) Laudo 14-17
-      desenharLaudo14a17(doc,ctx);
-
+      const doc=AV_montarDoc();
       // Documento 100% nativo (sem merge externo) — salvar direto
       doc.save("01 - Capa.pdf");
     }catch(err){
@@ -5323,7 +5435,18 @@ function AV_gerarDescSituacao(){
     btn.disabled=false;
   };
 
-  // capa do Anexo 9 (usa logos e rodapé globais se existirem)
+  // versão que retorna bytes (para a unificação). semCapa=true omite a capa do Anexo 9.
+  window.REL_buildBytes = async function(semCapa){
+    try{
+      const out = await PDFLib.PDFDocument.create();
+      if(!semCapa) await desenharCapa9(out);
+      const finBytes = gerarPaginasFinais(true, true);
+      const fin = await PDFLib.PDFDocument.load(finBytes);
+      const pgs = await out.copyPages(fin, fin.getPageIndices());
+      pgs.forEach(p=>out.addPage(p));
+      return await out.save();
+    }catch(e){ console.error("REL_buildBytes:", e); return null; }
+  };
   async function desenharCapa9(pdfDoc){
     const { rgb, StandardFonts } = PDFLib;
     const A4W=595.28, A4H=841.89;
