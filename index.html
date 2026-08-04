@@ -880,6 +880,12 @@
   #panel-relest .rel-d-item{flex:1; min-width:180px; background:linear-gradient(135deg,#1F6FC0,#175a9f); color:#fff; border-radius:10px; padding:12px 16px; display:flex; flex-direction:column; gap:3px;}
   #panel-relest .rel-d-lbl{font-size:11.5px; opacity:.85; text-transform:uppercase; letter-spacing:.4px;}
   #panel-relest .rel-d-val{font-size:20px; font-weight:800;}
+
+  /* Placeholders em itálico indicando preenchimento */
+  #panel-vistoria input::placeholder, #panel-vistoria textarea::placeholder,
+  #panel-avaliacao input::placeholder, #panel-avaliacao textarea::placeholder{
+    font-style:italic; color:#9aa7b5; opacity:1;
+  }
 </style>
 </head>
 <body>
@@ -1264,11 +1270,11 @@
     <div class="vrow">
       <div class="vfield grow">
         <label>Processo Nº</label>
-        <input type="text" id="fv_processo" data-sync="processo" value="INFRA S.A. 295 LOTE 5F UF BA">
+        <input type="text" id="fv_processo" data-sync="processo" placeholder="Processo Nº">
       </div>
       <div class="vfield">
         <label>Data</label>
-        <input type="date" id="fv_data" data-sync="data">
+        <input type="date" id="fv_data" data-sync="data" placeholder="Data">
       </div>
     </div>
   </div>
@@ -1287,49 +1293,49 @@
       </div>
       <div class="vfield grow">
         <label>Quais?</label>
-        <input type="text" id="fv_docquais" value="CERTIDAO INTEIRO TEOR">
+        <input type="text" id="fv_docquais" placeholder="Quais?">
       </div>
     </div>
 
     <div class="vsub">1.3 Proprietário(a)</div>
     <div class="vrow">
-      <div class="vfield grow"><label>Nome</label><input type="text" id="fv_nome" data-sync="nome" value="DOMINGA TEREZA PEREIRA"></div>
-      <div class="vfield"><label>RG</label><input type="text" id="fv_rg" data-sync="rg"></div>
-      <div class="vfield"><label>CPF</label><input type="text" id="fv_cpf" data-sync="cpf" value="964.047.445-20"></div>
+      <div class="vfield grow"><label>Nome</label><input type="text" id="fv_nome" data-sync="nome" placeholder="Nome"></div>
+      <div class="vfield"><label>RG</label><input type="text" id="fv_rg" data-sync="rg" placeholder="RG"></div>
+      <div class="vfield"><label>CPF</label><input type="text" id="fv_cpf" data-sync="cpf" placeholder="CPF"></div>
     </div>
     <div class="vrow">
       <div class="vfield"><label>Estado Civil</label>
         <select id="fv_estcivil" data-sync="estcivil"><option>SOLTEIRO(A)</option><option>CASADO(A)</option><option>VIÚVO(A)</option><option selected>DIVORCIADO(A)</option></select>
       </div>
-      <div class="vfield grow"><label>Cônjuge</label><input type="text" id="fv_conjuge" data-sync="conjuge"></div>
+      <div class="vfield grow"><label>Cônjuge</label><input type="text" id="fv_conjuge" data-sync="conjuge" placeholder="Cônjuge"></div>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>Endereço</label><input type="text" id="fv_endereco" data-sync="endereco" value="RUA ANTONIA GOMES SOBRINHO, 135, BELA VISTA"></div>
-      <div class="vfield"><label>CEP</label><input type="text" id="fv_cep" data-sync="cep"></div>
+      <div class="vfield grow"><label>Endereço</label><input type="text" id="fv_endereco" data-sync="endereco" placeholder="Endereço"></div>
+      <div class="vfield"><label>CEP</label><input type="text" id="fv_cep" data-sync="cep" placeholder="CEP"></div>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>Município</label><input type="text" id="fv_municipio" data-sync="municipio" value="GUANAMBI/BA"></div>
-      <div class="vfield"><label>Telefone</label><input type="text" id="fv_telefone" data-sync="telefone" value="(77) 9 9173-4284"></div>
+      <div class="vfield grow"><label>Município</label><input type="text" id="fv_municipio" data-sync="municipio" placeholder="Município"></div>
+      <div class="vfield"><label>Telefone</label><input type="text" id="fv_telefone" data-sync="telefone" placeholder="Telefone"></div>
     </div>
 
     <div class="vsub">1.4 Informante</div>
     <div class="vrow">
-      <div class="vfield grow"><label>Nome</label><input type="text" id="fv_inf_nome" value="DOMINGA TEREZA PEREIRA"></div>
-      <div class="vfield grow"><label>Dados Comp.</label><input type="text" id="fv_inf_dados"></div>
+      <div class="vfield grow"><label>Nome</label><input type="text" id="fv_inf_nome" placeholder="Nome"></div>
+      <div class="vfield grow"><label>Dados Comp.</label><input type="text" id="fv_inf_dados" placeholder="Dados Comp."></div>
     </div>
 
     <div class="vsub">1.5 Propriedade</div>
     <div class="vrow">
-      <div class="vfield grow"><label>Identificação</label><input type="text" id="fv_prop_id" data-sync="prop_id" value="SITIO CÔCOS"></div>
-      <div class="vfield"><label>Área Total (ha)</label><input type="text" id="fv_area_total" data-sync="area_total" value="4,1498"></div>
+      <div class="vfield grow"><label>Identificação</label><input type="text" id="fv_prop_id" data-sync="prop_id" placeholder="Identificação"></div>
+      <div class="vfield"><label>Área Total (ha)</label><input type="text" id="fv_area_total" data-sync="area_total" placeholder="Área Total (ha)"></div>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>Endereço</label><input type="text" id="fv_prop_end" data-sync="prop_end" value="SITIO CÔCOS - DISTRITO DE CERAÍMA"></div>
-      <div class="vfield"><label>Área Desap. (ha)</label><input type="text" id="fv_area_desap" data-sync="area_desap" value="0,3101"></div>
+      <div class="vfield grow"><label>Endereço</label><input type="text" id="fv_prop_end" data-sync="prop_end" placeholder="Endereço"></div>
+      <div class="vfield"><label>Área Desap. (ha)</label><input type="text" id="fv_area_desap" data-sync="area_desap" placeholder="Área Desap. (ha)"></div>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>Município</label><input type="text" id="fv_prop_mun" data-sync="prop_mun" value="GUANAMBI/BA"></div>
-      <div class="vfield"><label>Matrícula</label><input type="text" id="fv_matricula" data-sync="matricula" value="MAT. 28.001 - LIVRO 2/HV"></div>
+      <div class="vfield grow"><label>Município</label><input type="text" id="fv_prop_mun" data-sync="prop_mun" placeholder="Município"></div>
+      <div class="vfield"><label>Matrícula</label><input type="text" id="fv_matricula" data-sync="matricula" placeholder="Matrícula"></div>
     </div>
 
     <!-- Estacas / Áreas dinâmicas -->
@@ -1369,17 +1375,17 @@
     <label class="vlbl">2.7.2 Hidrografia (Vazão m³ ou L/s)</label>
     <textarea id="fv_hidro" rows="3">HÁ UMA ÁREA COM DECLIVIDADE QUE FAVORECE O ESCOAMENTO DE ÁGUA. RESSALTA-SE, AINDA, QUE FORAM IDENTIFICADAS ESTRUTURAS DE CAPTAÇÃO SUBTERRÂNEA (POÇO) COMPARTILHADO NO INTERIOR DA PROPRIEDADE.</textarea>
     <label class="vlbl">2.7.3 Informações Complementares</label>
-    <textarea id="fv_rural_comp" rows="2"></textarea>
+    <textarea id="fv_rural_comp" rows="2" placeholder="Complemento"></textarea>
 
     <div class="vsub">2.8 Imóvel Urbano</div>
     <label class="vlbl">2.8.1 Infraestrutura</label>
-    <textarea id="fv_urb_infra" rows="2"></textarea>
+    <textarea id="fv_urb_infra" rows="2" placeholder="Infraestrutura urbana"></textarea>
     <label class="vlbl">2.8.2 Topografia</label>
-    <textarea id="fv_urb_topo" rows="2"></textarea>
+    <textarea id="fv_urb_topo" rows="2" placeholder="Topografia"></textarea>
     <label class="vlbl">2.8.3 Distância ao centro</label>
-    <textarea id="fv_urb_dist" rows="2"></textarea>
+    <textarea id="fv_urb_dist" rows="2" placeholder="Distâncias"></textarea>
     <label class="vlbl">2.8.4 Informações Complementares</label>
-    <textarea id="fv_urb_comp" rows="2"></textarea>
+    <textarea id="fv_urb_comp" rows="2" placeholder="Complemento"></textarea>
   </div>
 
   <!-- 03 BENFEITORIAS -->
@@ -1390,13 +1396,13 @@
     <label class="vlbl">3.1.1 Benfeitorias não reprodutivas da faixa non aedificandi</label>
     <input type="text" id="fv_ben_nr1" value="AUSENTES.">
     <label class="vlbl">3.2 Informações Complementares</label>
-    <textarea id="fv_ben_comp2" rows="2"></textarea>
+    <textarea id="fv_ben_comp2" rows="2" placeholder="Informações complementares"></textarea>
     <label class="vlbl">3.3 Reprodutivas</label>
-    <textarea id="fv_ben_r" rows="2"></textarea>
+    <textarea id="fv_ben_r" rows="2" placeholder="Benfeitorias reprodutivas"></textarea>
     <label class="vlbl">3.3.1 Benfeitorias não reprodutivas da faixa non aedificandi</label>
     <input type="text" id="fv_ben_r1" value="AUSENTES.">
     <label class="vlbl">3.4 Informações Complementares</label>
-    <textarea id="fv_ben_comp4" rows="2"></textarea>
+    <textarea id="fv_ben_comp4" rows="2" placeholder="Informações complementares"></textarea>
   </div>
 
   <!-- 04 INFORMAÇÕES COMPLEMENTARES -->
@@ -1407,7 +1413,7 @@
     <label class="vlbl">4.2 Outras Atividades</label>
     <textarea id="fv_outras" rows="3">O IMÓVEL É DIVIDIDO PELA ANTIGA FAIXA DE DOMÍNIO DA FERROVIA FIOL (EF-334), SENDO PARTE DA ÁREA DESAPROPRIADA POR MEIO DO PROCESSO 275A-5F, EM 2014 E 275-5F, EM 2012.</textarea>
     <label class="vlbl">4.3 Observações</label>
-    <textarea id="fv_obs4" rows="2"></textarea>
+    <textarea id="fv_obs4" rows="2" placeholder="Observações"></textarea>
     <label class="vlbl">4.4 Fotografias do Imóvel</label>
     <input type="text" id="fv_fotos" value="VIDE RELATÓRIO FOTOGRÁFICO (ANEXO 4).">
   </div>
@@ -1416,11 +1422,11 @@
   <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>Assinatura Técnica</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <div class="vrow">
-      <div class="vfield grow"><label>Nome do responsável</label><input type="text" id="fv_ass_nome" data-sync="ass_nome" value="ANTÔNIO CÉLITO DE ARAÚJO JÚNIOR"></div>
+      <div class="vfield grow"><label>Nome do responsável</label><input type="text" id="fv_ass_nome" data-sync="ass_nome" placeholder="Nome do responsável"></div>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>Cargo</label><input type="text" id="fv_ass_cargo" data-sync="ass_cargo" value="Engenheiro Agrônomo"></div>
-      <div class="vfield grow"><label>Registro (CREA)</label><input type="text" id="fv_ass_crea" data-sync="ass_crea" value="CREA 351993 V/MG"></div>
+      <div class="vfield grow"><label>Cargo</label><input type="text" id="fv_ass_cargo" data-sync="ass_cargo" placeholder="Cargo"></div>
+      <div class="vfield grow"><label>Registro (CREA)</label><input type="text" id="fv_ass_crea" data-sync="ass_crea" placeholder="Registro (CREA)"></div>
     </div>
   </div>
 
@@ -1437,16 +1443,16 @@
   <!-- 01 RAZÃO -->
   <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>01 — Razão do Interesse</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
-    <div class="vfield grow"><label>Razão do interesse</label><input type="text" id="av_razao" value="Área de Faixa de Domínio - EF-334 - FIOL"></div>
+    <div class="vfield grow"><label>Razão do interesse</label><input type="text" id="av_razao" placeholder="Razão do interesse"></div>
   </div>
 
   <!-- 02 LOCALIZAÇÃO -->
   <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>02 — Localização</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <div class="vrow">
-      <div class="vfield grow"><label>2.1 Localidade <span class="auto-tag">auto</span></label><input type="text" readonly id="av_localidade" data-from="prop_end" class="bloqueado"></div>
-      <div class="vfield grow"><label>2.2 Município <span class="auto-tag">auto</span></label><input type="text" readonly id="av_municipio" data-from="prop_mun" class="bloqueado"></div>
-      <div class="vfield"><label>2.3 UF</label><input type="text" id="av_uf" value="BA"></div>
+      <div class="vfield grow"><label>2.1 Localidade <span class="auto-tag">auto</span></label><input type="text" readonly id="av_localidade" data-from="prop_end" class="bloqueado" placeholder="2.1 Localidade"></div>
+      <div class="vfield grow"><label>2.2 Município <span class="auto-tag">auto</span></label><input type="text" readonly id="av_municipio" data-from="prop_mun" class="bloqueado" placeholder="2.2 Município"></div>
+      <div class="vfield"><label>2.3 UF</label><input type="text" id="av_uf" placeholder="2.3 UF"></div>
     </div>
     <div class="vsub">2.4 Locação — Áreas <span class="auto-tag">auto (Ficha de Vistoria)</span></div>
     <div id="av_estacas" class="av-estacas-view"></div>
@@ -1461,65 +1467,65 @@
       <label class="ocup-opt"><input type="radio" name="av_ocup_tipo" value="outro" onchange="AV_ocupanteTipo()"> Outro (preencher abaixo)</label>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>3.1 Nome <span class="auto-tag">auto</span></label><input type="text" readonly id="av_nome" data-from="nome" class="bloqueado"></div>
-      <div class="vfield"><label>3.2 Apelido</label><input type="text" id="av_apelido" value="-"></div>
+      <div class="vfield grow"><label>3.1 Nome <span class="auto-tag">auto</span></label><input type="text" readonly id="av_nome" data-from="nome" class="bloqueado" placeholder="3.1 Nome"></div>
+      <div class="vfield"><label>3.2 Apelido</label><input type="text" id="av_apelido" placeholder="3.2 Apelido"></div>
     </div>
     <div class="vrow">
-      <div class="vfield"><label>3.3 Nacionalidade</label><input type="text" id="av_nacion" value="BRASILEIRA"></div>
-      <div class="vfield grow"><label>3.4 Local de nascimento</label><input type="text" id="av_localnasc" value="GUANAMBI/BA"></div>
-      <div class="vfield"><label>3.5 Profissão</label><input type="text" id="av_profissao" value="APOSENTADA"></div>
+      <div class="vfield"><label>3.3 Nacionalidade</label><input type="text" id="av_nacion" placeholder="3.3 Nacionalidade"></div>
+      <div class="vfield grow"><label>3.4 Local de nascimento</label><input type="text" id="av_localnasc" placeholder="3.4 Local de nascimento"></div>
+      <div class="vfield"><label>3.5 Profissão</label><input type="text" id="av_profissao" placeholder="3.5 Profissão"></div>
     </div>
     <div class="vrow">
-      <div class="vfield"><label>3.6 Data de nascimento</label><input type="date" id="av_datanasc" value="1949-11-02"></div>
-      <div class="vfield"><label>3.7 Documento de identidade</label><input type="text" id="av_docid" value="-"></div>
-      <div class="vfield"><label>3.8 CPF Nº <span class="auto-tag">auto</span></label><input type="text" readonly id="av_cpf" data-from="cpf" class="bloqueado"></div>
+      <div class="vfield"><label>3.6 Data de nascimento</label><input type="date" id="av_datanasc" placeholder="3.6 Data de nascimento"></div>
+      <div class="vfield"><label>3.7 Documento de identidade</label><input type="text" id="av_docid" placeholder="3.7 Documento de identidade"></div>
+      <div class="vfield"><label>3.8 CPF Nº <span class="auto-tag">auto</span></label><input type="text" readonly id="av_cpf" data-from="cpf" class="bloqueado" placeholder="3.8 CPF Nº"></div>
     </div>
-    <div class="vfield grow"><label>3.9 Filiação</label><input type="text" id="av_filiacao" value="-"></div>
+    <div class="vfield grow"><label>3.9 Filiação</label><input type="text" id="av_filiacao" placeholder="3.9 Filiação"></div>
     <div class="vrow">
-      <div class="vfield"><label>3.10 Estado civil <span class="auto-tag">auto</span></label><input type="text" readonly id="av_estcivil" data-from="estcivil" class="bloqueado"></div>
-      <div class="vfield grow"><label>3.11 Regime de casamento</label><input type="text" id="av_regime" value="-"></div>
-    </div>
-    <div class="vrow">
-      <div class="vfield grow"><label>3.12 Nome do cônjuge</label><input type="text" id="av_conjuge" value="-"></div>
-      <div class="vfield"><label>3.13 Apelido</label><input type="text" id="av_conj_apelido" value="-"></div>
+      <div class="vfield"><label>3.10 Estado civil <span class="auto-tag">auto</span></label><input type="text" readonly id="av_estcivil" data-from="estcivil" class="bloqueado" placeholder="3.10 Estado civil"></div>
+      <div class="vfield grow"><label>3.11 Regime de casamento</label><input type="text" id="av_regime" placeholder="3.11 Regime de casamento"></div>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>3.17 Endereço p/ correspondência <span class="auto-tag">auto</span></label><input type="text" readonly id="av_endcorresp" data-from="endereco" class="bloqueado"></div>
-      <div class="vfield"><label>3.17.1 CEP</label><input type="text" id="av_cep" value="-"></div>
+      <div class="vfield grow"><label>3.12 Nome do cônjuge</label><input type="text" id="av_conjuge" placeholder="3.12 Nome do cônjuge"></div>
+      <div class="vfield"><label>3.13 Apelido</label><input type="text" id="av_conj_apelido" placeholder="3.13 Apelido"></div>
     </div>
     <div class="vrow">
-      <div class="vfield"><label>3.18 Telefone <span class="auto-tag">auto</span></label><input type="text" readonly id="av_telefone" data-from="telefone" class="bloqueado"></div>
-      <div class="vfield grow"><label>3.19 Procurador(a)</label><input type="text" id="av_procurador"></div>
+      <div class="vfield grow"><label>3.17 Endereço p/ correspondência <span class="auto-tag">auto</span></label><input type="text" readonly id="av_endcorresp" data-from="endereco" class="bloqueado" placeholder="3.17 Endereço p/ correspondência"></div>
+      <div class="vfield"><label>3.17.1 CEP</label><input type="text" id="av_cep" placeholder="3.17.1 CEP"></div>
+    </div>
+    <div class="vrow">
+      <div class="vfield"><label>3.18 Telefone <span class="auto-tag">auto</span></label><input type="text" readonly id="av_telefone" data-from="telefone" class="bloqueado" placeholder="3.18 Telefone"></div>
+      <div class="vfield grow"><label>3.19 Procurador(a)</label><input type="text" id="av_procurador" placeholder="3.19 Procurador(a)"></div>
     </div>
     <div class="vsub">Imóvel</div>
     <div class="vrow">
-      <div class="vfield grow"><label>3.21 Denominação <span class="auto-tag">auto</span></label><input type="text" readonly id="av_denom" data-from="prop_id" class="bloqueado"></div>
-      <div class="vfield grow"><label>3.23 Município</label><input type="text" id="av_imun" value="GUANAMBI/BA"></div>
-      <div class="vfield grow"><label>3.24 Comarca</label><input type="text" id="av_comarca" value="GUANAMBI/BA"></div>
+      <div class="vfield grow"><label>3.21 Denominação <span class="auto-tag">auto</span></label><input type="text" readonly id="av_denom" data-from="prop_id" class="bloqueado" placeholder="3.21 Denominação"></div>
+      <div class="vfield grow"><label>3.23 Município</label><input type="text" id="av_imun" placeholder="3.23 Município"></div>
+      <div class="vfield grow"><label>3.24 Comarca</label><input type="text" id="av_comarca" placeholder="3.24 Comarca"></div>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>3.25 Imóvel adquirido de</label><input type="text" id="av_adqde" value="BENJAMIM MOISES PEREIRA"></div>
-      <div class="vfield"><label>3.26 Data de aquisição</label><input type="date" id="av_dataaq" value="2012-12-28"></div>
+      <div class="vfield grow"><label>3.25 Imóvel adquirido de</label><input type="text" id="av_adqde" placeholder="3.25 Imóvel adquirido de"></div>
+      <div class="vfield"><label>3.26 Data de aquisição</label><input type="date" id="av_dataaq" placeholder="3.26 Data de aquisição"></div>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>3.27 Doc. de aquisição</label><input type="text" id="av_docaq" value="CERTIDAO INTEIRO TEOR"></div>
-      <div class="vfield grow"><label>3.28 Cartório</label><input type="text" id="av_cartorio" value="TABELIONATO DE NOTAS DE GUANAMBI - BA"></div>
-      <div class="vfield"><label>3.29 Livro</label><input type="text" id="av_livro" value="2/HV"></div>
+      <div class="vfield grow"><label>3.27 Doc. de aquisição</label><input type="text" id="av_docaq" placeholder="3.27 Doc. de aquisição"></div>
+      <div class="vfield grow"><label>3.28 Cartório</label><input type="text" id="av_cartorio" placeholder="3.28 Cartório"></div>
+      <div class="vfield"><label>3.29 Livro</label><input type="text" id="av_livro" placeholder="3.29 Livro"></div>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>3.31 Cartório de registro</label><input type="text" id="av_cartreg" value="C.R.I.H. DE GUANAMBI - BA"></div>
-      <div class="vfield grow"><label>3.32 Nº de registro <span class="auto-tag">auto</span></label><input type="text" readonly id="av_nreg" data-from="matricula" class="bloqueado"></div>
-      <div class="vfield"><label>3.33 Livro</label><input type="text" id="av_livro2" value="2/EG"></div>
+      <div class="vfield grow"><label>3.31 Cartório de registro</label><input type="text" id="av_cartreg" placeholder="3.31 Cartório de registro"></div>
+      <div class="vfield grow"><label>3.32 Nº de registro <span class="auto-tag">auto</span></label><input type="text" readonly id="av_nreg" data-from="matricula" class="bloqueado" placeholder="3.32 Nº de registro"></div>
+      <div class="vfield"><label>3.33 Livro</label><input type="text" id="av_livro2" placeholder="3.33 Livro"></div>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>3.35 Cadastro INCRA/Pref.</label><input type="text" id="av_incra" value="307.092.019.712"></div>
-      <div class="vfield"><label>3.36 Área total (ha) <span class="auto-tag">auto</span></label><input type="text" readonly id="av_areatotal" data-from="area_total" class="bloqueado"></div>
-      <div class="vfield"><label>3.37 Área abrangida (ha) <span class="auto-tag">auto</span></label><input type="text" readonly id="av_areaabr" data-from="area_desap" class="bloqueado"></div>
+      <div class="vfield grow"><label>3.35 Cadastro INCRA/Pref.</label><input type="text" id="av_incra" placeholder="3.35 Cadastro INCRA/Pref."></div>
+      <div class="vfield"><label>3.36 Área total (ha) <span class="auto-tag">auto</span></label><input type="text" readonly id="av_areatotal" data-from="area_total" class="bloqueado" placeholder="3.36 Área total (ha)"></div>
+      <div class="vfield"><label>3.37 Área abrangida (ha) <span class="auto-tag">auto</span></label><input type="text" readonly id="av_areaabr" data-from="area_desap" class="bloqueado" placeholder="3.37 Área abrangida (ha)"></div>
     </div>
     <div class="vrow">
-      <div class="vfield"><label>3.38 Outras áreas (ha)</label><input type="text" id="av_outrasareas" value="0,1914"></div>
-      <div class="vfield"><label>3.39 Categoria da ocupação</label><input type="text" id="av_categ" value="PROPRIETÁRIA"></div>
-      <div class="vfield"><label>3.40 Data da ocupação</label><input type="date" id="av_dataocup" value="2012-12-28"></div>
+      <div class="vfield"><label>3.38 Outras áreas (ha)</label><input type="text" id="av_outrasareas" placeholder="3.38 Outras áreas (ha)"></div>
+      <div class="vfield"><label>3.39 Categoria da ocupação</label><input type="text" id="av_categ" placeholder="3.39 Categoria da ocupação"></div>
+      <div class="vfield"><label>3.40 Data da ocupação</label><input type="date" id="av_dataocup" placeholder="3.40 Data da ocupação"></div>
     </div>
   </div>
 
@@ -1533,9 +1539,9 @@
     </div>
     <div class="vrow">
       <div class="vfield"><label>4.2.1 Geoprocessamento (INCRA)</label><select id="av_geo" onchange="AV_geoToggle()"><option>SIM</option><option selected>NÃO</option></select></div>
-      <div class="vfield grow" id="av_geo_cod_wrap" style="display:none;"><label>Código do Geoprocessamento (INCRA)</label><input type="text" id="av_geo_cod" placeholder="Informe o código"></div>
+      <div class="vfield grow" id="av_geo_cod_wrap" style="display:none;"><label>Código do Geoprocessamento (INCRA)</label><input type="text" id="av_geo_cod" placeholder="Código do Geoprocessamento (INCRA)"></div>
       <div class="vfield"><label>4.2.2 CAR (Cadastro Ambiental Rural)</label><select id="av_car"><option selected>SIM</option><option>NÃO</option></select></div>
-      <div class="vfield grow"><label>Nº CAR</label><input type="text" id="av_ncar" value="BA-2911709-4CDF.32D1.DF12.414E.BE3C.BA1A.0C51.3253"></div>
+      <div class="vfield grow"><label>Nº CAR</label><input type="text" id="av_ncar" placeholder="Nº CAR"></div>
     </div>
   </div>
 
@@ -1544,34 +1550,34 @@
   <div class="vcard">
     <div class="vsub">Área Abrangida</div>
     <div class="vrow">
-      <div class="vfield grow"><label>5.1 Norte</label><input type="text" id="av_n1" value="EF-334 – FIOL"></div>
-      <div class="vfield grow"><label>5.2 Sul</label><input type="text" id="av_s1" value="DOMINGA TEREZA PEREIRA"></div>
+      <div class="vfield grow"><label>5.1 Norte</label><input type="text" id="av_n1" placeholder="5.1 Norte"></div>
+      <div class="vfield grow"><label>5.2 Sul</label><input type="text" id="av_s1" placeholder="5.2 Sul"></div>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>5.3 Leste</label><input type="text" id="av_l1" value="ESPÓLIO DE MARILENE TEREZA PEREIRA SOUZA"></div>
-      <div class="vfield grow"><label>5.4 Oeste</label><input type="text" id="av_o1" value="JOSUÉ BENJAMIM PEREIRA"></div>
+      <div class="vfield grow"><label>5.3 Leste</label><input type="text" id="av_l1" placeholder="5.3 Leste"></div>
+      <div class="vfield grow"><label>5.4 Oeste</label><input type="text" id="av_o1" placeholder="5.4 Oeste"></div>
     </div>
     <div class="vsub">Área Remanescente</div>
     <div class="vrow">
-      <div class="vfield grow"><label>5.9 Norte</label><input type="text" id="av_n2" value="DOMINGA TEREZA PEREIRA"></div>
-      <div class="vfield grow"><label>5.10 Sul</label><input type="text" id="av_s2" value="SEBASTIÃO JESULINO PEREIRA"></div>
+      <div class="vfield grow"><label>5.9 Norte</label><input type="text" id="av_n2" placeholder="5.9 Norte"></div>
+      <div class="vfield grow"><label>5.10 Sul</label><input type="text" id="av_s2" placeholder="5.10 Sul"></div>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>5.11 Leste</label><input type="text" id="av_l2" value="ESPÓLIO DE MARILENE TEREZA PEREIRA SOUZA"></div>
-      <div class="vfield grow"><label>5.12 Oeste</label><input type="text" id="av_o2" value="JOSUÉ BENJAMIM PEREIRA"></div>
+      <div class="vfield grow"><label>5.11 Leste</label><input type="text" id="av_l2" placeholder="5.11 Leste"></div>
+      <div class="vfield grow"><label>5.12 Oeste</label><input type="text" id="av_o2" placeholder="5.12 Oeste"></div>
     </div>
   </div>
 
   <!-- 06 VIAS -->
   <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>06 — Vias e Meios de Acesso</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
-    <textarea id="av_vias" rows="5">LOCALIZAÇÃO LESTE ACESSO: SAINDO DE GUANAMBI SENTIDO CERAÍMA, A PARTIR DO FINAL DA AV. DEP. HIDEVALDO A BOA SORTE, SEGUE PELA RODOVIA BA-938 POR 9,60 KM ATÉ A BARRAGEM DE CERAIMA, CONTINUE EM FRENTE PELA ESTRADA VICINAL POR 7,1 KM, VIRE A DIREITA E CONTINUE POR 240M, VIRE A ESQUERDA E CONTINUE POR MAIS 350M, VIRE A DIREITA E CONTINUE POR MAIS 180M, VIRE DIRETIA E SIGUA POR 9M ENTÃO VIRE A ESQUERDA E CONTINUE POR MAIS 1,15KM, VIRE A DIREITA E SIGA POR MAIS 800M, VIRE A DIREITA E PERCORRA MAIS 300M, ATE O SITIO CÔCOS, LOCALIZADO AO LADO ESQUERDO DA ESTRADA VICINAL.</textarea>
+    <textarea id="av_vias" rows="5" placeholder="Descreva as vias e meios de acesso ao imóvel"></textarea>
   </div>
 
   <!-- 07 DESCRIÇÃO -->
   <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>07 — Descrição do Imóvel</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
-    <textarea id="av_descricao" rows="8">PROPRIEDADE RURAL DENOMINADA SÍTIO CÔCOS, MATRÍCULA 28.001, SITUADA NO DISTRITO DE CERAÍMA, MUNICÍPIO DE GUANAMBI/BA, INSERIDA NO BIOMA CAATINGA, COM VEGETAÇÃO NATIVA EM PARTE ANTROPIZADA. SEU USO AGROPECUÁRIO VARIA CONFORME O GRAU DE RESTRIÇÃO DE CADA SETOR, IDENTIFICANDO-SE ÁREAS DAS CLASSES DE CAPACIDADE DE USO III, VII E VIII: A GLEBA 01 (CLASSE III), COM 2,0500 ha (aprox. 37,05%), RESTRITA PELA PROFUNDIDADE EFETIVA (SOLO RASO); A GLEBA 02 (CLASSE VII), COM 0,9609 ha (aprox. 23,16%), LIMITADA PELA PEDREGOSIDADE MODERADA; E A GLEBA 03 (CLASSE VIII), COM 1,1389 ha (aprox. 27,44%), CONDICIONADA PELA DECLIVIDADE ENTRE 20% E 40%. O ACESSO É FEITO POR MEIO DA RODOVIA BA-938 E DE ESTRADA VICINAL, COM CONDIÇÕES DE TRÁFEGO MUITO BOAS E PERMANENTES. APRESENTA HIDROGRAFIA MARCADA POR RIO INTERMITENTE E DECLIVIDADE QUE FAVORECE O ESCOAMENTO SUPERFICIAL, COM LIMITAÇÕES NAS ÁREAS MAIS BAIXAS. O RELEVO É HETEROGÊNEO E ÍNGREME, E O SOLO É COMPOSTO PREDOMINANTEMENTE POR PLANOSSOLOS E NEOSSOLOS, COM RESTRIÇÕES NATURAIS COMO DRENAGEM IMPERFEITA E BARREIRAS FÍSICAS AO DESENVOLVIMENTO RADICULAR. ESSAS CONDIÇÕES CONDICIONAM SEVERAMENTE A EXPLORAÇÃO AGRÍCOLA E EXIGEM TÉCNICAS ESPECÍFICAS DE ESCOAMENTO E CONDUÇÃO DE ÁGUA NA IMPLANTAÇÃO DE ROTAS DE ACESSO OU EM QUALQUER INTERVENÇÃO.</textarea>
+    <textarea id="av_descricao" rows="8" placeholder="Descreva o imóvel"></textarea>
   </div>
 
   <!-- 08 CROQUI (imagem) -->
@@ -1581,7 +1587,7 @@
       <span class="ic">🗺️</span>
       <span class="t">Clique ou arraste a imagem do croqui de acesso</span>
       <span class="h">JPG ou PNG</span>
-      <input type="file" accept="image/*" id="av_croqui_file">
+      <input type="file" accept="image/*" id="av_croqui_file" placeholder="Preencher este campo">
     </label>
     <div class="img-preview" id="av_croqui_prev"></div>
   </div>
@@ -1641,7 +1647,7 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
       <span class="ic">🖼️</span>
       <span class="t">Clique ou arraste a imagem (Figura 1 — glebas do imóvel)</span>
       <span class="h">JPG ou PNG</span>
-      <input type="file" accept="image/*" id="av_ccu_file">
+      <input type="file" accept="image/*" id="av_ccu_file" placeholder="Preencher este campo">
     </label>
     <div class="img-preview" id="av_ccu_prev"></div>
 
@@ -1656,7 +1662,7 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
     </div>
     <div class="av-area-aval">
       <label>Área avaliada de referência (ha) — base do cálculo de %</label>
-      <input type="text" id="av_area_aval" value="4,1498" readonly class="bloqueado">
+      <input type="text" id="av_area_aval" readonly class="bloqueado" placeholder="Área avaliada de referência (ha) — base do cálculo de %">
       <span class="hint-inline">Repete automaticamente a Área Total do Imóvel (item 3.36). Bloqueada para edição.</span>
     </div>
 
@@ -1701,7 +1707,7 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
     <div class="vsub">III — Dimensionamento da Variável Nota Agronômica (N.A.)</div>
     <div class="na-calc">
       <span>N.A. =</span>
-      <input type="text" id="av_na_ccu" readonly class="bloqueado" title="CCU obtido acima — bloqueado">
+      <input type="text" id="av_na_ccu" readonly class="bloqueado" title="CCU obtido acima — bloqueado" placeholder="Preencher este campo">
       <span>×</span>
       <select id="av_na_escala" title="Situação / Circulação">
         <option value="1.00">Ótima (100)</option>
@@ -1712,7 +1718,7 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
         <option value="0.70">Péssima (70)</option>
       </select>
       <span>=</span>
-      <input type="text" id="av_na_result" readonly class="resultado bloqueado">
+      <input type="text" id="av_na_result" readonly class="resultado bloqueado" placeholder="Preencher este campo">
     </div>
 
     <div class="vsub">Variável Zonas Homogêneas</div>
@@ -1725,13 +1731,13 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
         <tr>
           <td>ÁREA DO IMÓVEL (ha)</td>
           <td>e^(+0,7420810025 / Área (ha))</td>
-          <td><input type="text" id="av_mem_area" readonly class="bloqueado"></td>
+          <td><input type="text" id="av_mem_area" readonly class="bloqueado" placeholder="Preencher este campo"></td>
           <td><span id="av_mem_area_r">—</span></td>
         </tr>
         <tr>
           <td>NOTA AGRONÔMICA (N.A.)</td>
           <td>e^(-0,7754092498 / Nota agronômica²)</td>
-          <td><input type="text" id="av_mem_na" readonly class="bloqueado"></td>
+          <td><input type="text" id="av_mem_na" readonly class="bloqueado" placeholder="Preencher este campo"></td>
           <td><span id="av_mem_na_r">—</span></td>
         </tr>
         <tr>
@@ -1755,7 +1761,7 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
 
     <div class="import-amostra">
       <button type="button" class="vbtn vbtn-primary" onclick="document.getElementById('av_amostra_file').click()">↧ Importar dados da amostra</button>
-      <input type="file" id="av_amostra_file" accept=".txt,.csv" style="display:none" onchange="AV_importarAmostra(this)">
+      <input type="file" id="av_amostra_file" accept=".txt,.csv" style="display:none" onchange="AV_importarAmostra(this)" placeholder="Preencher este campo">
       <span class="import-hint" id="av_amostra_status">Selecione o arquivo de texto do relatório estatístico (Nível de Confiança 80%).</span>
     </div>
 
@@ -1807,7 +1813,7 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
             <span class="ic">🗺️</span>
             <span class="t">Clique ou arraste a imagem do Mapa de Situação</span>
             <span class="h">JPG ou PNG</span>
-            <input type="file" accept="image/*" id="av_mapa_file">
+            <input type="file" accept="image/*" id="av_mapa_file" placeholder="Preencher este campo">
           </label>
           <div class="img-preview" id="av_mapa_prev"></div>
         </div>
@@ -1818,11 +1824,11 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
       <h4>Cálculo de Desvalorização da Área Remanescente (Antes × Depois)</h4>
       <div class="na-calc" style="background:#fff;">
         <span><strong>ANTES</strong> — Situação:</span>
-        <input type="text" id="av_antes_sit" readonly class="bloqueado" title="Situação atual (item III)">
+        <input type="text" id="av_antes_sit" readonly class="bloqueado" title="Situação atual (item III)" placeholder="Preencher este campo">
         <span>N.A. =</span>
-        <input type="text" id="av_antes_na" readonly class="resultado">
+        <input type="text" id="av_antes_na" readonly class="resultado" placeholder="Preencher este campo">
         <span>V.U./ha =</span>
-        <input type="text" id="av_antes_vu" readonly class="resultado">
+        <input type="text" id="av_antes_vu" readonly class="resultado" placeholder="Preencher este campo">
       </div>
       <div class="na-calc" style="background:#fff; margin-top:8px;">
         <span><strong>DEPOIS</strong> — Situação:</span>
@@ -1835,9 +1841,9 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
           <option value="0.70">Péssima (70)</option>
         </select>
         <span>N.A. =</span>
-        <input type="text" id="av_depois_na" readonly class="resultado">
+        <input type="text" id="av_depois_na" readonly class="resultado" placeholder="Preencher este campo">
         <span>V.U./ha =</span>
-        <input type="text" id="av_depois_vu" readonly class="resultado">
+        <input type="text" id="av_depois_vu" readonly class="resultado" placeholder="Preencher este campo">
       </div>
       <div class="desval-result">
         <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
@@ -1925,13 +1931,13 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
   <div class="vcard">
     <div class="calc-line">
       <label>Faixa de domínio — Área desapropriada (ha) <span class="auto-tag">auto</span></label>
-      <input type="text" readonly id="av_fd_area" data-from="area_desap" class="bloqueado">
+      <input type="text" readonly id="av_fd_area" data-from="area_desap" class="bloqueado" placeholder="Faixa de domínio — Área desapropriada (ha)">
       <span>× VTN/ha =</span>
       <strong id="av_fd_result">R$ —</strong>
     </div>
     <div class="calc-line">
       <label>Outras áreas (Remanescente) — Área (ha) <span class="auto-tag">auto</span></label>
-      <input type="text" id="av_rem_area" value="0,1914" readonly class="bloqueado">
+      <input type="text" id="av_rem_area" readonly class="bloqueado" placeholder="Outras áreas (Remanescente) — Área (ha)">
       <span>× VTN/ha =</span>
       <strong id="av_rem_result">R$ —</strong>
     </div>
@@ -1945,20 +1951,20 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
         <tr><td>01 - Faixa de domínio</td><td class="v"><strong id="rs_fd">R$ —</strong></td></tr>
         <tr><td>02 - Outras áreas (remanescente)</td><td class="v"><strong id="rs_rem">R$ —</strong></td></tr>
         <tr class="sub-tot"><td>03 - Sub-total (01)</td><td class="v"><strong id="rs_sub1">R$ —</strong></td></tr>
-        <tr><td>04 - Quadro 12.1 - Culturas permanentes</td><td class="v"><input type="text" id="rs_121" value="420,96"></td></tr>
-        <tr><td>05 - Quadro 12.2 - Culturas temporárias</td><td class="v"><input type="text" id="rs_122" value="0,00"></td></tr>
-        <tr><td>06 - Quadro 12.3 - Pastagens artificiais</td><td class="v"><input type="text" id="rs_123" value="4.767,63"></td></tr>
-        <tr><td>07 - Quadro 12.4 - Extrativismo</td><td class="v"><input type="text" id="rs_124" value="0,00"></td></tr>
-        <tr><td>08 - Quadro 12 - Benfeitorias reprodutivas</td><td class="v"><input type="text" id="rs_12" value="5.188,59"></td></tr>
-        <tr><td>09 - Quadro 13 - Benfeitorias não reprodutivas</td><td class="v"><input type="text" id="rs_13" value="0,00"></td></tr>
+        <tr><td>04 - Quadro 12.1 - Culturas permanentes</td><td class="v"><input type="text" id="rs_121" placeholder="Preencher este campo"></td></tr>
+        <tr><td>05 - Quadro 12.2 - Culturas temporárias</td><td class="v"><input type="text" id="rs_122" placeholder="Preencher este campo"></td></tr>
+        <tr><td>06 - Quadro 12.3 - Pastagens artificiais</td><td class="v"><input type="text" id="rs_123" placeholder="Preencher este campo"></td></tr>
+        <tr><td>07 - Quadro 12.4 - Extrativismo</td><td class="v"><input type="text" id="rs_124" placeholder="Preencher este campo"></td></tr>
+        <tr><td>08 - Quadro 12 - Benfeitorias reprodutivas</td><td class="v"><input type="text" id="rs_12" placeholder="Preencher este campo"></td></tr>
+        <tr><td>09 - Quadro 13 - Benfeitorias não reprodutivas</td><td class="v"><input type="text" id="rs_13" placeholder="Preencher este campo"></td></tr>
         <tr class="sub-tot"><td>10 - Sub-total (02)</td><td class="v"><strong id="rs_sub2">R$ —</strong></td></tr>
         <tr class="total"><td>11 - TOTAL (1+2)</td><td class="v"><strong id="rs_total">R$ —</strong></td></tr>
       </tbody>
     </table>
     <div class="vrow" style="margin-top:12px;">
-      <div class="vfield"><label>Mês base da avaliação</label><input type="text" id="av_mesbase" value="jul/26"></div>
-      <div class="vfield"><label>Limite inferior (-15%)</label><input type="text" id="av_lim_inf" readonly></div>
-      <div class="vfield"><label>Limite superior (+15%)</label><input type="text" id="av_lim_sup" readonly></div>
+      <div class="vfield"><label>Mês base da avaliação</label><input type="text" id="av_mesbase" placeholder="Mês base da avaliação"></div>
+      <div class="vfield"><label>Limite inferior (-15%)</label><input type="text" id="av_lim_inf" readonly placeholder="Limite inferior (-15%)"></div>
+      <div class="vfield"><label>Limite superior (+15%)</label><input type="text" id="av_lim_sup" readonly placeholder="Limite superior (+15%)"></div>
     </div>
   </div>
 
@@ -1984,13 +1990,13 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
   <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>17 — Assinatura</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <div class="vrow">
-      <div class="vfield"><label>Local</label><input type="text" id="av_local" value="GUANAMBI - BA"></div>
-      <div class="vfield"><label>Data</label><input type="date" id="av_data_ass" value="2026-07-30"></div>
+      <div class="vfield"><label>Local</label><input type="text" id="av_local" placeholder="Local"></div>
+      <div class="vfield"><label>Data</label><input type="date" id="av_data_ass" placeholder="Data"></div>
     </div>
     <div class="vrow">
-      <div class="vfield grow"><label>Responsável <span class="auto-tag">auto</span></label><input type="text" readonly id="av_ass_nome" data-from="ass_nome" class="bloqueado"></div>
-      <div class="vfield grow"><label>Cargo <span class="auto-tag">auto</span></label><input type="text" readonly id="av_ass_cargo" data-from="ass_cargo" class="bloqueado"></div>
-      <div class="vfield grow"><label>CREA <span class="auto-tag">auto</span></label><input type="text" readonly id="av_ass_crea" data-from="ass_crea" class="bloqueado"></div>
+      <div class="vfield grow"><label>Responsável <span class="auto-tag">auto</span></label><input type="text" readonly id="av_ass_nome" data-from="ass_nome" class="bloqueado" placeholder="Responsável"></div>
+      <div class="vfield grow"><label>Cargo <span class="auto-tag">auto</span></label><input type="text" readonly id="av_ass_cargo" data-from="ass_cargo" class="bloqueado" placeholder="Cargo"></div>
+      <div class="vfield grow"><label>CREA <span class="auto-tag">auto</span></label><input type="text" readonly id="av_ass_crea" data-from="ass_crea" class="bloqueado" placeholder="CREA"></div>
     </div>
   </div>
 
@@ -3245,11 +3251,9 @@ window.FOTO_rodapeHTML=rodapeHTML;
 <script>
 /* ===== JS Ficha de Vistoria ===== */
 (function(){
-  // valores iniciais das áreas/estacas (do modelo)
+  // valores iniciais das áreas/estacas (iniciam em branco para preenchimento)
   const estacasIniciais = [
-    {ini:"939+921,31", fim:"940+002,28"},
-    {ini:"939+916,62", fim:"939+993,69"},
-    {ini:"935+472,13", fim:"935+632,54"}
+    {ini:"", fim:""}
   ];
   let seq = 0;
 
@@ -3774,8 +3778,8 @@ window.FOTO_rodapeHTML=rodapeHTML;
   function construirNATabela(){
     const tbody = document.getElementById("av_na_tbody");
     if(!tbody || tbody.dataset.pronto) return;
-    // valores iniciais de área por classe (modelo)
-    const areaInicial = {3:"2,0500", 7:"0,9609", 8:"1,1389"};
+    // valores iniciais de área por classe (iniciam em branco para preenchimento)
+    const areaInicial = {3:"", 7:"", 8:""};
     let html = "";
     NA_CLASSES.forEach((c,idx)=>{
       let sitCell = "";
