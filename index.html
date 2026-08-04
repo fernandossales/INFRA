@@ -3838,7 +3838,14 @@ window.FOTO_rodapeHTML=rodapeHTML;
     let y=H-50;
     RODAPE.forEach(l=>{ doc.text(l, W/2, y, {align:"center"}); y+=7; });
   }
-  function novaPagina(doc,ctx){ doc.addPage(); header(doc,ctx); footer(doc,ctx); ctx.y=ctx.MT; }
+  function novaPagina(doc,ctx){
+    // preserva o estado de fonte/cor do conteúdo antes de desenhar header/footer
+    const fs = doc.internal.getFontSize();
+    doc.addPage(); header(doc,ctx); footer(doc,ctx);
+    ctx.y=ctx.MT;
+    // restaura fonte padrão de corpo (header/footer alteram tamanho/cor)
+    doc.setFont("helvetica","normal"); doc.setFontSize(fs); doc.setTextColor(35,45,60);
+  }
   function ensure(doc,ctx,h){ if(ctx.y+h > ctx.MB){ novaPagina(doc,ctx); } }
 
   // barra de seção
@@ -3912,6 +3919,8 @@ window.FOTO_rodapeHTML=rodapeHTML;
       const linhas = doc.splitTextToSize(limpo, larg);
       linhas.forEach((ln,i)=>{
         ensure(doc,ctx, size+2);
+        // reaplica a fonte do parágrafo (ensure->novaPagina pode ter alterado via header/footer)
+        doc.setFont("helvetica","normal"); doc.setFontSize(size); doc.setTextColor(35,45,60);
         const ultima = (i===linhas.length-1);
         if(!ultima){
           justificarLinha(doc, ln, ctx.ML, ctx.y+size, larg, size);
@@ -4751,7 +4760,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
     const tblW=ctx.MR-ctx.ML;
     linhas.forEach(r=>{
       ensure(doc,ctx,16);
-      if(r[2]==="tot"){ doc.setFillColor(31,111,192); doc.rect(ctx.ML,ctx.y,tblW,15,"F"); doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); }
+      if(r[2]==="tot"){ doc.setFillColor(21,122,60); doc.rect(ctx.ML,ctx.y,tblW,15,"F"); doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); }
       else if(r[2]==="sub"){ doc.setFillColor(240,245,251); doc.rect(ctx.ML,ctx.y,tblW,15,"F"); doc.setTextColor(23,90,159); doc.setFont("helvetica","bold"); }
       else { doc.setTextColor(35,45,60); doc.setFont("helvetica","normal"); }
       doc.setFontSize(9);
