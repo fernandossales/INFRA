@@ -460,48 +460,42 @@
     display:inline-flex; align-items:center; gap:8px; border:none;
     padding:11px 20px; font-size:14px; font-weight:600; border-radius:8px;
     cursor:pointer; transition:background .15s, transform .05s; letter-spacing:.2px;
-  }#panel-drl .btn:active{transform:translateY(1px);}#panel-drl .btn:disabled{opacity:.5; cursor:not-allowed;}#panel-drl .btn-primary{background:var(--azul); color:#fff; box-shadow:0 2px 6px rgba(31,111,192,.35);}#panel-drl .btn-primary:hover:not(:disabled){background:var(--azul-esc);}#panel-drl .btn-ghost{background:#fff; color:var(--texto); border:1px solid var(--borda-forte);}#panel-drl .btn-ghost:hover:not(:disabled){background:#f3f6f9;}#panel-drl .status{font-size:12.5px; margin-top:10px; min-height:16px;}#panel-drl .status.ok{color:var(--ok);}#panel-drl .status.err{color:var(--erro);}#panel-drl .status.work{color:var(--azul-esc);}#panel-drl .opts{font-size:12.5px; color:#5a6b7c; margin-top:12px; display:flex; align-items:center; gap:7px;}#panel-drl .opts input{width:15px; height:15px;}
-
-
-#panel-docs{
+  }#panel-drl .btn:active{transform:translateY(1px);}#panel-drl .btn:disabled{opacity:.5; cursor:not-allowed;}#panel-drl .btn-primary{background:var(--azul); color:#fff; box-shadow:0 2px 6px rgba(31,111,192,.35);}#panel-drl .btn-primary:hover:not(:disabled){background:var(--azul-esc);}#panel-drl .btn-ghost{background:#fff; color:var(--texto); border:1px solid var(--borda-forte);}#panel-drl .btn-ghost:hover:not(:disabled){background:#f3f6f9;}#panel-drl .status{font-size:12.5px; margin-top:10px; min-height:16px;}#panel-drl .status.ok{color:var(--ok);}#panel-drl .status.err{color:var(--erro);}#panel-drl .status.work{color:var(--azul-esc);}#panel-drl .opts{font-size:12.5px; color:#5a6b7c; margin-top:12px; display:flex; align-items:center; gap:7px;}#panel-drl .opts input{width:15px; height:15px;}#panel-docs, #panel-anx7, #panel-anx8, #panel-anx11 {
     --azul:#1F6FC0; --azul-esc:#175a9f; --verde:#159a3c;
     --borda:#c3ccd6; --borda-forte:#9aa7b5; --texto:#243447;
     --bg:#eef2f6; --zebra:#f5f8fb; --erro:#c0392b; --ok:#159a3c;
-  }#panel-docs *{box-sizing:border-box;}#panel-docs, #panel-docs{margin:0;}#panel-docs{
+  }#panel-docs *, #panel-anx7 *, #panel-anx8 *, #panel-anx11 * {box-sizing:border-box;}#panel-docs, #panel-anx7, #panel-anx8, #panel-anx11, #panel-docs, #panel-anx7, #panel-anx8, #panel-anx11 {margin:0;}#panel-docs, #panel-anx7, #panel-anx8, #panel-anx11 {
     font-family:"Segoe UI", Arial, Helvetica, sans-serif;
     background:var(--bg); color:var(--texto); padding:28px 20px 60px;
-  }#panel-docs .wrap{max-width:1180px; margin:0 auto;}#panel-docs h1{font-size:22px; margin:0 0 4px; color:var(--azul-esc); letter-spacing:.3px;}#panel-docs .sub{font-size:14px; color:#5a6b7c; margin:0 0 24px;}#panel-docs .grid{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
-  @media(max-width:820px){#panel-docs .grid{grid-template-columns:1fr;}}#panel-docs .card{
+  }#panel-docs .wrap, #panel-anx7 .wrap, #panel-anx8 .wrap, #panel-anx11 .wrap {max-width:1180px; margin:0 auto;}#panel-docs h1, #panel-anx7 h1, #panel-anx8 h1, #panel-anx11 h1 {font-size:22px; margin:0 0 4px; color:var(--azul-esc); letter-spacing:.3px;}#panel-docs .sub, #panel-anx7 .sub, #panel-anx8 .sub, #panel-anx11 .sub {font-size:14px; color:#5a6b7c; margin:0 0 24px;}#panel-docs .grid, #panel-anx7 .grid, #panel-anx8 .grid, #panel-anx11 .grid {display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  @media(max-width:820px){#panel-docs .grid, #panel-anx7 .grid, #panel-anx8 .grid, #panel-anx11 .grid {grid-template-columns:1fr;}}#panel-docs .card, #panel-anx7 .card, #panel-anx8 .card, #panel-anx11 .card {
     background:#fff; border-radius:14px;
     box-shadow:0 10px 30px rgba(30,50,80,.10);
     padding:20px; display:flex; flex-direction:column;
-  }#panel-docs .card h2{
+  }#panel-docs .card h2, #panel-anx7 .card h2, #panel-anx8 .card h2, #panel-anx11 .card h2 {
     font-size:16px; margin:0 0 2px; color:#fff;
     background:linear-gradient(180deg,#2478c9,#1F6FC0);
     padding:12px 16px; border-radius:9px; letter-spacing:.3px;
-  }#panel-docs .card .desc{font-size:12.5px; color:#5a6b7c; margin:12px 0 14px; line-height:1.4;}#panel-docs .drop{
+  }#panel-docs .card .desc, #panel-anx7 .card .desc, #panel-anx8 .card .desc, #panel-anx11 .card .desc {font-size:12.5px; color:#5a6b7c; margin:12px 0 14px; line-height:1.4;}#panel-docs .drop, #panel-anx7 .drop, #panel-anx8 .drop, #panel-anx11 .drop {
     border:2px dashed var(--borda-forte); border-radius:10px;
     padding:26px 16px; text-align:center; cursor:pointer;
     transition:background .15s, border-color .15s; background:#fbfcfe;
-  }#panel-docs .drop:hover, #panel-docs .drop.over{background:#eef5fc; border-color:var(--azul);}#panel-docs .drop .ic{font-size:30px; display:block; margin-bottom:6px;}#panel-docs .drop .t{font-weight:600; font-size:14px; color:var(--azul-esc);}#panel-docs .drop .h{font-size:12px; color:#7a8899; margin-top:3px;}#panel-docs input[type=file]{display:none;}#panel-docs ul.lista{list-style:none; margin:14px 0 0; padding:0; display:flex; flex-direction:column; gap:6px;}#panel-docs ul.lista:empty{display:none;}#panel-docs .item{
+  }#panel-docs .drop:hover, #panel-anx7 .drop:hover, #panel-anx8 .drop:hover, #panel-anx11 .drop:hover, #panel-docs .drop.over, #panel-anx7 .drop.over, #panel-anx8 .drop.over, #panel-anx11 .drop.over {background:#eef5fc; border-color:var(--azul);}#panel-docs .drop .ic, #panel-anx7 .drop .ic, #panel-anx8 .drop .ic, #panel-anx11 .drop .ic {font-size:30px; display:block; margin-bottom:6px;}#panel-docs .drop .t, #panel-anx7 .drop .t, #panel-anx8 .drop .t, #panel-anx11 .drop .t {font-weight:600; font-size:14px; color:var(--azul-esc);}#panel-docs .drop .h, #panel-anx7 .drop .h, #panel-anx8 .drop .h, #panel-anx11 .drop .h {font-size:12px; color:#7a8899; margin-top:3px;}#panel-docs input[type=file], #panel-anx7 input[type=file], #panel-anx8 input[type=file], #panel-anx11 input[type=file] {display:none;}#panel-docs ul.lista, #panel-anx7 ul.lista, #panel-anx8 ul.lista, #panel-anx11 ul.lista {list-style:none; margin:14px 0 0; padding:0; display:flex; flex-direction:column; gap:6px;}#panel-docs ul.lista:empty, #panel-anx7 ul.lista:empty, #panel-anx8 ul.lista:empty, #panel-anx11 ul.lista:empty {display:none;}#panel-docs .item, #panel-anx7 .item, #panel-anx8 .item, #panel-anx11 .item {
     display:flex; align-items:center; gap:8px;
     background:var(--zebra); border:1px solid var(--borda);
     border-radius:8px; padding:7px 10px; font-size:12.5px;
-  }#panel-docs .item .num{
+  }#panel-docs .item .num, #panel-anx7 .item .num, #panel-anx8 .item .num, #panel-anx11 .item .num {
     background:var(--azul); color:#fff; font-weight:700;
     min-width:22px; height:22px; border-radius:50%;
     display:inline-flex; align-items:center; justify-content:center; font-size:11px;
-  }#panel-docs .item .nome{flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}#panel-docs .item .pg{color:#7a8899; font-size:11px; white-space:nowrap;}#panel-docs .item button{
+  }#panel-docs .item .nome, #panel-anx7 .item .nome, #panel-anx8 .item .nome, #panel-anx11 .item .nome {flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}#panel-docs .item .pg, #panel-anx7 .item .pg, #panel-anx8 .item .pg, #panel-anx11 .item .pg {color:#7a8899; font-size:11px; white-space:nowrap;}#panel-docs .item button, #panel-anx7 .item button, #panel-anx8 .item button, #panel-anx11 .item button {
     border:none; background:transparent; cursor:pointer;
     font-size:15px; color:#7a8899; padding:2px 5px; border-radius:5px; line-height:1;
-  }#panel-docs .item button:hover{background:#e2e8ef; color:var(--texto);}#panel-docs .item button.rm:hover{color:var(--erro);}#panel-docs .acoes{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;}#panel-docs .btn{
+  }#panel-docs .item button:hover, #panel-anx7 .item button:hover, #panel-anx8 .item button:hover, #panel-anx11 .item button:hover {background:#e2e8ef; color:var(--texto);}#panel-docs .item button.rm:hover, #panel-anx7 .item button.rm:hover, #panel-anx8 .item button.rm:hover, #panel-anx11 .item button.rm:hover {color:var(--erro);}#panel-docs .acoes, #panel-anx7 .acoes, #panel-anx8 .acoes, #panel-anx11 .acoes {margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;}#panel-docs .btn, #panel-anx7 .btn, #panel-anx8 .btn, #panel-anx11 .btn {
     display:inline-flex; align-items:center; gap:8px; border:none;
     padding:11px 20px; font-size:14px; font-weight:600; border-radius:8px;
     cursor:pointer; transition:background .15s, transform .05s; letter-spacing:.2px;
-  }#panel-docs .btn:active{transform:translateY(1px);}#panel-docs .btn:disabled{opacity:.5; cursor:not-allowed;}#panel-docs .btn-primary{background:var(--azul); color:#fff; box-shadow:0 2px 6px rgba(31,111,192,.35);}#panel-docs .btn-primary:hover:not(:disabled){background:var(--azul-esc);}#panel-docs .btn-ghost{background:#fff; color:var(--texto); border:1px solid var(--borda-forte);}#panel-docs .btn-ghost:hover:not(:disabled){background:#f3f6f9;}#panel-docs .status{font-size:12.5px; margin-top:10px; min-height:16px;}#panel-docs .status.ok{color:var(--ok);}#panel-docs .status.err{color:var(--erro);}#panel-docs .status.work{color:var(--azul-esc);}#panel-docs .opts{font-size:12.5px; color:#5a6b7c; margin-top:12px; display:flex; align-items:center; gap:7px;}#panel-docs .opts input{width:15px; height:15px;}
-
-
-#panel-drl .grid-1, #panel-docs .grid-1{grid-template-columns:1fr; max-width:620px;}#panel-drl .grid-1 .card, #panel-docs .grid-1 .card{margin:0 auto; width:100%;}
+  }#panel-docs .btn:active, #panel-anx7 .btn:active, #panel-anx8 .btn:active, #panel-anx11 .btn:active {transform:translateY(1px);}#panel-docs .btn:disabled, #panel-anx7 .btn:disabled, #panel-anx8 .btn:disabled, #panel-anx11 .btn:disabled {opacity:.5; cursor:not-allowed;}#panel-docs .btn-primary, #panel-anx7 .btn-primary, #panel-anx8 .btn-primary, #panel-anx11 .btn-primary {background:var(--azul); color:#fff; box-shadow:0 2px 6px rgba(31,111,192,.35);}#panel-docs .btn-primary:hover:not(:disabled), #panel-anx7 .btn-primary:hover:not(:disabled), #panel-anx8 .btn-primary:hover:not(:disabled), #panel-anx11 .btn-primary:hover:not(:disabled) {background:var(--azul-esc);}#panel-docs .btn-ghost, #panel-anx7 .btn-ghost, #panel-anx8 .btn-ghost, #panel-anx11 .btn-ghost {background:#fff; color:var(--texto); border:1px solid var(--borda-forte);}#panel-docs .btn-ghost:hover:not(:disabled), #panel-anx7 .btn-ghost:hover:not(:disabled), #panel-anx8 .btn-ghost:hover:not(:disabled), #panel-anx11 .btn-ghost:hover:not(:disabled) {background:#f3f6f9;}#panel-docs .status, #panel-anx7 .status, #panel-anx8 .status, #panel-anx11 .status {font-size:12.5px; margin-top:10px; min-height:16px;}#panel-docs .status.ok, #panel-anx7 .status.ok, #panel-anx8 .status.ok, #panel-anx11 .status.ok {color:var(--ok);}#panel-docs .status.err, #panel-anx7 .status.err, #panel-anx8 .status.err, #panel-anx11 .status.err {color:var(--erro);}#panel-docs .status.work, #panel-anx7 .status.work, #panel-anx8 .status.work, #panel-anx11 .status.work {color:var(--azul-esc);}#panel-docs .opts, #panel-anx7 .opts, #panel-anx8 .opts, #panel-anx11 .opts {font-size:12.5px; color:#5a6b7c; margin-top:12px; display:flex; align-items:center; gap:7px;}#panel-docs .opts input, #panel-anx7 .opts input, #panel-anx8 .opts input, #panel-anx11 .opts input {width:15px; height:15px;}#panel-drl .grid-1, #panel-docs .grid-1, #panel-anx7 .grid-1, #panel-anx8 .grid-1, #panel-anx11 .grid-1 {grid-template-columns:1fr; max-width:620px;}#panel-drl .grid-1 .card, #panel-docs .grid-1 .card, #panel-anx7 .grid-1 .card, #panel-anx8 .grid-1 .card, #panel-anx11 .grid-1 .card {margin:0 auto; width:100%;}
 
   /* ===== Ficha de Vistoria + Avaliação ===== */
   #panel-vistoria, #panel-avaliacao{
@@ -874,6 +868,18 @@
   .unir-modal-acoes .btn-ghost:hover{background:#e2e7ec;}
   .unir-modal-acoes .btn-primary{background:#1F6FC0; color:#fff;}
   .unir-modal-acoes .btn-primary:hover{background:#1a5da3;}
+
+  /* Campo título do relatório (anexos 7,8,11) */
+  #panel-anx7 .campo-titulo, #panel-anx8 .campo-titulo, #panel-anx11 .campo-titulo{margin:0 0 14px;}
+  .campo-titulo label{display:block; font-size:12.5px; color:#5a6b7c; margin-bottom:5px; font-weight:600;}
+  .campo-titulo input{width:100%; padding:9px 12px; border:1px solid #c3ccd6; border-radius:8px; font-size:13.5px; color:#243447;}
+  .campo-titulo input:focus{border-color:#1F6FC0; outline:none; box-shadow:0 0 0 2px rgba(31,111,192,.12);}
+
+  /* Anexo 09 — destaque de valores principais */
+  #panel-relest .rel-destaque{display:flex; gap:12px; margin-bottom:12px; flex-wrap:wrap;}
+  #panel-relest .rel-d-item{flex:1; min-width:180px; background:linear-gradient(135deg,#1F6FC0,#175a9f); color:#fff; border-radius:10px; padding:12px 16px; display:flex; flex-direction:column; gap:3px;}
+  #panel-relest .rel-d-lbl{font-size:11.5px; opacity:.85; text-transform:uppercase; letter-spacing:.4px;}
+  #panel-relest .rel-d-val{font-size:20px; font-weight:800;}
 </style>
 </head>
 <body>
@@ -907,7 +913,10 @@
         <label><input type="checkbox" value="foto" data-nome="Relatório fotográfico" checked> Anexo — Relatório Fotográfico</label>
         <label><input type="checkbox" value="drl" data-nome="Declaração de respeito de limites" checked> Anexo — DRL</label>
         <label><input type="checkbox" value="docs" data-nome="Cópias de documentos de propriedade" checked> Anexo — Documentos de Propriedade</label>
+        <label><input type="checkbox" value="anx7" data-nome="Planilha de pesquisa de mercado" checked> Anexo — Planilha de Pesquisa de Mercado</label>
+        <label><input type="checkbox" value="anx8" data-nome="Mapa de localização e fichas dos elementos da amostra" checked> Anexo — Mapa e Fichas da Amostra</label>
         <label><input type="checkbox" value="relest" data-nome="Relatório estatístico" checked> Anexo — Relatório Estatístico</label>
+        <label><input type="checkbox" value="anx11" data-nome="Anotação de responsabilidade técnica (ART)" checked> Anexo — ART</label>
       </div>
       <div class="unir-modal-acoes">
         <button class="btn btn-ghost" onclick="UNIR_fecharModal()">Cancelar</button>
@@ -926,7 +935,10 @@
         <button class="drop-item" data-alvo="panel-foto"  onclick="trocarAba(this)">Anexo 04 - Relatório Fotográfico</button>
         <button class="drop-item" data-alvo="panel-drl"   onclick="trocarAba(this)">Anexo 05 - DRL</button>
         <button class="drop-item" data-alvo="panel-docs"  onclick="trocarAba(this)">Anexo 06 - Documentos</button>
+        <button class="drop-item" data-alvo="panel-anx7"  onclick="trocarAba(this)">Anexo 07 - Pesquisa de Mercado</button>
+        <button class="drop-item" data-alvo="panel-anx8"  onclick="trocarAba(this)">Anexo 08 - Mapa e Fichas da Amostra</button>
         <button class="drop-item" data-alvo="panel-relest" onclick="trocarAba(this)">Anexo 09 - Relatório Estatístico</button>
+        <button class="drop-item" data-alvo="panel-anx11" onclick="trocarAba(this)">Anexo 11 - ART</button>
       </div>
     </div>
   </nav>
@@ -1101,12 +1113,119 @@
 </div>
   </section>
 
+  <section class="tab-panel" id="panel-anx7">
+<div class="wrap">
+  <h1>Planilha de Pesquisa de Mercado</h1>
+  <p class="sub">Carregue os PDFs da planilha de pesquisa de mercado. O sistema une os arquivos e insere automaticamente a capa do Anexo 7 no início do documento final.</p>
+  <div class="grid grid-1">
+    <div class="card">
+      <h2>Anexo 7 — Planilha de Pesquisa de Mercado</h2>
+      <div class="campo-titulo">
+        <label for="titulo-7">Título do relatório (opcional — sobrescreve o título padrão da capa)</label>
+        <input type="text" id="titulo-7" placeholder="ANEXO 7: PLANILHA DE PESQUISA DE MERCADO">
+      </div>
+      <p class="desc">Anexe os PDFs da pesquisa de mercado. Arraste os arquivos na ordem desejada.</p>
+      <label class="drop" id="drop-7">
+        <span class="ic">📊</span>
+        <span class="t">Clique ou arraste os PDFs da pesquisa</span>
+        <span class="h">Vários arquivos • apenas .pdf</span>
+        <input type="file" accept="application/pdf" multiple id="file-7">
+      </label>
+      <ul class="lista" id="lista-7"></ul>
+      <div class="opts"><input type="checkbox" id="capa-7" checked><label for="capa-7">Incluir capa do Anexo 7</label></div>
+      <div class="acoes">
+        <button class="btn btn-primary" id="ger-7" disabled onclick="DOC_gerar(7)">📎 Unir e baixar</button>
+        <button class="btn btn-ghost" onclick="DOC_limpar(7)">Limpar</button>
+      </div>
+      <div class="status" id="st-7"></div>
+    </div>
+  </div>
+</div>
+  </section>
+
+  <section class="tab-panel" id="panel-anx8">
+<div class="wrap">
+  <h1>Mapa de Localização e Fichas dos Elementos da Amostra</h1>
+  <p class="sub">Carregue os PDFs do mapa de localização e das fichas dos elementos amostrais. O sistema une os arquivos e insere automaticamente a capa do Anexo 8 no início.</p>
+  <div class="grid grid-1">
+    <div class="card">
+      <h2>Anexo 8 — Mapa de Localização e Fichas dos Elementos da Amostra</h2>
+      <div class="campo-titulo">
+        <label for="titulo-8">Título do relatório (opcional — sobrescreve o título padrão da capa)</label>
+        <input type="text" id="titulo-8" placeholder="ANEXO 8: MAPA DE LOCALIZAÇÃO E FICHAS DOS ELEMENTOS DA AMOSTRA">
+      </div>
+      <p class="desc">Anexe os PDFs do mapa e das fichas. Arraste os arquivos na ordem desejada.</p>
+      <label class="drop" id="drop-8">
+        <span class="ic">🗺️</span>
+        <span class="t">Clique ou arraste os PDFs do mapa e fichas</span>
+        <span class="h">Vários arquivos • apenas .pdf</span>
+        <input type="file" accept="application/pdf" multiple id="file-8">
+      </label>
+      <ul class="lista" id="lista-8"></ul>
+      <div class="opts"><input type="checkbox" id="capa-8" checked><label for="capa-8">Incluir capa do Anexo 8</label></div>
+      <div class="acoes">
+        <button class="btn btn-primary" id="ger-8" disabled onclick="DOC_gerar(8)">📎 Unir e baixar</button>
+        <button class="btn btn-ghost" onclick="DOC_limpar(8)">Limpar</button>
+      </div>
+      <div class="status" id="st-8"></div>
+    </div>
+  </div>
+</div>
+  </section>
+
+  <section class="tab-panel" id="panel-anx11">
+<div class="wrap">
+  <h1>Anotação de Responsabilidade Técnica (ART)</h1>
+  <p class="sub">Carregue o PDF da ART. O sistema insere automaticamente a capa do Anexo 11 no início do documento final.</p>
+  <div class="grid grid-1">
+    <div class="card">
+      <h2>Anexo 11 — Anotação de Responsabilidade Técnica (ART)</h2>
+      <div class="campo-titulo">
+        <label for="titulo-11">Título do relatório (opcional — sobrescreve o título padrão da capa)</label>
+        <input type="text" id="titulo-11" placeholder="ANEXO 11: ANOTAÇÃO DE RESPONSABILIDADE TÉCNICA (ART)">
+      </div>
+      <p class="desc">Anexe o(s) PDF(s) da ART (documento do CREA e comprovante, se houver).</p>
+      <label class="drop" id="drop-11">
+        <span class="ic">📝</span>
+        <span class="t">Clique ou arraste o PDF da ART</span>
+        <span class="h">Um ou mais arquivos • apenas .pdf</span>
+        <input type="file" accept="application/pdf" multiple id="file-11">
+      </label>
+      <ul class="lista" id="lista-11"></ul>
+      <div class="opts"><input type="checkbox" id="capa-11" checked><label for="capa-11">Incluir capa do Anexo 11</label></div>
+      <div class="acoes">
+        <button class="btn btn-primary" id="ger-11" disabled onclick="DOC_gerar(11)">📎 Unir e baixar</button>
+        <button class="btn btn-ghost" onclick="DOC_limpar(11)">Limpar</button>
+      </div>
+      <div class="status" id="st-11"></div>
+    </div>
+  </div>
+</div>
+  </section>
+
   <section class="tab-panel" id="panel-relest">
 <div class="wrap">
   <h1>Anexo 09 — Relatório Estatístico</h1>
-  <p class="sub">Abaixo estão os dados coletados que preenchem <b>apenas a penúltima e a última página</b> do modelo do relatório estatístico. A penúltima página corresponde à <b>amostra importada</b> e a última à <b>simulação do Imóvel Avaliando</b>. As demais páginas do modelo não são alteradas.</p>
+  <p class="sub">Carregue o PDF do <b>modelo completo</b> do relatório estatístico (saída do SisDEA). Na geração, todas as páginas do modelo são mantidas, e apenas a <b>penúltima</b> (amostra importada) e a <b>última</b> (simulação do Imóvel Avaliando) são substituídas pelos dados importados.</p>
 
   <div class="grid grid-1">
+    <div class="card">
+      <h2>Modelo do relatório estatístico</h2>
+      <div class="campo-titulo">
+        <label for="titulo-9">Título do relatório (opcional — sobrescreve o título padrão da capa)</label>
+        <input type="text" id="titulo-9" placeholder="ANEXO 9: RELATÓRIO ESTATÍSTICO">
+      </div>
+      <p class="desc">Anexe o PDF do modelo completo. As duas últimas páginas serão trocadas pelos dados importados; se nenhum modelo for anexado, o sistema gera apenas a capa + as duas páginas de dados.</p>
+      <label class="drop" id="drop-9">
+        <span class="ic">📊</span>
+        <span class="t">Clique ou arraste o PDF do modelo do relatório</span>
+        <span class="h">Um arquivo • apenas .pdf</span>
+        <input type="file" accept="application/pdf" id="file-9">
+      </label>
+      <ul class="lista" id="lista-9"></ul>
+      <div class="opts"><input type="checkbox" id="capa-9" checked><label for="capa-9">Incluir capa do Anexo 9</label></div>
+    </div>
+
     <div class="card">
       <h2>Penúltima página — Amostra (Nível de Confiança 80%)</h2>
       <div class="rel-dados" id="rel-dados-amostra">
@@ -1123,7 +1242,6 @@
 
     <div class="card">
       <h2>Download do Anexo 09</h2>
-      <p class="desc">Gera o PDF do Anexo 09 (capa + as duas páginas com os dados acima). As páginas fixas do relatório estatístico do SisDEA devem ser anexadas ao documento final por fora, se necessário.</p>
       <div class="rel-aviso" id="rel-aviso-9">—</div>
       <div class="acoes">
         <button class="btn btn-primary" id="ger-9" onclick="REL_gerar()">⬇️ Baixar PDF do Anexo 09</button>
@@ -2909,7 +3027,10 @@ window.FOTO_rodapeHTML=rodapeHTML;
       if(marcados.includes("foto") && typeof window.FOTO_buildBytes==="function") await addAnexo("Relatório fotográfico", window.FOTO_buildBytes());
       if(marcados.includes("drl")  && typeof window.DOC_buildBytes==="function")  await addAnexo("Declaração de respeito de limites", window.DOC_buildBytes(5, false));
       if(marcados.includes("docs") && typeof window.DOC_buildBytes==="function")  await addAnexo("Cópia(s) de documentos de propriedade", window.DOC_buildBytes(6, false));
+      if(marcados.includes("anx7") && typeof window.DOC_buildBytes==="function")  await addAnexo("Planilha de pesquisa de mercado", window.DOC_buildBytes(7, false));
+      if(marcados.includes("anx8") && typeof window.DOC_buildBytes==="function")  await addAnexo("Mapa de localização e fichas dos elementos da amostra", window.DOC_buildBytes(8, false));
       if(marcados.includes("relest") && typeof window.REL_buildBytes==="function") await addAnexo("Relatório estatístico", window.REL_buildBytes(true));
+      if(marcados.includes("anx11") && typeof window.DOC_buildBytes==="function") await addAnexo("Anotação de responsabilidade técnica (ART)", window.DOC_buildBytes(11, false));
 
       if(out.getPageCount()===0){
         setStatus("err","Nada foi gerado. Verifique se os itens marcados têm conteúdo preenchido.");
@@ -2939,18 +3060,24 @@ window.FOTO_rodapeHTML=rodapeHTML;
 (function(){
   const CAPAS = {
     5: "ANEXO 5: DECLARAÇÃO DE RESPEITO DE LIMITES",
-    6: "ANEXO 6: CÓPIA(S) DE DOCUMENTOS DE PROPRIEDADE"
+    6: "ANEXO 6: CÓPIA(S) DE DOCUMENTOS DE PROPRIEDADE",
+    7: "ANEXO 7: PLANILHA DE PESQUISA DE MERCADO",
+    8: "ANEXO 8: MAPA DE LOCALIZAÇÃO E FICHAS DOS ELEMENTOS DA AMOSTRA",
+    11: "ANEXO 11: ANOTAÇÃO DE RESPONSABILIDADE TÉCNICA (ART)"
   };
   const NOMES = {
     5: "Anexo_5_Declaracao_Respeito_Limites.pdf",
-    6: "Anexo_6_Documentos_Propriedade.pdf"
+    6: "Anexo_6_Documentos_Propriedade.pdf",
+    7: "Anexo_7_Planilha_Pesquisa_Mercado.pdf",
+    8: "Anexo_8_Mapa_Localizacao_Fichas_Amostra.pdf",
+    11: "Anexo_11_ART.pdf"
   };
   const RODAPE = [
     "Av. Des. Moreira, n° 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE   (+55 85) 3289-6363   comercial@enprol.com.br",
     "Rua Araguari, nº 358, Conj.1903/1904, Barro Preto, 30.190-110, Belo Horizonte-MG   (+55 31) 3253-5500   comercial@enprol.com.br"
   ];
 
-  const arquivos = {5:[], 6:[]};
+  const arquivos = {5:[], 6:[], 7:[], 8:[], 11:[]};
 
   function bind(anexo){
     const input = document.getElementById("file-"+anexo);
@@ -3034,7 +3161,8 @@ window.FOTO_rodapeHTML=rodapeHTML;
       }catch(e){ console.warn("logos capa", e); }
     }
 
-    const titulo = CAPAS[anexo];
+    const inpTit = document.getElementById("titulo-"+anexo);
+    const titulo = (inpTit && inpTit.value.trim()) ? inpTit.value.trim().toUpperCase() : CAPAS[anexo];
     const size=15, maxW=A4W-130;
     const palavras = titulo.split(" ");
     let linhas=[], atual="";
@@ -3105,7 +3233,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
     setTimeout(()=>URL.revokeObjectURL(url), 4000);
   }
 
-  bind(5); bind(6);
+  bind(5); bind(6); bind(7); bind(8); bind(11);
 
   window.DOC_gerar=gerar;
   window.DOC_limpar=limpar;
@@ -5227,6 +5355,35 @@ function AV_gerarDescSituacao(){
 (function(){
   function el(id){ return document.getElementById(id); }
   let __relPronto=false;
+  let modeloBytes=null, modeloNome="";
+
+  // bind do upload do modelo
+  function REL_bindUpload(){
+    const input=el("file-9"), drop=el("drop-9");
+    if(!input) return;
+    input.addEventListener("change", e=>{ if(e.target.files[0]) REL_addModelo(e.target.files[0]); });
+    if(drop){
+      ["dragenter","dragover"].forEach(ev=> drop.addEventListener(ev,e=>{e.preventDefault(); drop.classList.add("over");}));
+      ["dragleave","drop"].forEach(ev=> drop.addEventListener(ev,e=>{e.preventDefault(); drop.classList.remove("over");}));
+      drop.addEventListener("drop", e=>{ e.preventDefault(); if(e.dataTransfer.files[0]) REL_addModelo(e.dataTransfer.files[0]); });
+    }
+  }
+  async function REL_addModelo(f){
+    if(f.type!=="application/pdf") return;
+    modeloBytes = await f.arrayBuffer();
+    modeloNome = f.name;
+    el("file-9").value="";
+    REL_renderModelo();
+  }
+  function REL_renderModelo(){
+    const ul=el("lista-9"); if(!ul) return; ul.innerHTML="";
+    if(modeloNome){
+      const li=document.createElement("li");
+      li.innerHTML='<span class="nm">'+modeloNome+'</span><span class="ac"><button onclick="REL_removerModelo()" title="Remover">✕</button></span>';
+      ul.appendChild(li);
+    }
+  }
+  window.REL_removerModelo=function(){ modeloBytes=null; modeloNome=""; REL_renderModelo(); };
 
   // atualiza os dados exibidos em tela (penúltima e última página)
   window.REL_atualizarTela = function(){
@@ -5238,16 +5395,24 @@ function AV_gerarDescSituacao(){
       const temAmostra = a && (a.vu_med || a.vt_med);
       if(temAmostra){
         boxA.innerHTML =
+          '<div class="rel-destaque">'+
+            '<div class="rel-d-item"><span class="rel-d-lbl">Valor Unitário (médio)</span><span class="rel-d-val">'+(a.vu_med||"—")+'</span></div>'+
+            '<div class="rel-d-item"><span class="rel-d-lbl">Valor Total (médio)</span><span class="rel-d-val">'+(a.vt_med||"—")+'</span></div>'+
+          '</div>'+
           '<table class="rel-tab">'+
           '<tr class="rel-h"><td colspan="2">Dados para a projeção de valores</td></tr>'+
           '<tr><td>Área (ha)</td><td>'+(a.area||"—")+'</td></tr>'+
           '<tr><td>Nota agronômica</td><td>'+(a.na||"—")+'</td></tr>'+
           '<tr><td>Zona</td><td>'+(a.zona||"—")+'</td></tr>'+
-          '<tr class="rel-h"><td colspan="2">Valores da Moda — Nível de Confiança 80%</td></tr>'+
-          '<tr><td>Valor Unitário — Mínimo'+(a.vu_min_pct?" ("+a.vu_min_pct+"%)":"")+'</td><td>'+(a.vu_min||"—")+'</td></tr>'+
-          '<tr><td>Valor Unitário — Médio</td><td>'+(a.vu_med||"—")+'</td></tr>'+
-          '<tr><td>Valor Unitário — Máximo'+(a.vu_max_pct?" ("+a.vu_max_pct+"%)":"")+'</td><td>'+(a.vu_max||"—")+'</td></tr>'+
-          '<tr><td>Valor Total — Mín / Méd / Máx</td><td>'+(a.vt_min||"—")+' / '+(a.vt_med||"—")+' / '+(a.vt_max||"—")+'</td></tr>'+
+          '<tr class="rel-h"><td colspan="2">Valores Unitários — Moda (N.C. 80%)</td></tr>'+
+          '<tr><td>Unitário — Mínimo'+(a.vu_min_pct?" ("+a.vu_min_pct+"%)":"")+'</td><td>'+(a.vu_min||"—")+'</td></tr>'+
+          '<tr><td>Unitário — Médio</td><td>'+(a.vu_med||"—")+'</td></tr>'+
+          '<tr><td>Unitário — Máximo'+(a.vu_max_pct?" ("+a.vu_max_pct+"%)":"")+'</td><td>'+(a.vu_max||"—")+'</td></tr>'+
+          '<tr class="rel-h"><td colspan="2">Valores Totais — Moda (N.C. 80%)</td></tr>'+
+          '<tr><td>Total — Mínimo</td><td>'+(a.vt_min||"—")+'</td></tr>'+
+          '<tr><td>Total — Médio</td><td>'+(a.vt_med||"—")+'</td></tr>'+
+          '<tr><td>Total — Máximo</td><td>'+(a.vt_max||"—")+'</td></tr>'+
+          '<tr class="rel-h"><td colspan="2">Outros parâmetros</td></tr>'+
           '<tr><td>Intervalo Predição — Mín / Máx</td><td>'+(a.ip_min||"—")+' / '+(a.ip_max||"—")+'</td></tr>'+
           '<tr><td>Campo de Arbítrio — RL Mín / RL Máx</td><td>'+(a.ca_min||"—")+' / '+(a.ca_max||"—")+'</td></tr>'+
           '</table>';
@@ -5420,23 +5585,43 @@ function AV_gerarDescSituacao(){
     return doc.output("arraybuffer");
   }
 
+  // monta o Anexo 09 completo: [capa opcional] + páginas do modelo (exceto 2 últimas) + 2 páginas de dados
+  async function REL_montar(incluirCapa){
+    const out = await PDFLib.PDFDocument.create();
+    if(incluirCapa) await desenharCapa9(out);
+
+    if(modeloBytes){
+      // mantém todas as páginas do modelo, exceto as 2 últimas (que serão substituídas)
+      const modelo = await PDFLib.PDFDocument.load(modeloBytes, {ignoreEncryption:true});
+      const total = modelo.getPageCount();
+      const manter = Math.max(0, total-2);
+      if(manter>0){
+        const idxs = Array.from({length:manter}, (_,k)=>k);
+        const pgs = await out.copyPages(modelo, idxs);
+        pgs.forEach(p=>out.addPage(p));
+      }
+    }
+    // 2 páginas geradas (penúltima = amostra, última = simulação)
+    const finBytes = gerarPaginasFinais(true, true);
+    const fin = await PDFLib.PDFDocument.load(finBytes);
+    const pgs = await out.copyPages(fin, fin.getPageIndices());
+    pgs.forEach(p=>out.addPage(p));
+    return out;
+  }
+
   window.REL_gerar = async function(){
     const btn=document.getElementById("ger-9"); const aviso=document.getElementById("rel-aviso-9");
     btn.disabled=true; if(aviso){ aviso.textContent="Gerando o PDF do Anexo 09..."; aviso.style.color=""; }
     try{
-      const out = await PDFLib.PDFDocument.create();
-      await desenharCapa9(out);
-      // 2 páginas com os dados (amostra + simulação)
-      const finBytes = gerarPaginasFinais(true, true);
-      const fin = await PDFLib.PDFDocument.load(finBytes);
-      const pgs = await out.copyPages(fin, fin.getPageIndices());
-      pgs.forEach(p=>out.addPage(p));
+      const incluirCapa = el("capa-9") ? el("capa-9").checked : true;
+      const out = await REL_montar(incluirCapa);
       const bytes = await out.save();
       const blob=new Blob([bytes],{type:"application/pdf"});
       const url=URL.createObjectURL(blob);
       const a=document.createElement("a"); a.href=url; a.download="Anexo_9_Relatorio_Estatistico.pdf"; a.click();
       setTimeout(()=>URL.revokeObjectURL(url),4000);
-      if(aviso){ aviso.textContent="✓ PDF do Anexo 09 gerado ("+out.getPageCount()+" páginas)."; aviso.style.color="#159a3c"; }
+      const nota = modeloBytes ? " (modelo completo, 2 últimas páginas substituídas)" : " (capa + 2 páginas de dados)";
+      if(aviso){ aviso.textContent="✓ PDF do Anexo 09 gerado com "+out.getPageCount()+" páginas"+nota+"."; aviso.style.color="#159a3c"; }
     }catch(err){
       console.error(err);
       if(aviso){ aviso.textContent="Erro ao gerar: "+err.message; aviso.style.color="#c0392b"; }
@@ -5447,12 +5632,7 @@ function AV_gerarDescSituacao(){
   // versão que retorna bytes (para a unificação). semCapa=true omite a capa do Anexo 9.
   window.REL_buildBytes = async function(semCapa){
     try{
-      const out = await PDFLib.PDFDocument.create();
-      if(!semCapa) await desenharCapa9(out);
-      const finBytes = gerarPaginasFinais(true, true);
-      const fin = await PDFLib.PDFDocument.load(finBytes);
-      const pgs = await out.copyPages(fin, fin.getPageIndices());
-      pgs.forEach(p=>out.addPage(p));
+      const out = await REL_montar(!semCapa);
       return await out.save();
     }catch(e){ console.error("REL_buildBytes:", e); return null; }
   };
@@ -5466,13 +5646,15 @@ function AV_gerarDescSituacao(){
       if(window.__LOGO_INFRA__){ const infra=await pdfDoc.embedJpg(window.__LOGO_INFRA__); const h=34,w=infra.width*(h/infra.height); page.drawImage(infra,{x:56,y:A4H-60,width:w,height:h}); }
       if(window.__LOGO_ENPROL__){ const en=await pdfDoc.embedJpg(window.__LOGO_ENPROL__); const h=34,w=en.width*(h/en.height); page.drawImage(en,{x:A4W-56-w,y:A4H-60,width:w,height:h}); }
     }catch(e){}
-    const titulo="ANEXO 9: RELATÓRIO ESTATÍSTICO";
+    const inpTit=document.getElementById("titulo-9");
+    const titulo=(inpTit && inpTit.value.trim()) ? inpTit.value.trim().toUpperCase() : "ANEXO 9: RELATÓRIO ESTATÍSTICO";
     const w=fontB.widthOfTextAtSize(titulo,15);
     page.drawText(titulo,{x:(A4W-w)/2,y:A4H/2,size:15,font:fontB,color:rgb(0.14,0.20,0.28)});
     page.drawLine({start:{x:56,y:70},end:{x:A4W-56,y:70},thickness:1,color:rgb(0.12,0.44,0.75)});
   }
 
   document.addEventListener("DOMContentLoaded", function(){
+    REL_bindUpload();
     window.REL_atualizarTela();
   });
 })();
