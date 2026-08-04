@@ -1709,7 +1709,7 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
       <span>N.A. =</span>
       <input type="text" id="av_na_ccu" readonly class="bloqueado" title="CCU obtido acima — bloqueado" placeholder="Preencher este campo">
       <span>×</span>
-      <select id="av_na_escala" title="Situação / Circulação">
+      <select id="av_na_escala" title="Situação / Circulação — definida na Tabela de Nota Agronômica (item Justificativas)" disabled class="bloqueado">
         <option value="1.00">Ótima (100)</option>
         <option value="0.95">Muito Boa (95)</option>
         <option value="0.90" selected>Boa (90)</option>
@@ -3843,12 +3843,16 @@ window.FOTO_rodapeHTML=rodapeHTML;
       tr.querySelector(".na-ccu").textContent = temArea? fmtBR(prod,4) : "0";
       tr.querySelector(".area-edit").classList.toggle("na-area-preenchida", temArea);
     });
-    // situação selecionada
+    // N.A. por situação = CCU × escala da situação (mostra a diferença entre situações)
     tbody.querySelectorAll(".sit-cell").forEach(td=>{
+      const escVal = parseFloat(td.dataset.esc);
       const sel = td.dataset.esc===escAtual;
       td.classList.toggle("sel", sel);
       const naTd=tbody.querySelector('[data-na-cell="'+td.dataset.esc+'"]');
-      if(naTd) naTd.innerHTML = sel ? '<span class="sit-na">'+naResult+'</span>' : "";
+      if(naTd){
+        const naSit = (isFinite(ccu) && isFinite(escVal)) ? Math.round(ccu*escVal*10000)/10000 : 0;
+        naTd.innerHTML = '<span class="sit-na'+(sel?' sel':'')+'">'+fmtBR(naSit,4)+'</span>';
+      }
     });
     // total
     const tArea=tbody.querySelector(".na-total-area");
@@ -5158,23 +5162,32 @@ function AV_gerarDescSituacao(){
   window.AV_parseAmostra = function(texto){
     const t = texto.replace(/\r/g," ").replace(/\u00a0/g," ");
     const d = {};
-    // captura genérica: rótulo seguido de "= valor"
+    // captura genérica: rótulo seguido de "= valor" (com % opcional antes do =)
     function val(rotulo){
       const re = new RegExp(rotulo+"\\s*(?:\\(([\\d.,]+)\\s*%\\))?\\s*=\\s*([\\d.,]+)","i");
       const m = t.match(re);
       if(!m) return null;
       return {pct:m[1]||null, valor:m[2]};
     }
-    // Dados de projeção
+    // ---- Cabeçalho / dados de projeção (formatos ha e m²) ----
+    const modelo=t.match(/Modelo:\s*([^\n]+?)(?:\s{2,}|Data)/i); if(modelo) d.modelo=modelo[1].trim();
+    const dataRef=t.match(/Data de Refer[êe]ncia:\s*([^\n]+?)(?:\s{2,}|Informa|Dados)/i); if(dataRef) d.data_ref=dataRef[1].trim();
+
     const area=val("Área\\s*\\(ha\\)"); if(area) d.area=area.valor;
+    const areaT=val("Area\\s*Terreno\\s*\\(m[²2]\\)"); if(areaT) d.area_terreno=areaT.valor;
     const na=val("Nota agron[ôo]mica"); if(na) d.na=na.valor;
     const zona=val("Zona"); if(zona) d.zona=zona.valor;
+    const zonea=val("Zoneamento"); if(zonea) d.zoneamento=zonea.valor;
+    const dist=val("Dist\\s*ao\\s*Rio"); if(dist) d.dist_rio=dist.valor;
+    const infra=val("Infraestrutura"); if(infra) d.infraestrutura=infra.valor;
+    const via=val("Tipo\\s*de\\s*via"); if(via) d.tipo_via=via.valor;
+    const ender=t.match(/Endere[çc]o\s*=\s*([^\n]+?)(?:\s{2,}|Complemento|Bairro|$)/i); if(ender) d.endereco=ender[1].trim();
 
     // Valor Unitário: procurar bloco após "Valor Unitário"
-    function bloco(nomeBloco, campos){
+    function bloco(nomeBloco, campos, janela){
       const idx=t.search(new RegExp(nomeBloco,"i"));
       if(idx<0) return {};
-      const trecho=t.slice(idx, idx+400);
+      const trecho=t.slice(idx, idx+(janela||400));
       const out={};
       campos.forEach(c=>{
         const re=new RegExp(c.rot+"\\s*(?:\\(([\\d.,]+)\\s*%\\))?\\s*=\\s*([\\d.,]+)","i");
@@ -5189,17 +5202,23 @@ function AV_gerarDescSituacao(){
     if(vu.max){ d.vu_max=vu.max.valor; d.vu_max_pct=vu.max.pct; }
 
     const vt=bloco("Valor Total",[{rot:"M[íi]nimo",key:"min"},{rot:"M[ée]dio",key:"med"},{rot:"M[áa]ximo",key:"max"}]);
-    if(vt.min) d.vt_min=vt.min.valor;
-    if(vt.med) d.vt_med=vt.med.valor;
-    if(vt.max) d.vt_max=vt.max.valor;
+    if(vt.min){ d.vt_min=vt.min.valor; d.vt_min_pct=vt.min.pct; }
+    if(vt.med){ d.vt_med=vt.med.valor; }
+    if(vt.max){ d.vt_max=vt.max.valor; d.vt_max_pct=vt.max.pct; }
 
     const ip=bloco("Intervalo\\s*Predi[çc][ãa]o",[{rot:"M[íi]nimo",key:"min"},{rot:"M[áa]ximo",key:"max"}]);
-    if(ip.min) d.ip_min=ip.min.valor;
-    if(ip.max) d.ip_max=ip.max.valor;
+    if(ip.min){ d.ip_min=ip.min.valor; d.ip_min_pct=ip.min.pct; }
+    if(ip.max){ d.ip_max=ip.max.valor; d.ip_max_pct=ip.max.pct; }
 
     const ca=bloco("Campo de Arb[íi]trio",[{rot:"RL\\s*M[íi]nimo",key:"min"},{rot:"RL\\s*M[áa]ximo",key:"max"}]);
     if(ca.min) d.ca_min=ca.min.valor;
     if(ca.max) d.ca_max=ca.max.valor;
+
+    // Fallbacks: se não houver Valor Unitário, usa Valor Total como referência de intervalo;
+    // e as % de amplitude podem vir do Valor Total ou do Intervalo de Predição.
+    if(!d.vu_min && d.vt_min){ d.vu_min=d.vt_min; d.vu_min_pct=d.vt_min_pct; }
+    if(!d.vu_med && d.vt_med){ d.vu_med=d.vt_med; }
+    if(!d.vu_max && d.vt_max){ d.vu_max=d.vt_max; d.vu_max_pct=d.vt_max_pct; }
 
     return d;
   };
@@ -5210,9 +5229,11 @@ function AV_gerarDescSituacao(){
     if(d.vu_med) txt("ia_ic_med", "R$ "+d.vu_med);
     if(d.vu_max) txt("ia_ic_max", "R$ "+d.vu_max);
 
-    // Amplitude = soma das % mínima e máxima do Valor Unitário + Grau (CCU)
-    if(d.vu_min_pct && d.vu_max_pct){
-      const soma = pctnum(d.vu_min_pct)+pctnum(d.vu_max_pct);
+    // Amplitude = soma das % mínima e máxima (do Valor Unitário; se ausente, do Valor Total; senão do Intervalo de Predição) + Grau
+    let pctMin = d.vu_min_pct || d.vt_min_pct || d.ip_min_pct;
+    let pctMax = d.vu_max_pct || d.vt_max_pct || d.ip_max_pct;
+    if(pctMin && pctMax){
+      const soma = pctnum(pctMin)+pctnum(pctMax);
       const grau = AV_grauFundamentacao(soma);
       txt("ia_amplitude", soma.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+"% "+grau);
     }
@@ -5496,13 +5517,22 @@ function AV_gerarDescSituacao(){
         }
         y+=16;
       });
-      // equação
-      doc.setDrawColor(180,195,210); doc.rect(cA,y,larg*0.62,44);
-      doc.setFillColor(240,245,250); doc.rect(cA,y,q,44,"F"); doc.rect(cA,y,q,44);
-      doc.setFont("helvetica","bold"); doc.text("Equação", cA+q/2, y+25, {align:"center"});
-      doc.setFont("helvetica","normal"); doc.setFontSize(6.8);
-      const eq="Unitário (R$/ha) = +170930,8028 × e^(+0,7420810025 / Área) × e^(−0,7754092498 / N.A.²) × e^(+0,3240766412 × Zona)";
-      doc.text(doc.splitTextToSize(eq, larg*0.62-q-8), cA+q+5, y+14);
+      // equação (texto ajustado para caber dentro do quadro)
+      const eqBoxH=44;
+      doc.setDrawColor(180,195,210); doc.rect(cA,y,larg*0.62,eqBoxH);
+      doc.setFillColor(240,245,250); doc.rect(cA,y,q,eqBoxH,"F"); doc.rect(cA,y,q,eqBoxH);
+      doc.setFont("helvetica","bold"); doc.setFontSize(8); doc.text("Equação", cA+q/2, y+eqBoxH/2+2, {align:"center"});
+      doc.setFont("helvetica","normal");
+      // usa caracteres compatíveis com a fonte (evita * unicode que causa sobreposição)
+      const eq="Unitario (R$/ha) = +170930,8028 x e^(+0,7420810025 / Area) x e^(-0,7754092498 / N.A.^2) x e^(+0,3240766412 x Zona)";
+      const eqLarg=larg*0.62-q-10;
+      // reduz a fonte até as linhas caberem na altura do quadro
+      let eqFs=7;
+      let eqLinhas=doc.splitTextToSize(eq, eqLarg);
+      while(eqFs>5 && eqLinhas.length*(eqFs+1.5) > eqBoxH-8){ eqFs-=0.5; doc.setFontSize(eqFs); eqLinhas=doc.splitTextToSize(eq, eqLarg); }
+      doc.setFontSize(eqFs);
+      let eqY = y + (eqBoxH - eqLinhas.length*(eqFs+1.5))/2 + eqFs;
+      eqLinhas.forEach(ln=>{ doc.text(ln, cA+q+5, eqY); eqY+=eqFs+1.5; });
       // moldura do mapa (imagem se houver)
       const mapaH=(y+44)-mapaY;
       doc.setDrawColor(180,195,210); doc.rect(meio,mapaY,larg*0.38,mapaH);
@@ -5589,13 +5619,14 @@ function AV_gerarDescSituacao(){
     return doc.output("arraybuffer");
   }
 
-  // monta o Anexo 09 completo: [capa opcional] + páginas do modelo (exceto 2 últimas) + 2 páginas de dados
+  // monta o Anexo 09 completo: com modelo → mantém todas as páginas do modelo trocando só as 2 últimas;
+  // sem modelo → capa opcional + 2 páginas de dados
   async function REL_montar(incluirCapa){
     const out = await PDFLib.PDFDocument.create();
-    if(incluirCapa) await desenharCapa9(out);
 
     if(modeloBytes){
-      // mantém todas as páginas do modelo, exceto as 2 últimas (que serão substituídas)
+      // COM modelo: o arquivo original já contém a capa e todas as páginas.
+      // Mantém todas, EXCETO as 2 últimas (penúltima e última), que serão substituídas.
       const modelo = await PDFLib.PDFDocument.load(modeloBytes, {ignoreEncryption:true});
       const total = modelo.getPageCount();
       const manter = Math.max(0, total-2);
@@ -5604,8 +5635,16 @@ function AV_gerarDescSituacao(){
         const pgs = await out.copyPages(modelo, idxs);
         pgs.forEach(p=>out.addPage(p));
       }
+      // 2 páginas geradas (penúltima = amostra, última = simulação)
+      const finBytes = gerarPaginasFinais(true, true);
+      const fin = await PDFLib.PDFDocument.load(finBytes);
+      const pgs = await out.copyPages(fin, fin.getPageIndices());
+      pgs.forEach(p=>out.addPage(p));
+      return out;
     }
-    // 2 páginas geradas (penúltima = amostra, última = simulação)
+
+    // SEM modelo: capa opcional + 2 páginas de dados
+    if(incluirCapa) await desenharCapa9(out);
     const finBytes = gerarPaginasFinais(true, true);
     const fin = await PDFLib.PDFDocument.load(finBytes);
     const pgs = await out.copyPages(fin, fin.getPageIndices());
