@@ -1761,8 +1761,8 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
 
     <div class="import-amostra">
       <button type="button" class="vbtn vbtn-primary" onclick="document.getElementById('av_amostra_file').click()">↧ Importar dados da amostra</button>
-      <input type="file" id="av_amostra_file" accept=".txt,.csv" style="display:none" onchange="AV_importarAmostra(this)" placeholder="Preencher este campo">
-      <span class="import-hint" id="av_amostra_status">Selecione o arquivo de texto do relatório estatístico (Nível de Confiança 80%).</span>
+      <input type="file" id="av_amostra_file" accept=".rtf,.docx,.txt,.csv" style="display:none" onchange="AV_importarAmostra(this)">
+      <span class="import-hint" id="av_amostra_status">Selecione o arquivo do relatório da amostra (.rtf, .docx, .txt) — Nível de Confiança 80%.</span>
     </div>
 
     <div class="imovel-avaliando">
@@ -5146,11 +5146,39 @@ function AV_gerarDescSituacao(){
           .catch(function(err){ if(status){ status.textContent="Erro ao ler .docx: "+err.message; status.style.color="#c0392b"; } });
       };
       rd.readAsArrayBuffer(file);
+    } else if(nome.endsWith(".rtf")){
+      const rd=new FileReader();
+      rd.onload=function(e){ processar(AV_rtfParaTexto(e.target.result)); };
+      rd.readAsText(file, "utf-8");
     } else {
       const rd=new FileReader();
       rd.onload=function(e){ processar(e.target.result); };
       rd.readAsText(file, "utf-8");
     }
+  };
+
+  // converte RTF em texto simples (remove marcação, resolve \uNNNN e \'hh, quebra parágrafos)
+  window.AV_rtfParaTexto = function(rtf){
+    if(!rtf) return "";
+    let s = String(rtf);
+    // remove blocos de fonte/cores/estilos que não têm texto útil
+    s = s.replace(/\{\\\*[^{}]*\}/g, " ");
+    // \par, \line, \sect -> quebra de linha
+    s = s.replace(/\\par[d]?\b/g, "\n").replace(/\\line\b/g, "\n").replace(/\\sect\b/g, "\n");
+    // tabs
+    s = s.replace(/\\tab\b/g, "\t");
+    // \'hh -> caractere Latin-1
+    s = s.replace(/\\'([0-9a-fA-F]{2})/g, (m,h)=> String.fromCharCode(parseInt(h,16)));
+    // \uNNNN? -> caractere unicode (RTF usa signed 16-bit; ? é o char de fallback)
+    s = s.replace(/\\u(-?\d+)\??/g, (m,n)=>{ let code=parseInt(n,10); if(code<0) code+=65536; return String.fromCharCode(code); });
+    // remove outras control words (\word ou \word123) e control symbols
+    s = s.replace(/\\[a-zA-Z]+-?\d* ?/g, " ");
+    s = s.replace(/\\[^a-zA-Z]/g, " ");
+    // remove chaves restantes
+    s = s.replace(/[{}]/g, " ");
+    // normaliza espaços (mantém quebras de linha)
+    s = s.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").replace(/[ \t]{2,}/g, " ");
+    return s.trim();
   };
 
   // converte "18.832,80" -> número; e formata de volta em pt-BR
