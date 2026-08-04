@@ -886,9 +886,71 @@
   #panel-avaliacao input::placeholder, #panel-avaliacao textarea::placeholder{
     font-style:italic; color:#9aa7b5; opacity:1;
   }
+
+  /* ===== Tela de Login (tema claro) ===== */
+  #loginGate{
+    position:fixed; inset:0; z-index:100000;
+    display:flex; align-items:center; justify-content:center;
+    background:#eef2f6;
+    background-image:radial-gradient(circle at 50% 30%, #ffffff 0%, #e6ebf1 60%, #dde3ea 100%);
+    padding:20px;
+  }
+  #loginGate .login-card{
+    width:100%; max-width:380px;
+    background:#ffffff;
+    border:1px solid #e2e8ef;
+    border-radius:16px;
+    box-shadow:0 20px 60px rgba(20,40,70,.15), 0 2px 8px rgba(20,40,70,.06);
+    padding:34px 34px 26px;
+    text-align:center;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  }
+  #loginGate .login-logo{ height:46px; width:auto; margin:4px auto 22px; display:block; object-fit:contain; }
+  #loginGate .login-titulo{ font-size:16px; font-weight:800; letter-spacing:.5px; color:#1b2a3a; }
+  #loginGate .login-sub{ font-size:11px; font-weight:600; letter-spacing:2px; color:#8a97a6; margin-top:4px; }
+  #loginGate .login-divisor{ height:3px; width:100%; margin:20px 0 22px; border-radius:2px;
+    background:linear-gradient(90deg,#1b8a4b,#28a745,#1b8a4b); }
+  #loginGate .login-label{ display:block; text-align:left; font-size:11px; font-weight:700; letter-spacing:1px; color:#6b7887; margin:14px 0 6px; }
+  #loginGate .login-input{
+    width:100%; box-sizing:border-box; padding:12px 14px;
+    border:1.5px solid #d6dee7; border-radius:9px;
+    background:#f2f6fa; color:#1b2a3a; font-size:14px;
+    transition:border-color .15s, box-shadow .15s, background .15s;
+  }
+  #loginGate .login-input:focus{ outline:none; border-color:#28a745; background:#fff; box-shadow:0 0 0 3px rgba(40,167,69,.15); }
+  #loginGate .login-btn{
+    width:100%; margin-top:24px; padding:13px 14px;
+    border:none; border-radius:9px; cursor:pointer;
+    background:linear-gradient(180deg,#2fb457,#249b47);
+    color:#fff; font-size:14px; font-weight:800; letter-spacing:1px;
+    transition:filter .15s, transform .05s;
+  }
+  #loginGate .login-btn:hover{ filter:brightness(1.05); }
+  #loginGate .login-btn:active{ transform:translateY(1px); }
+  #loginGate .login-erro{ min-height:18px; margin-top:12px; font-size:12.5px; color:#c0392b; font-weight:600; }
+  #loginGate .login-rodape{ margin-top:20px; padding-top:18px; border-top:1px solid #eef2f6; font-size:10.5px; letter-spacing:1.5px; color:#aab4c0; }
+  body.logado #loginGate{ display:none; }
 </style>
 </head>
 <body>
+
+<!-- ===== TELA DE LOGIN (ACESSO RESTRITO) ===== -->
+<div id="loginGate">
+  <div class="login-card">
+    <img class="login-logo" src="data:image/jpeg;base64,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" alt="ENPROL">
+    <div class="login-titulo">ACOMPANHAMENTO DE PROJETOS</div>
+    <div class="login-sub">ACESSO RESTRITO</div>
+    <div class="login-divisor"></div>
+    <label class="login-label" for="login_user">USUÁRIO</label>
+    <input type="text" id="login_user" class="login-input" autocomplete="username" placeholder="Usuário">
+    <label class="login-label" for="login_pass">SENHA</label>
+    <input type="password" id="login_pass" class="login-input" autocomplete="current-password" placeholder="Senha">
+    <button type="button" class="login-btn" id="login_btn">ENTRAR</button>
+    <div class="login-erro" id="login_erro"></div>
+    <div class="login-rodape">ENPROL ENGENHARIA E PROJETOS · CONFIDENCIAL</div>
+  </div>
+</div>
+
 
 <div class="credito-dev">desenvolvido por Fernando Serafim</div>
 
@@ -5779,6 +5841,47 @@ function AV_gerarDescSituacao(){
     REL_bindUpload();
     window.REL_atualizarTela();
   });
+})();
+</script>
+
+<script>
+/* ===== Login / Acesso Restrito ===== */
+(function(){
+  const USUARIO = "Enprol";
+  const SENHA   = "avaliacao2026";
+
+  function tentarLogin(){
+    const u = document.getElementById("login_user");
+    const p = document.getElementById("login_pass");
+    const erro = document.getElementById("login_erro");
+    const user = (u ? u.value : "").trim();
+    const pass = (p ? p.value : "");
+    // comparação de usuário sem diferenciar maiúsculas/minúsculas; senha exata
+    if(user.toLowerCase() === USUARIO.toLowerCase() && pass === SENHA){
+      document.body.classList.add("logado");
+      try{ sessionStorage.setItem("enprol_logado","1"); }catch(e){}
+      if(erro) erro.textContent = "";
+    } else {
+      if(erro) erro.textContent = "Usuário ou senha inválidos.";
+      if(p){ p.value = ""; p.focus(); }
+    }
+  }
+
+  function init(){
+    // se já autenticado nesta sessão, libera direto
+    try{ if(sessionStorage.getItem("enprol_logado")==="1"){ document.body.classList.add("logado"); return; } }catch(e){}
+    const btn = document.getElementById("login_btn");
+    if(btn) btn.addEventListener("click", tentarLogin);
+    // Enter em qualquer campo dispara o login
+    ["login_user","login_pass"].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); tentarLogin(); } });
+    });
+    const u=document.getElementById("login_user"); if(u) u.focus();
+  }
+
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
 })();
 </script>
 </body>
