@@ -288,7 +288,7 @@
   }#panel-ccu tbody tr:nth-child(even) .cel{background:var(--zebra);}#panel-ccu .cel:hover{outline:2px solid rgba(31,111,192,.25); outline-offset:-2px;}#panel-ccu .cel.marcado{
     background:var(--marca) !important;
     box-shadow:inset 0 0 0 2px var(--marca-borda);
-  }#panel-ccu .cinza{background:#eef1f4 !important;}#panel-ccu .legenda{
+  } #panel-ccu .cel.col-ref{background:#fffbe6;} #panel-ccu .cel.col-ref.cinza{background:#fdf7d9;} #panel-ccu .cel.marcado.col-ref{background:var(--marca) !important;} #panel-ccu .colhead .th-col.col-ref{background:#fff4bf; color:var(--azul-esc);}#panel-ccu .cinza{background:#eef1f4 !important;}#panel-ccu .legenda{
     max-width:1180px;
     margin:14px auto 0;
     font-size:12.5px;
@@ -1633,9 +1633,9 @@
   </div>
 
   <!-- 01 RAZÃO -->
-  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>01 — Razão do Interesse</span><span class="acc-chevron">▾</span></h2>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>01 — Razão do Interessado</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
-    <div class="vfield grow"><label>Razão do interesse</label><input type="text" id="av_razao" placeholder="Razão do interesse"></div>
+    <div class="vfield grow"><label>Razão do interessado</label><input type="text" id="av_razao" placeholder="Razão do interessado"></div>
   </div>
 
   <!-- 02 LOCALIZAÇÃO -->
@@ -2494,10 +2494,26 @@ function marcar(cel){
   document.querySelectorAll(`#tabelaCCU tr[data-fator="${fator}"] .cel.marcado`)
     .forEach(c => c.classList.remove("marcado"));
   if(!jaMarcado) cel.classList.add("marcado");
+
+  // Se a marcação foi no primeiro bloco (Fator limitante), realça a COLUNA inteira
+  // em amarelo bem claro, para servir de referência nas linhas de seleção seguintes.
+  if(fator === "0"){
+    const col = cel.getAttribute("data-col");
+    // limpa realce de coluna anterior
+    document.querySelectorAll("#tabelaCCU .cel.col-ref, #tabelaCCU .th-col.col-ref")
+      .forEach(c => c.classList.remove("col-ref"));
+    if(!jaMarcado){
+      document.querySelectorAll(`#tabelaCCU .cel[data-col="${col}"]`)
+        .forEach(c => c.classList.add("col-ref"));
+      // também destaca o cabeçalho (número romano) da classe escolhida
+      const heads = document.querySelectorAll("#tabelaCCU .colhead .th-col");
+      if(heads[+col-1]) heads[+col-1].classList.add("col-ref");
+    }
+  }
 }
 
 function limpar(){
-  document.querySelectorAll("#tabelaCCU .cel.marcado, #tabelaCCU .th-col.marcado").forEach(c => c.classList.remove("marcado"));
+  document.querySelectorAll("#tabelaCCU .cel.marcado, #tabelaCCU .th-col.marcado, #tabelaCCU .cel.col-ref, #tabelaCCU .th-col.col-ref").forEach(c => c.classList.remove("marcado","col-ref"));
 }
 
 function marcarHead(th){
@@ -4527,8 +4543,8 @@ window.FOTO_rodapeHTML=rodapeHTML;
   // ---------- LAUDO 1-10 ----------
   function desenharLaudo1a10(doc,ctx){
     novaPagina(doc,ctx);
-    secBar(doc,ctx,"01 — RAZÃO DO INTERESSE");
-    campo(doc,ctx,"Razão do interesse", val("av_razao"));
+    secBar(doc,ctx,"01 — RAZÃO DO INTERESSADO");
+    campo(doc,ctx,"Razão do interessado", val("av_razao"));
     secBar(doc,ctx,"02 — LOCALIZAÇÃO");
     campo2(doc,ctx,"2.1 Localidade", val("av_localidade"), "2.2 Município", val("av_municipio"));
     campo(doc,ctx,"2.3 UF", val("av_uf"));
