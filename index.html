@@ -4492,6 +4492,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
     subLbl(doc,ctx,"1.6 Observações");
     paragrafo(doc,ctx, val("fv_obs"));
 
+    novaPagina(doc,ctx);
     secBar(doc,ctx,"02 — CARACTERIZAÇÃO DO IMÓVEL");
     subLbl(doc,ctx,"2.1 Econômicas");  paragrafo(doc,ctx,val("fv_economicas"));
     subLbl(doc,ctx,"2.2 Sociais");     paragrafo(doc,ctx,val("fv_sociais"));
@@ -4518,6 +4519,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
     campo(doc,ctx,"3.3.1 Faixa non aedificandi", val("fv_ben_r1"));
     if(val("fv_ben_comp4")) campo(doc,ctx,"3.4 Informações Complementares", val("fv_ben_comp4"));
 
+    novaPagina(doc,ctx);
     secBar(doc,ctx,"04 — INFORMAÇÕES COMPLEMENTARES");
     campo(doc,ctx,"4.1 Obras e Melhorias das Terras", val("fv_obras"));
     campo(doc,ctx,"4.2 Outras Atividades", val("fv_outras"));
@@ -4976,7 +4978,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
 
   // ---------- LAUDO 11 ----------
   function desenharLaudo11(doc,ctx){
-    ensure(doc,ctx,60); ctx.y+=6;
+    novaPagina(doc,ctx);
     secBar(doc,ctx,"11 — JUSTIFICATIVAS");
     subLbl(doc,ctx,"11.1 Fatores Limitantes");
     paragrafo(doc,ctx, val("av_fatores"));
