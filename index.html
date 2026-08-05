@@ -2458,7 +2458,7 @@ function construirTabela(){
       <tr class="colhead">
         <th class="th-fator">Fator limitante</th>
         <th class="th-caract">Característica</th>`;
-  romanos.forEach(r => html += `<th class="th-col" onclick="CCU_marcarHead(this)">${r}</th>`);
+  romanos.forEach((r,ci) => html += `<th class="th-col" data-col="${ci+1}" onclick="CCU_marcarHead(this)">${r}</th>`);
   html += `</tr></thead><tbody>`;
 
   fatores.forEach(([fator, linhas], fi) => {
@@ -2494,18 +2494,8 @@ function marcar(cel){
   document.querySelectorAll(`#tabelaCCU tr[data-fator="${fator}"] .cel.marcado`)
     .forEach(c => c.classList.remove("marcado"));
   if(!jaMarcado) cel.classList.add("marcado");
-
-  // Realça a COLUNA da classe escolhida em amarelo bem claro (referência visual),
-  // acompanhando a última classe clicada em qualquer linha de seleção.
-  const col = cel.getAttribute("data-col");
-  document.querySelectorAll("#tabelaCCU .cel.col-ref, #tabelaCCU .th-col.col-ref")
-    .forEach(c => c.classList.remove("col-ref"));
-  if(!jaMarcado){
-    document.querySelectorAll(`#tabelaCCU .cel[data-col="${col}"]`)
-      .forEach(c => c.classList.add("col-ref"));
-    const heads = document.querySelectorAll("#tabelaCCU .colhead .th-col");
-    if(heads[+col-1]) heads[+col-1].classList.add("col-ref");
-  }
+  // Obs.: o realce da COLUNA (amarelo claro) é controlado apenas pelo cabeçalho
+  // da classe (I–VIII) via marcarHead — preencher as linhas não altera a coluna.
 }
 
 function limpar(){
@@ -2513,10 +2503,19 @@ function limpar(){
 }
 
 function marcarHead(th){
-  const linha = th.parentElement;
   const jaMarcado = th.classList.contains("marcado");
-  linha.querySelectorAll(".th-col").forEach(c => c.classList.remove("marcado"));
-  if(!jaMarcado) th.classList.add("marcado");
+  const col = th.getAttribute("data-col");
+  // limpa marcação e realce de coluna anteriores (todos os cabeçalhos e células)
+  document.querySelectorAll("#tabelaCCU .th-col.marcado, #tabelaCCU .th-col.col-ref, #tabelaCCU .cel.col-ref")
+    .forEach(c => c.classList.remove("marcado","col-ref"));
+  if(!jaMarcado){
+    // marca o cabeçalho da classe e pinta a coluna inteira de amarelo claro
+    th.classList.add("marcado","col-ref");
+    if(col){
+      document.querySelectorAll(`#tabelaCCU .cel[data-col="${col}"]`)
+        .forEach(c => c.classList.add("col-ref"));
+    }
+  }
 }
 
 /* ---------- Preview da capa (mantido) ---------- */
@@ -4134,23 +4133,32 @@ window.FOTO_rodapeHTML=rodapeHTML;
     const drop  = document.getElementById(dropId);
     const prev  = document.getElementById(prevId);
     if(!input) return;
+    function ehImagem(file){
+      if(!file) return false;
+      if(file.type && file.type.startsWith("image/")) return true;
+      // fallback pela extensão (alguns navegadores não preenchem file.type)
+      return /\.(jpe?g|png|gif|webp|bmp|tif?f|heic|heif|svg)$/i.test(file.name||"");
+    }
     function set(file){
-      if(!file || !file.type.startsWith("image/")) return;
+      if(!ehImagem(file)){ if(prev){ prev.innerHTML='<span style="color:#c0392b;font-size:13px;">Arquivo não é uma imagem válida.</span>'; prev.classList.add("show"); } return; }
       const rd = new FileReader();
       rd.onload = e=>{
         imagens[slot] = e.target.result;
-        prev.innerHTML = '<img src="'+e.target.result+'"><br><button type="button" class="rm-img">Remover imagem</button>';
+        prev.innerHTML = '<img src="'+e.target.result+'" alt="prévia"><br><button type="button" class="rm-img">Remover imagem</button>';
         prev.classList.add("show");
         prev.querySelector(".rm-img").addEventListener("click", ()=>{
           imagens[slot]=null; prev.innerHTML=""; prev.classList.remove("show"); input.value="";
         });
       };
+      rd.onerror = ()=>{ if(prev){ prev.innerHTML='<span style="color:#c0392b;font-size:13px;">Não foi possível ler a imagem.</span>'; prev.classList.add("show"); } };
       rd.readAsDataURL(file);
     }
     input.addEventListener("change", e=> set(e.target.files[0]));
-    ["dragenter","dragover"].forEach(ev=> drop.addEventListener(ev, e=>{e.preventDefault(); drop.classList.add("over");}));
-    ["dragleave","drop"].forEach(ev=> drop.addEventListener(ev, e=>{e.preventDefault(); drop.classList.remove("over");}));
-    drop.addEventListener("drop", e=> set(e.dataTransfer.files[0]));
+    if(drop){
+      ["dragenter","dragover"].forEach(ev=> drop.addEventListener(ev, e=>{e.preventDefault(); drop.classList.add("over");}));
+      ["dragleave","drop"].forEach(ev=> drop.addEventListener(ev, e=>{e.preventDefault(); drop.classList.remove("over");}));
+      drop.addEventListener("drop", e=> set(e.dataTransfer.files[0]));
+    }
   }
   window.__AV_IMAGENS__ = imagens;
 
@@ -5382,11 +5390,11 @@ function AV_gerarDescSituacao(){
     const input=el("av_mapa_file"), drop=el("av_mapa_drop"), prev=el("av_mapa_prev");
     if(!input) return;
     function set(file){
-      if(!file || !file.type.startsWith("image/")) return;
+      if(!file || !(file.type && file.type.startsWith("image/")) && !/\.(jpe?g|png|gif|webp|bmp|tif?f|heic|heif|svg)$/i.test(file&&file.name||"")){ return; }
       const rd=new FileReader();
       rd.onload=e=>{
         imgs.mapa=e.target.result;
-        prev.innerHTML='<img src="'+e.target.result+'"><br><button type="button" class="rm-img">Remover imagem</button>';
+        prev.innerHTML='<img src="'+e.target.result+'" alt="prévia"><br><button type="button" class="rm-img">Remover imagem</button>';
         prev.classList.add("show");
         prev.querySelector(".rm-img").addEventListener("click",()=>{ imgs.mapa=null; prev.innerHTML=""; prev.classList.remove("show"); input.value=""; });
       };
@@ -5845,7 +5853,12 @@ function AV_gerarDescSituacao(){
       const mapaH=(y+44)-mapaY;
       doc.setDrawColor(180,195,210); doc.rect(meio,mapaY,larg*0.38,mapaH);
       if(window.__AV_IMAGENS__ && window.__AV_IMAGENS__.mapa){
-        try{ doc.addImage(window.__AV_IMAGENS__.mapa, "JPEG", meio+2, mapaY+2, larg*0.38-4, mapaH-4); }catch(e){}
+        try{
+          const mp = window.__AV_IMAGENS__.mapa;
+          let mfmt="JPEG"; const mm=/^data:image\/([a-z0-9+]+)/i.exec(mp);
+          if(mm){ const tt=mm[1].toLowerCase(); mfmt = tt.indexOf("png")>=0?"PNG": tt.indexOf("webp")>=0?"WEBP": tt.indexOf("gif")>=0?"GIF":"JPEG"; }
+          doc.addImage(mp, mfmt, meio+2, mapaY+2, larg*0.38-4, mapaH-4, undefined, "FAST");
+        }catch(e){ console.error("mapa PDF:", e); }
       }
       y+=44;
       // Valores Unitário / Hectare
