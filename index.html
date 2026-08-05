@@ -997,6 +997,55 @@
     /* crédito não sobrepõe conteúdo */
     .credito-dev{ display:none; }
   }
+
+  /* ===== Layout com Sidebar (Versão 1, sem ícones, todos anexos) ===== */
+  .app-shell{ display:flex; align-items:stretch; min-height:calc(100vh - 64px); }
+  .app-sidebar{
+    flex:0 0 250px; width:250px;
+    background:#0f2a44; color:#dce6f0;
+    padding:14px 0 30px;
+    position:sticky; top:64px; align-self:flex-start;
+    height:calc(100vh - 64px); overflow-y:auto;
+  }
+  .app-sidebar .sb-grp{
+    padding:16px 22px 7px; font-size:11px; letter-spacing:1.5px;
+    color:#6f89a6; text-transform:uppercase; font-weight:700;
+  }
+  .app-sidebar .sb-link{
+    display:block; width:calc(100% - 16px); margin:2px 8px; text-align:left;
+    padding:11px 16px; border:none; background:transparent; cursor:pointer;
+    color:#c3d3e4; font-size:14px; font-family:inherit; border-radius:8px;
+    transition:background .15s, color .15s;
+  }
+  .app-sidebar .sb-link:hover{ background:rgba(255,255,255,.07); color:#fff; }
+  .app-sidebar .sb-link.ativa{ background:#1F6FC0; color:#fff; font-weight:600; }
+  .app-main{ flex:1; min-width:0; }
+
+  /* Header vira topbar limpa (sem as abas de pasta) */
+  .app-header{ padding:0; }
+  .app-header .marca{
+    margin:0; padding:12px 28px; gap:12px;
+    display:flex; align-items:center;
+  }
+  .app-header .marca img{ height:26px; }
+  .app-header .btn-unir{ margin-left:auto; }
+  .unir-status{ padding:0 28px; }
+  .unir-status:empty{ display:none; }
+
+  /* ===== MOBILE: sidebar vira gaveta ===== */
+  @media(max-width:720px){
+    .app-shell{ display:block; min-height:0; }
+    .app-sidebar{
+      position:fixed; top:0; left:0; bottom:0; z-index:6000;
+      height:100vh; width:82%; max-width:300px;
+      transform:translateX(-100%); transition:transform .22s ease;
+      box-shadow:6px 0 24px rgba(10,20,35,.35); padding-top:18px;
+    }
+    .app-sidebar.aberto{ transform:translateX(0); }
+    /* fundo escuro quando aberto */
+    .app-sidebar.aberto::after{ content:""; }
+    .app-main{ width:100%; }
+  }
 </style>
 </head>
 <body>
@@ -1061,25 +1110,7 @@
       </div>
     </div>
   </div>
-  <nav class="tabs" id="tabs">
-    <button class="tab ativa" data-alvo="panel-vistoria" onclick="trocarAba(this)">Ficha de Vistoria</button>
-    <button class="tab" data-alvo="panel-avaliacao" onclick="trocarAba(this)">Avaliação</button>
-    <div class="dropdown" id="dropAnexos">
-      <button class="tab tab-drop" onclick="FIOL_toggleDrop(event)">Anexos <span class="caret">▾</span></button>
-      <div class="dropdown-menu" id="dropAnexosMenu">
-        <button class="drop-item" data-alvo="panel-ccu"   onclick="trocarAba(this)">Anexo 01 - Tabela CCU</button>
-        <button class="drop-item" data-alvo="panel-anexo" onclick="trocarAba(this)">Anexos 02 e 03 - Unificar</button>
-        <button class="drop-item" data-alvo="panel-foto"  onclick="trocarAba(this)">Anexo 04 - Relatório Fotográfico</button>
-        <button class="drop-item" data-alvo="panel-drl"   onclick="trocarAba(this)">Anexo 05 - DRL</button>
-        <button class="drop-item" data-alvo="panel-docs"  onclick="trocarAba(this)">Anexo 06 - Documentos</button>
-        <button class="drop-item" data-alvo="panel-anx7"  onclick="trocarAba(this)">Anexo 07 - Pesquisa de Mercado</button>
-        <button class="drop-item" data-alvo="panel-anx8"  onclick="trocarAba(this)">Anexo 08 - Mapa e Fichas da Amostra</button>
-        <button class="drop-item" data-alvo="panel-relest" onclick="trocarAba(this)">Anexo 09 - Relatório Estatístico</button>
-        <button class="drop-item" data-alvo="panel-anx10" onclick="trocarAba(this)">Anexo 10 - Fundamentação e Precisão</button>
-        <button class="drop-item" data-alvo="panel-anx11" onclick="trocarAba(this)">Anexo 11 - ART</button>
-      </div>
-    </div>
-  </nav>
+  <!-- nav movida para o sidebar -->
 </header>
 
 <!-- Botão flutuante (mobile) para unificar -->
@@ -1088,6 +1119,24 @@
   <span class="txt">Unificar todo o material</span>
 </button>
 
+<div class="app-shell">
+<aside class="app-sidebar" id="appSidebar">
+  <div class="sb-grp">Documentos</div>
+    <button class="sb-link ativa" data-alvo="panel-vistoria" onclick="trocarAba(this)">Ficha de Vistoria</button>
+    <button class="sb-link" data-alvo="panel-avaliacao" onclick="trocarAba(this)">Avaliação</button>
+  <div class="sb-grp">Anexos</div>
+    <button class="sb-link" data-alvo="panel-ccu" onclick="trocarAba(this)">Anexo 01 - Tabela CCU</button>
+    <button class="sb-link" data-alvo="panel-anexo" onclick="trocarAba(this)">Anexos 02 e 03 - Unificar</button>
+    <button class="sb-link" data-alvo="panel-foto" onclick="trocarAba(this)">Anexo 04 - Relatório Fotográfico</button>
+    <button class="sb-link" data-alvo="panel-drl" onclick="trocarAba(this)">Anexo 05 - DRL</button>
+    <button class="sb-link" data-alvo="panel-docs" onclick="trocarAba(this)">Anexo 06 - Documentos</button>
+    <button class="sb-link" data-alvo="panel-anx7" onclick="trocarAba(this)">Anexo 07 - Pesquisa de Mercado</button>
+    <button class="sb-link" data-alvo="panel-anx8" onclick="trocarAba(this)">Anexo 08 - Mapa e Fichas da Amostra</button>
+    <button class="sb-link" data-alvo="panel-relest" onclick="trocarAba(this)">Anexo 09 - Relatório Estatístico</button>
+    <button class="sb-link" data-alvo="panel-anx10" onclick="trocarAba(this)">Anexo 10 - Fundamentação e Precisão</button>
+    <button class="sb-link" data-alvo="panel-anx11" onclick="trocarAba(this)">Anexo 11 - ART</button>
+</aside>
+<div class="app-main">
 <main>
   <section class="tab-panel" id="panel-ccu">
 <div class="toolbar">
@@ -2172,32 +2221,33 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
 </div>
   </section>
 </main>
+</div><!-- .app-main -->
+</div><!-- .app-shell -->
 
 
 
 <script>
 /* ---- Navegação por abas ---- */
 function trocarAba(btn){
-  document.querySelectorAll('.tab, .drop-item').forEach(t=>t.classList.remove('ativa'));
+  document.querySelectorAll('.tab, .drop-item, .sb-link').forEach(t=>t.classList.remove('ativa'));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('ativa'));
   btn.classList.add('ativa');
   document.getElementById(btn.dataset.alvo).classList.add('ativa');
-  // se for item do dropdown, destacar a aba-mãe e fechar o menu
+  // fecha o sidebar no mobile após escolher
+  const sb=document.getElementById('appSidebar');
+  if(sb) sb.classList.remove('aberto');
+  // compat: se ainda existir o dropdown antigo, fecha
   const drop=document.getElementById('dropAnexos');
-  if(drop){
-    const dentro=drop.contains(btn);
-    const tabDrop=drop.querySelector('.tab-drop');
-    if(dentro){ tabDrop.classList.add('ativa'); }
-    drop.classList.remove('aberto');
-  }
+  if(drop) drop.classList.remove('aberto');
 }
 function FIOL_toggleDrop(ev){
   ev.stopPropagation();
   document.getElementById('dropAnexos').classList.toggle('aberto');
 }
-// hambúrguer (mobile) abre/fecha o menu de anexos
+// hambúrguer (mobile) abre/fecha o sidebar
 function MOB_toggleMenu(){
-  document.getElementById('dropAnexos').classList.toggle('aberto');
+  const sb=document.getElementById('appSidebar');
+  if(sb) sb.classList.toggle('aberto');
 }
 document.addEventListener('click', function(e){
   const drop=document.getElementById('dropAnexos');
