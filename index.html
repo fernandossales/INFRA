@@ -2495,20 +2495,16 @@ function marcar(cel){
     .forEach(c => c.classList.remove("marcado"));
   if(!jaMarcado) cel.classList.add("marcado");
 
-  // Se a marcação foi no primeiro bloco (Fator limitante), realça a COLUNA inteira
-  // em amarelo bem claro, para servir de referência nas linhas de seleção seguintes.
-  if(fator === "0"){
-    const col = cel.getAttribute("data-col");
-    // limpa realce de coluna anterior
-    document.querySelectorAll("#tabelaCCU .cel.col-ref, #tabelaCCU .th-col.col-ref")
-      .forEach(c => c.classList.remove("col-ref"));
-    if(!jaMarcado){
-      document.querySelectorAll(`#tabelaCCU .cel[data-col="${col}"]`)
-        .forEach(c => c.classList.add("col-ref"));
-      // também destaca o cabeçalho (número romano) da classe escolhida
-      const heads = document.querySelectorAll("#tabelaCCU .colhead .th-col");
-      if(heads[+col-1]) heads[+col-1].classList.add("col-ref");
-    }
+  // Realça a COLUNA da classe escolhida em amarelo bem claro (referência visual),
+  // acompanhando a última classe clicada em qualquer linha de seleção.
+  const col = cel.getAttribute("data-col");
+  document.querySelectorAll("#tabelaCCU .cel.col-ref, #tabelaCCU .th-col.col-ref")
+    .forEach(c => c.classList.remove("col-ref"));
+  if(!jaMarcado){
+    document.querySelectorAll(`#tabelaCCU .cel[data-col="${col}"]`)
+      .forEach(c => c.classList.add("col-ref"));
+    const heads = document.querySelectorAll("#tabelaCCU .colhead .th-col");
+    if(heads[+col-1]) heads[+col-1].classList.add("col-ref");
   }
 }
 
