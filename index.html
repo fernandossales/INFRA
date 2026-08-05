@@ -4202,7 +4202,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
   function makeCtx(doc){
     const W=doc.internal.pageSize.getWidth();
     const H=doc.internal.pageSize.getHeight();
-    const ML=42, MR=W-42, MT=95, MB=H-70;
+    const ML=42, MR=W-42, MT=95, MB=H-62;
     return {W,H,ML,MR,MT,MB, y:MT, procRef: val("fv_processo")};
   }
   function header(doc,ctx){
@@ -4511,6 +4511,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
       if(val("fv_urb_comp"))  campo(doc,ctx,"2.8.4 Informações Complementares", val("fv_urb_comp"));
     }
 
+    novaPagina(doc,ctx);
     secBar(doc,ctx,"03 — DESCRIÇÃO DAS BENFEITORIAS");
     campo(doc,ctx,"3.1 Não-Reprodutivas", val("fv_ben_nr"));
     campo(doc,ctx,"3.1.1 Faixa non aedificandi", val("fv_ben_nr1"));
@@ -4519,7 +4520,6 @@ window.FOTO_rodapeHTML=rodapeHTML;
     campo(doc,ctx,"3.3.1 Faixa non aedificandi", val("fv_ben_r1"));
     if(val("fv_ben_comp4")) campo(doc,ctx,"3.4 Informações Complementares", val("fv_ben_comp4"));
 
-    novaPagina(doc,ctx);
     secBar(doc,ctx,"04 — INFORMAÇÕES COMPLEMENTARES");
     campo(doc,ctx,"4.1 Obras e Melhorias das Terras", val("fv_obras"));
     campo(doc,ctx,"4.2 Outras Atividades", val("fv_outras"));
@@ -4539,6 +4539,43 @@ window.FOTO_rodapeHTML=rodapeHTML;
   }
 
   // ---------- LAUDO 1-10 ----------
+  // insere uma imagem (data URI) centralizada, detectando o formato e tratando erros
+  function inserirImagem(doc, ctx, dataURI, maxH){
+    if(!dataURI) return false;
+    maxH = maxH || 300;
+    // detecta o formato pelo cabeçalho da data URI
+    let fmt = "JPEG";
+    const m = /^data:image\/([a-zA-Z0-9+]+)/.exec(dataURI);
+    if(m){
+      const t = m[1].toLowerCase();
+      if(t.indexOf("png")>=0) fmt="PNG";
+      else if(t.indexOf("webp")>=0) fmt="WEBP";
+      else if(t.indexOf("jpeg")>=0 || t.indexOf("jpg")>=0) fmt="JPEG";
+      else fmt="PNG";
+    }
+    try{
+      let props=null;
+      try{ props = doc.getImageProperties(dataURI); }catch(e){ props=null; }
+      const maxW = ctx.MR-ctx.ML;
+      let w=maxW, h;
+      if(props && props.width && props.height){
+        h = w*props.height/props.width;
+        if(h>maxH){ h=maxH; w=h*props.width/props.height; }
+        if(props.fileType) fmt = props.fileType;
+      } else {
+        h = maxH; // fallback se não conseguir ler as dimensões
+      }
+      ensure(doc,ctx, h+10);
+      doc.addImage(dataURI, fmt, ctx.ML+(maxW-w)/2, ctx.y, w, h, undefined, "FAST");
+      ctx.y += h+8;
+      return true;
+    }catch(e){
+      console.error("inserirImagem:", e);
+      paragrafo(doc,ctx,"[A imagem não pôde ser inserida — verifique o formato (use JPG ou PNG).]");
+      return false;
+    }
+  }
+
   function desenharLaudo1a10(doc,ctx){
     novaPagina(doc,ctx);
     secBar(doc,ctx,"01 — RAZÃO DO INTERESSADO");
@@ -4598,15 +4635,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
     secBar(doc,ctx,"08 — CROQUI DE ACESSO À ÁREA ABRANGIDA");
     const croqui = window.__AV_IMAGENS__ && window.__AV_IMAGENS__.croqui;
     if(croqui){
-      ensure(doc,ctx, 260);
-      try{
-        const props=doc.getImageProperties(croqui);
-        const maxW=ctx.MR-ctx.ML, maxH=300;
-        let w=maxW, h=w*props.height/props.width;
-        if(h>maxH){ h=maxH; w=h*props.width/props.height; }
-        doc.addImage(croqui, props.fileType||"JPEG", ctx.ML+(maxW-w)/2, ctx.y, w, h);
-        ctx.y+=h+8;
-      }catch(e){ paragrafo(doc,ctx,"[Imagem do croqui não pôde ser inserida]"); }
+      inserirImagem(doc, ctx, croqui, 300);
     } else { paragrafo(doc,ctx,"(Sem imagem de croqui carregada.)"); }
 
     secBar(doc,ctx,"09 — OBJETIVO E FINALIDADE DA AVALIAÇÃO");
@@ -4991,19 +5020,11 @@ window.FOTO_rodapeHTML=rodapeHTML;
     subLbl(doc,ctx,"I — Dimensionamento da Variável CCU");
     const ccuImg = window.__AV_IMAGENS__ && window.__AV_IMAGENS__.ccu;
     if(ccuImg){
-      ensure(doc,ctx,260);
-      try{
-        const props=doc.getImageProperties(ccuImg);
-        const maxW=ctx.MR-ctx.ML, maxH=300;
-        let w=maxW, h=w*props.height/props.width;
-        if(h>maxH){ h=maxH; w=h*props.width/props.height; }
-        doc.addImage(ccuImg, props.fileType||"JPEG", ctx.ML+(maxW-w)/2, ctx.y, w, h);
-        ctx.y+=h+6;
-        doc.setFont("helvetica","italic"); doc.setFontSize(8); doc.setTextColor(90,100,112);
-        ensure(doc,ctx,12);
-        doc.text("Figura 1 — Detalhamento do levantamento das classes de CCU por glebas do imóvel", ctx.W/2, ctx.y, {align:"center"});
-        ctx.y+=14; doc.setTextColor(30,40,55);
-      }catch(e){}
+      inserirImagem(doc, ctx, ccuImg, 300);
+      doc.setFont("helvetica","italic"); doc.setFontSize(8); doc.setTextColor(90,100,112);
+      ensure(doc,ctx,12);
+      doc.text("Figura 1 — Detalhamento do levantamento das classes de CCU por glebas do imóvel", ctx.W/2, ctx.y, {align:"center"});
+      ctx.y+=14; doc.setTextColor(30,40,55);
     } else { paragrafo(doc,ctx,"(Sem imagem da Figura 1 carregada.)"); }
 
     // classes por gleba
