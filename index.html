@@ -1046,6 +1046,11 @@
     .app-sidebar.aberto::after{ content:""; }
     .app-main{ width:100%; }
   }
+
+  /* Logo: mostrar apenas ENPROL, aumentada 1.5x */
+  .app-header .marca img[alt="INFRA"]{ display:none !important; }
+  .app-header .marca img[alt="ENPROL"]{ height:39px !important; }
+  .app-header .marca .sep{ display:none; }  /* separador entre logos não é mais necessário */
 </style>
 </head>
 <body>
@@ -2443,6 +2448,17 @@ function aplicarGleba(){
   });
   renderSubabas();
   montarRodapePreview();
+  // se a gleba tem classe definida (vinda da Avaliação), realça a coluna dessa classe
+  if(g.classeNum){
+    const th = document.querySelector(`#tabelaCCU .th-col[data-col="${g.classeNum}"]`);
+    if(th && typeof marcarHead==="function"){
+      // limpa realce anterior e aplica o da classe
+      document.querySelectorAll("#tabelaCCU .th-col.marcado, #tabelaCCU .th-col.col-ref, #tabelaCCU .cel.col-ref")
+        .forEach(c => c.classList.remove("marcado","col-ref"));
+      th.classList.add("marcado","col-ref");
+      document.querySelectorAll(`#tabelaCCU .cel[data-col="${g.classeNum}"]`).forEach(c=>c.classList.add("col-ref"));
+    }
+  }
 }
 
 /* ---------- Construção da tabela (gleba ativa) ---------- */
@@ -2583,7 +2599,8 @@ async function renderGlebaImagem(g){
 }
 
 /* ---------- PDF: capa + uma página de tabela por gleba ---------- */
-async function construirPDFccu(){
+async function construirPDFccu(incluirCapa){
+  if(incluirCapa===undefined) incluirCapa=true;
   salvarAtual();
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF({unit:"mm", format:"a4"});
@@ -2616,7 +2633,7 @@ async function construirPDFccu(){
     }
   }
   function paginaTabela(imgData, canvasW, canvasH, legenda){
-    pdf.addPage();
+    if(primeiraPagina){ primeiraPagina=false; } else { pdf.addPage(); }
     desenharCabecalho();
     if(legenda){
       pdf.setFont("helvetica","bold"); pdf.setFontSize(10); pdf.setTextColor(23,90,159);
@@ -2634,16 +2651,20 @@ async function construirPDFccu(){
   }
 
   // ---- CAPA (usa o título da 1ª gleba) ----
-  desenharCabecalho();
-  const titulo = (glebas[0] && glebas[0].titulo) || TITULO_PADRAO;
-  pdf.setTextColor(36,52,71);
-  pdf.setFont("helvetica","bold"); pdf.setFontSize(18);
-  pdf.text(titulo, W/2, H/2 - 6, {align:"center", maxWidth:contentW});
-  if(glebas.length > 1){
-    pdf.setFont("helvetica","normal"); pdf.setFontSize(11); pdf.setTextColor(90,107,124);
-    pdf.text(glebas.length + " glebas", W/2, H/2 + 8, {align:"center"});
+  let primeiraPagina = true;
+  if(incluirCapa){
+    desenharCabecalho();
+    const titulo = (glebas[0] && glebas[0].titulo) || TITULO_PADRAO;
+    pdf.setTextColor(36,52,71);
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(18);
+    pdf.text(titulo, W/2, H/2 - 6, {align:"center", maxWidth:contentW});
+    if(glebas.length > 1){
+      pdf.setFont("helvetica","normal"); pdf.setFontSize(11); pdf.setTextColor(90,107,124);
+      pdf.text(glebas.length + " glebas", W/2, H/2 + 8, {align:"center"});
+    }
+    desenharRodape();
+    primeiraPagina = false;
   }
-  desenharRodape();
 
   // ---- Uma página por gleba ----
   for(let i=0;i<glebas.length;i++){
@@ -2681,6 +2702,7 @@ function CCU_puxarDados(){
     const nome=[denom||"Imóvel", "Gleba "+nGleba, gv.area+" ha", "Classe "+gv.classeRom].join(" - ");
     const g=novaGleba();
     g.nome=nome;
+    g.classeNum=gv.classeNum;   // guarda a classe escolhida (1..8) p/ realçar a coluna
     glebas.push(g);
   });
   ativa=0;
@@ -2699,7 +2721,7 @@ window.CCU_marcar=marcar;
 window.CCU_marcarHead=marcarHead;
 window.CCU_montarRodapePreview=montarRodapePreview;
 window.CCU_buildBytes = async function(){
-  const pdf = await construirPDFccu();
+  const pdf = await construirPDFccu(false);
   return new Uint8Array(pdf.output("arraybuffer"));
 };
 
@@ -2994,6 +3016,9 @@ function removerFoto(i){
   fotos.splice(i,1);
   render();
 }
+function setLeg(i, val){
+  if(fotos[i]) fotos[i].legenda = val;
+}
 
 function limparTudo(){
   if(fotos.length && !confirm("Remover todas as fotos?")) return;
@@ -3017,7 +3042,8 @@ async function gerarPDF(){
   pdf.save("Relatorio_Fotografico.pdf");
 }
 
-async function construirPDFfoto(){
+async function construirPDFfoto(incluirCapa){
+  if(incluirCapa===undefined) incluirCapa=true;
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF({unit:"mm", format:"a4"});
   const W = 210, H = 297;
@@ -3054,13 +3080,17 @@ async function construirPDFfoto(){
   }
 
   // ---- CAPA ----
-  desenharCabecalho();
-  const titulo = document.getElementById("cfgTitulo").value || "RELATÓRIO FOTOGRÁFICO";
+  let fotoPrimeira = true;
+  if(incluirCapa){
+    desenharCabecalho();
+    const titulo = document.getElementById("cfgTitulo").value || "RELATÓRIO FOTOGRÁFICO";
 
-  pdf.setTextColor(36,52,71);
-  pdf.setFont("helvetica","bold"); pdf.setFontSize(20);
-  pdf.text(titulo, W/2, H/2, {align:"center", maxWidth:contentW});
-  desenharRodape();
+    pdf.setTextColor(36,52,71);
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(20);
+    pdf.text(titulo, W/2, H/2, {align:"center", maxWidth:contentW});
+    desenharRodape();
+    fotoPrimeira = false;
+  }
 
   // ---- PÁGINAS DE FOTOS ----
   const topFotos = mT + 10 + 6;         // abaixo do cabeçalho
@@ -3071,7 +3101,7 @@ async function construirPDFfoto(){
   const legendaH = 14;                  // altura reservada p/ legenda
 
   for(let i=0; i<fotos.length; i+=2){
-    pdf.addPage();
+    if(fotoPrimeira){ fotoPrimeira=false; } else { pdf.addPage(); }
     desenharCabecalho();
     for(let j=i; j<Math.min(i+2, fotos.length); j++){
       const idx = j - i; // 0 ou 1
@@ -3134,7 +3164,7 @@ async function construirPDFfoto(){
 // Builder de bytes para a unificação geral (retorna Uint8Array ou null se vazio)
 window.FOTO_buildBytes = async function(){
   if(!fotos.length) return null;
-  const pdf = await construirPDFfoto();
+  const pdf = await construirPDFfoto(false);
   return new Uint8Array(pdf.output("arraybuffer"));
 };
 
@@ -3146,7 +3176,7 @@ window.FOTO_cabecalhoHTML=cabecalhoHTML;
 window.FOTO_carregarImg=carregarImg;
 window.FOTO_gerarPDF=gerarPDF;
 window.FOTO_limparTudo=limparTudo;
-window.FOTO_removerFoto=removerFoto;
+window.FOTO_removerFoto=removerFoto; window.FOTO_setLeg=setLeg;
 window.FOTO_render=render;
 window.FOTO_rodapeHTML=rodapeHTML;
 })();
