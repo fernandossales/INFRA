@@ -1630,6 +1630,9 @@
 
   <div class="vactions">
     <button class="vbtn vbtn-primary" onclick="WORD_ficha()">📝 Baixar Word — Ficha de Vistoria</button>
+    <button class="vbtn vbtn-ghost" onclick="CAD_salvar()">💾 Salvar cadastro</button>
+    <button class="vbtn vbtn-ghost" onclick="document.getElementById('cad_abrir_file').click()">📂 Abrir cadastro</button>
+    <input type="file" id="cad_abrir_file" accept=".json" style="display:none" onchange="CAD_abrir(this)">
   </div>
 
 </div>
@@ -2226,6 +2229,9 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
   <div class="vactions">
     <button class="vbtn vbtn-primary" onclick="AV_gerarPDF()">📄 Gerar PDF — 01 Capa</button>
     <button class="vbtn vbtn-primary" onclick="WORD_avaliacao()">📝 Baixar Word — Laudo</button>
+    <button class="vbtn vbtn-ghost" onclick="CAD_salvar()">💾 Salvar cadastro</button>
+    <button class="vbtn vbtn-ghost" onclick="document.getElementById('cad_abrir_file2').click()">📂 Abrir cadastro</button>
+    <input type="file" id="cad_abrir_file2" accept=".json" style="display:none" onchange="CAD_abrir(this)">
     <button class="vbtn vbtn-ghost" onclick="AV_recalcular()">↻ Recalcular</button>
   </div>
 
@@ -6283,6 +6289,143 @@ function AV_gerarDescSituacao(){
 
   window.WORD_ficha = function(){ gerarWord("panel-vistoria", "Ficha_de_Vistoria.docx"); };
   window.WORD_avaliacao = function(){ gerarWord("panel-avaliacao", "Laudo_de_Avaliacao.docx"); };
+})();
+</script>
+<script>
+/* ===== Cadastro: Salvar / Abrir (arquivo .json) — Nível 1 ===== */
+(function(){
+  const VERSAO = 1;
+
+  function coletarCampos(){
+    const dados = {};
+    // todos os campos com id nas abas Ficha e Avaliação (e afins)
+    document.querySelectorAll("#panel-vistoria [id], #panel-avaliacao [id]").forEach(el=>{
+      const tag = el.tagName;
+      if(tag!=="INPUT" && tag!=="TEXTAREA" && tag!=="SELECT") return;
+      if(el.type==="file") return;
+      if(el.type==="checkbox" || el.type==="radio"){ dados[el.id] = {__chk:el.checked}; }
+      else { dados[el.id] = el.value; }
+    });
+    return dados;
+  }
+
+  function coletarEstacas(){
+    const out=[];
+    document.querySelectorAll("#fv_estacas .estaca-linha").forEach(l=>{
+      const ini=l.querySelector(".e-ini"), fim=l.querySelector(".e-fim"), tipo=l.querySelector(".e-tipo");
+      out.push({ ini: ini?ini.value:"", fim: fim?fim.value:"", tipo: tipo?tipo.value:"" });
+    });
+    return out;
+  }
+
+  function coletarNA(){
+    // áreas por classe na Tabela de Nota Agronômica
+    const out=[];
+    document.querySelectorAll("#av_na_tbody .na-area").forEach((el,i)=>{ out.push(el.value||""); });
+    return out;
+  }
+
+  window.CAD_salvar = function(){
+    try{
+      const pacote = {
+        _app: "ENPROL-Ferramentas-Anexos",
+        _versao: VERSAO,
+        _data: new Date().toISOString(),
+        campos: coletarCampos(),
+        estacas: coletarEstacas(),
+        na: coletarNA(),
+        imagens: (window.__AV_IMAGENS__ || {})
+      };
+      const nomeBase = (document.getElementById("av_nome") && document.getElementById("av_nome").value.trim())
+        || (document.getElementById("fv_processo") && document.getElementById("fv_processo").value.trim())
+        || "cadastro";
+      const nomeArq = "Cadastro_" + nomeBase.replace(/[^\w\-]+/g,"_").slice(0,40) + ".json";
+      const blob = new Blob([JSON.stringify(pacote, null, 2)], {type:"application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a"); a.href=url; a.download=nomeArq;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(()=>URL.revokeObjectURL(url), 1500);
+    }catch(e){ alert("Não foi possível salvar o cadastro: "+e.message); }
+  };
+
+  function restaurarCampos(campos){
+    if(!campos) return;
+    Object.entries(campos).forEach(([id,val])=>{
+      const el=document.getElementById(id);
+      if(!el) return;
+      if(val && typeof val==="object" && "__chk" in val){ el.checked = !!val.__chk; }
+      else { el.value = val; }
+      // dispara input/change para recalcular e sincronizar
+      el.dispatchEvent(new Event("input", {bubbles:true}));
+      el.dispatchEvent(new Event("change", {bubbles:true}));
+    });
+  }
+
+  function restaurarEstacas(estacas){
+    if(!Array.isArray(estacas)) return;
+    const cont=document.getElementById("fv_estacas");
+    if(!cont) return;
+    // limpa as linhas atuais
+    cont.querySelectorAll(".estaca-linha").forEach(l=>l.remove());
+    // recria via FV_addEstaca (se existir) e preenche
+    estacas.forEach(e=>{
+      if(typeof window.FV_addEstaca==="function") window.FV_addEstaca();
+    });
+    const linhas=cont.querySelectorAll(".estaca-linha");
+    estacas.forEach((e,idx)=>{
+      const l=linhas[idx]; if(!l) return;
+      const ini=l.querySelector(".e-ini"), fim=l.querySelector(".e-fim"), tipo=l.querySelector(".e-tipo");
+      if(ini){ ini.value=e.ini||""; ini.dispatchEvent(new Event("input",{bubbles:true})); }
+      if(fim){ fim.value=e.fim||""; fim.dispatchEvent(new Event("input",{bubbles:true})); }
+      if(tipo && e.tipo){ tipo.value=e.tipo; tipo.dataset.tocado="1"; tipo.dispatchEvent(new Event("change",{bubbles:true})); }
+    });
+  }
+
+  function restaurarNA(na){
+    if(!Array.isArray(na)) return;
+    const inputs=document.querySelectorAll("#av_na_tbody .na-area");
+    na.forEach((v,i)=>{ if(inputs[i]){ inputs[i].value=v; inputs[i].dispatchEvent(new Event("input",{bubbles:true})); } });
+  }
+
+  function restaurarImagens(imgs){
+    if(!imgs || typeof imgs!=="object") return;
+    const alvo = (window.__AV_IMAGENS__ = window.__AV_IMAGENS__ || {});
+    ["croqui","ccu","mapa"].forEach(slot=>{
+      if(imgs[slot]){
+        alvo[slot]=imgs[slot];
+        // atualiza a prévia visual, se o elemento existir
+        const prev=document.getElementById("av_"+slot+"_prev");
+        if(prev){
+          prev.innerHTML='<img src="'+imgs[slot]+'" alt="prévia"><br><button type="button" class="rm-img" onclick="(function(b){var p=b.parentElement;window.__AV_IMAGENS__[\''+slot+'\']=null;p.innerHTML=\'\';p.classList.remove(\'show\');})(this)">Remover imagem</button>';
+          prev.classList.add("show");
+        }
+      }
+    });
+  }
+
+  window.CAD_abrir = function(input){
+    const file = input.files && input.files[0];
+    if(!file) return;
+    const rd = new FileReader();
+    rd.onload = function(e){
+      let pacote;
+      try{ pacote = JSON.parse(e.target.result); }
+      catch(err){ alert("Arquivo inválido ou corrompido."); input.value=""; return; }
+      if(!pacote || pacote._app!=="ENPROL-Ferramentas-Anexos"){
+        if(!confirm("Este arquivo não parece ser um cadastro do sistema. Deseja tentar abrir mesmo assim?")){ input.value=""; return; }
+      }
+      try{
+        restaurarEstacas(pacote.estacas);
+        restaurarNA(pacote.na);
+        restaurarCampos(pacote.campos);   // depois das estacas/NA para recalcular com tudo
+        restaurarImagens(pacote.imagens);
+        if(typeof window.AV_recalcular==="function") window.AV_recalcular();
+        alert("Cadastro carregado com sucesso.");
+      }catch(err){ alert("Erro ao carregar o cadastro: "+err.message); }
+      input.value="";
+    };
+    rd.readAsText(file, "utf-8");
+  };
 })();
 </script>
 </body>
