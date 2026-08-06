@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>INFRA · Ferramentas de Anexos</title>
+<title>INFRA · Utilitários</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
@@ -999,14 +999,34 @@
     .credito-dev{ display:none; }
   }
 
-  /* ===== Layout com Sidebar (Versão 1, sem ícones, todos anexos) ===== */
+  /* ===== Layout com Sidebar de dois níveis (Laudo / Utilitários) ===== */
   .app-shell{ display:flex; align-items:stretch; min-height:calc(100vh - 64px); }
   .app-sidebar{
-    flex:0 0 250px; width:250px;
-    background:#0f2a44; color:#dce6f0;
-    padding:14px 0 30px;
+    flex:0 0 auto; display:flex; align-items:stretch;
     position:sticky; top:64px; align-self:flex-start;
-    height:calc(100vh - 64px); overflow-y:auto;
+    height:calc(100vh - 64px);
+  }
+  /* coluna principal estreita (botões Laudo / Utilitários) */
+  .app-sidebar .sb-main{
+    flex:0 0 120px; width:120px;
+    background:#0b2035; color:#dce6f0;
+    padding:14px 0; display:flex; flex-direction:column; gap:4px;
+    overflow-y:auto;
+  }
+  .app-sidebar .sb-grp-btn{
+    display:block; width:calc(100% - 12px); margin:2px 6px; text-align:left;
+    padding:12px 12px; border:none; background:transparent; cursor:pointer;
+    color:#c3d3e4; font-size:14px; font-weight:600; font-family:inherit; border-radius:8px;
+    transition:background .15s, color .15s;
+  }
+  .app-sidebar .sb-grp-btn:hover{ background:rgba(255,255,255,.07); color:#fff; }
+  .app-sidebar .sb-grp-btn.ativa{ background:#1F6FC0; color:#fff; }
+  /* sub-painel à direita com os itens do grupo */
+  .app-sidebar .sb-sub{
+    flex:0 0 240px; width:240px;
+    background:#0f2a44; color:#dce6f0;
+    padding:14px 0 30px; overflow-y:auto;
+    border-left:1px solid rgba(255,255,255,.06);
   }
   .app-sidebar .sb-grp{
     padding:16px 22px 7px; font-size:11px; letter-spacing:1.5px;
@@ -1020,6 +1040,10 @@
   }
   .app-sidebar .sb-link:hover{ background:rgba(255,255,255,.07); color:#fff; }
   .app-sidebar .sb-link.ativa{ background:#1F6FC0; color:#fff; font-weight:600; }
+  .app-sidebar .sb-vazio{
+    padding:12px 20px; margin:6px 8px; font-size:13px; line-height:1.5;
+    color:#8ba0b5; background:rgba(255,255,255,.04); border-radius:8px;
+  }
   .app-main{ flex:1; min-width:0; }
 
   /* Header vira topbar limpa (sem as abas de pasta) */
@@ -1029,7 +1053,14 @@
     display:flex; align-items:center;
   }
   .app-header .marca img{ height:26px; }
-  .app-header .btn-unir{ margin-left:auto; }
+  .app-header .btn-unir{ margin-left:8px; }
+  .app-header .btn-cad{
+    border:1.5px solid #d6dee7; background:#fff; color:#1b3a5c;
+    padding:8px 14px; border-radius:8px; font-size:13.5px; font-weight:600;
+    cursor:pointer; font-family:inherit; transition:background .15s, border-color .15s;
+  }
+  .app-header .btn-cad:hover{ background:#eef4fa; border-color:#1F6FC0; }
+  .app-header #btnSalvarCad{ margin-left:auto; }
   .unir-status{ padding:0 28px; }
   .unir-status:empty{ display:none; }
 
@@ -1038,13 +1069,13 @@
     .app-shell{ display:block; min-height:0; }
     .app-sidebar{
       position:fixed; top:0; left:0; bottom:0; z-index:6000;
-      height:100vh; width:82%; max-width:300px;
+      height:100vh; width:90%; max-width:360px;
       transform:translateX(-100%); transition:transform .22s ease;
-      box-shadow:6px 0 24px rgba(10,20,35,.35); padding-top:18px;
+      box-shadow:6px 0 24px rgba(10,20,35,.35);
     }
+    .app-sidebar .sb-main{ flex:0 0 110px; width:110px; padding-top:18px; }
+    .app-sidebar .sb-sub{ flex:1; width:auto; padding-top:18px; }
     .app-sidebar.aberto{ transform:translateX(0); }
-    /* fundo escuro quando aberto */
-    .app-sidebar.aberto::after{ content:""; }
     .app-main{ width:100%; }
   }
 
@@ -1083,7 +1114,10 @@
     <span class="sep"></span>
     <img src="data:image/jpeg;base64,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" alt="ENPROL">
     <span class="sep"></span>
-    <span class="tit">Ferramentas de Anexos</span>
+    <span class="tit">UTILITÁRIOS</span>
+    <button class="btn-cad" id="btnSalvarCad" onclick="CAD_salvar()" title="Salvar cadastro (Ficha + Avaliação)">💾 Salvar</button>
+    <button class="btn-cad" id="btnAbrirCad" onclick="document.getElementById('cad_abrir_file').click()" title="Abrir cadastro">📂 Abrir</button>
+    <input type="file" id="cad_abrir_file" accept=".json" style="display:none" onchange="CAD_abrir(this)">
     <button class="btn-unir" id="btnUnirTudo" onclick="unirTudo()">
       <span class="ico">🗂️</span>
       <span class="txt">Unificar todo o material</span>
@@ -1127,20 +1161,32 @@
 
 <div class="app-shell">
 <aside class="app-sidebar" id="appSidebar">
-  <div class="sb-grp">Documentos</div>
-    <button class="sb-link ativa" data-alvo="panel-vistoria" onclick="trocarAba(this)">Ficha de Vistoria</button>
-    <button class="sb-link" data-alvo="panel-avaliacao" onclick="trocarAba(this)">Avaliação</button>
-  <div class="sb-grp">Anexos</div>
-    <button class="sb-link" data-alvo="panel-ccu" onclick="trocarAba(this)">Anexo 01 - Tabela CCU</button>
-    <button class="sb-link" data-alvo="panel-anexo" onclick="trocarAba(this)">Anexos 02 e 03 - Unificar</button>
-    <button class="sb-link" data-alvo="panel-foto" onclick="trocarAba(this)">Anexo 04 - Relatório Fotográfico</button>
-    <button class="sb-link" data-alvo="panel-drl" onclick="trocarAba(this)">Anexo 05 - DRL</button>
-    <button class="sb-link" data-alvo="panel-docs" onclick="trocarAba(this)">Anexo 06 - Documentos</button>
-    <button class="sb-link" data-alvo="panel-anx7" onclick="trocarAba(this)">Anexo 07 - Pesquisa de Mercado</button>
-    <button class="sb-link" data-alvo="panel-anx8" onclick="trocarAba(this)">Anexo 08 - Mapa e Fichas da Amostra</button>
-    <button class="sb-link" data-alvo="panel-relest" onclick="trocarAba(this)">Anexo 09 - Relatório Estatístico</button>
-    <button class="sb-link" data-alvo="panel-anx10" onclick="trocarAba(this)">Anexo 10 - Fundamentação e Precisão</button>
-    <button class="sb-link" data-alvo="panel-anx11" onclick="trocarAba(this)">Anexo 11 - ART</button>
+  <div class="sb-main">
+    <button class="sb-grp-btn ativa" data-grupo="laudo" onclick="SB_abrirGrupo(this)">Laudo</button>
+    <button class="sb-grp-btn" data-grupo="utilitarios" onclick="SB_abrirGrupo(this)">Utilitários</button>
+  </div>
+  <div class="sb-sub" id="sbSub">
+    <div class="sb-sub-grupo" data-grupo="laudo">
+      <div class="sb-grp">Documentos</div>
+      <button class="sb-link ativa" data-alvo="panel-vistoria" onclick="trocarAba(this)">Ficha de Vistoria</button>
+      <button class="sb-link" data-alvo="panel-avaliacao" onclick="trocarAba(this)">Avaliação</button>
+      <div class="sb-grp">Anexos</div>
+      <button class="sb-link" data-alvo="panel-ccu" onclick="trocarAba(this)">Anexo 01 - Tabela CCU</button>
+      <button class="sb-link" data-alvo="panel-anexo" onclick="trocarAba(this)">Anexos 02 e 03 - Unificar</button>
+      <button class="sb-link" data-alvo="panel-foto" onclick="trocarAba(this)">Anexo 04 - Relatório Fotográfico</button>
+      <button class="sb-link" data-alvo="panel-drl" onclick="trocarAba(this)">Anexo 05 - DRL</button>
+      <button class="sb-link" data-alvo="panel-docs" onclick="trocarAba(this)">Anexo 06 - Documentos</button>
+      <button class="sb-link" data-alvo="panel-anx7" onclick="trocarAba(this)">Anexo 07 - Pesquisa de Mercado</button>
+      <button class="sb-link" data-alvo="panel-anx8" onclick="trocarAba(this)">Anexo 08 - Mapa e Fichas da Amostra</button>
+      <button class="sb-link" data-alvo="panel-relest" onclick="trocarAba(this)">Anexo 09 - Relatório Estatístico</button>
+      <button class="sb-link" data-alvo="panel-anx10" onclick="trocarAba(this)">Anexo 10 - Fundamentação e Precisão</button>
+      <button class="sb-link" data-alvo="panel-anx11" onclick="trocarAba(this)">Anexo 11 - ART</button>
+    </div>
+    <div class="sb-sub-grupo" data-grupo="utilitarios" style="display:none;">
+      <div class="sb-grp">Utilitários</div>
+      <div class="sb-vazio">Em breve: Relatório Fotográfico, Pesquisa de Mercado e União de Arquivos.</div>
+    </div>
+  </div>
 </aside>
 <div class="app-main">
 <main>
@@ -1630,9 +1676,6 @@
 
   <div class="vactions">
     <button class="vbtn vbtn-primary" onclick="WORD_ficha()">📝 Baixar Word — Ficha de Vistoria</button>
-    <button class="vbtn vbtn-ghost" onclick="CAD_salvar()">💾 Salvar cadastro</button>
-    <button class="vbtn vbtn-ghost" onclick="document.getElementById('cad_abrir_file').click()">📂 Abrir cadastro</button>
-    <input type="file" id="cad_abrir_file" accept=".json" style="display:none" onchange="CAD_abrir(this)">
   </div>
 
 </div>
@@ -2229,9 +2272,6 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
   <div class="vactions">
     <button class="vbtn vbtn-primary" onclick="AV_gerarPDF()">📄 Gerar PDF — 01 Capa</button>
     <button class="vbtn vbtn-primary" onclick="WORD_avaliacao()">📝 Baixar Word — Laudo</button>
-    <button class="vbtn vbtn-ghost" onclick="CAD_salvar()">💾 Salvar cadastro</button>
-    <button class="vbtn vbtn-ghost" onclick="document.getElementById('cad_abrir_file2').click()">📂 Abrir cadastro</button>
-    <input type="file" id="cad_abrir_file2" accept=".json" style="display:none" onchange="CAD_abrir(this)">
     <button class="vbtn vbtn-ghost" onclick="AV_recalcular()">↻ Recalcular</button>
   </div>
 
@@ -2245,6 +2285,15 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
 
 <script>
 /* ---- Navegação por abas ---- */
+// alterna entre os grupos do sidebar (Laudo / Utilitários)
+function SB_abrirGrupo(btn){
+  const grupo = btn.dataset.grupo;
+  document.querySelectorAll('.app-sidebar .sb-grp-btn').forEach(b=>b.classList.remove('ativa'));
+  btn.classList.add('ativa');
+  document.querySelectorAll('.app-sidebar .sb-sub-grupo').forEach(g=>{
+    g.style.display = (g.dataset.grupo===grupo) ? '' : 'none';
+  });
+}
 function trocarAba(btn){
   document.querySelectorAll('.tab, .drop-item, .sb-link').forEach(t=>t.classList.remove('ativa'));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('ativa'));
