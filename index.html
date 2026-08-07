@@ -1488,6 +1488,13 @@
   #panel-desp1-vist .fb-fotos-prev .foto{ position:relative; }
   #panel-desp1-vist .fb-fotos-prev img{ width:130px; height:100px; object-fit:cover; border-radius:8px; border:1px solid #d6dee7; }
   #panel-desp1-vist .fb-fotos-prev .rm{ position:absolute; top:4px; right:4px; background:rgba(160,40,40,.9); color:#fff; border:none; border-radius:50%; width:22px; height:22px; cursor:pointer; font-size:12px; }
+
+  #panel-desp1-vist input[type=text], #panel-desp1-vist select, #panel-desp1-vist textarea{
+    width:100%; border:1px solid var(--borda-forte); border-radius:7px;
+    padding:8px 11px; font-size:13.5px; color:var(--texto); background:#fff;
+    font-family:inherit; outline:none; transition:border-color .15s, box-shadow .15s;
+  }
+  #panel-desp1-vist select{ appearance:auto; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -2844,14 +2851,21 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
   </div>
   <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>1 — IDENTIFICAÇÃO</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
-    <div class="vfield grow"><label>1.1 Documentos dominiais (SIM/NÃO)</label><input type="text" id="fb_11_dom" placeholder="SIM / NÃO"></div>
-    <div class="vfield grow"><label>Quais?</label><input type="text" id="fb_11_quais" placeholder="Ex.: Escritura Pública de Compra e Venda..."></div>
-    <div class="vfield grow"><label>1.2 Notificação Proprietário (SIM/NÃO)</label><input type="text" id="fb_12_notif" placeholder="SIM / NÃO"></div>
-    <div class="vfield grow"><label>1.3 Proprietário(a) (SIM/NÃO)</label><input type="text" id="fb_13_prop" placeholder="SIM / NÃO"></div>
+    <div class="vrow">
+      <div class="vfield grow"><label>1.1 Documentos dominiais</label>
+        <select id="fb_11_dom"><option value=""></option><option>SIM</option><option>NÃO</option></select></div>
+      <div class="vfield grow"><label>Quais?</label><input type="text" id="fb_11_quais" placeholder="Ex.: Escritura Pública de Compra e Venda..."></div>
+    </div>
+    <div class="vfield grow"><label>1.2 Notificação Proprietário</label>
+      <select id="fb_12_notif"><option value=""></option><option>SIM</option><option>NÃO</option></select></div>
+    <div class="vfield grow"><label>1.3 Proprietário(a)</label>
+      <select id="fb_13_prop"><option value=""></option><option>SIM</option><option>NÃO</option></select></div>
     <div class="vsub">1.3.1 Proprietário(a)</div>
     <div class="vfield grow"><label>Nome</label><input type="text" id="fb_nome" data-fb-from="nome" class="bloqueado" readonly placeholder="Nome"></div>
-    <div class="vfield grow"><label>RG</label><input type="text" id="fb_rg" data-fb-from="rg" class="bloqueado" readonly placeholder="RG"></div>
-    <div class="vfield grow"><label>CPF</label><input type="text" id="fb_cpf" data-fb-from="cpf" class="bloqueado" readonly placeholder="CPF"></div>
+    <div class="vrow">
+      <div class="vfield grow"><label>RG</label><input type="text" id="fb_rg" data-fb-from="rg" class="bloqueado" readonly placeholder="RG"></div>
+      <div class="vfield grow"><label>CPF</label><input type="text" id="fb_cpf" data-fb-from="cpf" class="bloqueado" readonly placeholder="CPF"></div>
+    </div>
     <div class="vfield grow"><label>Estado Civil</label><input type="text" id="fb_estcivil" placeholder="Casado, solteiro, viúvo, divorciado ou união estável"></div>
     <div class="vfield grow"><label>Cônjuge</label><input type="text" id="fb_conjuge" data-fb-from="conjuge" class="bloqueado" readonly placeholder="Cônjuge"></div>
     <div class="vfield grow"><label>Endereço</label><input type="text" id="fb_endereco" data-fb-from="endereco" class="bloqueado" readonly placeholder="Endereço"></div>
@@ -2859,7 +2873,8 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
     <div class="vfield grow"><label>Telefone</label><input type="text" id="fb_telefone" data-fb-from="telefone" class="bloqueado" readonly placeholder="Telefone"></div>
     <div class="vsub">1.3.2 Informante</div>
     <div class="vfield grow"><label>Nome</label><input type="text" id="fb_inf_nome" data-fb-from="inf_nome" class="bloqueado" readonly placeholder="Nome"></div>
-    <div class="vfield grow"><label>Grau de parentesco</label><input type="text" id="fb_inf_parentesco" placeholder="Grau de parentesco"></div>
+    <div class="vfield grow"><label>Grau de parentesco</label>
+      <select id="fb_inf_parentesco"><option value=""></option><option>Cônjuge</option><option>Filho(a)</option><option>Neto(a)</option><option>Irmão(ã)</option><option>Pai/Mãe</option><option>Sobrinho(a)</option><option>Genro/Nora</option><option>Outro</option><option>Não se aplica</option></select></div>
     <div class="vfield grow"><label>Dados comprobatório</label><input type="text" id="fb_inf_dados" data-fb-from="inf_dados" class="bloqueado" readonly placeholder="Dados comprobatório"></div>
     <div class="vsub">1.4 Propriedade</div>
     <div class="vfield grow"><label>Identificação</label><input type="text" id="fb_prop_id" data-fb-from="prop_id" class="bloqueado" readonly placeholder="Identificação"></div>
@@ -2987,13 +3002,8 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
   </div>
   <div class="vactions">
     <button class="vbtn vbtn-primary" onclick="WORD_anexoB()">📝 Baixar Word — Anexo B (1.9)</button>
-    <button class="vbtn vbtn-ghost" onclick="document.getElementById('file-19').click()">📎 Anexar PDF assinado</button>
-    <input type="file" accept="application/pdf" multiple id="file-19" style="display:none">
-    <button class="vbtn vbtn-ghost" id="ger-19" disabled onclick="DESP1_gerar('19')">⬇️ Baixar PDF anexado</button>
     <button class="vbtn vbtn-ghost" onclick="FB_puxarDESP3()">↧ Puxar dados da DESP 3</button>
   </div>
-  <ul class="lista" id="lista-19" style="margin-top:8px;"></ul>
-  <div class="status" id="st-19"></div>
 </div>
   </section>
 
@@ -6166,7 +6176,7 @@ function FV_toggleSec(h2){
 }
 // por padrão, todas as seções retráteis começam recolhidas
 document.addEventListener("DOMContentLoaded", function(){
-  document.querySelectorAll("#panel-vistoria .vsec.acc, #panel-avaliacao .vsec.acc").forEach(h2=>{
+  document.querySelectorAll("#panel-vistoria .vsec.acc, #panel-avaliacao .vsec.acc, #panel-desp1-vist .vsec.acc").forEach(h2=>{
     if(!h2.classList.contains("fechado")){
       h2.classList.add("fechado");
       let el=h2.nextElementSibling;
