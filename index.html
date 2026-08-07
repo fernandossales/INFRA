@@ -1083,6 +1083,87 @@
   .app-header .marca img[alt="INFRA"]{ display:none !important; }
   .app-header .marca img[alt="ENPROL"]{ height:39px !important; }
   .app-header .marca .sep{ display:none; }  /* separador entre logos não é mais necessário */
+
+  /* ===== DESP 1 — reaproveita estilo do painel de anexos ===== */
+  #panel-desp1-doc, #panel-desp1-vist, #panel-desp1-rel{
+    --azul:#1F6FC0; --azul-esc:#175a9f; --verde:#159a3c;
+    --borda:#c3ccd6; --borda-forte:#9aa7b5; --texto:#243447;
+    --bg:#eef2f6; --zebra:#f5f8fb; --erro:#c0392b; --ok:#159a3c;
+  }
+  #panel-desp1-doc *, #panel-desp1-vist *, #panel-desp1-rel *{box-sizing:border-box;}
+  #panel-desp1-doc, #panel-anexo, #panel-desp1-vist, #panel-anexo, #panel-desp1-rel, #panel-anexo{margin:0;}
+  #panel-desp1-doc, #panel-desp1-vist, #panel-desp1-rel{
+    font-family:"Segoe UI", Arial, Helvetica, sans-serif;
+    background:var(--bg); color:var(--texto); padding:28px 20px 60px;
+  }
+  #panel-desp1-doc .wrap, #panel-desp1-vist .wrap, #panel-desp1-rel .wrap{max-width:1180px; margin:0 auto;}
+  #panel-desp1-doc h1, #panel-desp1-vist h1, #panel-desp1-rel h1{font-size:22px; margin:0 0 4px; color:var(--azul-esc); letter-spacing:.3px;}
+  #panel-desp1-doc .sub, #panel-desp1-vist .sub, #panel-desp1-rel .sub{font-size:14px; color:#5a6b7c; margin:0 0 24px;}
+  #panel-desp1-doc .grid, #panel-desp1-vist .grid, #panel-desp1-rel .grid{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  #panel-desp1-doc .grid, #panel-desp1-vist .grid, #panel-desp1-rel .grid{grid-template-columns:1fr;}
+  #panel-desp1-doc .card, #panel-desp1-vist .card, #panel-desp1-rel .card{
+    background:#fff; border-radius:14px;
+    box-shadow:0 10px 30px rgba(30,50,80,.10);
+    padding:20px; display:flex; flex-direction:column;
+  }
+  #panel-desp1-doc .card h2, #panel-desp1-vist .card h2, #panel-desp1-rel .card h2{
+    font-size:16px; margin:0 0 2px; color:#fff;
+    background:linear-gradient(180deg,#2478c9,#1F6FC0);
+    padding:12px 16px; border-radius:9px; letter-spacing:.3px;
+  }
+  #panel-desp1-doc .card .desc, #panel-desp1-vist .card .desc, #panel-desp1-rel .card .desc{font-size:12.5px; color:#5a6b7c; margin:12px 0 14px; line-height:1.4;}
+  #panel-desp1-doc .drop, #panel-desp1-vist .drop, #panel-desp1-rel .drop{
+    border:2px dashed var(--borda-forte); border-radius:10px;
+    padding:26px 16px; text-align:center; cursor:pointer;
+    transition:background .15s, border-color .15s; background:#fbfcfe;
+  }
+  #panel-desp1-doc .drop:hover, #panel-anexo .drop.over, #panel-desp1-vist .drop:hover, #panel-anexo .drop.over, #panel-desp1-rel .drop:hover, #panel-anexo .drop.over{background:#eef5fc; border-color:var(--azul);}
+  #panel-desp1-doc .drop .ic, #panel-desp1-vist .drop .ic, #panel-desp1-rel .drop .ic{font-size:30px; display:block; margin-bottom:6px;}
+  #panel-desp1-doc .drop .t, #panel-desp1-vist .drop .t, #panel-desp1-rel .drop .t{font-weight:600; font-size:14px; color:var(--azul-esc);}
+  #panel-desp1-doc .drop .h, #panel-desp1-vist .drop .h, #panel-desp1-rel .drop .h{font-size:12px; color:#7a8899; margin-top:3px;}
+  #panel-desp1-doc input[type=file], #panel-desp1-vist input[type=file], #panel-desp1-rel input[type=file]{display:none;}
+  #panel-desp1-doc ul.lista, #panel-desp1-vist ul.lista, #panel-desp1-rel ul.lista{list-style:none; margin:14px 0 0; padding:0; display:flex; flex-direction:column; gap:6px;}
+  #panel-desp1-doc ul.lista:empty, #panel-desp1-vist ul.lista:empty, #panel-desp1-rel ul.lista:empty{display:none;}
+  #panel-desp1-doc .item, #panel-desp1-vist .item, #panel-desp1-rel .item{
+    display:flex; align-items:center; gap:8px;
+    background:var(--zebra); border:1px solid var(--borda);
+    border-radius:8px; padding:7px 10px; font-size:12.5px;
+  }
+  #panel-desp1-doc .item .num, #panel-desp1-vist .item .num, #panel-desp1-rel .item .num{
+    background:var(--azul); color:#fff; font-weight:700;
+    min-width:22px; height:22px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center; font-size:11px;
+  }
+  #panel-desp1-doc .item .nome, #panel-desp1-vist .item .nome, #panel-desp1-rel .item .nome{flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  #panel-desp1-doc .item .pg, #panel-desp1-vist .item .pg, #panel-desp1-rel .item .pg{color:#7a8899; font-size:11px; white-space:nowrap;}
+  #panel-desp1-doc .item button, #panel-desp1-vist .item button, #panel-desp1-rel .item button{
+    border:none; background:transparent; cursor:pointer;
+    font-size:15px; color:#7a8899; padding:2px 5px; border-radius:5px; line-height:1;
+  }
+  #panel-desp1-doc .item button:hover, #panel-desp1-vist .item button:hover, #panel-desp1-rel .item button:hover{background:#e2e8ef; color:var(--texto);}
+  #panel-desp1-doc .item button.rm:hover, #panel-desp1-vist .item button.rm:hover, #panel-desp1-rel .item button.rm:hover{color:var(--erro);}
+  #panel-desp1-doc .acoes, #panel-desp1-vist .acoes, #panel-desp1-rel .acoes{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+  #panel-desp1-doc .btn, #panel-desp1-vist .btn, #panel-desp1-rel .btn{
+    display:inline-flex; align-items:center; gap:8px; border:none;
+    padding:11px 20px; font-size:14px; font-weight:600; border-radius:8px;
+    cursor:pointer; transition:background .15s, transform .05s; letter-spacing:.2px;
+  }
+  #panel-desp1-doc .btn:active, #panel-desp1-vist .btn:active, #panel-desp1-rel .btn:active{transform:translateY(1px);}
+  #panel-desp1-doc .btn:disabled, #panel-desp1-vist .btn:disabled, #panel-desp1-rel .btn:disabled{opacity:.5; cursor:not-allowed;}
+  #panel-desp1-doc .btn-primary, #panel-desp1-vist .btn-primary, #panel-desp1-rel .btn-primary{background:var(--azul); color:#fff; box-shadow:0 2px 6px rgba(31,111,192,.35);}
+  #panel-desp1-doc .btn-primary:hover:not(:disabled), #panel-desp1-vist .btn-primary:hover:not(:disabled), #panel-desp1-rel .btn-primary:hover:not(:disabled){background:var(--azul-esc);}
+  #panel-desp1-doc .btn-ghost, #panel-desp1-vist .btn-ghost, #panel-desp1-rel .btn-ghost{background:#fff; color:var(--texto); border:1px solid var(--borda-forte);}
+  #panel-desp1-doc .btn-ghost:hover:not(:disabled), #panel-desp1-vist .btn-ghost:hover:not(:disabled), #panel-desp1-rel .btn-ghost:hover:not(:disabled){background:#f3f6f9;}
+  #panel-desp1-doc .status, #panel-desp1-vist .status, #panel-desp1-rel .status{font-size:12.5px; margin-top:10px; min-height:16px;}
+  #panel-desp1-doc .status.ok, #panel-desp1-vist .status.ok, #panel-desp1-rel .status.ok{color:var(--ok);}
+  #panel-desp1-doc .status.err, #panel-desp1-vist .status.err, #panel-desp1-rel .status.err{color:var(--erro);}
+  #panel-desp1-doc .status.work, #panel-desp1-vist .status.work, #panel-desp1-rel .status.work{color:var(--azul-esc);}
+  #panel-desp1-doc .opts, #panel-desp1-vist .opts, #panel-desp1-rel .opts{font-size:12.5px; color:#5a6b7c; margin-top:12px; display:flex; align-items:center; gap:7px;}
+  #panel-desp1-doc .opts input, #panel-desp1-vist .opts input, #panel-desp1-rel .opts input{width:15px; height:15px;}
+  #panel-desp1-doc, #panel-drl,
+    #panel-docs, #panel-anx7, #panel-anx8, #panel-relest, #panel-anx10, #panel-anx11, #panel-desp1-vist, #panel-drl,
+    #panel-docs, #panel-anx7, #panel-anx8, #panel-relest, #panel-anx10, #panel-anx11, #panel-desp1-rel, #panel-drl,
+    #panel-docs, #panel-anx7, #panel-anx8, #panel-relest, #panel-anx10, #panel-anx11{ padding-bottom:96px; }
 </style>
 </head>
 <body>
@@ -1162,10 +1243,17 @@
 <div class="app-shell">
 <aside class="app-sidebar" id="appSidebar">
   <div class="sb-main">
-    <button class="sb-grp-btn ativa" data-grupo="laudo" onclick="SB_abrirGrupo(this)">Laudo</button>
+    <button class="sb-grp-btn" data-grupo="desp1" onclick="SB_abrirGrupo(this)">DESP 1</button>
+    <button class="sb-grp-btn ativa" data-grupo="laudo" onclick="SB_abrirGrupo(this)">DESP 3</button>
     <button class="sb-grp-btn" data-grupo="utilitarios" onclick="SB_abrirGrupo(this)">Utilitários</button>
   </div>
   <div class="sb-sub" id="sbSub">
+    <div class="sb-sub-grupo" data-grupo="desp1" style="display:none;">
+      <div class="sb-grp">Documentação</div>
+      <button class="sb-link" data-alvo="panel-desp1-doc" onclick="trocarAba(this)">Ficha Cadastral (Anexo D)</button>
+      <button class="sb-link" data-alvo="panel-desp1-vist" onclick="trocarAba(this)">1.9 Ficha de Vistoria e Cadastro Socioeconômico</button>
+      <button class="sb-link" data-alvo="panel-desp1-rel" onclick="trocarAba(this)">1.10 Relatório Técnico Socioeconômico</button>
+    </div>
     <div class="sb-sub-grupo" data-grupo="laudo">
       <div class="sb-grp">Documentos</div>
       <button class="sb-link ativa" data-alvo="panel-vistoria" onclick="trocarAba(this)">Ficha de Vistoria</button>
@@ -2275,6 +2363,199 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
     <button class="vbtn vbtn-ghost" onclick="AV_recalcular()">↻ Recalcular</button>
   </div>
 
+</div>
+  </section>
+<section class="tab-panel" id="panel-desp1-doc">
+<div class="wrap">
+  <h1>1 · Ficha Cadastral (Anexo D)</h1>
+  <p class="sub">Documentação da Ficha Cadastral. Carregue os PDFs de cada tópico abaixo. (Configuração de capas e unificação será definida futuramente.)</p>
+  <div class="grid">
+    <div class="card">
+      <h2>1.1 DUP — Declaração de Utilidade Pública</h2>
+      <p class="desc">Carregue o(s) PDF(s) referente(s) a este tópico. Arraste os arquivos na ordem desejada.</p>
+      <label class="drop" id="drop-11">
+        <span class="ic">📜</span>
+        <span class="t">Clique ou arraste os PDFs</span>
+        <span class="h">Vários arquivos • apenas .pdf</span>
+        <input type="file" accept="application/pdf" multiple id="file-11">
+      </label>
+      <ul class="lista" id="lista-11"></ul>
+      <div class="acoes">
+        <button class="btn btn-primary" id="ger-11" disabled onclick="DESP1_gerar('11')">📎 Unir e baixar</button>
+        <button class="btn btn-ghost" onclick="DESP1_limpar('11')">Limpar</button>
+      </div>
+      <div class="status" id="st-11"></div>
+    </div>
+
+    <div class="card">
+      <h2>1.2 Projeto de Referência</h2>
+      <p class="desc">Carregue o(s) PDF(s) referente(s) a este tópico. Arraste os arquivos na ordem desejada.</p>
+      <label class="drop" id="drop-12">
+        <span class="ic">📐</span>
+        <span class="t">Clique ou arraste os PDFs</span>
+        <span class="h">Vários arquivos • apenas .pdf</span>
+        <input type="file" accept="application/pdf" multiple id="file-12">
+      </label>
+      <ul class="lista" id="lista-12"></ul>
+      <div class="acoes">
+        <button class="btn btn-primary" id="ger-12" disabled onclick="DESP1_gerar('12')">📎 Unir e baixar</button>
+        <button class="btn btn-ghost" onclick="DESP1_limpar('12')">Limpar</button>
+      </div>
+      <div class="status" id="st-12"></div>
+    </div>
+
+    <div class="card">
+      <h2>1.3 Carta de Apresentação de Projeto</h2>
+      <p class="desc">Carregue o(s) PDF(s) referente(s) a este tópico. Arraste os arquivos na ordem desejada.</p>
+      <label class="drop" id="drop-13">
+        <span class="ic">✉️</span>
+        <span class="t">Clique ou arraste os PDFs</span>
+        <span class="h">Vários arquivos • apenas .pdf</span>
+        <input type="file" accept="application/pdf" multiple id="file-13">
+      </label>
+      <ul class="lista" id="lista-13"></ul>
+      <div class="acoes">
+        <button class="btn btn-primary" id="ger-13" disabled onclick="DESP1_gerar('13')">📎 Unir e baixar</button>
+        <button class="btn btn-ghost" onclick="DESP1_limpar('13')">Limpar</button>
+      </div>
+      <div class="status" id="st-13"></div>
+    </div>
+
+    <div class="card">
+      <h2>1.4 Autorização de Passagem</h2>
+      <p class="desc">Carregue o(s) PDF(s) referente(s) a este tópico. Arraste os arquivos na ordem desejada.</p>
+      <label class="drop" id="drop-14">
+        <span class="ic">🚧</span>
+        <span class="t">Clique ou arraste os PDFs</span>
+        <span class="h">Vários arquivos • apenas .pdf</span>
+        <input type="file" accept="application/pdf" multiple id="file-14">
+      </label>
+      <ul class="lista" id="lista-14"></ul>
+      <div class="acoes">
+        <button class="btn btn-primary" id="ger-14" disabled onclick="DESP1_gerar('14')">📎 Unir e baixar</button>
+        <button class="btn btn-ghost" onclick="DESP1_limpar('14')">Limpar</button>
+      </div>
+      <div class="status" id="st-14"></div>
+    </div>
+
+    <div class="card">
+      <h2>1.5 Documentação do(s) Proprietário(s)/Ocupante(s)</h2>
+      <p class="desc">Carregue o(s) PDF(s) referente(s) a este tópico. Arraste os arquivos na ordem desejada.</p>
+      <label class="drop" id="drop-15">
+        <span class="ic">🧾</span>
+        <span class="t">Clique ou arraste os PDFs</span>
+        <span class="h">Vários arquivos • apenas .pdf</span>
+        <input type="file" accept="application/pdf" multiple id="file-15">
+      </label>
+      <ul class="lista" id="lista-15"></ul>
+      <div class="acoes">
+        <button class="btn btn-primary" id="ger-15" disabled onclick="DESP1_gerar('15')">📎 Unir e baixar</button>
+        <button class="btn btn-ghost" onclick="DESP1_limpar('15')">Limpar</button>
+      </div>
+      <div class="status" id="st-15"></div>
+    </div>
+
+    <div class="card">
+      <h2>1.6 Certidões do(s) Proprietário(s)/Ocupante(s)</h2>
+      <p class="desc">Carregue o(s) PDF(s) referente(s) a este tópico. Arraste os arquivos na ordem desejada.</p>
+      <label class="drop" id="drop-16">
+        <span class="ic">📋</span>
+        <span class="t">Clique ou arraste os PDFs</span>
+        <span class="h">Vários arquivos • apenas .pdf</span>
+        <input type="file" accept="application/pdf" multiple id="file-16">
+      </label>
+      <ul class="lista" id="lista-16"></ul>
+      <div class="acoes">
+        <button class="btn btn-primary" id="ger-16" disabled onclick="DESP1_gerar('16')">📎 Unir e baixar</button>
+        <button class="btn btn-ghost" onclick="DESP1_limpar('16')">Limpar</button>
+      </div>
+      <div class="status" id="st-16"></div>
+    </div>
+
+    <div class="card">
+      <h2>1.7 Documentação do Imóvel</h2>
+      <p class="desc">Carregue o(s) PDF(s) referente(s) a este tópico. Arraste os arquivos na ordem desejada.</p>
+      <label class="drop" id="drop-17">
+        <span class="ic">🏠</span>
+        <span class="t">Clique ou arraste os PDFs</span>
+        <span class="h">Vários arquivos • apenas .pdf</span>
+        <input type="file" accept="application/pdf" multiple id="file-17">
+      </label>
+      <ul class="lista" id="lista-17"></ul>
+      <div class="acoes">
+        <button class="btn btn-primary" id="ger-17" disabled onclick="DESP1_gerar('17')">📎 Unir e baixar</button>
+        <button class="btn btn-ghost" onclick="DESP1_limpar('17')">Limpar</button>
+      </div>
+      <div class="status" id="st-17"></div>
+    </div>
+
+    <div class="card">
+      <h2>1.8 Certidões do Imóvel</h2>
+      <p class="desc">Carregue o(s) PDF(s) referente(s) a este tópico. Arraste os arquivos na ordem desejada.</p>
+      <label class="drop" id="drop-18">
+        <span class="ic">📑</span>
+        <span class="t">Clique ou arraste os PDFs</span>
+        <span class="h">Vários arquivos • apenas .pdf</span>
+        <input type="file" accept="application/pdf" multiple id="file-18">
+      </label>
+      <ul class="lista" id="lista-18"></ul>
+      <div class="acoes">
+        <button class="btn btn-primary" id="ger-18" disabled onclick="DESP1_gerar('18')">📎 Unir e baixar</button>
+        <button class="btn btn-ghost" onclick="DESP1_limpar('18')">Limpar</button>
+      </div>
+      <div class="status" id="st-18"></div>
+    </div>
+  </div>
+</div>
+  </section>
+
+<section class="tab-panel" id="panel-desp1-vist">
+<div class="wrap">
+  <h1>1.9 · Ficha de Vistoria e Cadastro Socioeconômico (Anexo B)</h1>
+  <p class="sub">Carregue o PDF da Ficha de Vistoria e Cadastro Socioeconômico.</p>
+  <div class="grid">
+    <div class="card">
+      <h2>1.9 Ficha de Vistoria e Cadastro Socioeconômico</h2>
+      <p class="desc">Documento do Anexo B. Carregue o(s) PDF(s) na ordem desejada.</p>
+      <label class="drop" id="drop-19">
+        <span class="ic">📝</span>
+        <span class="t">Clique ou arraste os PDFs</span>
+        <span class="h">Vários arquivos • apenas .pdf</span>
+        <input type="file" accept="application/pdf" multiple id="file-19">
+      </label>
+      <ul class="lista" id="lista-19"></ul>
+      <div class="acoes">
+        <button class="btn btn-primary" id="ger-19" disabled onclick="DESP1_gerar('19')">📎 Unir e baixar</button>
+        <button class="btn btn-ghost" onclick="DESP1_limpar('19')">Limpar</button>
+      </div>
+      <div class="status" id="st-19"></div>
+    </div>
+  </div>
+</div>
+  </section>
+
+<section class="tab-panel" id="panel-desp1-rel">
+<div class="wrap">
+  <h1>1.10 · Relatório Técnico de Caracterização Socioeconômica</h1>
+  <p class="sub">Carregue o PDF do Relatório Técnico de Caracterização Socioeconômica.</p>
+  <div class="grid">
+    <div class="card">
+      <h2>1.10 Relatório Técnico de Caracterização Socioeconômica</h2>
+      <p class="desc">Carregue o(s) PDF(s) na ordem desejada.</p>
+      <label class="drop" id="drop-110">
+        <span class="ic">📊</span>
+        <span class="t">Clique ou arraste os PDFs</span>
+        <span class="h">Vários arquivos • apenas .pdf</span>
+        <input type="file" accept="application/pdf" multiple id="file-110">
+      </label>
+      <ul class="lista" id="lista-110"></ul>
+      <div class="acoes">
+        <button class="btn btn-primary" id="ger-110" disabled onclick="DESP1_gerar('110')">📎 Unir e baixar</button>
+        <button class="btn btn-ghost" onclick="DESP1_limpar('110')">Limpar</button>
+      </div>
+      <div class="status" id="st-110"></div>
+    </div>
+  </div>
 </div>
   </section>
 </main>
@@ -6475,6 +6756,122 @@ function AV_gerarDescSituacao(){
     };
     rd.readAsText(file, "utf-8");
   };
+})();
+</script>
+<script>
+/* ===== DESP 1 — upload e união de PDFs por tópico (config. de capa: futura) ===== */
+(function(){
+  const IDS = ["11","12","13","14","15","16","17","18","19","110"];
+  const NOMES = {
+    "11":"1.1_DUP_Declaracao_Utilidade_Publica",
+    "12":"1.2_Projeto_de_Referencia",
+    "13":"1.3_Carta_Apresentacao_Projeto",
+    "14":"1.4_Autorizacao_de_Passagem",
+    "15":"1.5_Documentacao_Proprietario_Ocupante",
+    "16":"1.6_Certidoes_Proprietario_Ocupante",
+    "17":"1.7_Documentacao_do_Imovel",
+    "18":"1.8_Certidoes_do_Imovel",
+    "19":"1.9_Ficha_Vistoria_Cadastro_Socioeconomico",
+    "110":"1.10_Relatorio_Tecnico_Socioeconomico"
+  };
+  const arquivos = {};
+  IDS.forEach(id => arquivos[id] = []);
+
+  function bind(id){
+    const input = document.getElementById("file-"+id);
+    const drop  = document.getElementById("drop-"+id);
+    if(!input || !drop) return;
+    input.addEventListener("change", e => addFiles(id, e.target.files));
+    ["dragenter","dragover"].forEach(ev => drop.addEventListener(ev, e=>{e.preventDefault(); drop.classList.add("over");}));
+    ["dragleave","drop"].forEach(ev => drop.addEventListener(ev, e=>{e.preventDefault(); drop.classList.remove("over");}));
+    drop.addEventListener("drop", e => addFiles(id, e.dataTransfer.files));
+  }
+
+  async function addFiles(id, fileList){
+    const st = document.getElementById("st-"+id);
+    if(st){ st.className="status work"; st.textContent="Lendo arquivos..."; }
+    for(const f of fileList){
+      if(f.type !== "application/pdf" && !f.name.toLowerCase().endsWith(".pdf")) continue;
+      let paginas = "?";
+      try{
+        const bytes = await f.arrayBuffer();
+        const doc = await PDFLib.PDFDocument.load(bytes, {ignoreEncryption:true});
+        paginas = doc.getPageCount();
+        arquivos[id].push({nome:f.name, bytes, paginas});
+      }catch(err){
+        if(st){ st.className="status err"; st.textContent='Erro ao ler "'+f.name+'": arquivo inválido ou protegido.'; }
+      }
+    }
+    render(id);
+    const inp=document.getElementById("file-"+id); if(inp) inp.value="";
+    if(arquivos[id].length && st){ st.className="status"; st.textContent=""; }
+  }
+
+  function render(id){
+    const ul = document.getElementById("lista-"+id);
+    if(!ul) return;
+    ul.innerHTML="";
+    arquivos[id].forEach((a, i)=>{
+      const li = document.createElement("li");
+      li.className="item";
+      li.innerHTML =
+        '<span class="num">'+(i+1)+'</span>'+
+        '<span class="nome" title="'+a.nome+'">'+a.nome+'</span>'+
+        '<span class="pg">'+a.paginas+' pág.</span>'+
+        '<button title="Subir" onclick="DESP1_mover(\''+id+'\','+i+',-1)">▲</button>'+
+        '<button title="Descer" onclick="DESP1_mover(\''+id+'\','+i+',1)">▼</button>'+
+        '<button class="rm" title="Remover" onclick="DESP1_remover(\''+id+'\','+i+')">✕</button>';
+      ul.appendChild(li);
+    });
+    const btn=document.getElementById("ger-"+id);
+    if(btn) btn.disabled = arquivos[id].length===0;
+  }
+
+  function mover(id, i, dir){
+    const arr = arquivos[id]; const j=i+dir;
+    if(j<0||j>=arr.length) return;
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+    render(id);
+  }
+  function remover(id, i){ arquivos[id].splice(i,1); render(id); }
+  function limpar(id){
+    arquivos[id]=[]; render(id);
+    const st=document.getElementById("st-"+id); if(st){ st.className="status"; st.textContent=""; }
+  }
+
+  async function gerar(id){
+    const st = document.getElementById("st-"+id);
+    const btn = document.getElementById("ger-"+id);
+    if(!arquivos[id] || !arquivos[id].length) return;
+    if(btn) btn.disabled=true;
+    if(st){ st.className="status work"; st.textContent="Unindo arquivos..."; }
+    try{
+      const out = await PDFLib.PDFDocument.create();
+      for(const a of arquivos[id]){
+        const src = await PDFLib.PDFDocument.load(a.bytes, {ignoreEncryption:true});
+        const pgs = await out.copyPages(src, src.getPageIndices());
+        pgs.forEach(p => out.addPage(p));
+      }
+      const bytes = await out.save();
+      const blob = new Blob([bytes], {type:"application/pdf"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href=url; a.download=(NOMES[id]||("Topico_"+id))+".pdf"; a.click();
+      setTimeout(()=>URL.revokeObjectURL(url), 4000);
+      if(st){ st.className="status ok"; st.textContent="✓ PDF gerado: "+out.getPageCount()+" páginas."; }
+    }catch(err){
+      console.error(err);
+      if(st){ st.className="status err"; st.textContent="Erro ao gerar: "+err.message; }
+    }
+    if(btn) btn.disabled=false;
+  }
+
+  IDS.forEach(bind);
+
+  window.DESP1_gerar=gerar;
+  window.DESP1_limpar=limpar;
+  window.DESP1_mover=mover;
+  window.DESP1_remover=remover;
 })();
 </script>
 </body>
