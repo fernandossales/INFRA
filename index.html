@@ -1164,6 +1164,330 @@
     #panel-docs, #panel-anx7, #panel-anx8, #panel-relest, #panel-anx10, #panel-anx11, #panel-desp1-vist, #panel-drl,
     #panel-docs, #panel-anx7, #panel-anx8, #panel-relest, #panel-anx10, #panel-anx11, #panel-desp1-rel, #panel-drl,
     #panel-docs, #panel-anx7, #panel-anx8, #panel-relest, #panel-anx10, #panel-anx11{ padding-bottom:96px; }
+
+  /* ===== 1.9 Anexo B — reaproveita estilo dos formulários da DESP 3 ===== */
+  #panel-desp1-vist{
+    --azul:#1F6FC0; --azul-esc:#175a9f; --azul-inf:#0a4d7c;
+    --borda:#d3dbe4; --borda-forte:#b3bfcc; --texto:#243447;
+    --bg:#eef2f6; --card:#ffffff; --label:#5a6b7c; --suave:#f7f9fc;
+    font-family:"Segoe UI", Arial, Helvetica, sans-serif;
+    background:var(--bg); color:var(--texto); padding:26px 20px 80px;
+  }
+  #panel-desp1-vist *{box-sizing:border-box;}
+  #panel-desp1-vist .vwrap{max-width:1080px; margin:0 auto;}
+  #panel-desp1-vist .doc-head{margin-bottom:18px;}
+  #panel-desp1-vist h1{font-size:23px; margin:0 0 4px; color:var(--azul-esc); letter-spacing:.3px;}
+  #panel-desp1-vist .sub{font-size:13.5px; color:var(--label); margin:0;}
+  #panel-desp1-vist .vsec{
+    font-size:14px; font-weight:800; letter-spacing:.4px; text-transform:uppercase;
+    color:#fff; background:linear-gradient(180deg,#2478c9,var(--azul));
+    padding:9px 16px; border-radius:9px 9px 0 0; margin:22px 0 0;
+    box-shadow:0 2px 8px rgba(31,111,192,.22);
+  }
+  #panel-desp1-vist .vcard{
+    background:var(--card); border:1px solid var(--borda);
+    border-radius:0 0 12px 12px; padding:18px 18px 20px; margin-bottom:8px;
+    box-shadow:0 8px 22px rgba(30,50,80,.07);
+  }
+  #panel-desp1-vist .vsub{
+    font-size:12.5px; font-weight:700; color:var(--azul-esc);
+    letter-spacing:.3px; margin:16px 0 8px; padding-bottom:4px;
+    border-bottom:1px solid var(--borda); display:flex; align-items:center; justify-content:space-between;
+  }
+  #panel-desp1-vist .vsub:first-child{margin-top:0;}
+  #panel-desp1-vist .vrow{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:10px;}
+  #panel-desp1-vist .vfield{display:flex; flex-direction:column; gap:4px; min-width:150px;}
+  #panel-desp1-vist .vfield.grow{flex:1; min-width:220px;}
+  #panel-desp1-vist label,
+  #panel-vistoria .vlbl, #panel-avaliacao .vlbl{
+    font-size:11px; font-weight:700; color:var(--label); text-transform:uppercase; letter-spacing:.4px;
+  }
+  #panel-desp1-vist .vlbl{display:block; margin:14px 0 5px;}
+  #panel-desp1-vist input[type=text], #panel-avaliacao input[type=date], #panel-avaliacao input[type=number], #panel-avaliacao select, #panel-avaliacao textarea{
+    width:100%; border:1px solid var(--borda-forte); border-radius:7px;
+    padding:8px 11px; font-size:13.5px; color:var(--texto); background:#fff;
+    font-family:inherit; outline:none; transition:border-color .15s, box-shadow .15s;
+  }
+  #panel-desp1-vist textarea{resize:vertical; line-height:1.45;}
+  #panel-desp1-vist input:focus, #panel-avaliacao select:focus, #panel-avaliacao textarea:focus{
+    border-color:var(--azul); box-shadow:0 0 0 3px rgba(31,111,192,.12);
+  }
+  #panel-desp1-vist .mini-add{
+    border:1px solid var(--azul); background:#eaf3fc; color:var(--azul-esc);
+    font-size:11.5px; font-weight:700; padding:4px 12px; border-radius:14px; cursor:pointer;
+    text-transform:none; letter-spacing:0; transition:background .15s;
+  }
+  #panel-desp1-vist .mini-add:hover{background:#d8ebfb;}
+  #panel-desp1-vist .vactions{
+    position:sticky; bottom:0; margin-top:20px;
+    background:linear-gradient(180deg, rgba(238,242,246,0), var(--bg) 40%);
+    padding:14px 0 4px; display:flex; gap:10px; flex-wrap:wrap;
+  }
+  #panel-desp1-vist .vbtn{
+    border:none; padding:11px 22px; font-size:14px; font-weight:700; border-radius:9px; cursor:pointer;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  #panel-desp1-vist .vbtn-primary{background:var(--azul); color:#fff; box-shadow:0 3px 10px rgba(31,111,192,.3);}
+  #panel-desp1-vist .vbtn-primary:hover{background:var(--azul-esc);}
+  #panel-desp1-vist .vbtn-ghost{background:#fff; color:var(--texto); border:1px solid var(--borda-forte);}
+  #panel-desp1-vist .auto-tag{
+    font-size:9px; font-weight:800; background:#e3f0e6; color:#159a3c;
+    padding:1px 6px; border-radius:8px; letter-spacing:.3px; text-transform:uppercase; margin-left:5px;
+  }
+  #panel-desp1-vist .av-estacas-view{display:flex; flex-direction:column; gap:6px;}
+  #panel-desp1-vist .av-estaca-item{
+    background:var(--suave); border:1px solid var(--borda); border-radius:8px;
+    padding:8px 12px; font-size:13px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  }
+  #panel-desp1-vist .av-estaca-item b{color:var(--azul-esc); min-width:62px;}
+  #panel-desp1-vist .av-estaca-item .km{color:var(--texto);}
+  #panel-desp1-vist .av-estaca-item .tag{
+    margin-left:auto; font-size:10px; font-weight:700; color:#fff; background:var(--azul);
+    padding:2px 9px; border-radius:10px;
+  }
+  #panel-desp1-vist .img-drop{
+    display:flex; flex-direction:column; align-items:center; gap:5px;
+    border:2px dashed var(--borda-forte); border-radius:12px; padding:26px 16px;
+    cursor:pointer; background:var(--suave); transition:border-color .15s, background .15s; text-align:center;
+  }
+  #panel-desp1-vist .img-drop:hover, #panel-avaliacao .img-drop.over{border-color:var(--azul); background:#eaf3fc;}
+  #panel-desp1-vist .img-drop .ic{font-size:30px;}
+  #panel-desp1-vist .img-drop .t{font-size:13.5px; font-weight:600; color:var(--texto);}
+  #panel-desp1-vist .img-drop .h{font-size:11.5px; color:var(--label);}
+  #panel-desp1-vist .img-drop input{display:none;}
+  #panel-desp1-vist .img-preview{margin-top:12px; display:none;}
+  #panel-desp1-vist .img-preview.show{display:block;}
+  #panel-desp1-vist .img-preview img{max-width:100%; border-radius:10px; border:1px solid var(--borda); box-shadow:0 4px 14px rgba(30,50,80,.12);}
+  #panel-desp1-vist .img-preview .rm-img{
+    margin-top:8px; border:1px solid var(--borda-forte); background:#fff; color:#c0392b;
+    font-size:12px; font-weight:700; padding:5px 14px; border-radius:8px; cursor:pointer;
+  }
+  #panel-desp1-vist .av-area-aval{
+    background:#fff9e8; border:1px solid #e7d38a; border-radius:9px; padding:12px 14px; margin-bottom:12px;
+  }
+  #panel-desp1-vist .av-area-aval label{color:#8a6d1a; margin-bottom:5px;}
+  #panel-desp1-vist .av-area-aval input{max-width:200px; border-color:#e0b400;}
+  #panel-desp1-vist .hint-inline{display:block; font-size:11px; color:#a08028; margin-top:5px; text-transform:none; letter-spacing:0; font-weight:400;}
+  #panel-desp1-vist .gleba-linha{
+    display:flex; gap:10px; align-items:flex-end; margin-bottom:10px; flex-wrap:wrap;
+    background:var(--suave); border:1px solid var(--borda); border-radius:9px; padding:11px 12px;
+  }
+  #panel-desp1-vist .gleba-linha .rot{font-size:11px; font-weight:800; color:var(--azul-esc); align-self:center; min-width:70px;}
+  #panel-desp1-vist .gleba-linha .cel{display:flex; flex-direction:column; gap:4px;}
+  #panel-desp1-vist .gleba-linha .cel span{font-size:10px; font-weight:700; color:var(--label); text-transform:uppercase;}
+  #panel-desp1-vist .gleba-linha .cel.classe{min-width:100px;}
+  #panel-desp1-vist .gleba-linha .cel.area{min-width:110px;}
+  #panel-desp1-vist .gleba-linha .cel.fator{flex:1; min-width:200px;}
+  #panel-desp1-vist .gleba-linha .cel.pct{min-width:90px;}
+  #panel-desp1-vist .gleba-linha .pct-val{
+    font-size:15px; font-weight:800; color:var(--azul-esc);
+    padding:7px 0; text-align:center; background:#eaf3fc; border-radius:7px;
+  }
+  #panel-desp1-vist .gleba-linha .rm{
+    border:none; background:#fdecec; color:#c0392b; font-weight:700;
+    width:30px; height:34px; border-radius:7px; cursor:pointer; font-size:15px; align-self:flex-end;
+  }
+  #panel-desp1-vist .gleba-linha .rm:hover{background:#f8d7d7;}
+  #panel-desp1-vist .ccu-formula{
+    background:linear-gradient(180deg,#f0f7ff,#e9f2fc); border:1px solid #bcd6f0;
+    border-radius:10px; padding:14px 18px; font-family:"Consolas","Courier New",monospace; font-size:14px; color:var(--azul-inf);
+  }
+  #panel-desp1-vist .ccu-formula .linha3{font-weight:800; font-size:16px; margin-top:4px; color:var(--azul-esc);}
+  #panel-desp1-vist .na-calc{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    background:#f0f7ff; border:1px solid #bcd6f0; border-radius:10px; padding:12px 16px; font-weight:700; color:var(--azul-esc);
+  }
+  #panel-desp1-vist .na-calc input, #panel-avaliacao .na-calc select{max-width:120px; font-weight:700;}
+  #panel-desp1-vist .na-calc .resultado{max-width:140px; background:#eaf3fc; border-color:var(--azul); color:var(--azul-inf); font-size:15px;}
+  #panel-desp1-vist table.memoria{width:100%; border-collapse:collapse; font-size:12.5px; margin-top:4px;}
+  #panel-desp1-vist table.memoria th{background:var(--azul); color:#fff; padding:8px 10px; text-align:left; font-weight:700;}
+  #panel-desp1-vist table.memoria td{border:1px solid var(--borda); padding:7px 10px; vertical-align:middle;}
+  #panel-desp1-vist table.memoria td:first-child{font-weight:700; color:var(--azul-esc); background:#fbfcfe;}
+  #panel-desp1-vist table.memoria input, #panel-avaliacao table.memoria select{max-width:120px; padding:5px 8px;}
+  #panel-desp1-vist table.memoria span{font-weight:700;}
+  #panel-desp1-vist .vtn-box{margin-top:14px; background:#fff4e6; border:1px solid #f0c891; border-radius:10px; padding:14px 16px;}
+  #panel-desp1-vist .vtn-formula{font-family:"Consolas","Courier New",monospace; font-size:12px; color:#8a5a1a; line-height:1.5;}
+  #panel-desp1-vist .vtn-result{margin-top:8px; font-size:16px; color:var(--texto);}
+  #panel-desp1-vist .vtn-result strong{color:#c0700a; font-size:20px;}
+  #panel-desp1-vist .calc-line{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px;}
+  #panel-desp1-vist .calc-line label{flex:1; min-width:240px;}
+  #panel-desp1-vist .calc-line input{max-width:150px;}
+  #panel-desp1-vist .calc-line strong{color:var(--azul-esc); font-size:16px; min-width:120px;}
+  #panel-desp1-vist table.resumo{width:100%; border-collapse:collapse; font-size:13px;}
+  #panel-desp1-vist table.resumo td{border-bottom:1px solid var(--borda); padding:8px 12px;}
+  #panel-desp1-vist table.resumo td.v{text-align:right; width:200px;}
+  #panel-desp1-vist table.resumo td.v input{max-width:150px; text-align:right; margin-left:auto;}
+  #panel-desp1-vist table.resumo tr.sub-tot td{background:#f0f5fb; font-weight:700; color:var(--azul-esc);}
+  #panel-desp1-vist table.resumo tr.total td{background:#e9eff6; color:var(--azul-esc); font-weight:800; font-size:14px; border-top:2px solid var(--azul-esc);}
+  #panel-desp1-vist table.resumo tr.total strong{color:var(--azul-esc);}
+  #panel-desp1-vist ol.anexos-list{margin:0; padding-left:22px; font-size:13px; color:var(--texto); line-height:1.9;}
+  #panel-desp1-vist .vsec.acc{
+    display:flex; align-items:center; justify-content:space-between;
+    cursor:pointer; user-select:none;
+  }
+  #panel-desp1-vist .vsec.acc .acc-chevron{font-size:13px; transition:transform .2s;}
+  #panel-desp1-vist .vsec.acc.fechado{border-radius:9px;}
+  #panel-desp1-vist .vsec.acc.fechado .acc-chevron{transform:rotate(-90deg);}
+  #panel-desp1-vist .vcard.oculto{display:none;}
+  #panel-desp1-vist input.bloqueado, #panel-avaliacao select.bloqueado,
+  #panel-vistoria input.bloqueado{
+    background:#eef1f4 !important; color:#5a6b7c !important; cursor:not-allowed;
+    border-color:#d3dbe4 !important;
+  }
+  #panel-desp1-vist .ocupante-sel{
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    background:#eef4fa; border:1px solid #cfe0f0; border-radius:8px;
+    padding:10px 14px; margin-bottom:14px;
+  }
+  #panel-desp1-vist .ocup-lbl{font-weight:700; color:var(--azul-esc); font-size:12px; text-transform:none; letter-spacing:0;}
+  #panel-desp1-vist .ocup-opt{display:flex; align-items:center; gap:6px; font-size:13px; color:var(--texto); text-transform:none; letter-spacing:0; font-weight:500; cursor:pointer;}
+  #panel-desp1-vist .ocup-opt input{width:15px; height:15px;}
+  #panel-desp1-vist .antes-depois-sel{
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    background:#fff4e6; border:1px solid #f0c891; border-radius:8px;
+    padding:10px 14px; margin-bottom:12px;
+  }
+  #panel-desp1-vist .ad-lbl{font-weight:700; color:#8a5a1a; font-size:12px; text-transform:none; letter-spacing:0;}
+  #panel-desp1-vist .ad-opt{display:flex; align-items:center; gap:6px; font-size:13px; color:var(--texto); text-transform:none; letter-spacing:0; font-weight:500; cursor:pointer;}
+  #panel-desp1-vist .ad-opt input{width:15px; height:15px;}
+  #panel-desp1-vist .area-restante{
+    background:#f0f5fb; border:1px solid #cfe0f0; border-radius:8px;
+    padding:8px 14px; margin:10px 0 14px; font-size:13px; color:var(--texto);
+  }
+  #panel-desp1-vist .area-restante strong{color:var(--azul-esc);}
+  #panel-desp1-vist .depois-box{
+    background:#fdf3e8; border:1px solid #f0c891; border-radius:10px;
+    padding:14px 16px; margin:12px 0;
+  }
+  #panel-desp1-vist .depois-box h4{margin:0 0 10px; color:#8a5a1a; font-size:13px;}
+  #panel-desp1-vist .desval-result{
+    background:#fff; border:2px solid #c0700a; border-radius:8px; padding:12px 16px; margin-top:12px;
+  }
+  #panel-desp1-vist .desval-result .v{font-size:18px; font-weight:800; color:#c0700a;}
+  #panel-desp1-vist .na-tabela-wrap{overflow-x:auto; margin-bottom:16px;}
+  #panel-desp1-vist table.na-tabela{width:100%; border-collapse:collapse; font-size:12px; min-width:720px;}
+  #panel-desp1-vist table.na-tabela th{background:var(--azul); color:#fff; padding:6px 8px; text-align:center; font-weight:700; border:1px solid #fff; line-height:1.25;}
+  #panel-desp1-vist table.na-tabela th.grp-ccu{background:#175a9f;}
+  #panel-desp1-vist table.na-tabela th.grp-na{background:#159a3c;}
+  #panel-desp1-vist table.na-tabela td{border:1px solid var(--borda); padding:5px 8px; text-align:center; vertical-align:middle;}
+  #panel-desp1-vist table.na-tabela td.classe{font-weight:700; color:var(--azul-esc); background:#f0f5fb;}
+  #panel-desp1-vist table.na-tabela tr.total td{background:#e3f0fc; font-weight:800; color:var(--azul-esc);}
+  #panel-desp1-vist table.na-tabela td.na-area-preenchida{background:#fff9e8;}
+  #panel-desp1-vist table.na-tabela .sit-cell{cursor:pointer; transition:background .12s;}
+  #panel-desp1-vist table.na-tabela .sit-cell:hover{background:#eaf7ee;}
+  #panel-desp1-vist table.na-tabela .sit-cell.sel{background:#159a3c; color:#fff; font-weight:700;}
+  #panel-desp1-vist table.na-tabela .sit-na{font-weight:700; color:#159a3c;}
+  #panel-desp1-vist .hint-auto{font-size:10.5px; font-weight:600; color:#159a3c; text-transform:none; letter-spacing:0;}
+  #panel-desp1-vist table.na-tabela td.area-edit{padding:2px;}
+  #panel-desp1-vist table.na-tabela td.area-edit input.na-area{
+    width:100%; border:1px solid var(--borda-forte); border-radius:5px;
+    padding:4px 6px; font-size:12px; text-align:center; color:var(--texto); background:#fff;
+  }
+  #panel-desp1-vist table.na-tabela td.area-edit input.na-area:focus{border-color:var(--azul); outline:none; box-shadow:0 0 0 2px rgba(31,111,192,.15);}
+  #panel-desp1-vist table.na-tabela td.area-edit.na-area-preenchida input.na-area{background:#fff9e8; font-weight:600;}
+  #panel-desp1-vist .gleba-linha .g-classe-disp{text-align:center; font-weight:700;}
+  #panel-desp1-vist .gleba-vazia{padding:14px; text-align:center; color:#8a97a6; font-style:italic; background:var(--suave); border-radius:8px;}
+  #panel-desp1-vist .gleba-bloco{flex-direction:column; align-items:stretch; gap:10px;}
+  #panel-desp1-vist .gleba-topo{display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;}
+  #panel-desp1-vist .gleba-selecoes{display:flex; gap:12px; flex-wrap:wrap;}
+  #panel-desp1-vist .gleba-selecoes .cel{flex:1; min-width:240px;}
+  #panel-desp1-vist .cel.selfator, #panel-avaliacao .cel.selcaract{display:flex; flex-direction:column; gap:4px;}
+  #panel-desp1-vist .cel.selfator span, #panel-avaliacao .cel.selcaract span,
+  #panel-avaliacao .cel.fator.full span{font-size:10px; font-weight:700; color:var(--label); text-transform:uppercase; letter-spacing:.3px;}
+  #panel-desp1-vist .cel.fator.full{display:flex; flex-direction:column; gap:4px;}
+  #panel-desp1-vist .g-fatorlim, #panel-avaliacao .g-caract{
+    width:100%; border:1px solid var(--borda-forte); border-radius:7px; padding:7px 9px; font-size:12.5px; background:#fff; color:var(--texto);
+  }
+  #panel-desp1-vist .g-fatorlim:focus, #panel-avaliacao .g-caract:focus{border-color:var(--azul); outline:none; box-shadow:0 0 0 2px rgba(31,111,192,.15);}
+  #panel-desp1-vist .import-amostra{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:14px 0;
+    background:#f0f5fb; border:1px solid #cfe0f0; border-radius:9px; padding:12px 16px;
+  }
+  #panel-desp1-vist .import-hint{font-size:12px; color:var(--label);}
+  #panel-desp1-vist .imovel-avaliando{margin:12px 0;}
+  #panel-desp1-vist .ia-grid{display:flex; gap:14px; flex-wrap:wrap;}
+  #panel-desp1-vist .ia-tabela{flex:2; min-width:420px;}
+  #panel-desp1-vist .ia-mapa{flex:1; min-width:240px; display:flex; flex-direction:column;}
+  #panel-desp1-vist .ia-titulo{
+    background:#1F6FC0; color:#fff; font-weight:800; text-align:center;
+    padding:7px; font-size:13px; letter-spacing:.4px; border-radius:6px 6px 0 0;
+  }
+  #panel-desp1-vist table.ia-tab{width:100%; border-collapse:collapse; font-size:12.5px;}
+  #panel-desp1-vist table.ia-tab td{border:1px solid #c3d3e2; padding:6px 9px; text-align:center; vertical-align:middle;}
+  #panel-desp1-vist table.ia-tab tr.ia-sub td{background:#175a9f; color:#fff; font-weight:700; text-align:center;}
+  #panel-desp1-vist table.ia-tab tr.ia-cols td{background:#eef4fa; font-weight:700; color:var(--azul-esc);}
+  #panel-desp1-vist table.ia-tab td.ia-lbl{background:#f7f9fc; font-weight:700; color:var(--texto); text-align:center;}
+  #panel-desp1-vist table.ia-tab td.ia-eq{font-size:10.5px; text-align:center; line-height:1.5; color:#243447;}
+  #panel-desp1-vist table.ia-tab td.ia-destaque{font-weight:800; color:var(--azul-esc); background:#eaf3fc;}
+  #panel-desp1-vist table.ia-tab td.ia-centro{text-align:center;}
+  #panel-desp1-vist .ia-mapa .img-drop{flex:1; border-radius:0 0 6px 6px; margin:0;}
+  #panel-desp1-vist .bnf-sub{font-weight:800; color:var(--azul-esc); margin:14px 0 6px; font-size:13px; border-left:4px solid var(--azul); padding-left:8px;}
+  #panel-desp1-vist .bnf-tab-wrap{overflow-x:auto; margin-bottom:8px;}
+  #panel-desp1-vist table.bnf-tab{width:100%; border-collapse:collapse; font-size:11.5px; min-width:760px;}
+  #panel-desp1-vist table.bnf-tab th{background:var(--azul); color:#fff; padding:6px 7px; text-align:center; font-weight:700; border:1px solid #fff; line-height:1.2;}
+  #panel-desp1-vist table.bnf-tab td{border:1px solid var(--borda); padding:3px 5px; vertical-align:middle;}
+  #panel-desp1-vist table.bnf-tab textarea.bnf-disc{width:100%; min-width:200px; min-height:38px; border:1px solid var(--borda-forte); border-radius:5px; padding:5px; font-size:11px; resize:vertical; font-family:inherit;}
+  #panel-desp1-vist table.bnf-tab input{width:100%; border:1px solid var(--borda-forte); border-radius:5px; padding:5px 6px; font-size:11.5px; text-align:center;}
+  #panel-desp1-vist table.bnf-tab input:focus, #panel-avaliacao table.bnf-tab textarea:focus{border-color:var(--azul); outline:none; box-shadow:0 0 0 2px rgba(31,111,192,.12);}
+  #panel-desp1-vist table.bnf-tab .bnf-vtotal{font-weight:700; color:var(--azul-esc); text-align:right; white-space:nowrap;}
+  #panel-desp1-vist table.bnf-tab tfoot .bnf-tot-lbl{text-align:right; font-weight:800; background:#eef4fa; color:var(--azul-esc);}
+  #panel-desp1-vist table.bnf-tab tfoot .bnf-tot{font-weight:800; background:#e3f0fc; color:var(--azul-esc); text-align:right; white-space:nowrap;}
+  #panel-desp1-vist .bnf-rm{border:none; background:#fbe9e9; color:#c0392b; border-radius:5px; width:26px; height:26px; cursor:pointer; font-weight:700;}
+  #panel-desp1-vist .bnf-rm:hover{background:#f5d5d5;}
+  #panel-desp1-vist .bnf-add{background:#eef4fa; border:1px dashed var(--azul); color:var(--azul-esc); border-radius:7px; padding:7px 14px; font-size:12px; font-weight:600; cursor:pointer; margin-top:4px;}
+  #panel-desp1-vist .bnf-add:hover{background:#e3f0fc;}
+  #panel-desp1-vist .bnf-total-geral{margin-top:16px; padding:12px 16px; background:#e3f0fc; border:2px solid var(--azul); border-radius:9px; font-size:14px; font-weight:700; color:var(--azul-esc); text-align:right;}
+  #panel-desp1-vist .bnf-nota{font-size:11px; color:var(--label); margin-top:8px; font-style:italic;}
+  #panel-desp1-vist .bnf-col-dep{width:110px;}
+  #panel-desp1-vist .bnf-col-un{width:70px;}
+  #panel-desp1-vist .bnf-col-qtd{width:80px;}
+  #panel-desp1-vist .bnf-col-vu{width:100px;}
+  #panel-desp1-vist input::placeholder, #panel-avaliacao textarea::placeholder{
+    font-style:italic; color:#9aa7b5; opacity:1;
+  }
+  #panel-desp1-vist{ padding-bottom:96px; }
+  #panel-desp1-vist [data-from]').forEach(el=>{
+      const key = el.getAttribute("data-from");
+      const src = document.querySelector('#panel-vistoria [data-sync="'+key+'"]');
+      if(src){ el.value = src.value; }
+  #panel-desp1-vist [data-from="'+key+'"]').forEach(el=> el.value = src.value);
+        recalc();
+      });
+    });
+  }
+
+  // ---------------- Estacas (view) sincronizadas ----------------
+  window.AV_syncEstacas = function(){
+    const host = document.getElementById("av_estacas");
+    if(!host) return;
+    const estacas = (typeof window.FV_estacas==="function") ? window.FV_estacas() : [];
+    if(!estacas.length){ host.innerHTML = '<div class="av-estaca-item"><span class="km">Nenhuma área cadastrada na Ficha de Vistoria.</span></div>'; return; }
+  #panel-desp1-vist .vbtn-primary");
+    const orig=btn?btn.innerHTML:""; if(btn){btn.disabled=true; btn.innerHTML="⏳ Gerando documento...";}
+  #panel-desp1-vist .vsec.acc").forEach(h2=>{
+    if(!h2.classList.contains("fechado")){
+      h2.classList.add("fechado");
+      let el=h2.nextElementSibling;
+      while(el && !el.classList.contains("vcard")) el=el.nextElementSibling;
+      if(el) el.classList.add("oculto");
+    }
+  #panel-desp1-vist [id]").forEach(el=>{
+      const tag = el.tagName;
+      if(tag!=="INPUT" && tag!=="TEXTAREA" && tag!=="SELECT") return;
+      if(el.type==="file") return;
+      if(el.type==="checkbox" || el.type==="radio"){ dados[el.id] = {__chk:el.checked}
+
+  #panel-desp1-vist .fb-familia{ display:flex; flex-direction:column; gap:6px; }
+  #panel-desp1-vist .fb-fam-linha{ display:flex; gap:8px; align-items:center; }
+  #panel-desp1-vist .fb-fam-linha .fam-n{ flex:0 0 24px; color:#6b7887; font-weight:700; font-size:13px; }
+  #panel-desp1-vist .fb-fam-linha input{ padding:9px 11px; border:1.5px solid #d6dee7; border-radius:8px; font-size:13.5px; }
+  #panel-desp1-vist .fb-fam-linha .fam-nome{ flex:1; }
+  #panel-desp1-vist .fb-fam-linha .fam-idade{ flex:0 0 120px; }
+  #panel-desp1-vist .fb-fam-linha .fam-rm{ flex:0 0 auto; border:none; background:#f3d6d6; color:#a33; border-radius:6px; width:28px; height:28px; cursor:pointer; }
+  #panel-desp1-vist .fb-fotos-prev{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+  #panel-desp1-vist .fb-fotos-prev .foto{ position:relative; }
+  #panel-desp1-vist .fb-fotos-prev img{ width:130px; height:100px; object-fit:cover; border-radius:8px; border:1px solid #d6dee7; }
+  #panel-desp1-vist .fb-fotos-prev .rm{ position:absolute; top:4px; right:4px; background:rgba(160,40,40,.9); color:#fff; border:none; border-radius:50%; width:22px; height:22px; cursor:pointer; font-size:12px; }
 </style>
 </head>
 <body>
@@ -2512,27 +2836,167 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
 <section class="tab-panel" id="panel-desp1-vist">
 <div class="wrap">
   <h1>1.9 · Ficha de Vistoria e Cadastro Socioeconômico (Anexo B)</h1>
-  <p class="sub">Carregue o PDF da Ficha de Vistoria e Cadastro Socioeconômico.</p>
-  <div class="grid">
-    <div class="card">
-      <h2>1.9 Ficha de Vistoria e Cadastro Socioeconômico</h2>
-      <p class="desc">Documento do Anexo B. Carregue o(s) PDF(s) na ordem desejada.</p>
-      <label class="drop" id="drop-19">
-        <span class="ic">📝</span>
-        <span class="t">Clique ou arraste os PDFs</span>
-        <span class="h">Vários arquivos • apenas .pdf</span>
-        <input type="file" accept="application/pdf" multiple id="file-19">
-      </label>
-      <ul class="lista" id="lista-19"></ul>
-      <div class="acoes">
-        <button class="btn btn-primary" id="ger-19" disabled onclick="DESP1_gerar('19')">📎 Unir e baixar</button>
-        <button class="btn btn-ghost" onclick="DESP1_limpar('19')">Limpar</button>
-      </div>
-      <div class="status" id="st-19"></div>
-    </div>
+  <p class="sub">Preencha os campos abaixo. Campos em <b>cinza</b> são preenchidos automaticamente a partir da DESP 3 (Ficha e Avaliação). Use os botões no topo para salvar/abrir e o botão de upload para anexar o PDF assinado.</p>
+  <div class="vcard">
+    <div class="vfield grow"><label>Processo Nº</label><input type="text" id="fb_processo" data-fb-from="processo" class="bloqueado" readonly placeholder="Processo Nº"></div>
+    <div class="vfield grow"><label>Nome do Aplicador(a)</label><input type="text" id="fb_aplicador" placeholder="Nome do aplicador(a)"></div>
+    <div class="vfield grow"><label>Data</label><input type="text" id="fb_data" class="data-br" inputmode="numeric" maxlength="10" placeholder="dd/mm/aaaa"></div>
   </div>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>1 — IDENTIFICAÇÃO</span><span class="acc-chevron">▾</span></h2>
+  <div class="vcard">
+    <div class="vfield grow"><label>1.1 Documentos dominiais (SIM/NÃO)</label><input type="text" id="fb_11_dom" placeholder="SIM / NÃO"></div>
+    <div class="vfield grow"><label>Quais?</label><input type="text" id="fb_11_quais" placeholder="Ex.: Escritura Pública de Compra e Venda..."></div>
+    <div class="vfield grow"><label>1.2 Notificação Proprietário (SIM/NÃO)</label><input type="text" id="fb_12_notif" placeholder="SIM / NÃO"></div>
+    <div class="vfield grow"><label>1.3 Proprietário(a) (SIM/NÃO)</label><input type="text" id="fb_13_prop" placeholder="SIM / NÃO"></div>
+    <div class="vsub">1.3.1 Proprietário(a)</div>
+    <div class="vfield grow"><label>Nome</label><input type="text" id="fb_nome" data-fb-from="nome" class="bloqueado" readonly placeholder="Nome"></div>
+    <div class="vfield grow"><label>RG</label><input type="text" id="fb_rg" data-fb-from="rg" class="bloqueado" readonly placeholder="RG"></div>
+    <div class="vfield grow"><label>CPF</label><input type="text" id="fb_cpf" data-fb-from="cpf" class="bloqueado" readonly placeholder="CPF"></div>
+    <div class="vfield grow"><label>Estado Civil</label><input type="text" id="fb_estcivil" placeholder="Casado, solteiro, viúvo, divorciado ou união estável"></div>
+    <div class="vfield grow"><label>Cônjuge</label><input type="text" id="fb_conjuge" data-fb-from="conjuge" class="bloqueado" readonly placeholder="Cônjuge"></div>
+    <div class="vfield grow"><label>Endereço</label><input type="text" id="fb_endereco" data-fb-from="endereco" class="bloqueado" readonly placeholder="Endereço"></div>
+    <div class="vfield grow"><label>Município</label><input type="text" id="fb_municipio" data-fb-from="municipio" class="bloqueado" readonly placeholder="Município"></div>
+    <div class="vfield grow"><label>Telefone</label><input type="text" id="fb_telefone" data-fb-from="telefone" class="bloqueado" readonly placeholder="Telefone"></div>
+    <div class="vsub">1.3.2 Informante</div>
+    <div class="vfield grow"><label>Nome</label><input type="text" id="fb_inf_nome" data-fb-from="inf_nome" class="bloqueado" readonly placeholder="Nome"></div>
+    <div class="vfield grow"><label>Grau de parentesco</label><input type="text" id="fb_inf_parentesco" placeholder="Grau de parentesco"></div>
+    <div class="vfield grow"><label>Dados comprobatório</label><input type="text" id="fb_inf_dados" data-fb-from="inf_dados" class="bloqueado" readonly placeholder="Dados comprobatório"></div>
+    <div class="vsub">1.4 Propriedade</div>
+    <div class="vfield grow"><label>Identificação</label><input type="text" id="fb_prop_id" data-fb-from="prop_id" class="bloqueado" readonly placeholder="Identificação"></div>
+    <div class="vfield grow"><label>Endereço</label><input type="text" id="fb_prop_end" data-fb-from="prop_end" class="bloqueado" readonly placeholder="Endereço"></div>
+    <div class="vfield grow"><label>Município</label><input type="text" id="fb_prop_mun" data-fb-from="prop_mun" class="bloqueado" readonly placeholder="Município"></div>
+    <div class="vfield grow"><label>Comarca</label><input type="text" id="fb_prop_comarca" placeholder="Comarca"></div>
+    <div class="vfield grow"><label>Área Total (ha)</label><input type="text" id="fb_area_total" data-fb-from="area_total" class="bloqueado" readonly placeholder="Área Total (ha)"></div>
+    <div class="vfield grow"><label>Área de desapropriação (ha)</label><input type="text" id="fb_area_desap" data-fb-from="area_desap" class="bloqueado" readonly placeholder="Área de desapropriação (ha)"></div>
+    <div class="vfield grow"><label>Matrícula</label><input type="text" id="fb_matricula" data-fb-from="matricula" class="bloqueado" readonly placeholder="Matrícula"></div>
+    <div class="vfield grow"><label>1.5 Observações</label><textarea id="fb_15_obs" rows="3" placeholder="Observações sobre a propriedade"></textarea></div>
+  </div>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>2 — CARACTERIZAÇÃO DO IMÓVEL</span><span class="acc-chevron">▾</span></h2>
+  <div class="vcard">
+    <div class="vfield grow"><label>2.1 Ambientais</label><textarea id="fb_21_amb" rows="2" placeholder="Restrições ambientais..."></textarea></div>
+    <div class="vfield grow"><label>2.2 Localização</label><textarea id="fb_22_loc" rows="3" placeholder="Localização e acesso..."></textarea></div>
+    <div class="vfield grow"><label>2.3 Características Físicas</label><textarea id="fb_23_fis" rows="2" placeholder="Características físicas..."></textarea></div>
+    <div class="vsub">2.4 Imóvel Rural</div>
+    <div class="vfield grow"><label>2.4.1 Infraestrutura</label><textarea id="fb_241_infra" rows="3" placeholder="Energia, acesso, cercamento, benfeitorias..."></textarea></div>
+    <div class="vfield grow"><label>2.4.2 Características da terra</label><textarea id="fb_242_terra" rows="2" placeholder="Relevo, tráfego..."></textarea></div>
+    <div class="vfield grow"><label>2.4.3 Hidrografia / Vazão (m³ ou L/s)</label><textarea id="fb_243_hidro" rows="2" placeholder="Hidrografia..."></textarea></div>
+    <div class="vfield grow"><label>2.4.4 Informações Complementares</label><textarea id="fb_244_comp" rows="2" placeholder="Informações complementares..."></textarea></div>
+    <div class="vsub">2.5 Imóvel Urbano</div>
+    <div class="vfield grow"><label>2.5.1 Infraestrutura</label><input type="text" id="fb_251_infra" placeholder="NÃO SE APLICA"></div>
+    <div class="vfield grow"><label>2.5.2 Topográfica</label><input type="text" id="fb_252_topo" placeholder="NÃO SE APLICA"></div>
+    <div class="vfield grow"><label>2.5.3 Distância do centro</label><input type="text" id="fb_253_dist" placeholder="NÃO SE APLICA"></div>
+    <div class="vfield grow"><label>2.5.4 Informações Complementares</label><input type="text" id="fb_254_comp" placeholder="NÃO SE APLICA"></div>
+  </div>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>3 — DESCRIÇÃO DAS BENFEITORIAS</span><span class="acc-chevron">▾</span></h2>
+  <div class="vcard">
+    <div class="vfield grow"><label>3.1 Não reprodutivas</label><textarea id="fb_31_nrep" rows="2" placeholder="Casa/depósito, poço, cercas, forno..."></textarea></div>
+    <div class="vfield grow"><label>3.1.1 Benfeitorias não reprodutivas da faixa não edificante</label><input type="text" id="fb_311" placeholder="AUSENTES"></div>
+    <div class="vfield grow"><label>3.1.2 Informações complementares</label><textarea id="fb_312" rows="2" placeholder="O detalhamento das benfeitorias consta no laudo de avaliação – DESP 3"></textarea></div>
+    <div class="vfield grow"><label>3.2 Reprodutivas</label><textarea id="fb_32_rep" rows="2" placeholder="Imbuzeiro, acerola, milho, feijão e pastagem..."></textarea></div>
+    <div class="vfield grow"><label>3.2.1 Benfeitorias reprodutivas da faixa não edificante</label><input type="text" id="fb_321" placeholder="AUSENTES"></div>
+    <div class="vfield grow"><label>3.2.2 Informações complementares</label><textarea id="fb_322" rows="2" placeholder="O detalhamento das benfeitorias consta no laudo de avaliação – DESP 3"></textarea></div>
+  </div>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>4 — CARACTERIZAÇÃO SOCIOECONÔMICA</span><span class="acc-chevron">▾</span></h2>
+  <div class="vcard">
+    <div class="vsub">4.1 Identificação</div>
+    <div class="vfield grow"><label>Proprietário(a) do imóvel (SIM/NÃO)</label><input type="text" id="fb_41_prop" placeholder="SIM / NÃO"></div>
+    <div class="vfield grow"><label>Nome</label><input type="text" id="fb_41_nome" data-fb-from="nome" class="bloqueado" readonly placeholder="Nome"></div>
+    <div class="vfield grow"><label>4.1.1 Grau de parentesco</label><input type="text" id="fb_411_par" placeholder="Grau de parentesco (se não proprietário)"></div>
+    <div class="vsub">4.2 Naturalidade</div>
+    <div class="vfield grow"><label>Do município (1), outro município (2) ou outro estado (3)</label><input type="text" id="fb_42_nat" placeholder="Ex.: DO MUNICÍPIO"></div>
+    <div class="vfield grow"><label>Qual?</label><input type="text" id="fb_42_qual" placeholder="Ex.: SERTÂNIA - PE"></div>
+    <div class="vfield grow"><label>Há quanto tempo reside na comunidade?</label><input type="text" id="fb_42_tempo" placeholder="Ex.: NÃO INFORMADO"></div>
+    <div class="vsub">4.3 Nível de Escolaridade</div>
+    <div class="vfield grow"><label>Escolaridade</label><input type="text" id="fb_43_esc" placeholder="Analfabeto, alfabetizado, fundamental, médio, técnico, superior"></div>
+    <div class="vsub">4.4 Dados Profissionais</div>
+    <div class="vfield grow"><label>Trabalha (SIM/NÃO)</label><input type="text" id="fb_44_trab" placeholder="SIM / NÃO"></div>
+    <div class="vfield grow"><label>Empresa que trabalha</label><input type="text" id="fb_44_empresa" placeholder="NÃO SE APLICA"></div>
+    <div class="vfield grow"><label>Tempo de trabalho</label><input type="text" id="fb_44_tempo" placeholder="NÃO SE APLICA"></div>
+    <div class="vfield grow"><label>Profissão</label><input type="text" id="fb_44_prof" placeholder="NÃO SE APLICA"></div>
+    <div class="vfield grow"><label>Remuneração</label><input type="text" id="fb_44_remun" placeholder="Ex.: PENSIONISTA"></div>
+    <div class="vfield grow"><label>Renda familiar</label><input type="text" id="fb_44_renda" placeholder="DADO NÃO DECLARADO"></div>
+  </div>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>4.5 — COMPOSIÇÃO FAMILIAR</span><span class="acc-chevron">▾</span></h2>
+  <div class="vcard">
+    <div class="fb-familia" id="fb_familia"></div>
+    <div class="vactions" style="margin-top:8px;"><button class="vbtn vbtn-ghost" type="button" onclick="FB_addFamilia()">+ Adicionar pessoa</button></div>
+    <div class="vfield grow"><label>4.5.1 Os filhos ou familiares estudam na escola do bairro (SIM/NÃO)</label><input type="text" id="fb_451" placeholder="SIM / NÃO"></div>
+    <div class="vfield grow"><label>Em qual bairro?</label><input type="text" id="fb_451_bairro" placeholder="Bairro"></div>
+    <div class="vfield grow"><label>4.5.2 Reside na moradia alguma pessoa com deficiência (SIM/NÃO)</label><input type="text" id="fb_452" placeholder="SIM / NÃO"></div>
+    <div class="vfield grow"><label>Qual?</label><input type="text" id="fb_452_qual" placeholder="Descrição"></div>
+    <div class="vfield grow"><label>4.5.3 Recebe BPC – Benefício de Prestação Continuada (SIM/NÃO)</label><input type="text" id="fb_453_bpc" placeholder="SIM / NÃO"></div>
+    <div class="vfield grow"><label>4.5.4 Doenças mais frequentes na família</label><textarea id="fb_454_doencas" rows="2" placeholder="Alergia, desnutrição, diarreia, doença respiratória, verminose..."></textarea></div>
+  </div>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>4.6 — SITUAÇÃO DA MORADIA</span><span class="acc-chevron">▾</span></h2>
+  <div class="vcard">
+    <div class="vfield grow"><label>4.6.1 Tipo do imóvel</label><input type="text" id="fb_461_tipo" placeholder="Terreno, comércio, casa residencial, casa abandonada, outros"></div>
+    <div class="vfield grow"><label>Outros</label><input type="text" id="fb_461_outros" placeholder="Ex.: CASA/ARMAZÉM"></div>
+    <div class="vfield grow"><label>4.6.2 Forma de ocupação da moradia</label><input type="text" id="fb_462_ocup" placeholder="Própria / Alugada / Cedida"></div>
+    <div class="vfield grow"><label>4.6.3 Número de famílias na residência</label><input type="text" id="fb_463_fam" placeholder="Uma / Duas / Mais de duas"></div>
+    <div class="vfield grow"><label>4.6.4 Estado de conservação do imóvel</label><input type="text" id="fb_464_cons" placeholder="Bom / Regular / Ruim"></div>
+    <div class="vfield grow"><label>4.6.5 Característica da construção</label><input type="text" id="fb_465_constr" placeholder="Alvenaria / Madeira / Misto"></div>
+    <div class="vfield grow"><label>4.6.6 Número de cômodos</label><input type="text" id="fb_466_comodos" placeholder="Ex.: 10 cômodos"></div>
+    <div class="vfield grow"><label>Obs.</label><textarea id="fb_46_obs" rows="3" placeholder="Observações sobre a moradia..."></textarea></div>
+    <div class="vfield grow"><label>4.6.7 Situação do imóvel</label><input type="text" id="fb_467_sit" placeholder="Com escritura / Sem escritura / Comprovante / Posseiro"></div>
+    <div class="vsub">2.5.7 Infraestrutura do Imóvel</div>
+    <div class="vfield grow"><label>4.7.1 Abastecimento de água</label><input type="text" id="fb_471_agua" placeholder="Rede pública / Poço / Fonte / Cedido / Rio"></div>
+    <div class="vfield grow"><label>4.7.2 Energia elétrica</label><input type="text" id="fb_472_energia" placeholder="Com padrão / Sem padrão"></div>
+    <div class="vfield grow"><label>4.7.3 Eliminação de dejetos</label><input type="text" id="fb_473_dejetos" placeholder="Rede de esgoto / Fossa séptica / Vala a céu aberto"></div>
+    <div class="vfield grow"><label>4.7.4 Destino dado ao lixo doméstico</label><input type="text" id="fb_474_lixo" placeholder="Coleta pública / Queimado / Enterrado / Terreno baldio"></div>
+  </div>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>4.8 — SENTIDOS DE IDENTIFICAÇÃO (AUTORRECONHECIMENTO)</span><span class="acc-chevron">▾</span></h2>
+  <div class="vcard">
+    <div class="vfield grow"><label>4.8.1 O Sr.(a) se autorreconhece como</label><input type="text" id="fb_481" placeholder="Quilombola / Indígena / Comunidade tradicional / Outros"></div>
+    <div class="vfield grow"><label>Especificar</label><textarea id="fb_481_esp" rows="2" placeholder="Descrição do autorreconhecimento..."></textarea></div>
+  </div>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>2.5.9 — APROVEITAMENTO DA TERRA</span><span class="acc-chevron">▾</span></h2>
+  <div class="vcard">
+    <div class="vfield grow"><label>4.9.1 Uso das terras — em período sazonal</label><input type="text" id="fb_491_uso" placeholder="Seca ( ) Chuva ( )"></div>
+    <div class="vfield grow"><label>Plantio — caracterizar</label><textarea id="fb_491_plantio" rows="2" placeholder="Ex.: Imbuzeiro, acerola, milho, feijão e pastagem"></textarea></div>
+    <div class="vfield grow"><label>Criação de animais — caracterizar</label><textarea id="fb_491_criacao" rows="2" placeholder="Descrição da criação de animais"></textarea></div>
+    <div class="vfield grow"><label>4.9.2 O que é produzido na propriedade</label><input type="text" id="fb_492_prod" placeholder="Extrativismo / Agricultura / Pecuária"></div>
+    <div class="vfield grow"><label>4.9.3 Quais impactos concebidos pela comunidade sobre a construção da ferrovia, e qual sua opinião?</label><textarea id="fb_493_impactos" rows="4" placeholder="Percepção da comunidade sobre a ferrovia..."></textarea></div>
+  </div>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>4.10 — OUTRAS INFORMAÇÕES</span><span class="acc-chevron">▾</span></h2>
+  <div class="vcard">
+    <div class="vfield grow"><label>4.10.1 Quais as expectativas futuras da família em relação à moradia atual e pós desapropriação</label><textarea id="fb_4101" rows="3" placeholder="Continuar morando nas redondezas / Construir em outro local / Outra"></textarea></div>
+    <div class="vfield grow"><label>4.10.2 A família recebe algum benefício do Governo Federal (SIM/NÃO)</label><input type="text" id="fb_4102" placeholder="SIM / NÃO"></div>
+    <div class="vfield grow"><label>Qual?</label><input type="text" id="fb_4102_qual" placeholder="Qual benefício"></div>
+    <div class="vfield grow"><label>4.10.3 A família participa de algum programa do município (SIM/NÃO)</label><input type="text" id="fb_4103" placeholder="SIM / NÃO"></div>
+    <div class="vfield grow"><label>Qual?</label><input type="text" id="fb_4103_qual" placeholder="Qual programa"></div>
+    <div class="vfield grow"><label>4.10.4 A família participa de projetos e organizações da comunidade (SIM/NÃO)</label><input type="text" id="fb_4104" placeholder="SIM / NÃO"></div>
+    <div class="vfield grow"><label>Qual?</label><input type="text" id="fb_4104_qual" placeholder="Qual projeto/organização"></div>
+    <div class="vfield grow"><label>4.10.5 Dados relativos sobre saúde, educação, segurança comunitária e questões sociais, situações de vulnerabilidades relacionadas à família e seus membros</label><textarea id="fb_4105" rows="6" placeholder="Relato da abordagem social..."></textarea></div>
+  </div>
+  <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>5 — INFORMAÇÕES COMPLEMENTARES (PROPRIEDADE)</span><span class="acc-chevron">▾</span></h2>
+  <div class="vcard">
+    <div class="vfield grow"><label>5.1 Obras e Melhorias das Terras</label><input type="text" id="fb_51_obras" placeholder="Ex.: AUSENTES"></div>
+    <div class="vfield grow"><label>5.2 Outras Atividades</label><input type="text" id="fb_52_ativ" placeholder="Ex.: NÃO HÁ"></div>
+    <div class="vsub">5.3 Fotografias do imóvel</div>
+    <label class="img-drop" id="fb_fotos_drop">
+      <span class="ic">📷</span>
+      <span class="t">Clique ou arraste as fotografias do imóvel</span>
+      <span class="h">Várias imagens • JPG ou PNG</span>
+      <input type="file" accept="image/*" multiple id="fb_fotos_file">
+    </label>
+    <div class="fb-fotos-prev" id="fb_fotos_prev"></div>
+    <div class="vsub">Assinatura do(a) vistoriador(a)</div>
+    <div class="vfield grow"><label>Nome do(a) vistoriador(a)</label><input type="text" id="fb_ass_nome" placeholder="Nome"></div>
+    <div class="vfield grow"><label>Cargo/Função</label><input type="text" id="fb_ass_cargo" placeholder="Ex.: Assistente Social"></div>
+    <div class="vfield grow"><label>Registro (CRESS/CREA)</label><input type="text" id="fb_ass_reg" placeholder="Ex.: CRESS-PE 14780"></div>
+  </div>
+  <div class="vactions">
+    <button class="vbtn vbtn-primary" onclick="WORD_anexoB()">📝 Baixar Word — Anexo B (1.9)</button>
+    <button class="vbtn vbtn-ghost" onclick="document.getElementById('file-19').click()">📎 Anexar PDF assinado</button>
+    <input type="file" accept="application/pdf" multiple id="file-19" style="display:none">
+    <button class="vbtn vbtn-ghost" id="ger-19" disabled onclick="DESP1_gerar('19')">⬇️ Baixar PDF anexado</button>
+    <button class="vbtn vbtn-ghost" onclick="FB_puxarDESP3()">↧ Puxar dados da DESP 3</button>
+  </div>
+  <ul class="lista" id="lista-19" style="margin-top:8px;"></ul>
+  <div class="status" id="st-19"></div>
 </div>
   </section>
+
 
 <section class="tab-panel" id="panel-desp1-rel">
 <div class="wrap">
@@ -6618,6 +7082,7 @@ function AV_gerarDescSituacao(){
   }
 
   window.WORD_ficha = function(){ gerarWord("panel-vistoria", "Ficha_de_Vistoria.docx"); };
+  window.WORD_gerarPainel = gerarWord;
   window.WORD_avaliacao = function(){ gerarWord("panel-avaliacao", "Laudo_de_Avaliacao.docx"); };
 })();
 </script>
@@ -6629,7 +7094,7 @@ function AV_gerarDescSituacao(){
   function coletarCampos(){
     const dados = {};
     // todos os campos com id nas abas Ficha e Avaliação (e afins)
-    document.querySelectorAll("#panel-vistoria [id], #panel-avaliacao [id]").forEach(el=>{
+    document.querySelectorAll("#panel-vistoria [id], #panel-avaliacao [id], #panel-desp1-vist [id]").forEach(el=>{
       const tag = el.tagName;
       if(tag!=="INPUT" && tag!=="TEXTAREA" && tag!=="SELECT") return;
       if(el.type==="file") return;
@@ -6872,6 +7337,126 @@ function AV_gerarDescSituacao(){
   window.DESP1_limpar=limpar;
   window.DESP1_mover=mover;
   window.DESP1_remover=remover;
+})();
+</script>
+<script>
+/* ===== 1.9 Anexo B — formulário, auto-fill da DESP 3, família, fotos, Word ===== */
+(function(){
+  // ---- Auto-fill: espelha campos da Ficha (DESP 3) nos campos [data-fb-from] ----
+  function valorFonte(key){
+    // procura o campo-fonte na Ficha por data-sync
+    const src = document.querySelector('#panel-vistoria [data-sync="'+key+'"]');
+    if(src) return src.value;
+    return "";
+  }
+  function aplicarAutoFill(){
+    document.querySelectorAll('#panel-desp1-vist [data-fb-from]').forEach(dest=>{
+      const key = dest.getAttribute("data-fb-from");
+      const v = valorFonte(key);
+      // só sobrescreve se o destino estiver vazio OU for campo bloqueado (espelho)
+      if(dest.classList.contains("bloqueado") || !dest.value){ dest.value = v; }
+    });
+  }
+  window.FB_puxarDESP3 = function(){
+    document.querySelectorAll('#panel-desp1-vist [data-fb-from]').forEach(dest=>{
+      const key = dest.getAttribute("data-fb-from");
+      dest.value = valorFonte(key);
+    });
+    // também sincroniza o número do processo do topo se existir
+    alert("Dados da DESP 3 aplicados ao Anexo B.");
+  };
+  // liga listeners: quando a Ficha muda, atualiza o Anexo B ao vivo
+  function ligarSync(){
+    document.querySelectorAll('#panel-vistoria [data-sync]').forEach(src=>{
+      src.addEventListener("input", ()=>{
+        const key = src.getAttribute("data-sync");
+        document.querySelectorAll('#panel-desp1-vist [data-fb-from="'+key+'"]').forEach(dest=>{
+          if(dest.classList.contains("bloqueado") || !dest.dataset.tocado) dest.value = src.value;
+        });
+      });
+    });
+    // marca campos editados manualmente para não sobrescrever
+    document.querySelectorAll('#panel-desp1-vist [data-fb-from]').forEach(dest=>{
+      dest.addEventListener("input", ()=>{ dest.dataset.tocado="1"; });
+    });
+  }
+
+  // ---- 4.5 Composição familiar (linhas dinâmicas) ----
+  const familia = [];
+  function renderFamilia(){
+    const host=document.getElementById("fb_familia");
+    if(!host) return;
+    host.innerHTML="";
+    familia.forEach((p,i)=>{
+      const div=document.createElement("div");
+      div.className="fb-fam-linha";
+      div.innerHTML =
+        '<span class="fam-n">'+(i+1)+'</span>'+
+        '<input class="fam-nome" placeholder="Nome" value="'+(p.nome||"").replace(/"/g,"&quot;")+'" oninput="FB_setFam('+i+',\'nome\',this.value)">'+
+        '<input class="fam-idade" placeholder="Idade" value="'+(p.idade||"").replace(/"/g,"&quot;")+'" oninput="FB_setFam('+i+',\'idade\',this.value)">'+
+        '<button class="fam-rm" type="button" title="Remover" onclick="FB_remFamilia('+i+')">✕</button>';
+      host.appendChild(div);
+    });
+  }
+  window.FB_addFamilia=function(){ familia.push({nome:"",idade:""}); renderFamilia(); };
+  window.FB_remFamilia=function(i){ familia.splice(i,1); renderFamilia(); };
+  window.FB_setFam=function(i,campo,val){ if(familia[i]) familia[i][campo]=val; };
+  window.FB_getFamilia=function(){ return familia; };
+  window.FB_setFamilia=function(arr){ familia.length=0; (arr||[]).forEach(p=>familia.push(p)); renderFamilia(); };
+
+  // ---- 5.3 Fotografias ----
+  const fotos = [];
+  function renderFotos(){
+    const host=document.getElementById("fb_fotos_prev");
+    if(!host) return;
+    host.innerHTML="";
+    fotos.forEach((src,i)=>{
+      const d=document.createElement("div"); d.className="foto";
+      d.innerHTML='<img src="'+src+'"><button class="rm" type="button" onclick="FB_remFoto('+i+')">✕</button>';
+      host.appendChild(d);
+    });
+  }
+  function bindFotos(){
+    const input=document.getElementById("fb_fotos_file");
+    const drop=document.getElementById("fb_fotos_drop");
+    if(!input) return;
+    function add(files){
+      [...files].forEach(f=>{
+        if(!f.type.startsWith("image/") && !/\.(jpe?g|png|gif|webp|bmp)$/i.test(f.name)) return;
+        const rd=new FileReader();
+        rd.onload=e=>{
+          const orig=e.target.result;
+          const norm=(window.AV_normalizarImagem)?window.AV_normalizarImagem(orig):Promise.resolve(orig);
+          norm.then(nrm=>{ fotos.push(nrm); renderFotos(); });
+        };
+        rd.readAsDataURL(f);
+      });
+    }
+    input.addEventListener("change", e=>{ add(e.target.files); e.target.value=""; });
+    if(drop){
+      ["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("over");}));
+      ["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("over");}));
+      drop.addEventListener("drop", e=>add(e.dataTransfer.files));
+    }
+  }
+  window.FB_remFoto=function(i){ fotos.splice(i,1); renderFotos(); };
+  window.FB_getFotos=function(){ return fotos; };
+
+  // ---- Word do Anexo B ----
+  window.WORD_anexoB = function(){
+    if(typeof docx==="undefined"){ alert("Biblioteca Word ainda carregando. Tente novamente em instantes."); return; }
+    if(window.WORD_gerarPainel){ window.WORD_gerarPainel("panel-desp1-vist","Ficha_Anexo_B_1.9.docx"); }
+  };
+
+  // init
+  function init(){
+    ligarSync();
+    aplicarAutoFill();
+    bindFotos();
+    if(!familia.length){ FB_addFamilia(); FB_addFamilia(); }
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
 })();
 </script>
 </body>
