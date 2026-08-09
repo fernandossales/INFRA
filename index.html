@@ -2006,6 +2006,7 @@
     </div>
     <div class="vrow">
       <div class="vfield grow"><label>Município</label><input type="text" id="fv_municipio" data-sync="municipio" placeholder="Município"></div>
+      <div class="vfield"><label>UF</label><select id="fv_uf" data-sync="uf"><option value="">UF</option><option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option><option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option><option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option><option>SE</option><option>TO</option></select></div>
       <div class="vfield"><label>Telefone</label><input type="text" id="fv_telefone" data-sync="telefone" class="mask-tel" inputmode="numeric" maxlength="16" placeholder="Telefone"></div>
     </div>
 
@@ -2018,14 +2019,15 @@
     <div class="vsub">1.5 Propriedade</div>
     <div class="vrow">
       <div class="vfield grow"><label>Identificação</label><input type="text" id="fv_prop_id" data-sync="prop_id" placeholder="Identificação"></div>
-      <div class="vfield"><label>Área Total (ha)</label><input type="text" id="fv_area_total" data-sync="area_total" placeholder="Área Total (ha)"></div>
+      <div class="vfield"><label>Área Total (ha)</label><input type="text" id="fv_area_total" data-sync="area_total" class="num4" inputmode="decimal" placeholder="0,0000"></div>
     </div>
     <div class="vrow">
       <div class="vfield grow"><label>Endereço</label><input type="text" id="fv_prop_end" data-sync="prop_end" placeholder="Endereço"></div>
-      <div class="vfield"><label>Área Desap. (ha)</label><input type="text" id="fv_area_desap" data-sync="area_desap" placeholder="Área Desap. (ha)"></div>
+      <div class="vfield"><label>Área Desap. (ha)</label><input type="text" id="fv_area_desap" data-sync="area_desap" class="num4" inputmode="decimal" placeholder="0,0000"></div>
     </div>
     <div class="vrow">
       <div class="vfield grow"><label>Município</label><input type="text" id="fv_prop_mun" data-sync="prop_mun" placeholder="Município"></div>
+      <div class="vfield"><label>UF</label><select id="fv_prop_uf" data-sync="prop_uf"><option value="">UF</option><option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option><option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option><option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option><option>SE</option><option>TO</option></select></div>
       <div class="vfield"><label>Matrícula</label><input type="text" id="fv_matricula" data-sync="matricula" placeholder="Matrícula"></div>
     </div>
 
@@ -2036,35 +2038,35 @@
     <div id="fv_estacas"></div>
 
     <div class="vsub">1.6 Observações</div>
-    <textarea id="fv_obs" data-sync="obs" rows="3">FICHA DE VISTORIA RELATIVA AO PROCESSO DE DESAPROPRIAÇÃO DE ÁREA DESTINADA À FAIXA DE DOMÍNIO DA EF-334 (FIOL), VISANDO À IMPLANTAÇÃO DO NOVO TRAÇADO DA VARIANTE DE CERAÍMA.</textarea>
+    <textarea id="fv_obs" data-sync="obs" rows="3"></textarea>
   </div>
 
   <!-- 02 CARACTERIZAÇÃO -->
   <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>02 — Caracterização do Imóvel</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <div class="vsub">2.1 Econômicas</div>
-    <textarea id="fv_economicas" rows="4">O IMÓVEL RURAL DENOMINADO SÍTIO CÔCOS TEM UTILIZAÇÃO CLASSIFICADA COMO AGRICULTURA, NÃO POSSUINDO FUNÇÃO SOCIAL DE MORADIA, UMA VEZ QUE A PROPRIETÁRIA RESIDE NO MUNICÍPIO DE GUANAMBI/BA. CONFORME DECLARADO DURANTE A ABORDAGEM SOCIAL, ATUALMENTE NÃO SÃO DESENVOLVIDAS ATIVIDADES PRODUTIVAS, ECONÔMICAS OU DE SUBSISTÊNCIA NA PROPRIEDADE. A GLEBA APRESENTA POTENCIAL PARA CULTIVO AGRÍCOLA SOB IRRIGAÇÃO OU EM REGIME DE SEQUEIRO DURANTE O PERÍODO CHUVOSO. A FONTE DE RENDA DECLARADA PELA PROPRIETÁRIA É PROVENIENTE DE APOSENTADORIA.</textarea>
+    <textarea id="fv_economicas" rows="4"></textarea>
 
     <div class="vsub">2.2 Sociais</div>
-    <textarea id="fv_sociais" rows="3">O IMÓVEL SITUA-SE NA FAZENDA SITIO CÔCOS, NO MUNICÍPIO DE GUANAMBI, BA. O ÍNDICE DE DESENVOLVIMENTO HUMANO MUNICIPAL (IDH-M), APURADO PELO IBGE NO ANO DE 2010, FOI DE 0,673, SENDO CLASSIFICADO COMO DE NÍVEL MÉDIO.</textarea>
+    <textarea id="fv_sociais" rows="3"></textarea>
 
     <div class="vsub">2.3 Ambientais</div>
-    <textarea id="fv_ambientais" rows="3">NÃO SE VERIFICAM RESTRIÇÕES AMBIENTAIS NA ÁREA OBJETO DE DESAPROPRIAÇÃO. CONFORME CONSULTA AO BANCO DE DADOS DO SICAR/BA, A ÁREA ABRANGIDA DO IMÓVEL NÃO POSSUI RESERVA LEGAL (RL) E/OU ÁREA DE PRESERVAÇÃO PERMANENTE (APP).</textarea>
+    <textarea id="fv_ambientais" rows="3"></textarea>
 
     <div class="vsub">2.4 Localização</div>
-    <textarea id="fv_localizacao" rows="3">O IMÓVEL SITUA-SE A CERCA DE 23 KM DA ÁREA URBANA DE GUANAMBI, BA. O ACESSO É REALIZADO INICIALMENTE PELA RODOVIA BA-938, NO TRECHO QUE CONECTA A SEDE MUNICIPAL AO DISTRITO DE CERAÍMA, E, POSTERIORMENTE, POR ESTRADA VICINAL QUE INTERLIGA AO SITIO CÔCOS.</textarea>
+    <textarea id="fv_localizacao" rows="3"></textarea>
 
     <div class="vsub">2.5 Características Físicas</div>
-    <textarea id="fv_fisicas" rows="3">O TERRENO NA ÁREA ABRANGIDA APRESENTA RELEVO ÍNGREME, COM DECLIVIDADE VARIANDO ENTRE 6,0% A 40,0%, O QUE FAVORECE O ESCOAMENTO SUPERFICIAL. A GLEBA AFETADA DO IMÓVEL APRESENTA SECA EDAFOLÓGICA DE INTENSIDADE MÉDIA, E A VEGETAÇÃO NATIVA DE CAATINGA ENCONTRA-SE ANTROPIZADA.</textarea>
+    <textarea id="fv_fisicas" rows="3"></textarea>
 
     <div class="vsub">2.6 Infraestrutura</div>
-    <textarea id="fv_infra" rows="3">A PROPRIEDADE POSSUI ENERGIA ELÉTRICA E ACESSO POR ESTRADA NÃO PAVIMENTADA EM ÓTIMAS CONDIÇÕES, COM PROXIMIDADE PARA RODOVIA BA-938, COM TRAFEGABILIDADE PERMANENTE, ALÉM DE COBERTURA DE TELEFONIA MÓVEL.</textarea>
+    <textarea id="fv_infra" rows="3"></textarea>
 
     <div class="vsub">2.7 Imóvel Rural</div>
     <label class="vlbl">2.7.1 Características da terra</label>
-    <textarea id="fv_terra" rows="6">NA GLEBA AVALIADA, COMPOSTA PREDOMINANTEMENTE POR PLANOSSOLOS E NEOSSOLOS, FORAM IDENTIFICADAS ÁREAS DAS CLASSES DE CAPACIDADE DE USO III, VII E VIII, ASSIM DISTRIBUÍDAS: A GLEBA 01 (CLASSE III), COM 2,0500 ha (aprox. 37,05% DO IMÓVEL), CUJO FATOR MAIS RESTRITIVO É A PROFUNDIDADE EFETIVA (SOLO RASO); A GLEBA 02 (CLASSE VII), COM 0,9609 ha (aprox. 23,16%), LIMITADA PELA PEDREGOSIDADE MODERADA; E A GLEBA 03 (CLASSE VIII), COM 1,1389 ha (aprox. 27,44%), CONDICIONADA PELA CLASSE DE DECLIVIDADE ENTRE 20% E 40%. ASSIM, A ÁREA DE MELHOR APTIDÃO (CLASSE III) COMPORTA CULTURAS ANUAIS DESDE QUE SOB MANEJO CONSERVACIONISTA INTENSO, ENQUANTO AS DEMAIS PORÇÕES SÃO RESTRITAS AO REFLORESTAMENTO E À VIDA SILVESTRE (CLASSE VII) OU DESTINADAS EXCLUSIVAMENTE À PRESERVAÇÃO AMBIENTAL (CLASSE VIII). TAIS CONDIÇÕES, ALIADAS ÀS RESTRIÇÕES NATURAIS DOS PLANOSSOLOS E NEOSSOLOS — COMO DRENAGEM IMPERFEITA E BARREIRAS FÍSICAS AO DESENVOLVIMENTO RADICULAR —, CONDICIONAM SEVERAMENTE A EXPLORAÇÃO AGRÍCOLA E EXIGEM TÉCNICAS ESPECÍFICAS DE ESCOAMENTO E CONDUÇÃO DE ÁGUA NA IMPLANTAÇÃO DE ROTAS DE ACESSO, DE MODO A EVITAR DEGRADAÇÃO.</textarea>
+    <textarea id="fv_terra" rows="6"></textarea>
     <label class="vlbl">2.7.2 Hidrografia (Vazão m³ ou L/s)</label>
-    <textarea id="fv_hidro" rows="3">HÁ UMA ÁREA COM DECLIVIDADE QUE FAVORECE O ESCOAMENTO DE ÁGUA. RESSALTA-SE, AINDA, QUE FORAM IDENTIFICADAS ESTRUTURAS DE CAPTAÇÃO SUBTERRÂNEA (POÇO) COMPARTILHADO NO INTERIOR DA PROPRIEDADE.</textarea>
+    <textarea id="fv_hidro" rows="3"></textarea>
     <label class="vlbl">2.7.3 Informações Complementares</label>
     <textarea id="fv_rural_comp" rows="2" placeholder="Complemento"></textarea>
 
@@ -2083,7 +2085,7 @@
   <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>03 — Descrição das Benfeitorias</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <label class="vlbl">3.1 Não-Reprodutivas</label>
-    <textarea id="fv_ben_nr" rows="2">CERCAS</textarea>
+    <textarea id="fv_ben_nr" rows="2"></textarea>
     <label class="vlbl">3.1.1 Benfeitorias não reprodutivas da faixa non aedificandi</label>
     <input type="text" id="fv_ben_nr1" value="AUSENTES.">
     <label class="vlbl">3.2 Informações Complementares</label>
@@ -2100,9 +2102,9 @@
   <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>04 — Informações Complementares</span><span class="acc-chevron">▾</span></h2>
   <div class="vcard">
     <label class="vlbl">4.1 Obras e Melhorias das Terras</label>
-    <textarea id="fv_obras" rows="2">AUSENTES.</textarea>
+    <textarea id="fv_obras" rows="2"></textarea>
     <label class="vlbl">4.2 Outras Atividades</label>
-    <textarea id="fv_outras" rows="3">O IMÓVEL É DIVIDIDO PELA ANTIGA FAIXA DE DOMÍNIO DA FERROVIA FIOL (EF-334), SENDO PARTE DA ÁREA DESAPROPRIADA POR MEIO DO PROCESSO 275A-5F, EM 2014 E 275-5F, EM 2012.</textarea>
+    <textarea id="fv_outras" rows="3"></textarea>
     <label class="vlbl">4.3 Observações</label>
     <textarea id="fv_obs4" rows="2" placeholder="Observações"></textarea>
     <label class="vlbl">4.4 Fotografias do Imóvel</label>
@@ -2147,7 +2149,7 @@
     <div class="vrow">
       <div class="vfield grow"><label>2.1 Localidade <span class="auto-tag">auto</span></label><input type="text" readonly id="av_localidade" data-from="prop_end" class="bloqueado" placeholder="2.1 Localidade"></div>
       <div class="vfield grow"><label>2.2 Município <span class="auto-tag">auto</span></label><input type="text" readonly id="av_municipio" data-from="prop_mun" class="bloqueado" placeholder="2.2 Município"></div>
-      <div class="vfield"><label>2.3 UF</label><input type="text" id="av_uf" placeholder="2.3 UF"></div>
+      <div class="vfield"><label>2.3 UF</label><input type="text" readonly id="av_uf" data-from="prop_uf" class="bloqueado" placeholder="2.3 UF"></div>
     </div>
     <div class="vsub">2.4 Locação — Áreas <span class="auto-tag">auto (Ficha de Vistoria)</span></div>
     <div id="av_estacas" class="av-estacas-view"></div>
@@ -2242,7 +2244,7 @@
     <div class="vrow">
       <div class="vfield"><label>4.2.1 Geoprocessamento (INCRA)</label><select id="av_geo" onchange="AV_geoToggle()"><option>SIM</option><option selected>NÃO</option></select></div>
       <div class="vfield grow" id="av_geo_cod_wrap" style="display:none;"><label>Código do Geoprocessamento (INCRA)</label><input type="text" id="av_geo_cod" placeholder="Código do Geoprocessamento (INCRA)"></div>
-      <div class="vfield"><label>4.2.2 CAR (Cadastro Ambiental Rural)</label><select id="av_car"><option selected>SIM</option><option>NÃO</option></select></div>
+      <div class="vfield"><label>4.2.2 CAR (Cadastro Ambiental Rural)</label><select id="av_car" onchange="AV_toggleCAR()"><option selected>SIM</option><option>NÃO</option></select></div>
       <div class="vfield grow"><label>Nº CAR</label><input type="text" id="av_ncar" placeholder="Nº CAR"></div>
     </div>
     <div class="vsub">Dados da demarcação (se terreno demarcado)</div>
@@ -2418,7 +2420,7 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
     <div class="vsub">II — Dimensionamento da Variável Situação
       <button type="button" class="mini-add" onclick="AV_gerarDescSituacao()" title="Gera o texto conforme a Situação/Circulação selecionada">↻ Preencher automático</button>
     </div>
-    <textarea id="av_situacao_txt" rows="3">Para o imóvel abrangido parcialmente, foi identificado que possui uma viabilidade de circulação boa, devido primeira classe não pavimentada e importância da distância significativa em relação à via pavimentada (BA-938) e com trafegabilidade permanente, com escala adotada de 0,90.</textarea>
+    <textarea id="av_situacao_txt" rows="3" readonly class="bloqueado" title="Preenchido automaticamente — bloqueado">Para o imóvel abrangido parcialmente, foi identificado que possui uma viabilidade de circulação boa, devido primeira classe não pavimentada e importância da distância significativa em relação à via pavimentada (BA-938) e com trafegabilidade permanente, com escala adotada de 0,90.</textarea>
 
     <div class="vsub">III — Dimensionamento da Variável Nota Agronômica (N.A.)</div>
     <div class="na-calc">
@@ -4362,11 +4364,13 @@ window.FOTO_rodapeHTML=rodapeHTML;
   // ligar listeners: quando um campo sync da vistoria muda, atualiza a avaliação
   function bindSync(){
     document.querySelectorAll('#panel-vistoria [data-sync]').forEach(src=>{
-      src.addEventListener("input", ()=>{
+      const propagar = ()=>{
         const key = src.getAttribute("data-sync");
         document.querySelectorAll('#panel-avaliacao [data-from="'+key+'"]').forEach(el=> el.value = src.value);
         recalc();
-      });
+      };
+      src.addEventListener("input", propagar);
+      src.addEventListener("change", propagar);
     });
   }
 
@@ -4573,7 +4577,7 @@ window.FOTO_rodapeHTML=rodapeHTML;
           '<div class="cel selfator"><span>Fator limitante (CCU – Anexo 01)</span><select class="g-fatorlim" onchange="AV_popularCaract(this)">'+optsFator+'</select></div>'+
           '<div class="cel selcaract"><span>Característica (conforme a classe '+rom+')</span><select class="g-caract" onchange="AV_onCaractChange(this)"><option value="">— selecione o fator primeiro —</option></select></div>'+
         '</div>'+
-        '<div class="cel fator full"><span>Fator mais restritivo (texto final)</span><input type="text" class="g-fator" value="'+fator.replace(/"/g,"&quot;")+'"></div>';
+        '<div class="cel fator full"><span>Fator mais restritivo (texto final)</span><input type="text" class="g-fator bloqueado" readonly title="Preenchido automaticamente — bloqueado" value="'+fator.replace(/"/g,"&quot;")+'"></div>';
       div.querySelector(".g-fator").addEventListener("input", (e)=>{ FATORES_CLASSE[g.classe]=e.target.value; });
       host.appendChild(div);
 
@@ -4895,6 +4899,19 @@ window.FOTO_rodapeHTML=rodapeHTML;
     return out;
   };
   window.AV_recalcular = recalc;
+
+  // Nº CAR ativo apenas se 4.2.2 CAR = SIM
+  window.AV_toggleCAR = function(){
+    const car = document.getElementById("av_car");
+    const ncar = document.getElementById("av_ncar");
+    if(!car || !ncar) return;
+    const sim = (car.value||"").toUpperCase().indexOf("SIM")>=0;
+    ncar.disabled = !sim;
+    if(sim){ ncar.classList.remove("bloqueado"); }
+    else { ncar.value=""; ncar.classList.add("bloqueado"); }
+  };
+  // aplicar estado inicial
+  if(document.getElementById("av_car")){ try{ window.AV_toggleCAR(); }catch(e){} }
 
   // ---------------- Upload de imagem ----------------
   function bindImg(inputId, dropId, prevId, slot){
@@ -7441,6 +7458,35 @@ function AV_gerarDescSituacao(){
     document.querySelectorAll("input.mask-tel").forEach(el=>{
       if(el.dataset.mkt) return; el.dataset.mkt="1";
       el.addEventListener("input", function(){ this.value=mTEL(this.value); });
+    });
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", ligar);
+  else ligar();
+})();
+</script>
+<script>
+/* ===== Formatação de números com 4 casas decimais (campos .num4) ===== */
+(function(){
+  function formatar4(v){
+    if(v===undefined || v===null) return "";
+    v = String(v).trim();
+    if(!v) return "";
+    // aceita vírgula ou ponto como separador decimal
+    let n = parseFloat(v.replace(/\./g,"").replace(",","."));
+    if(isNaN(n)){
+      // tenta interpretação simples
+      n = parseFloat(v.replace(",","."));
+    }
+    if(isNaN(n)) return v; // deixa como está se não for número
+    return n.toLocaleString("pt-BR", {minimumFractionDigits:4, maximumFractionDigits:4});
+  }
+  function ligar(){
+    document.querySelectorAll("input.num4").forEach(el=>{
+      if(el.dataset.n4) return; el.dataset.n4="1";
+      el.addEventListener("blur", function(){
+        this.value = formatar4(this.value);
+        this.dispatchEvent(new Event("input", {bubbles:true})); // propaga p/ sync
+      });
     });
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", ligar);
