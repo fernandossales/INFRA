@@ -1497,9 +1497,11 @@
   #panel-desp1-vist select{ cursor:pointer; }
 
   /* ===== 1.9 Anexo B — grupos de checkbox e ajustes ===== */
-  #panel-desp1-vist .fb-checks{ display:flex; flex-wrap:wrap; gap:10px 18px; padding:6px 0; margin-bottom:22px; }
+  #panel-desp1-vist .fb-checks{ display:flex; flex-wrap:wrap; gap:12px 20px; padding:8px 0 0; margin-bottom:0; }
   #panel-desp1-vist .fb-chk input{ width:17px; height:17px; cursor:pointer; accent-color:#1F6FC0; }
-  #panel-desp1-vist .vfield{ margin-bottom:24px; }
+  #panel-desp1-vist .vfield{ margin-bottom:26px; }
+  /* espaço extra após campos que contêm grupos de checkbox */
+  #panel-desp1-vist .vfield.fb-field{ margin-bottom:38px; }
   #panel-desp1-vist .vsub{ margin-top:22px !important; }
   #panel-desp1-vist .vfield input[data-lock="1"]{ background:#eef2f6; color:#5a6b7c; }
   #panel-desp1-vist .vfield input.desbloqueado{ background:#fff !important; color:#243447 !important; }
@@ -7431,6 +7433,13 @@ function AV_gerarDescSituacao(){
     bindFotos();
     ligarMascaras();
     ligarCondicionais();
+    // marca os campos que contêm grupos de checkbox p/ espaçamento extra
+    document.querySelectorAll('#panel-desp1-vist .vfield').forEach(vf=>{
+      if(vf.querySelector(".fb-checks")){
+        vf.classList.add("fb-field");
+        vf.style.marginBottom = "40px";   // espaço extra garantido (inline)
+      }
+    });
     if(!familia.length){ FB_addFamilia(); FB_addFamilia(); }
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", init);
