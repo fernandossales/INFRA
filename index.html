@@ -1446,37 +1446,6 @@
     font-style:italic; color:#9aa7b5; opacity:1;
   }
   #panel-desp1-vist{ padding-bottom:96px; }
-  #panel-desp1-vist [data-from]').forEach(el=>{
-      const key = el.getAttribute("data-from");
-      const src = document.querySelector('#panel-vistoria [data-sync="'+key+'"]');
-      if(src){ el.value = src.value; }
-  #panel-desp1-vist [data-from="'+key+'"]').forEach(el=> el.value = src.value);
-        recalc();
-      });
-    });
-  }
-
-  // ---------------- Estacas (view) sincronizadas ----------------
-  window.AV_syncEstacas = function(){
-    const host = document.getElementById("av_estacas");
-    if(!host) return;
-    const estacas = (typeof window.FV_estacas==="function") ? window.FV_estacas() : [];
-    if(!estacas.length){ host.innerHTML = '<div class="av-estaca-item"><span class="km">Nenhuma área cadastrada na Ficha de Vistoria.</span></div>'; return; }
-  #panel-desp1-vist .vbtn-primary");
-    const orig=btn?btn.innerHTML:""; if(btn){btn.disabled=true; btn.innerHTML="⏳ Gerando documento...";}
-  #panel-desp1-vist .vsec.acc").forEach(h2=>{
-    if(!h2.classList.contains("fechado")){
-      h2.classList.add("fechado");
-      let el=h2.nextElementSibling;
-      while(el && !el.classList.contains("vcard")) el=el.nextElementSibling;
-      if(el) el.classList.add("oculto");
-    }
-  #panel-desp1-vist [id]").forEach(el=>{
-      const tag = el.tagName;
-      if(tag!=="INPUT" && tag!=="TEXTAREA" && tag!=="SELECT") return;
-      if(el.type==="file") return;
-      if(el.type==="checkbox" || el.type==="radio"){ dados[el.id] = {__chk:el.checked}
-
   #panel-desp1-vist .fb-familia{ display:flex; flex-direction:column; gap:6px; }
   #panel-desp1-vist .fb-fam-linha{ display:flex; gap:8px; align-items:center; }
   #panel-desp1-vist .fb-fam-linha .fam-n{ flex:0 0 24px; color:#6b7887; font-weight:700; font-size:13px; }
@@ -1525,6 +1494,174 @@
     font-size:14px !important;
     color:#243447 !important;
   }
+
+  /* ===== Abas superiores (INFRA / SANEAGUA / UTILITÁRIOS) ===== */
+  .top-tabs{ display:flex; gap:6px; align-items:center; margin-left:8px; }
+  .top-tab{
+    border:none; background:transparent; cursor:pointer; font-family:inherit;
+    font-size:14px; font-weight:700; letter-spacing:.5px; color:#7a8ba0;
+    padding:8px 16px; border-radius:8px; transition:background .15s, color .15s;
+  }
+  .top-tab:hover{ background:#eef4fa; color:#1b3a5c; }
+  .top-tab.ativa{ background:#1F6FC0; color:#fff; }
+  @media(max-width:720px){
+    .top-tabs{ gap:2px; margin-left:2px; }
+    .top-tab{ font-size:11px; padding:6px 8px; letter-spacing:.2px; }
+  }
+
+  /* Relatório Fotográfico (Utilitários): cabeçalho só ENPROL à esquerda */
+  #panel-util-foto .cabecalho.cabecalho-enprol{ justify-content:flex-start; }
+  #panel-util-foto .cabecalho.cabecalho-enprol img{ height:34px; }
+
+  /* ===== Relatório Fotográfico (Utilitários): reaproveita estilo do Anexo 04 ===== */
+  #panel-util-foto{
+    --azul:#1F6FC0;
+    --azul-esc:#175a9f;
+    --azul-infra:#0a4d7c;
+    --borda:#c3ccd6;
+    --borda-forte:#9aa7b5;
+    --texto:#243447;
+    --cinza:#5a6b7c;
+    --verde:#1a9c3e;
+  }
+  #panel-util-foto *{box-sizing:border-box;}
+  #panel-util-foto, #panel-foto{margin:0;}
+  #panel-util-foto .credito-dev{
+    position:fixed; top:10px; right:14px; z-index:1000;
+    font-size:14px; color:#8a97a6; letter-spacing:.2px;
+    pointer-events:none; user-select:none;
+  }
+  #panel-util-foto{
+    font-family:"Segoe UI", Arial, Helvetica, sans-serif;
+    background:#eef2f6;
+    color:var(--texto);
+    padding:28px 20px 60px;
+  }
+  #panel-util-foto .toolbar{
+    max-width:900px;
+    margin:0 auto 18px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  #panel-util-foto .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border:none;
+    padding:11px 20px;
+    font-size:14px;
+    font-weight:600;
+    border-radius:8px;
+    cursor:pointer;
+    transition:background .15s, transform .05s;
+    letter-spacing:.2px;
+  }
+  #panel-util-foto .btn:active{transform:translateY(1px);}
+  #panel-util-foto .btn-primary{background:var(--azul); color:#fff; box-shadow:0 2px 6px rgba(31,111,192,.35);}
+  #panel-util-foto .btn-primary:hover{background:var(--azul-esc);}
+  #panel-util-foto .btn-verde{background:var(--verde); color:#fff; box-shadow:0 2px 6px rgba(26,156,62,.35);}
+  #panel-util-foto .btn-verde:hover{background:#158234;}
+  #panel-util-foto .btn-ghost{background:#fff; color:var(--texto); border:1px solid var(--borda-forte);}
+  #panel-util-foto .btn-ghost:hover{background:#f3f6f9;}
+  #panel-util-foto .hint{font-size:13px; color:#5a6b7c; margin-left:4px; flex-basis:100%;}
+  #panel-util-foto .config{
+    max-width:900px;
+    margin:0 auto 18px;
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(30,50,80,.08);
+    padding:16px 18px;
+  }
+  #panel-util-foto .campo{display:flex; flex-direction:column; gap:4px;}
+  #panel-util-foto .campo label{font-size:12px; font-weight:600; color:var(--cinza);}
+  #panel-util-foto .campo input{
+    border:1px solid var(--borda-forte); border-radius:7px; padding:8px 10px;
+    font-size:14px; color:var(--texto); font-family:inherit; outline:none;
+  }
+  #panel-util-foto .campo input:focus{border-color:var(--azul);}
+  #panel-util-foto .paginas{max-width:900px; margin:0 auto; display:flex; flex-direction:column; gap:22px;}
+  #panel-util-foto .pagina{
+    background:#fff;
+    border-radius:8px;
+    box-shadow:0 8px 24px rgba(30,50,80,.12);
+    aspect-ratio:210/297;
+    padding:34px 40px;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+  #panel-util-foto .cabecalho{
+    display:flex; justify-content:space-between; align-items:center;
+    padding-bottom:14px; border-bottom:2px solid var(--azul);
+  }
+  #panel-util-foto .cabecalho img{height:34px; object-fit:contain;}
+  #panel-util-foto .cabecalho .infra{height:30px;}
+  #panel-util-foto .rodape{
+    margin-top:auto; padding-top:10px; border-top:2px solid var(--azul);
+    font-size:8px; color:var(--cinza); display:flex; justify-content:space-between; gap:10px;
+  }
+  #panel-util-foto .rodape .end{line-height:1.5;}
+  #panel-util-foto .rodape .tel{line-height:1.5; text-align:right; white-space:nowrap;}
+  #panel-util-foto .capa-corpo{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:24px;}
+  #panel-util-foto .capa-titulo{font-size:26px; font-weight:700; color:var(--texto); letter-spacing:.5px;}
+  #panel-util-foto .capa-sub{font-size:16px; color:var(--cinza); max-width:80%; line-height:1.5;}
+  #panel-util-foto .capa-meta{font-size:13px; color:var(--cinza); line-height:1.9; margin-top:10px;}
+  #panel-util-foto .capa-meta b{color:var(--azul-esc);}
+  #panel-util-foto .fotos-corpo{flex:1; display:flex; flex-direction:column; gap:18px; padding:20px 0;}
+  #panel-util-foto .foto-bloco{
+    flex:1; display:flex; flex-direction:column; align-items:center; gap:8px;
+    border:1px solid var(--borda); border-radius:8px; padding:10px; background:#fbfcfe;
+    min-height:0;
+  }
+  #panel-util-foto .foto-num{
+    align-self:flex-start; background:var(--azul); color:#fff; font-size:12px; font-weight:700;
+    padding:2px 12px; border-radius:20px;
+  }
+  #panel-util-foto .foto-frame{
+    flex:1; width:100%; display:flex; align-items:center; justify-content:center;
+    background:#eef2f6; border-radius:6px; overflow:hidden; min-height:0;
+    
+  }
+  #panel-util-foto .foto-frame img{max-width:100%; max-height:100%; object-fit:contain;}
+  #panel-util-foto .foto-frame .vazio{color:#9aa7b5; font-size:13px;}
+  #panel-util-foto .foto-legenda{
+    width:100%; border:1px solid var(--borda-forte); border-radius:6px; padding:7px 10px;
+    font-size:12.5px; color:var(--texto); font-family:inherit; resize:none; outline:none; min-height:38px;
+  }
+  #panel-util-foto .foto-legenda:focus{border-color:var(--azul);}
+  #panel-util-foto .del-foto{
+    position:absolute; top:6px; right:6px; background:#e04646; color:#fff; border:none;
+    width:24px; height:24px; border-radius:50%; cursor:pointer; font-weight:700; font-size:13px; line-height:1;
+  }
+  #panel-util-foto .vazio-msg{
+    max-width:900px; margin:0 auto; text-align:center; color:var(--cinza);
+    background:#fff; border-radius:12px; padding:40px; box-shadow:0 6px 18px rgba(30,50,80,.08);
+  }
+  #panel-util-foto input[type=file]{display:none;}
+  #panel-util-foto, #panel-anexo, #panel-drl,
+    #panel-docs, #panel-anx7, #panel-anx8, #panel-relest, #panel-anx10, #panel-anx11{ padding-bottom:96px; }
+
+  /* ===== Relatório Fotográfico (Utilitários) — estilos explícitos dos botões ===== */
+  #panel-util-foto .toolbar{ max-width:1180px; margin:0 auto 18px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  #panel-util-foto input[type=file]{ display:none !important; }
+  #panel-util-foto .btn{
+    display:inline-flex !important; align-items:center; gap:8px; border:none;
+    padding:11px 20px; font-size:14px; font-weight:600; border-radius:8px;
+    cursor:pointer; font-family:inherit; transition:filter .15s, box-shadow .15s;
+  }
+  #panel-util-foto .btn-primary{ background:#1F6FC0 !important; color:#fff !important; box-shadow:0 2px 6px rgba(31,111,192,.35); }
+  #panel-util-foto .btn-verde{ background:#1a9c3e !important; color:#fff !important; box-shadow:0 2px 6px rgba(26,156,62,.35); }
+  #panel-util-foto .btn-ghost{ background:#fff !important; color:#243447 !important; border:1px solid #9aa7b5 !important; }
+  #panel-util-foto .btn:hover{ filter:brightness(1.05); }
+  #panel-util-foto .hint{ color:#6b7887; font-size:13px; }
+  #panel-util-foto .config{ max-width:1180px; margin:0 auto 18px; background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:16px 18px; }
+  #panel-util-foto .config .campo{ display:flex; flex-direction:column; gap:6px; }
+  #panel-util-foto .config .campo.full{ width:100%; }
+  #panel-util-foto .config label{ font-size:12px; font-weight:700; color:#5a6b7c; text-transform:uppercase; letter-spacing:.4px; }
+  #panel-util-foto .config .campo input{ border:1px solid #9aa7b5; border-radius:7px; padding:8px 10px; font-size:14px; color:#243447; font-family:inherit; }
+  #panel-util-foto .paginas{ max-width:900px; margin:0 auto; display:flex; flex-direction:column; gap:20px; }
 </style>
 </head>
 <body>
@@ -1556,7 +1693,11 @@
     <span class="sep"></span>
     <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCABUAVADACIAAREBAhEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMAAAERAhEAPwD07xX4yi8O4toIvPvWGdrH5UHqf8K4eb4l+IiCY/sgHoIv/r1m+KJZLjxDczSMWJ28n/dFY2PSvTo4eHKnJXZ5tXEycrJ7HQt8SvEx6XMS/SBaib4h+KW/5iYH0gj/APiayLbR7/UNzWNlcXGOvloSBVtfB/iJv+YRdfiuK29lRW6RCqVX1Y+Txr4hl/1l/n/tlH/8TVSTxFqs3+su8/8AbNf8KvJ4F8St00mQfV1H9alX4e+KG/5hePrPH/8AFU/3Mewv3j7mDJqF1L9+TP8AwEVqeH/FV/4fug8BRo2+/Gyj5h9e1X0+G/idutpGv1nSnj4ba+BlzZp/vTiiU6TVm0NRqJ3SPW9F12z17T0u7KTKn7y90Poa1e1eR6F4b1/w/qC3VtqWlgnh4mueJB/dPFeqW8kkkKtLEYnPVCc4/GvKrQjGXuu6PQpTlJe8tSzRRRWRqFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAeBa4d2s3H/Af/QRUei6Z/autWllkhZnw3sOp/QGl1c51Sf8P/QRWp4G/wCRz0/6yf8Aotq9m/LC67Hi2vOz7mF4s8d6omqzaZotw+nabZu0MSW/yltpwWJ681zbeLfEjfe17VD/ANvT/wCNVNYOdbv/APr5k/8AQjVSON5nCRIzueiqMk1xKK3PQbfQ0G8Q62/39Yv2/wB65c/1qBtU1GT79/ct9ZW/xp66Lqr/AHNLvW+kDf4VOnhjxA/3ND1Jvpav/hTsguzOe4mf780jfVzUZJPUk1up4L8Tv00HUB9YGH86ZfeEdf0yxe9vtKuILePG6RxgDJwP1NHuiszFr3j4O6rd3/hq6trqVpBaThYmZskKVzt/D+teD17d8Dx/xJtU/wCvhf8A0GoqpcpdNvmPV6KKK5ToCkqteXAtLOe5IyIo2fHrgZrz/wD4W5af9Auf/v4tXCnOfwoiU4w3Z6VRXmv/AAty0/6Bc/8A39Wj/hblp/0C5/8Av6tX9Xq9ifb0+56TRXL+FfGEPihroR2kkH2cKTuYHOc/4Vzx+LdoD/yC5/8Av6tSqM22kthurBK9z0npS1zvhrxVZeJbV5LfMc0Zw8LHlfQ/SuhNRKLi7MtNSV0BoFcx4r8XQ+FjaCW0ef7RuxtYDG3H+NSeHvFEXiDRrnUUtnhWB2UozZJwob+tPklbmtoLnjflvqdJzRXmv/C3LT/oFz/9/Vo/4W5af9Auf/v6tX9Xq9iPbQ7npPajtXmy/Fuzz82l3AHs611WgeKtL8RI32KUiVeWikGHX/PtSlRnFXaKjUjJ2TN+jmuT8U+NIPDF1Bby2kk5lQuCrAY5rC/4W5Z/9Auf/v6tEaM5K6QpVIxdmz0rNFea/wDC3LP/AKBc/wD39Wrmn/FHR7qdYrmGe1zxvbDKPrj/AApuhUXQSrQfU72ioUdZkWSNgysMgg8EVi674t0nw9hbyf8AfkZEMY3Of8PxrNRbdkaNpK7OgxRXmc3xct1YiDSZXX1ecL/IGn2/xbtHYC50qeNfWOQN/MCtfq9XsZ+2h3PSaKxdG8R6Zr0Bk0+5Vyv3kIwy/UVB4p8TReGbOG5ktnnEsmzCtjHGay5Jc3LbUvmVr9DoaK5rwr4sh8UpctHavB9nKg7mBzn/APVXS0Si4uzBSTV0LRWPrerDR7IXAhMzl9iIGxzgt157A9qfoGrjWbA3HkmFlbaybsjOAeDgdiKVupXU1aKKKAPn3Uzm/k/D+QrX8Cf8jnp//bT/ANFtWLfnN6/4fyra8BjPjOwP/XT/ANAavYn/AA36Hiw/iI8w1U51i9/67v8A+hGtjwHq1nofjOw1HUJDHbReZucKWxlGUcDnqaxdROdUuz/02f8A9CrQ8K6B/wAJN4it9K+0fZ/ODHzdm7btUt0yPSuTpqeh10PcH+LnhFel3O3+7bt/UVXf4x+Fk6fbn+kP+JrDT4GQD7+vyH6WgH/s1Tp8DtPH39Yuj9IlFYWp9zW8uxdb41eG16Wept9Ik/8Ai65vxn8UdL8R+F7zSrSxvEkm2YeULj5XVuxPpXLeP/Cdt4R1i3srWeWZJIPNJlxkHcw7fSuTq4047omU3swr2/4H/wDIC1M/9PI/9BFeIV7j8EP+Re1L/r6/9kWnV+Emn8R6pRRRXKdJnaz/AMgO/wD+veT/ANBNeCeHLW0vPENlbXwBtpHw4ZtvGPWve9Y/5Ad//wBe8n/oJr570rTpNX1S30+J1R52wC3Su7BbSOPFbo9f/wCEM8E/884P/Axv/iqP+EM8E/8APOD/AMDG/wDiq5T/AIVNq3/P/Z/+Pf8AxNH/AAqbVv8An/s//Hv/AImj/uIL/tw9B0LRNE0g3B0dUBkA8zbOX6Zx1J9TXhFla/btUtrTds+0TrHux0y2M17F4J8I3fhc3xubiCX7QEx5eeMZ9frXkug/8jPpn/X3F/6GK0w+kpO9ya2sY6WLX/E08GeIf+eVzAf+AyL/AFU17V4c8QWniPTVu7cgMOJYyeUaqnizwxbeJdOKNtju4xmCXH3T6H2ryDTdR1TwZr5yjJNEdk9ux4df89DUNLExv9pFJuhLXZnafF/rpH0m/wDZKs/Db/kRtU/67S/+i1rE+Iur2muabol9aPlG87IPVW+TINbfw2/5EbVP+u0v/otaGmsNZ9wvevddjzjQLKHUNfsbO4BMU06qwBxxXrn/AArLw5/zxn/7/GvGbG8m0+9gvLcgTQMHXcMjIrqf+Fm+I/8Anrb/APfmt60asrcjMqUqavzo7W6+GGhS27Lb/aIJcfK/mZwfoa8x8N3c2m+KbGWNuRcLG2O6k4I/KtO5+IniK5t3h+0xxhhgmOMBvzqx4D8K3mo6xbajPC0djbsJAzjHmMOQB681MFOMZe1eg5uEpL2a1NH4t/8AIY0//rg3/oVS+CfBmka54fW8vo5Gl81lyshHAqH4t/8AIYsP+uDf+hVz2jeNNX0KxFnYtEIQxbDJuPNKnGboLkeo5uKre9semf8ACsvDn/PGf/v8a4Dx34VtfDdzaNZu5huQ3yOclSuO/pzTv+FmeI/+esH/AH5rGvdS1jxXqMYmL3U/3Y4414X6AfzopQrqScnoFSVJxtFanofgXW5Lf4f3txcHf/Z7SbAT2ChgPzJFec2Nre+KPEKQmTdc3TktI/buT+Qr02Pw5Lovwyv7JsG5aJ55dv8AewDj8hiuD8AXkNn4xszMwVZA0YJ7Ejj9cD8aKfLzTnEJ3tCMj0Sy+GXh63hC3EUty+OWeQr+i4qPUvhfolxbsLESWk2PlYOWGfcN/jXdUhIUEk4Ari+sVb3udfsadtj51sru98MeIhJ92e1mKSKDw2Dhh9K9F+KzrL4f06VDlWuAw/75Ned+JbuLUPE+o3Nud0bztsI/i7ZrvfiTE0HhLRoW+8jqp/COu6avKEnuzjg2ozj0D4Q/8e+q/wC/F/Jq9NrzL4Q/8e+q/wC/F/Jq9NrjxX8VnVhv4aK1za295C0NzDHLEcHZIuQfwNOtLaC0hENtCkMS9ERQAPyqxRXObhRRRQB883hzdP8Ah/KtzwEMeMbL6Sf+gGsvWrG40zVpbS4G2UYP1GO1avgH/kcLT/dk/wDQDXrzd6ba7HixVqiTPK7851C5P/TVv50/S9QvtM1CO802V4rpM7XQZIyMH9Kiuzm8n/66N/Oug+H+rWOieMrO/wBRm8m2jWQM+wtjKMBwOetcn2T0OpP/AMJd45m+7qOqH/cU/wBBSf2x4+m6XevH/d8z+lexN8VvBy9NVdvpbSf/ABNQt8XfCS9Lm4b6W7Vlzf3TTl8zxa80rxbq8yy3mna1eSKNoeWCWQgenIqnd+HNbsLR7q80i+t4ExuklgZQMnA5I9a9vb4x+Fh0+3N9If8A69cx42+Jmh+IfCl7pVlDeiaYptaSNQo2urH+InoKpTe1hOK7nkle5/BD/kWtR97z/wBkWvDK90+CI/4pe/8A+v0/+gJTq/CTT+I9RooorlOkztZ/5Ad96/Z5P/QTXz5ZTXunXkV3aq6TwnKtszj8DX0nRge1b0K3sr3V7mFWl7S1nY8M/wCE+8Xf8/bf+A0f/wATR/wn/i7/AJ+2/wDAaP8A+Jr3PA9KMD0q/b0/5ER7Cf8AMcB8Pte1fW21IapOZBCqbP3QXGd2egHpXmuhQSjxNphMb4+2Rfwn++K+iBRxShiFGTcY7lSouSSb2Frj/GnhCLxHaedAAmoQj92x43j+6f6V2NJWEZuMrxNpRUlZnzNLaXUMzQTQyKyMQVKng969T+HCMngrVAykHzpOCP8Apmtei4HpS9K6auKdSHLY56eH5JXufPfha2Z/FOmLJCShuEyGXivd/wCy7D/nxtv+/K1dxRWdWu6lraWLp0VC99SmNOsUOVs7cH2jFXOlFLWLbe5skkeSfFiN31aw2ISPIboP9qt74cafby+FFa4tI2fz35dAT2rvMZo6Vt7d+z5EjH2P7znZi6r4d03U9Nns3tIU81cb0jAKnsa8QjTUvDOv7gjLdWcuOAcN/wDWI/nX0T70Y9qdLEShdPVMKlFTs1ozO0y/g1nSILyJf3Uycow6eoP615N4n+H2oaZdyT6bbtdWRO5Vj+Z4/bHU/hXtQ6VHJIsUTyP91VJP0qKdZ05XiOdJTjZng9v4y8T6Uot/t8qheNs0YYj/AL6GaZd+JvEuvxm1e6uJkbgxwx4z7HYOa9h/4SHTpNKl1Bg/kwukbgpzubbj/wBDX86ludesLCKyeXei3a7kwn3Rx19PvCuj6xDfk1MvYz25tDzzwb4AvHvoNR1eEQQxHekDfeYjpkdhW18WEZ9Esdqk/wCkdh/smuubV7VdVTTjv85jtB28birNj8lNFhq1tqU91Db7ybWQxuWXHzAspx+K1lLESlNSfQ0jRUYuK6nhWlaxrOiCRdOnkgEuC2Iwc46dRWj/AMJt4t/6CMv/AH5X/wCJr2uW/t4L23tJCVlnDbPl44GTzVWHW7K4ury2SQq9oCZdwxgDIJ/StHiYSd3AzWHmlZSPHv8AhNfFv/QRl/78r/8AE17ZpEsk2k2ksxzI8CM5PUkqCaoReIrGfTP7QXf5XmCLayYfcegx+P61q2dxFeWsV1CxaKZFdCRjKkZHFY1akZbRsa06cou7dyeiiisTY53xL4YtfEdntbEd0g/czjqvsfUVwXhDT7rS/HkNneR7JkWT6MNp5Fevd6oXOnw3F1b3RjxPbtlJMcgHgj6GtoVmouD2Zz1KClJSW58nXBzdSn/bb+dR17T4g+DP27VprzTNQS3imcu0MsZOwk87SO1Z6/Ay8/j1uEf7tuT/AOzVqqkbCcJXPJqK9fT4Ft/H4gH0Fn/9nVhPgXbj72uyn6WwH/s1HtIhySPGKK9tT4Had/Fq92fpGoqwnwQ0Mff1LUT9Cg/9lo9rEfs2eFV7z8FYXj8IXMjqQsl6xXPcBVGfzH6U+D4L+GonV3m1GULyVeVQD/3yoNd5ZWFvpllHZ2kKwwRAKiIvAFZ1Kiasi4Qad2XaKKKwNQooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAppAIweR6U6igCsLO3EHkCCIRH+AKMflQ1rbsqK0EZEZ+QFB8v0qzikxRcLEPkQ+f5/lp5mMb9vOPrSR28MTu8caKznLELgt9asUUAQNBDJIkjxozp91ivI+lCwQq7ssSBnPzELy31qeii4FYWlsIDbiCMQ/wBzaNp/CrCgBQBjHbFLRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf//Z" alt="ENPROL">
     <span class="sep"></span>
-    <span class="tit">UTILITÁRIOS</span>
+    <nav class="top-tabs" id="topTabs">
+      <button class="top-tab ativa" data-secao="infra" onclick="TOP_abrir(this)">INFRA</button>
+      <button class="top-tab" data-secao="saneagua" onclick="TOP_abrir(this)">SANEAGUA</button>
+      <button class="top-tab" data-secao="utilitarios" onclick="TOP_abrir(this)">UTILITÁRIOS</button>
+    </nav>
     <button class="btn-cad" id="btnSalvarCad" onclick="CAD_salvar()" title="Salvar cadastro (Ficha + Avaliação)">💾 Salvar</button>
     <button class="btn-cad" id="btnAbrirCad" onclick="document.getElementById('cad_abrir_file').click()" title="Abrir cadastro">📂 Abrir</button>
     <input type="file" id="cad_abrir_file" accept=".json" style="display:none" onchange="CAD_abrir(this)">
@@ -1604,9 +1745,10 @@
 <div class="app-shell">
 <aside class="app-sidebar" id="appSidebar">
   <div class="sb-main">
-    <button class="sb-grp-btn" data-grupo="desp1" onclick="SB_abrirGrupo(this)">DESP 1</button>
-    <button class="sb-grp-btn ativa" data-grupo="laudo" onclick="SB_abrirGrupo(this)">DESP 3</button>
-    <button class="sb-grp-btn" data-grupo="utilitarios" onclick="SB_abrirGrupo(this)">Utilitários</button>
+    <button class="sb-grp-btn" data-secao="infra" data-grupo="desp1" onclick="SB_abrirGrupo(this)">DESP 1</button>
+    <button class="sb-grp-btn ativa" data-secao="infra" data-grupo="laudo" onclick="SB_abrirGrupo(this)">DESP 3</button>
+    <button class="sb-grp-btn" data-secao="utilitarios" data-grupo="utilitarios" onclick="SB_abrirGrupo(this)" style="display:none;">Ferramentas</button>
+    <button class="sb-grp-btn" data-secao="saneagua" data-grupo="saneagua" onclick="SB_abrirGrupo(this)" style="display:none;">SANEAGUA</button>
   </div>
   <div class="sb-sub" id="sbSub">
     <div class="sb-sub-grupo" data-grupo="desp1" style="display:none;">
@@ -1633,7 +1775,11 @@
     </div>
     <div class="sb-sub-grupo" data-grupo="utilitarios" style="display:none;">
       <div class="sb-grp">Utilitários</div>
-      <div class="sb-vazio">Em breve: Relatório Fotográfico, Pesquisa de Mercado e União de Arquivos.</div>
+      <button class="sb-link" data-alvo="panel-util-foto" onclick="trocarAba(this)">Relatório Fotográfico</button>
+    </div>
+    <div class="sb-sub-grupo" data-grupo="saneagua" style="display:none;">
+      <div class="sb-grp">SANEAGUA</div>
+      <div class="sb-vazio">Em breve.</div>
     </div>
   </div>
 </aside>
@@ -2916,6 +3062,26 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
   </div>
 </div>
   </section>
+<section class="tab-panel" id="panel-util-foto">
+
+
+<div class="toolbar">
+  <label class="btn btn-primary" for="inputFotosUtil">📷 Inserir Fotos</label>
+  <input type="file" id="inputFotosUtil" accept="image/*" multiple onchange="UFOTO_adicionarFotos(event)">
+  <button class="btn btn-verde" onclick="UFOTO_gerarPDF()">📄 Gerar PDF Unificado</button>
+  <button class="btn btn-ghost" onclick="UFOTO_limparTudo()">Limpar tudo</button>
+  <span class="hint">Selecione várias imagens de uma vez. São dispostas 2 por página (proporção 4×3), com numeração e campo de texto abaixo de cada foto.</span>
+</div>
+
+<div class="config">
+  <div class="campo full">
+    <label>Título do relatório</label>
+    <input id="cfgTituloUtil" type="text" value="RELATÓRIO FOTOGRÁFICO">
+  </div>
+</div>
+
+<div class="paginas" id="paginasUtil"></div>
+  </section>
 </main>
 </div><!-- .app-main -->
 </div><!-- .app-shell -->
@@ -2925,6 +3091,24 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
 <script>
 /* ---- Navegação por abas ---- */
 // alterna entre os grupos do sidebar (Laudo / Utilitários)
+// alterna entre as seções principais do topo (INFRA / SANEAGUA / UTILITÁRIOS)
+function TOP_abrir(btn){
+  const secao = btn.dataset.secao;
+  document.querySelectorAll('#topTabs .top-tab').forEach(t=>t.classList.remove('ativa'));
+  btn.classList.add('ativa');
+  // mostra apenas os botões do sidebar da seção escolhida
+  let primeiro = null;
+  document.querySelectorAll('.app-sidebar .sb-grp-btn').forEach(b=>{
+    if(b.dataset.secao===secao){ b.style.display=''; if(!primeiro) primeiro=b; }
+    else { b.style.display='none'; }
+  });
+  // ativa o primeiro grupo dessa seção
+  if(primeiro){ SB_abrirGrupo(primeiro); }
+  else {
+    // seção sem grupos: esconde todos os sub-grupos
+    document.querySelectorAll('.app-sidebar .sb-sub-grupo').forEach(g=> g.style.display='none');
+  }
+}
 function SB_abrirGrupo(btn){
   const grupo = btn.dataset.grupo;
   document.querySelectorAll('.app-sidebar .sb-grp-btn').forEach(b=>b.classList.remove('ativa'));
@@ -7439,6 +7623,10 @@ function AV_gerarDescSituacao(){
     const acoes = painel.querySelector(".vactions");
     const acoesDisplay = acoes ? acoes.style.display : null;
     if(acoes) acoes.style.display = "none";
+    // esconde o título grande e subtítulo da tela (o PDF terá cabeçalho próprio)
+    const h1 = painel.querySelector("h1"); const sub = painel.querySelector(".sub");
+    const h1d = h1?h1.style.display:null, subd = sub?sub.style.display:null;
+    if(h1) h1.style.display="none"; if(sub) sub.style.display="none";
 
     await new Promise(r=>setTimeout(r, 350));
 
@@ -7447,25 +7635,84 @@ function AV_gerarDescSituacao(){
       const canvas = await html2canvas(alvo, {scale:2, backgroundColor:"#ffffff", useCORS:true, windowWidth:alvo.scrollWidth});
       const jsPDFctor = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : window.jsPDF;
       const pdf = new jsPDFctor({orientation:"portrait", unit:"mm", format:"a4"});
-      const pw = pdf.internal.pageSize.getWidth();
-      const ph = pdf.internal.pageSize.getHeight();
-      const margem = 8;
-      const imgW = pw - margem*2;
-      const imgH = canvas.height * imgW / canvas.width;
-      const imgData = canvas.toDataURL("image/jpeg", 0.92);
-      if(imgH <= ph - margem*2){
-        pdf.addImage(imgData, "JPEG", margem, margem, imgW, imgH);
-      } else {
-        let heightLeft = imgH;
-        let position = margem;
-        pdf.addImage(imgData, "JPEG", margem, position, imgW, imgH);
-        heightLeft -= (ph - margem*2);
-        while(heightLeft > 0){
-          position = heightLeft - imgH + margem;
-          pdf.addPage();
-          pdf.addImage(imgData, "JPEG", margem, position, imgW, imgH);
-          heightLeft -= (ph - margem*2);
+      const W = 210, H = 297;
+      const mL = 15, mR = 15, mT = 12, mB = 12;
+      const contentW = W - mL - mR;
+
+      // logos e rodapé (mesmo padrão da DESP 3)
+      const LI = window.__LOGO_INFRA__, LE = window.__LOGO_ENPROL__;
+      const RODAPE_END = [
+        "Av. Des. Moreira, nº 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE",
+        "Rua Idelfonso Freire, nº 106, Sala 202, Centro, 56.506-520, Arcoverde-PE",
+        "Rua Pedro Batista Ferreira, nº 278, Centro, 76.500-000, Santa Terezinha de Goiás-GO",
+        "Rua Nilo Peçanha, nº 25, 1º Andar, Sala 07, Centro, 47.640-000, Santa Maria da Vitória-BA",
+        "Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE",
+        "Rua dos Timbiras, nº 2213, Conj.1206/1209, Lourdes, 30.140-069, Belo Horizonte-MG",
+      ];
+      const RODAPE_TEL = [
+        "(+55 85) 3289-6363   comercial@enprol.com.br",
+        "(+55 85) 3289-6363   comercial@enprol.com.br",
+        "(+55 85) 3289-6363   comercial@enprol.com.br",
+        "(+55 85) 3289-6363   comercial@enprol.com.br",
+        "(+55 85) 3289-6363   comercial@enprol.com.br",
+        "(+55 31) 3253-5500   comercial@enprol.com.br",
+      ];
+      function carregar(src){ return new Promise(res=>{ if(!src){res(null);return;} const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src=src; }); }
+      const imgI = await carregar(LI); const imgE = await carregar(LE);
+
+      function cabecalho(){
+        const hLogo = 10;
+        if(imgI){ let w=hLogo*(imgI.width/imgI.height); pdf.addImage(imgI,"JPEG",mL,mT,w,hLogo); }
+        if(imgE){ let w=hLogo*(imgE.width/imgE.height); pdf.addImage(imgE,"JPEG",W-mR-w,mT,w,hLogo); }
+        pdf.setDrawColor(31,111,192); pdf.setLineWidth(0.6);
+        pdf.line(mL, mT+hLogo+3, W-mR, mT+hLogo+3);
+      }
+      function rodape(){
+        const yL = H - mB - 22;
+        pdf.setDrawColor(31,111,192); pdf.setLineWidth(0.6);
+        pdf.line(mL, yL, W-mR, yL);
+        pdf.setFontSize(6); pdf.setTextColor(90,107,124);
+        let y = yL + 3.5;
+        for(let i=0;i<RODAPE_END.length;i++){
+          pdf.text(RODAPE_END[i], mL, y);
+          pdf.text(RODAPE_TEL[i], W-mR, y, {align:"right"});
+          y += 3.4;
         }
+      }
+      // área útil entre cabeçalho e rodapé
+      const topY = mT + 10 + 6;
+      const botY = H - mB - 22 - 3;
+      const areaH = botY - topY;
+
+      // título do documento (1ª página)
+      const imgData = canvas.toDataURL("image/jpeg", 0.95);
+      const imgW = contentW;
+      const imgH = canvas.height * imgW / canvas.width;
+
+      // fatiar a imagem em páginas respeitando a área útil
+      const pxPorMM = canvas.width / imgW;
+      const areaPx = areaH * pxPorMM;          // altura de recorte por página em px
+      let y = 0; let primeira = true;
+      while(y < canvas.height){
+        if(!primeira) pdf.addPage();
+        cabecalho();
+        if(primeira){
+          pdf.setFont("helvetica","bold"); pdf.setFontSize(13); pdf.setTextColor(27,58,92);
+          pdf.text("FICHA DE VISTORIA E CADASTRO SOCIOECONÔMICO (ANEXO B)", W/2, topY-1, {align:"center", maxWidth:contentW});
+        }
+        const sliceH = Math.min(areaPx, canvas.height - y);
+        // recorta o pedaço
+        const c2 = document.createElement("canvas");
+        c2.width = canvas.width; c2.height = sliceH;
+        const ctx2 = c2.getContext("2d");
+        ctx2.fillStyle = "#fff"; ctx2.fillRect(0,0,c2.width,c2.height);
+        ctx2.drawImage(canvas, 0, y, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
+        const sliceData = c2.toDataURL("image/jpeg", 0.95);
+        const sliceMM = sliceH / pxPorMM;
+        const yImg = primeira ? topY + 5 : topY;
+        pdf.addImage(sliceData, "JPEG", mL, yImg, imgW, sliceMM);
+        rodape();
+        y += sliceH; primeira = false;
       }
       pdf.save("Ficha_Anexo_B_1.9.pdf");
     }catch(err){
@@ -7473,6 +7720,7 @@ function AV_gerarDescSituacao(){
       alert("Erro ao gerar PDF: "+err.message);
     }finally{
       if(acoes) acoes.style.display = acoesDisplay;
+      if(h1) h1.style.display=h1d; if(sub) sub.style.display=subd;
       fechadas.forEach(h=>{ if(!h.classList.contains("fechado")) h.click(); });
     }
   };
@@ -7551,6 +7799,270 @@ function AV_gerarDescSituacao(){
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", ligar);
   else ligar();
+})();
+</script>
+<script>
+(function(){
+
+const LOGO_INFRA = "data:image/jpeg;base64,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";
+const LOGO_ENPROL = "data:image/jpeg;base64,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";
+
+const RODAPE_END = [
+  "Av. Des. Moreira, n° 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE",
+  "Rua Idelfonso Freire, nº 106, Sala 202, Centro, 56.506-520, Arcoverde-PE",
+  "Rua Pedro Batista Ferreira, nº 278, Centro, 76.500-000, Santa Terezinha de Goiás-GO",
+  "Rua Nilo Peçanha, 25, 1º Andar, Sala 07, Centro, 47.640-000, Santa Maria da Vitória-BA",
+  "Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE",
+  "Rua dos Timbiras, nº 2213, Conj.1206/1209, Lourdes, 30.140-069, Belo Horizonte-MG",
+];
+const RODAPE_TEL = [
+  "(+55 85) 3289-6363   comercial@enprol.com.br",
+  "(+55 85) 3289-6363   comercial@enprol.com.br",
+  "(+55 85) 3289-6363   comercial@enprol.com.br",
+  "(+55 85) 3289-6363   comercial@enprol.com.br",
+  "(+55 85) 3289-6363   comercial@enprol.com.br",
+  "(+55 31) 3253-5500   comercial@enprol.com.br",
+];
+
+let fotos = []; // {src, legenda}
+
+function cabecalhoHTML(){
+  return `<div class="cabecalho cabecalho-enprol">
+    <img src="${LOGO_ENPROL}" alt="ENPROL">
+  </div>`;
+}
+function rodapeHTML(){
+  return `<div class="rodape">
+    <div class="end">${RODAPE_END.join("<br>")}</div>
+    <div class="tel">${RODAPE_TEL.join("<br>")}</div>
+  </div>`;
+}
+
+function render(){
+  const cont = document.getElementById("paginasUtil");
+  cont.innerHTML = "";
+
+  // A capa NÃO é exibida na tela — ela é incluída somente no PDF gerado.
+
+  // ---- PÁGINAS DE FOTOS (2 por página) ----
+  for(let i=0; i<fotos.length; i+=2){
+    const pag = document.createElement("div");
+    pag.className = "pagina";
+    let corpo = `<div class="fotos-corpo">`;
+    for(let j=i; j<Math.min(i+2, fotos.length); j++){
+      const f = fotos[j];
+      corpo += `
+        <div class="foto-bloco">
+          <button class="del-foto" onclick="UFOTO_removerFoto(${j})" title="Remover">×</button>
+          <span class="foto-num">Foto ${j+1}</span>
+          <div class="foto-frame">
+            ${f.src ? `<img src="${f.src}">` : `<span class="vazio">sem imagem</span>`}
+          </div>
+          <textarea class="foto-legenda" placeholder="Descrição da foto ${j+1}..."
+            oninput="UFOTO_setLeg(${j},this.value)">${f.legenda||""}</textarea>
+        </div>`;
+    }
+    corpo += `</div>`;
+    pag.innerHTML = cabecalhoHTML() + corpo + rodapeHTML();
+    cont.appendChild(pag);
+  }
+
+  if(fotos.length === 0){
+    const aviso = document.createElement("div");
+    aviso.className = "vazio-msg";
+    aviso.textContent = "Nenhuma foto inserida ainda. Clique em “Inserir Fotos” para começar.";
+    cont.appendChild(aviso);
+  }
+}
+
+function atualizarCapa(){
+  const t = document.getElementById("pvTitulo");
+  if(!t) return; // preview da capa não é exibido na tela
+  t.textContent = document.getElementById("cfgTituloUtil").value || "RELATÓRIO FOTOGRÁFICO";
+}
+
+document.getElementById("cfgTituloUtil").addEventListener("input", atualizarCapa);
+
+function adicionarFotos(ev){
+  const arquivos = [...ev.target.files];
+  let pendentes = arquivos.length;
+  if(!pendentes) return;
+  arquivos.forEach(arq=>{
+    const reader = new FileReader();
+    reader.onload = e=>{
+      fotos.push({src:e.target.result, legenda:""});
+      pendentes--;
+      if(pendentes===0) render();
+    };
+    reader.readAsDataURL(arq);
+  });
+  ev.target.value = "";
+}
+
+function removerFoto(i){
+  fotos.splice(i,1);
+  render();
+}
+function setLeg(i, val){
+  if(fotos[i]) fotos[i].legenda = val;
+}
+
+function limparTudo(){
+  if(fotos.length && !confirm("Remover todas as fotos?")) return;
+  fotos = [];
+  render();
+}
+
+/* ---------------- Gerar PDF ---------------- */
+async function carregarImg(src){
+  return new Promise(res=>{
+    const img = new Image();
+    img.onload = ()=>res(img);
+    img.crossOrigin = "anonymous";
+    img.src = src;
+  });
+}
+
+async function gerarPDF(){
+  if(!fotos.length){ alert("Nenhuma foto inserida no Relatório Fotográfico."); return; }
+  const pdf = await construirPDFfoto();
+  pdf.save("Relatorio_Fotografico_Utilitarios.pdf");
+}
+
+async function construirPDFfoto(incluirCapa){
+  if(incluirCapa===undefined) incluirCapa=true;
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({unit:"mm", format:"a4"});
+  const W = 210, H = 297;
+  const mL = 15, mR = 15, mT = 12, mB = 12;
+  const contentW = W - mL - mR;
+
+  // INFRA removido nesta versão (Utilitários)
+  const imgEnprol = await carregarImg(LOGO_ENPROL);
+
+  function desenharCabecalho(){
+    const hLogo = 10;
+    // Apenas ENPROL à esquerda
+    let wE = hLogo * (imgEnprol.width/imgEnprol.height);
+    pdf.addImage(imgEnprol, "JPEG", mL, mT, wE, hLogo);
+    // linha
+    pdf.setDrawColor(31,111,192); pdf.setLineWidth(0.6);
+    pdf.line(mL, mT+hLogo+3, W-mR, mT+hLogo+3);
+  }
+
+  function desenharRodape(){
+    const yLinha = H - mB - 22;
+    pdf.setDrawColor(31,111,192); pdf.setLineWidth(0.6);
+    pdf.line(mL, yLinha, W-mR, yLinha);
+    pdf.setFontSize(6); pdf.setTextColor(90,107,124);
+    let y = yLinha + 3.5;
+    for(let i=0;i<RODAPE_END.length;i++){
+      pdf.text(RODAPE_END[i], mL, y);
+      pdf.text(RODAPE_TEL[i], W-mR, y, {align:"right"});
+      y += 3.4;
+    }
+  }
+
+  // ---- CAPA ----
+  let fotoPrimeira = true;
+  if(incluirCapa){
+    desenharCabecalho();
+    const titulo = document.getElementById("cfgTituloUtil").value || "RELATÓRIO FOTOGRÁFICO";
+
+    pdf.setTextColor(36,52,71);
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(20);
+    pdf.text(titulo, W/2, H/2, {align:"center", maxWidth:contentW});
+    desenharRodape();
+    fotoPrimeira = false;
+  }
+
+  // ---- PÁGINAS DE FOTOS ----
+  const topFotos = mT + 10 + 6;         // abaixo do cabeçalho
+  const botFotos = H - mB - 22 - 4;     // acima do rodapé
+  const areaH = botFotos - topFotos;
+  const gap = 6;
+  const blocoH = (areaH - gap) / 2;     // altura para cada bloco (foto+legenda)
+  const legendaH = 14;                  // altura reservada p/ legenda
+
+  for(let i=0; i<fotos.length; i+=2){
+    if(fotoPrimeira){ fotoPrimeira=false; } else { pdf.addPage(); }
+    desenharCabecalho();
+    for(let j=i; j<Math.min(i+2, fotos.length); j++){
+      const idx = j - i; // 0 ou 1
+      const blocoTop = topFotos + idx*(blocoH+gap);
+      const f = fotos[j];
+
+      // Numeração
+      pdf.setFont("helvetica","bold"); pdf.setFontSize(10);
+      pdf.setTextColor(255,255,255);
+      pdf.setFillColor(31,111,192);
+      const tag = "Foto "+(j+1);
+      const tagW = pdf.getTextWidth(tag)+8;
+      pdf.roundedRect(mL, blocoTop, tagW, 6, 3, 3, "F");
+      pdf.text(tag, mL+4, blocoTop+4.2);
+
+      // Área da imagem — proporção 4x3
+      const imgAreaTop = blocoTop + 8;
+      const imgAreaH = blocoH - 8 - legendaH;
+      // caixa 4:3 centralizada dentro da área disponível
+      let boxW = contentW;
+      let boxH = boxW * 3/4;
+      if(boxH > imgAreaH){ boxH = imgAreaH; boxW = boxH * 4/3; }
+      const boxX = mL + (contentW - boxW)/2;
+      const boxY = imgAreaTop + (imgAreaH - boxH)/2;
+
+      if(f.src){
+        const im = await carregarImg(f.src);
+        // encaixar imagem dentro da caixa 4:3 mantendo proporção (contain)
+        let iw = boxW, ih = boxW * (im.height/im.width);
+        if(ih > boxH){ ih = boxH; iw = boxH * (im.width/im.height); }
+        const ix = boxX + (boxW - iw)/2;
+        const iy = boxY + (boxH - ih)/2;
+        // moldura da caixa 4:3
+        pdf.setDrawColor(195,204,214); pdf.setLineWidth(0.3);
+        pdf.setFillColor(238,242,246);
+        pdf.rect(boxX, boxY, boxW, boxH, "FD");
+        let fmt = f.src.includes("image/png") ? "PNG" : "JPEG";
+        pdf.addImage(f.src, fmt, ix, iy, iw, ih);
+      } else {
+        pdf.setDrawColor(195,204,214);
+        pdf.rect(boxX, boxY, boxW, boxH);
+      }
+
+      // Legenda
+      const legY = blocoTop + blocoH - legendaH + 2;
+      pdf.setDrawColor(154,167,181); pdf.setLineWidth(0.3);
+      pdf.rect(mL, legY, contentW, legendaH-3);
+      pdf.setFont("helvetica","normal"); pdf.setFontSize(9);
+      pdf.setTextColor(36,52,71);
+      const texto = f.legenda || "";
+      const linhas = pdf.splitTextToSize(texto, contentW-6);
+      pdf.text(linhas.slice(0,3), mL+3, legY+4);
+    }
+    desenharRodape();
+  }
+
+  return pdf;
+}
+
+// Builder de bytes para a unificação geral (retorna Uint8Array ou null se vazio)
+window.UFOTO_buildBytes = async function(){
+  if(!fotos.length) return null;
+  const pdf = await construirPDFfoto(false);
+  return new Uint8Array(pdf.output("arraybuffer"));
+};
+
+render();
+
+window.UFOTO_adicionarFotos=adicionarFotos;
+window.UFOTO_atualizarCapa=atualizarCapa;
+window.UFOTO_cabecalhoHTML=cabecalhoHTML;
+window.UFOTO_carregarImg=carregarImg;
+window.UFOTO_gerarPDF=gerarPDF;
+window.UFOTO_limparTudo=limparTudo;
+window.UFOTO_removerFoto=removerFoto; window.UFOTO_setLeg=setLeg;
+window.UFOTO_render=render;
+window.UFOTO_rodapeHTML=rodapeHTML;
 })();
 </script>
 </body>
