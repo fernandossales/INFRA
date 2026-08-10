@@ -7611,118 +7611,182 @@ function AV_gerarDescSituacao(){
   }
 
   // ---- Gerar PDF do formulário 1.9 preenchido ----
+  // Coleta o conteúdo do formulário 1.9 (seções, subseções, campos e checkboxes marcados)
+  function FB_coletar(){
+    const painel=document.getElementById("panel-desp1-vist");
+    const secoes=[]; let atual={titulo:"", itens:[]};
+    function push(){ if(atual.titulo || atual.itens.length) secoes.push(atual); atual={titulo:"", itens:[]}; }
+    function valCampo(el){
+      if(!el) return "";
+      if(el.tagName==="SELECT"){ const o=el.options[el.selectedIndex]; return o?o.text.trim():""; }
+      return (el.value||"").trim();
+    }
+    // percorre em ordem de DOM os elementos relevantes
+    const nodes = painel.querySelectorAll("h2.vsec, .vsub, .vfield, .fb-familia");
+    nodes.forEach(node=>{
+      if(node.classList.contains("vsec")){
+        push(); atual.titulo=node.textContent.replace(/[▾▸►]/g,"").trim();
+      } else if(node.classList.contains("vsub")){
+        atual.itens.push({tipo:"sub", texto:node.textContent.trim()});
+      } else if(node.classList.contains("fb-familia")){
+        // composição familiar
+        const linhas=[];
+        (window.FB_getFamilia?window.FB_getFamilia():[]).forEach((p,i)=>{
+          if((p.nome||"").trim() || (p.idade||"").trim())
+            linhas.push((i+1)+". "+(p.nome||"—")+"  —  "+(p.idade||"—"));
+        });
+        if(linhas.length) atual.itens.push({tipo:"lista", rotulo:"Composição familiar", valores:linhas});
+      } else if(node.classList.contains("vfield")){
+        const lbl=node.querySelector("label");
+        const rot=lbl?lbl.textContent.trim():"";
+        const checks=node.querySelector(".fb-checks");
+        if(checks){
+          const marcados=[...checks.querySelectorAll("input[type=checkbox]:checked")].map(c=>c.value||c.nextSibling&&c.nextSibling.textContent.trim());
+          atual.itens.push({tipo:"campo", rotulo:rot, valor: marcados.length?marcados.join(", "):"—"});
+        } else {
+          const campo=node.querySelector("input, textarea, select");
+          if(campo && campo.type==="file") return;
+          const val=valCampo(campo);
+          const isArea = campo && campo.tagName==="TEXTAREA";
+          if(rot) atual.itens.push({tipo: isArea?"texto":"campo", rotulo:rot, valor:val});
+        }
+      }
+    });
+    push();
+    return secoes;
+  }
+
   window.FB_gerarPDF = async function(){
-    const painel = document.getElementById("panel-desp1-vist");
-    if(!painel){ return; }
-    if(typeof html2canvas==="undefined" || !(window.jspdf||window.jsPDF)){
-      alert("Bibliotecas de PDF ainda carregando. Tente novamente em instantes.");
-      return;
+    if(!(window.jspdf||window.jsPDF)){
+      alert("Biblioteca de PDF ainda carregando. Tente novamente em instantes."); return;
     }
-    const fechadas = [];
-    painel.querySelectorAll(".vsec.acc.fechado").forEach(h=>{ fechadas.push(h); h.click(); });
-    const acoes = painel.querySelector(".vactions");
-    const acoesDisplay = acoes ? acoes.style.display : null;
-    if(acoes) acoes.style.display = "none";
-    // esconde o título grande e subtítulo da tela (o PDF terá cabeçalho próprio)
-    const h1 = painel.querySelector("h1"); const sub = painel.querySelector(".sub");
-    const h1d = h1?h1.style.display:null, subd = sub?sub.style.display:null;
-    if(h1) h1.style.display="none"; if(sub) sub.style.display="none";
+    const jsPDFctor = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : window.jsPDF;
+    const pdf = new jsPDFctor({orientation:"portrait", unit:"mm", format:"a4"});
+    const W=210, H=297, mL=15, mR=15, mT=12, mB=12;
+    const contentW=W-mL-mR;
 
-    await new Promise(r=>setTimeout(r, 350));
+    // logos e rodapé (padrão DESP 3)
+    const LI=window.__LOGO_INFRA__, LE=window.__LOGO_ENPROL__;
+    const RODAPE_END=[
+      "Av. Des. Moreira, nº 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE",
+      "Rua Idelfonso Freire, nº 106, Sala 202, Centro, 56.506-520, Arcoverde-PE",
+      "Rua Pedro Batista Ferreira, nº 278, Centro, 76.500-000, Santa Terezinha de Goiás-GO",
+      "Rua Nilo Peçanha, nº 25, 1º Andar, Sala 07, Centro, 47.640-000, Santa Maria da Vitória-BA",
+      "Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE",
+      "Rua dos Timbiras, nº 2213, Conj.1206/1209, Lourdes, 30.140-069, Belo Horizonte-MG",
+    ];
+    const RODAPE_TEL=[
+      "(+55 85) 3289-6363   comercial@enprol.com.br","(+55 85) 3289-6363   comercial@enprol.com.br",
+      "(+55 85) 3289-6363   comercial@enprol.com.br","(+55 85) 3289-6363   comercial@enprol.com.br",
+      "(+55 85) 3289-6363   comercial@enprol.com.br","(+55 31) 3253-5500   comercial@enprol.com.br",
+    ];
+    function carregar(src){ return new Promise(res=>{ if(!src){res(null);return;} const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src=src; }); }
+    const imgI=await carregar(LI), imgE=await carregar(LE);
 
-    try{
-      const alvo = painel.querySelector(".wrap") || painel;
-      const canvas = await html2canvas(alvo, {scale:2, backgroundColor:"#ffffff", useCORS:true, windowWidth:alvo.scrollWidth});
-      const jsPDFctor = (window.jspdf && window.jspdf.jsPDF) ? window.jspdf.jsPDF : window.jsPDF;
-      const pdf = new jsPDFctor({orientation:"portrait", unit:"mm", format:"a4"});
-      const W = 210, H = 297;
-      const mL = 15, mR = 15, mT = 12, mB = 12;
-      const contentW = W - mL - mR;
-
-      // logos e rodapé (mesmo padrão da DESP 3)
-      const LI = window.__LOGO_INFRA__, LE = window.__LOGO_ENPROL__;
-      const RODAPE_END = [
-        "Av. Des. Moreira, nº 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE",
-        "Rua Idelfonso Freire, nº 106, Sala 202, Centro, 56.506-520, Arcoverde-PE",
-        "Rua Pedro Batista Ferreira, nº 278, Centro, 76.500-000, Santa Terezinha de Goiás-GO",
-        "Rua Nilo Peçanha, nº 25, 1º Andar, Sala 07, Centro, 47.640-000, Santa Maria da Vitória-BA",
-        "Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE",
-        "Rua dos Timbiras, nº 2213, Conj.1206/1209, Lourdes, 30.140-069, Belo Horizonte-MG",
-      ];
-      const RODAPE_TEL = [
-        "(+55 85) 3289-6363   comercial@enprol.com.br",
-        "(+55 85) 3289-6363   comercial@enprol.com.br",
-        "(+55 85) 3289-6363   comercial@enprol.com.br",
-        "(+55 85) 3289-6363   comercial@enprol.com.br",
-        "(+55 85) 3289-6363   comercial@enprol.com.br",
-        "(+55 31) 3253-5500   comercial@enprol.com.br",
-      ];
-      function carregar(src){ return new Promise(res=>{ if(!src){res(null);return;} const im=new Image(); im.onload=()=>res(im); im.onerror=()=>res(null); im.src=src; }); }
-      const imgI = await carregar(LI); const imgE = await carregar(LE);
-
-      function cabecalho(){
-        const hLogo = 10;
-        if(imgI){ let w=hLogo*(imgI.width/imgI.height); pdf.addImage(imgI,"JPEG",mL,mT,w,hLogo); }
-        if(imgE){ let w=hLogo*(imgE.width/imgE.height); pdf.addImage(imgE,"JPEG",W-mR-w,mT,w,hLogo); }
-        pdf.setDrawColor(31,111,192); pdf.setLineWidth(0.6);
-        pdf.line(mL, mT+hLogo+3, W-mR, mT+hLogo+3);
-      }
-      function rodape(){
-        const yL = H - mB - 22;
-        pdf.setDrawColor(31,111,192); pdf.setLineWidth(0.6);
-        pdf.line(mL, yL, W-mR, yL);
-        pdf.setFontSize(6); pdf.setTextColor(90,107,124);
-        let y = yL + 3.5;
-        for(let i=0;i<RODAPE_END.length;i++){
-          pdf.text(RODAPE_END[i], mL, y);
-          pdf.text(RODAPE_TEL[i], W-mR, y, {align:"right"});
-          y += 3.4;
-        }
-      }
-      // área útil entre cabeçalho e rodapé
-      const topY = mT + 10 + 6;
-      const botY = H - mB - 22 - 3;
-      const areaH = botY - topY;
-
-      // título do documento (1ª página)
-      const imgData = canvas.toDataURL("image/jpeg", 0.95);
-      const imgW = contentW;
-      const imgH = canvas.height * imgW / canvas.width;
-
-      // fatiar a imagem em páginas respeitando a área útil
-      const pxPorMM = canvas.width / imgW;
-      const areaPx = areaH * pxPorMM;          // altura de recorte por página em px
-      let y = 0; let primeira = true;
-      while(y < canvas.height){
-        if(!primeira) pdf.addPage();
-        cabecalho();
-        if(primeira){
-          pdf.setFont("helvetica","bold"); pdf.setFontSize(13); pdf.setTextColor(27,58,92);
-          pdf.text("FICHA DE VISTORIA E CADASTRO SOCIOECONÔMICO (ANEXO B)", W/2, topY-1, {align:"center", maxWidth:contentW});
-        }
-        const sliceH = Math.min(areaPx, canvas.height - y);
-        // recorta o pedaço
-        const c2 = document.createElement("canvas");
-        c2.width = canvas.width; c2.height = sliceH;
-        const ctx2 = c2.getContext("2d");
-        ctx2.fillStyle = "#fff"; ctx2.fillRect(0,0,c2.width,c2.height);
-        ctx2.drawImage(canvas, 0, y, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
-        const sliceData = c2.toDataURL("image/jpeg", 0.95);
-        const sliceMM = sliceH / pxPorMM;
-        const yImg = primeira ? topY + 5 : topY;
-        pdf.addImage(sliceData, "JPEG", mL, yImg, imgW, sliceMM);
-        rodape();
-        y += sliceH; primeira = false;
-      }
-      pdf.save("Ficha_Anexo_B_1.9.pdf");
-    }catch(err){
-      console.error(err);
-      alert("Erro ao gerar PDF: "+err.message);
-    }finally{
-      if(acoes) acoes.style.display = acoesDisplay;
-      if(h1) h1.style.display=h1d; if(sub) sub.style.display=subd;
-      fechadas.forEach(h=>{ if(!h.classList.contains("fechado")) h.click(); });
+    function cabecalho(){
+      const hLogo=10;
+      if(imgI){ let w=hLogo*(imgI.width/imgI.height); pdf.addImage(imgI,"JPEG",mL,mT,w,hLogo); }
+      if(imgE){ let w=hLogo*(imgE.width/imgE.height); pdf.addImage(imgE,"JPEG",W-mR-w,mT,w,hLogo); }
+      pdf.setDrawColor(31,111,192); pdf.setLineWidth(0.6);
+      pdf.line(mL, mT+hLogo+3, W-mR, mT+hLogo+3);
     }
+    function rodape(){
+      const yL=H-mB-22;
+      pdf.setDrawColor(31,111,192); pdf.setLineWidth(0.6);
+      pdf.line(mL,yL,W-mR,yL);
+      pdf.setFont("helvetica","normal"); pdf.setFontSize(6); pdf.setTextColor(90,107,124);
+      let y=yL+3.5;
+      for(let i=0;i<RODAPE_END.length;i++){ pdf.text(RODAPE_END[i],mL,y); pdf.text(RODAPE_TEL[i],W-mR,y,{align:"right"}); y+=3.4; }
+    }
+
+    const topY=mT+10+7;
+    const botY=H-mB-22-3;
+    let y=topY;
+    let primeira=true;
+    function novaPagina(){ pdf.addPage(); cabecalho(); y=topY; }
+    function garantir(alturaNecessaria){ if(y+alturaNecessaria>botY){ rodape(); novaPagina(); } }
+
+    cabecalho();
+    // Título do documento (1ª página)
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(12); pdf.setTextColor(15,42,68);
+    pdf.text("FICHA DE VISTORIA E CADASTRO SOCIOECONÔMICO (ANEXO B)", W/2, y, {align:"center", maxWidth:contentW});
+    y+=8;
+    // Processo e aplicador no topo
+    const proc=(document.getElementById("fb_processo")||{}).value||"";
+    const apl=(document.getElementById("fb_aplicador")||{}).value||"";
+    const dt=(document.getElementById("fb_data")||{}).value||"";
+    pdf.setFont("helvetica","normal"); pdf.setFontSize(8.5); pdf.setTextColor(60,72,86);
+    if(proc){ pdf.text("Processo nº: "+proc, mL, y); }
+    if(apl||dt){ pdf.text((apl?("Aplicador(a): "+apl):"")+(dt?("     Data: "+dt):""), W-mR, y, {align:"right"}); }
+    y+=6;
+
+    const secoes=FB_coletar();
+    secoes.forEach(sec=>{
+      if(sec.titulo){
+        garantir(12);
+        // barra de seção azul
+        pdf.setFillColor(31,111,192);
+        pdf.rect(mL, y-4, contentW, 7, "F");
+        pdf.setFont("helvetica","bold"); pdf.setFontSize(10); pdf.setTextColor(255,255,255);
+        pdf.text(sec.titulo, mL+3, y+0.8);
+        y+=8;
+      }
+      sec.itens.forEach(it=>{
+        if(it.tipo==="sub"){
+          garantir(8);
+          pdf.setFont("helvetica","bold"); pdf.setFontSize(9); pdf.setTextColor(23,90,159);
+          pdf.text(it.texto, mL, y+1); y+=5.5;
+        } else if(it.tipo==="campo"){
+          pdf.setFont("helvetica","bold"); pdf.setFontSize(8.5); pdf.setTextColor(70,88,108);
+          const rot=it.rotulo+": ";
+          const rotW=pdf.getTextWidth(rot);
+          pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58);
+          const val=it.valor||"—";
+          const linhas=pdf.splitTextToSize(val, contentW-rotW-2);
+          garantir(linhas.length*4.4+2);
+          pdf.setFont("helvetica","bold"); pdf.setTextColor(70,88,108);
+          pdf.text(rot, mL, y);
+          pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58);
+          pdf.text(linhas, mL+rotW, y);
+          y+=linhas.length*4.4+1.5;
+        } else if(it.tipo==="texto"){
+          pdf.setFont("helvetica","bold"); pdf.setFontSize(8.5); pdf.setTextColor(70,88,108);
+          garantir(6); pdf.text(it.rotulo+":", mL, y); y+=4.4;
+          pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58);
+          const linhas=pdf.splitTextToSize(it.valor||"—", contentW);
+          linhas.forEach(ln=>{ garantir(4.4); pdf.text(ln, mL, y); y+=4.4; });
+          y+=1.5;
+        } else if(it.tipo==="lista"){
+          pdf.setFont("helvetica","bold"); pdf.setFontSize(8.5); pdf.setTextColor(70,88,108);
+          garantir(6); pdf.text(it.rotulo+":", mL, y); y+=4.4;
+          pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58);
+          it.valores.forEach(ln=>{ garantir(4.4); pdf.text(ln, mL+3, y); y+=4.4; });
+          y+=1.5;
+        }
+      });
+      y+=2;
+    });
+
+    // fotografias (5.3)
+    const fotos = (window.FB_getFotos?window.FB_getFotos():[]) || [];
+    if(fotos.length){
+      rodape(); novaPagina();
+      pdf.setFont("helvetica","bold"); pdf.setFontSize(10); pdf.setTextColor(23,90,159);
+      pdf.text("5.3 Fotografias do imóvel", mL, y); y+=6;
+      const fw=(contentW-6)/2, fh=fw*0.72;
+      let col=0;
+      for(let i=0;i<fotos.length;i++){
+        if(y+fh>botY){ rodape(); novaPagina(); }
+        const x=mL+col*(fw+6);
+        try{ pdf.addImage(fotos[i],"JPEG",x,y,fw,fh); }catch(e){}
+        col++;
+        if(col===2){ col=0; y+=fh+5; }
+      }
+      if(col===1) y+=fh+5;
+    }
+
+    rodape();
+    pdf.save("Ficha_Anexo_B_1.9.pdf");
   };
 
   // init
