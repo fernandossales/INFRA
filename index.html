@@ -7992,6 +7992,7 @@ function AV_gerarDescSituacao(){
         } else {
           const campo=node.querySelector("input, textarea, select");
           if(campo && campo.type==="file") return;
+          if(campo && campo.id==="fb_puxar") return;  // não incluir "Puxar dados da DESP 3?" no PDF
           const val=valCampo(campo);
           const isArea = campo && campo.tagName==="TEXTAREA";
           if(rot) atual.itens.push({tipo: isArea?"texto":"campo", rotulo:rot, valor:val, linha:rowId});
@@ -8736,7 +8737,7 @@ window.UFOTO_rodapeHTML=rodapeHTML;
     function ensure(h){ if(yc+h>botY){ rod(); nova(); } }
     function titulo(t){ ensure(12); pdf.setFillColor(31,111,192); pdf.rect(mL,yc-4,cw,7,"F"); pdf.setFont("helvetica","bold"); pdf.setFontSize(11); pdf.setTextColor(255,255,255); pdf.text(t,mL+3,yc+1); yc+=9; }
     function subt(t){ ensure(7); pdf.setFont("helvetica","bold"); pdf.setFontSize(10); pdf.setTextColor(23,90,159); pdf.text(t,mL,yc); yc+=5.5; }
-    function paragrafo(t){ if(!t) return; pdf.setFont("helvetica","normal"); pdf.setFontSize(9.5); pdf.setTextColor(30,43,58); String(t).split("\n").forEach(par=>{ if(!par.trim()){ yc+=2.5; return; } const ls=pdf.splitTextToSize(par,cw); ls.forEach(l=>{ ensure(5); pdf.text(l,mL,yc); yc+=4.8; }); }); yc+=2; }
+    function paragrafo(t){ if(!t) return; pdf.setFont("helvetica","normal"); pdf.setFontSize(9.5); pdf.setTextColor(30,43,58); String(t).split("\n").forEach(par=>{ if(!par.trim()){ yc+=2.5; return; } const ls=pdf.splitTextToSize(par,cw); ls.forEach((l,idx)=>{ ensure(5); const ultima=(idx===ls.length-1); if(ultima){ pdf.text(l,mL,yc); } else { pdf.text(l,mL,yc,{maxWidth:cw, align:"justify"}); } yc+=4.8; }); }); yc+=2; }
     function campo(rot,val){ if(!val) return; pdf.setFont("helvetica","bold"); pdf.setFontSize(9.5); pdf.setTextColor(70,88,108); const rw=pdf.getTextWidth(rot+": "); ensure(5); pdf.text(rot+": ",mL,yc); pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58); const ls=pdf.splitTextToSize(val,cw-rw); pdf.text(ls,mL+rw,yc); yc+=ls.length*4.8+1; }
     function desenharTabela(rotulo, arr, comNA){
       if(!arr||!arr.length) return; subt(rotulo);
@@ -8795,6 +8796,34 @@ window.UFOTO_rodapeHTML=rodapeHTML;
     }
 
     nova();
+    // Quadro-resumo (igual ao material entregue)
+    (function(){
+      const dados=[
+        ["ENTREVISTADO:", g("rel_expropriado")||g("rel_nome")],
+        ["EMPREENDIMENTO:", g("rel_ferrovia")],
+        ["LOTE:", g("rel_lote")],
+        ["Nº DO PROCESSO:", g("rel_processo")],
+        ["DENOMINAÇÃO DO IMÓVEL:", g("rel_prop_id")],
+        ["MATRÍCULA:", g("rel_matricula")],
+        ["ÁREA TOTAL (ha):", g("rel_area_total")],
+        ["ÁREA DE DESAPROPRIAÇÃO (ha):", g("rel_area_desap")],
+      ].filter(d=>d[1]);
+      if(!dados.length) return;
+      const wL=58, wR=cw-wL, hh=6.5;
+      dados.forEach(d=>{
+        ensure(hh);
+        pdf.setDrawColor(160,175,190); pdf.setLineWidth(0.2);
+        pdf.setFillColor(234,242,251); pdf.rect(mL,yc,wL,hh,"FD");
+        pdf.rect(mL+wL,yc,wR,hh);
+        pdf.setFont("helvetica","bold"); pdf.setFontSize(8.5); pdf.setTextColor(31,73,125);
+        pdf.text(d[0], mL+2, yc+4.3);
+        pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58);
+        const vls=pdf.splitTextToSize(String(d[1]), wR-4);
+        pdf.text(vls.slice(0,1), mL+wL+2, yc+4.3);
+        yc+=hh;
+      });
+      yc+=5;
+    })();
     titulo("1. APRESENTAÇÃO"); paragrafo(g("rel_apresentacao"));
     subt("1.1 Referencial Normativo e Premissas Gerais Acerca das Opções de Medidas Compensatórias"); paragrafo(g("rel_premissas"));
     titulo("2. IDENTIFICAÇÃO E QUALIFICAÇÃO DO PROPRIETÁRIO E DO IMÓVEL"); paragrafo(g("rel_qualificacao"));
