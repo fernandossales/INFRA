@@ -8748,12 +8748,21 @@ window.UFOTO_rodapeHTML=rodapeHTML;
       const wCrit = cw - wResp*nResp - wObs;
       const cabs = comNA ? ["Sim","Não","N/A"] : ["Sim","Não"];
       function cabecalhoTab(){
-        pdf.setFillColor(31,111,192); pdf.setDrawColor(160,175,190); pdf.setLineWidth(0.2);
+        const hh=7; let x=mL;
+        pdf.setDrawColor(160,175,190); pdf.setLineWidth(0.2);
+        // fundo azul de todas as células do cabeçalho
+        pdf.setFillColor(31,111,192);
+        pdf.rect(mL, yc, cw, hh, "FD");
+        // bordas verticais entre colunas
+        let xb=mL+wCrit;
+        pdf.line(xb, yc, xb, yc+hh);
+        cabs.forEach(()=>{ xb+=wResp; pdf.line(xb, yc, xb, yc+hh); });
+        // textos brancos
         pdf.setFont("helvetica","bold"); pdf.setFontSize(8.5); pdf.setTextColor(255,255,255);
-        let x=mL; const hh=6;
-        pdf.rect(x,yc,wCrit,hh,"FD"); pdf.text("Critérios de Análise", x+2, yc+4); x+=wCrit;
-        cabs.forEach(c=>{ pdf.rect(x,yc,wResp,hh,"FD"); pdf.text(c, x+wResp/2, yc+4, {align:"center"}); x+=wResp; });
-        pdf.rect(x,yc,wObs,hh,"FD"); pdf.text("Observações", x+2, yc+4);
+        pdf.text("Critérios de Análise", mL+2, yc+4.6);
+        x=mL+wCrit;
+        cabs.forEach(c=>{ pdf.text(c, x+wResp/2, yc+4.6, {align:"center"}); x+=wResp; });
+        pdf.text("Observações", x+2, yc+4.6);
         yc+=hh;
       }
       ensure(6+10); cabecalhoTab();
@@ -8794,6 +8803,49 @@ window.UFOTO_rodapeHTML=rodapeHTML;
       });
       yc+=3;
     }
+
+    // ---------- ÍNDICE ----------
+    pdf.addPage(); cab(); yc=topY;
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(13); pdf.setTextColor(20,40,70);
+    pdf.text("ÍNDICE", W/2, yc+2, {align:"center"}); yc+=12;
+    (function(){
+      const itens=[
+        ["1.","APRESENTAÇÃO","3"],
+        ["1.1.","Referencial normativo e premissas gerais acerca das opções de medidas compensatórias","3"],
+        ["2.","IDENTIFICAÇÃO E QUALIFICAÇÃO DO PROPRIETÁRIO E DO IMÓVEL","6"],
+        ["3.","CADASTRO SOCIOECONÔMICO","7"],
+        ["3.1.","ATIVIDADE REALIZADA","7"],
+        ["3.2.","OBJETIVO","7"],
+        ["3.3.","METODOLOGIA","7"],
+        ["3.4.","SÍNTESE DA CARACTERIZAÇÃO SOCIOECONÔMICA","8"],
+        ["4.","PARECER SOCIAL","10"],
+        ["5.","CONCLUSÃO","13"],
+        ["6.","RELATÓRIO FOTOGRÁFICO DO IMÓVEL","14"],
+      ];
+      pdf.setFontSize(10); pdf.setTextColor(30,43,58);
+      itens.forEach(it=>{
+        const bold = (it[0].indexOf(".")===it[0].length-1 && it[0].length<=2); // nível 1
+        pdf.setFont("helvetica", bold?"bold":"normal");
+        const num=it[0]; const titulo=it[1]; const pag=it[2];
+        const indent = bold?0:6;
+        const textoEsq = num+"  "+titulo;
+        ensure(6);
+        // texto à esquerda
+        const maxTextW = cw-indent-14;
+        const ls=pdf.splitTextToSize(textoEsq, maxTextW);
+        pdf.text(ls[0], mL+indent, yc);
+        // pontilhado + página
+        const larguraTexto=pdf.getTextWidth(ls[0]);
+        const xIni=mL+indent+larguraTexto+2; const xFim=W-mR-8;
+        pdf.setLineDashPattern([0.5,0.8],0); pdf.setDrawColor(150,160,172); pdf.setLineWidth(0.2);
+        if(xFim>xIni) pdf.line(xIni, yc-0.8, xFim, yc-0.8);
+        pdf.setLineDashPattern([],0);
+        pdf.text(pag, W-mR, yc, {align:"right"});
+        yc+=6;
+        // se o título quebrou em 2 linhas
+        for(let k=1;k<ls.length;k++){ ensure(5); pdf.text(ls[k], mL+indent, yc); yc+=5; }
+      });
+    })();
 
     nova();
     // Quadro-resumo (igual ao material entregue)
