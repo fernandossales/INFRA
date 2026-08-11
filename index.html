@@ -2015,6 +2015,14 @@
   #panel-desp1-rel .fb-fotos-prev img{ width:130px; height:100px; object-fit:cover; border-radius:8px; border:1px solid #d6dee7; }
   #panel-desp1-rel .fb-fotos-prev .foto{ position:relative; }
   #panel-desp1-rel .fb-fotos-prev .rm{ position:absolute; top:4px; right:4px; background:rgba(160,40,40,.9); color:#fff; border:none; border-radius:50%; width:22px; height:22px; cursor:pointer; }
+
+  /* 1.10 — áreas dinâmicas */
+  #panel-desp1-rel .rel-areas{ display:flex; flex-direction:column; gap:8px; }
+  #panel-desp1-rel .rel-area-lin{ display:flex; align-items:center; gap:10px; }
+  #panel-desp1-rel .rel-area-lbl{ flex:0 0 70px; font-weight:700; font-size:12px; color:var(--azul-esc); text-transform:uppercase; letter-spacing:.3px; }
+  #panel-desp1-rel .rel-area-lin input{ flex:1; border:1px solid var(--borda-forte); border-radius:7px; padding:8px 11px; font-size:13.5px; font-family:inherit; }
+  #panel-desp1-rel .rel-area-lin .rm{ flex:0 0 auto; border:none; background:#f3d6d6; color:#a33; border-radius:6px; width:30px; height:30px; cursor:pointer; font-size:13px; }
+  #panel-desp1-rel .hint-auto{ font-weight:400; font-size:11px; color:#8a97a6; text-transform:none; letter-spacing:0; }
 </style>
 </head>
 <body>
@@ -3375,7 +3383,7 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
 <div class="wrap">
 <h1>1.9 · Ficha de Vistoria e Cadastro Socioeconômico (Anexo B)</h1>
 <p class="sub">Preencha os campos abaixo. Você pode puxar os dados já preenchidos na DESP 3 ou optar por digitar manualmente.</p>
-<div class="vcard"><div class="vfield grow"><label>Processo Nº</label><input type="text" id="fb_processo" data-fb-from="processo" class="bloqueado" data-lock="1" placeholder="Processo Nº"></div><div class="vfield grow"><label>Puxar dados da DESP 3?</label><select id="fb_puxar" onchange="FB_togglePuxar(this.value)"><option value="sim">SIM — preencher automaticamente</option><option value="nao">NÃO — digitar manualmente</option></select></div><div class="vrow"><div class="vfield grow"><label>Nome do Aplicador(a)</label><input type="text" id="fb_aplicador" placeholder="Nome do aplicador(a)"></div><div class="vfield grow"><label>Data</label><input type="text" id="fb_data" inputmode="numeric" maxlength="10" class="data-br" placeholder="dd/mm/aaaa"></div></div></div>
+<div class="vcard"><div class="vfield grow"><label>Puxar dados da DESP 3?</label><select id="fb_puxar" onchange="FB_togglePuxar(this.value)"><option value="nao" selected>NÃO — digitar manualmente</option><option value="sim">SIM — preencher automaticamente</option></select></div><div class="vfield grow"><label>Processo Nº</label><input type="text" id="fb_processo" data-fb-from="processo" class="bloqueado" data-lock="1" placeholder="Processo Nº"></div><div class="vrow"><div class="vfield grow"><label>Nome do Aplicador(a)</label><input type="text" id="fb_aplicador" placeholder="Nome do aplicador(a)"></div><div class="vfield grow"><label>Data</label><input type="text" id="fb_data" inputmode="numeric" maxlength="10" class="data-br" placeholder="dd/mm/aaaa"></div></div></div>
 <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>1 — IDENTIFICAÇÃO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vrow"><div class="vfield grow"><label>1.1 Documentos dominiais</label><select id="fb_11_dom"><option value="">Selecione</option><option>1 - Sim</option><option>2 - Não</option></select></div><div class="vfield grow"><label>Quais?</label><input type="text" id="fb_11_quais" placeholder="Ex.: Escritura Pública de Compra e Venda..."></div></div><div class="vrow"><div class="vfield grow"><label>1.2 Notificação Proprietário</label><select id="fb_12_notif"><option value="">Selecione</option><option>1 - Sim</option><option>2 - Não</option></select></div><div class="vfield grow"><label>1.3 Proprietário(a)</label><select id="fb_13_prop"><option value="">Selecione</option><option>1 - Sim</option><option>2 - Não</option></select></div></div><div class="vsub">1.3.1 Proprietário(a)</div><div class="vfield grow"><label>Nome</label><input type="text" id="fb_nome" data-fb-from="nome" class="bloqueado" data-lock="1" placeholder="Nome"></div><div class="vrow"><div class="vfield grow"><label>RG</label><input type="text" id="fb_rg" data-fb-from="rg" class="bloqueado" data-lock="1" placeholder="RG"></div><div class="vfield grow"><label>CPF</label><input type="text" id="fb_cpf" data-fb-from="cpf" inputmode="numeric" maxlength="14" class="bloqueado mask-cpf" data-lock="1" placeholder="CPF"></div></div><div class="vrow"><div class="vfield grow"><label>Estado Civil</label><input type="text" id="fb_estcivil" placeholder="Casado, solteiro, viúvo, divorciado ou união estável"></div><div class="vfield grow"><label>Cônjuge</label><input type="text" id="fb_conjuge" data-fb-from="conjuge" class="bloqueado" data-lock="1" placeholder="Cônjuge"></div></div><div class="vfield grow"><label>Endereço</label><input type="text" id="fb_endereco" data-fb-from="endereco" class="bloqueado" data-lock="1" placeholder="Endereço"></div><div class="vrow"><div class="vfield grow"><label>Município</label><input type="text" id="fb_municipio" data-fb-from="municipio" class="bloqueado" data-lock="1" placeholder="Município"></div><div class="vfield grow"><label>Telefone</label><input type="text" id="fb_telefone" data-fb-from="telefone" inputmode="numeric" maxlength="16" class="bloqueado mask-tel" data-lock="1" placeholder="Telefone"></div></div><div class="vsub">1.3.2 Informante</div><div class="vfield grow"><label>Nome</label><input type="text" id="fb_inf_nome" data-fb-from="inf_nome" class="bloqueado" data-lock="1" placeholder="Nome"></div><div class="vfield grow"><label>Grau de parentesco</label><select id="fb_inf_parentesco"><option value=""></option><option>Cônjuge</option><option>Filho(a)</option><option>Neto(a)</option><option>Irmão(ã)</option><option>Pai/Mãe</option><option>Sobrinho(a)</option><option>Genro/Nora</option><option>Outro</option><option>Não se aplica</option></select></div><div class="vfield grow"><label>Dados comprobatório</label><input type="text" id="fb_inf_dados" data-fb-from="inf_dados" class="bloqueado" data-lock="1" placeholder="Dados comprobatório"></div><div class="vsub">1.4 Propriedade</div><div class="vfield grow"><label>Identificação</label><input type="text" id="fb_prop_id" data-fb-from="prop_id" class="bloqueado" data-lock="1" placeholder="Identificação"></div><div class="vfield grow"><label>Endereço</label><input type="text" id="fb_prop_end" data-fb-from="prop_end" class="bloqueado" data-lock="1" placeholder="Endereço"></div><div class="vrow"><div class="vfield grow"><label>Município</label><input type="text" id="fb_prop_mun" data-fb-from="prop_mun" class="bloqueado" data-lock="1" placeholder="Município"></div><div class="vfield grow"><label>Comarca</label><input type="text" id="fb_prop_comarca" placeholder="Comarca"></div></div><div class="vrow"><div class="vfield grow"><label>Área Total (ha)</label><input type="text" id="fb_area_total" data-fb-from="area_total" class="bloqueado" data-lock="1" placeholder="Área Total (ha)"></div><div class="vfield grow"><label>Área de desapropriação (ha)</label><input type="text" id="fb_area_desap" data-fb-from="area_desap" class="bloqueado" data-lock="1" placeholder="Área de desapropriação (ha)"></div></div><div class="vfield grow"><label>Matrícula</label><input type="text" id="fb_matricula" data-fb-from="matricula" class="bloqueado" data-lock="1" placeholder="Matrícula"></div><div class="vfield grow"><label>1.5 Observações</label><textarea id="fb_15_obs" rows="3" placeholder="Observações sobre a propriedade"></textarea></div></div>
 <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>2 — CARACTERIZAÇÃO DO IMÓVEL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vfield grow"><label>2.1 Ambientais</label><textarea id="fb_21_amb" rows="2" placeholder="Restrições ambientais..."></textarea></div><div class="vfield grow"><label>2.2 Localização</label><textarea id="fb_22_loc" rows="3" placeholder="Localização e acesso..."></textarea></div><div class="vfield grow"><label>2.3 Características Físicas</label><textarea id="fb_23_fis" rows="2" placeholder="Características físicas..."></textarea></div><div class="vsub">2.4 Imóvel Rural</div><div class="vfield grow"><label>2.4.1 Infraestrutura</label><textarea id="fb_241_infra" rows="3" placeholder="Energia, acesso, cercamento, benfeitorias..."></textarea></div><div class="vfield grow"><label>2.4.2 Características da terra</label><textarea id="fb_242_terra" rows="2" placeholder="Relevo, tráfego..."></textarea></div><div class="vfield grow"><label>2.4.3 Hidrografia / Vazão (m³ ou L/s)</label><textarea id="fb_243_hidro" rows="2" placeholder="Hidrografia..."></textarea></div><div class="vfield grow"><label>2.4.4 Informações Complementares</label><textarea id="fb_244_comp" rows="2" placeholder="Informações complementares..."></textarea></div><div class="vsub">2.5 Imóvel Urbano</div><div class="vfield grow"><label>2.5.1 Infraestrutura</label><input type="text" id="fb_251_infra" placeholder="NÃO SE APLICA"></div><div class="vfield grow"><label>2.5.2 Topográfica</label><input type="text" id="fb_252_topo" placeholder="NÃO SE APLICA"></div><div class="vfield grow"><label>2.5.3 Distância do centro</label><input type="text" id="fb_253_dist" placeholder="NÃO SE APLICA"></div><div class="vfield grow"><label>2.5.4 Informações Complementares</label><input type="text" id="fb_254_comp" placeholder="NÃO SE APLICA"></div></div>
 <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>3 — DESCRIÇÃO DAS BENFEITORIAS</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vfield grow"><label>3.1 Não reprodutivas</label><textarea id="fb_31_nrep" rows="2" placeholder="Casa/depósito, poço, cercas, forno..."></textarea></div><div class="vfield grow"><label>3.1.1 Benfeitorias não reprodutivas da faixa não edificante</label><input type="text" id="fb_311" placeholder="AUSENTES"></div><div class="vfield grow"><label>3.1.2 Informações complementares</label><textarea id="fb_312" rows="2" placeholder="O detalhamento das benfeitorias consta no laudo de avaliação – DESP 3"></textarea></div><div class="vfield grow"><label>3.2 Reprodutivas</label><textarea id="fb_32_rep" rows="2" placeholder="Imbuzeiro, acerola, milho, feijão e pastagem..."></textarea></div><div class="vfield grow"><label>3.2.1 Benfeitorias reprodutivas da faixa não edificante</label><input type="text" id="fb_321" placeholder="AUSENTES"></div><div class="vfield grow"><label>3.2.2 Informações complementares</label><textarea id="fb_322" rows="2" placeholder="O detalhamento das benfeitorias consta no laudo de avaliação – DESP 3"></textarea></div></div>
@@ -3391,7 +3399,8 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
 
 
 
-<section class="tab-panel" id="panel-desp1-rel"><div class="wrap"><h1>1.10 · Relatório Técnico de Caracterização Socioeconômica</h1><p class="sub">Preencha os campos. Os dados marcados são puxados da DESP 3 / DESP 1. Ao final, gere o PDF completo com capa.</p><div class="vcard"><div class="vrow"><div class="vfield grow"><label>Processo administrativo</label><input type="text" id="rel_processo" placeholder="Ex.: INFRA S.A. CTD 001 - SPS-04 – FTN"></div><div class="vfield grow"><label>SEI nº</label><input type="text" id="rel_sei" placeholder="Ex.: 50050.003131/2026-79"></div></div><div class="vrow"><div class="vfield grow"><label>Empreendimento / Ferrovia</label><input type="text" id="rel_ferrovia" placeholder="Ex.: Ferrovia Transnordestina – FTN (EF-232)"></div><div class="vfield grow"><label>Lote</label><input type="text" id="rel_lote" placeholder="Ex.: SPS-04"></div></div><div class="vrow"><div class="vfield grow"><label>Contrato nº</label><input type="text" id="rel_contrato" placeholder="Ex.: 037/2024"></div><div class="vfield grow"><label>Ordem de Serviço</label><input type="text" id="rel_os" placeholder="Ex.: INFRA 33 (10665856)"></div></div><div class="vrow"><div class="vfield grow"><label>Locação — Área 1</label><input type="text" id="rel_area1" placeholder="Ex.: KM 179+547,34 ao KM 180+307,52"></div><div class="vfield grow"><label>Locação — Área 2</label><input type="text" id="rel_area2" placeholder="Ex.: KM 180+322,35 ao KM 180+632,98"></div></div><div class="vfield grow"><label>Expropriado</label><input type="text" id="rel_expropriado" placeholder="Ex.: Espólio de Luiz Gonzaga de Morais"></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>1 — APRESENTAÇÃO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vfield grow"><label>Texto de apresentação</label><textarea id="rel_apresentacao" rows="8" placeholder="Descrição do contrato, objeto e finalidade do relatório..."></textarea></div><div class="vsub">1.1 Referencial Normativo e Premissas Gerais</div><div class="vfield grow"><label>Premissas / medidas compensatórias</label><textarea id="rel_premissas" rows="8" placeholder="Garantia de conhecimento prévio, mediação, compensação justa, suporte socioeconômico..."></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>2 — IDENTIFICAÇÃO E QUALIFICAÇÃO DO PROPRIETÁRIO E DO IMÓVEL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vfield grow"><label>Nome do proprietário / espólio</label><input type="text" id="rel_nome" data-rel-from="nome" class="bloqueado" readonly data-lock="1" placeholder="Nome do proprietário / espólio"></div><div class="vrow"><div class="vfield grow"><label>RG</label><input type="text" id="rel_rg" data-rel-from="rg" class="bloqueado" readonly data-lock="1" placeholder="RG"></div><div class="vfield grow"><label>CPF</label><input type="text" id="rel_cpf" data-rel-from="cpf" inputmode="numeric" maxlength="14" class="bloqueado mask-cpf" readonly data-lock="1" placeholder="CPF"></div></div><div class="vfield grow"><label>Endereço</label><input type="text" id="rel_endereco" data-rel-from="endereco" class="bloqueado" readonly data-lock="1" placeholder="Endereço"></div><div class="vrow"><div class="vfield grow"><label>Município</label><input type="text" id="rel_municipio" data-rel-from="municipio" class="bloqueado" readonly data-lock="1" placeholder="Município"></div><div class="vfield grow"><label>UF</label><input type="text" id="rel_uf" data-rel-from="uf" class="bloqueado" readonly data-lock="1" placeholder="UF"></div></div><div class="vfield grow"><label>Qualificação completa (texto)</label><textarea id="rel_qualificacao" rows="5" placeholder="Ex.: Espólio de Luiz Gonzaga de Morais, representado pela herdeira..."></textarea></div><div class="vsub">Imóvel</div><div class="vfield grow"><label>Denominação do imóvel</label><input type="text" id="rel_prop_id" data-rel-from="prop_id" class="bloqueado" readonly data-lock="1" placeholder="Denominação do imóvel"></div><div class="vrow"><div class="vfield grow"><label>Área total (ha)</label><input type="text" id="rel_area_total" data-rel-from="area_total" class="bloqueado" readonly data-lock="1" placeholder="Área total (ha)"></div><div class="vfield grow"><label>Área de desapropriação (ha)</label><input type="text" id="rel_area_desap" data-rel-from="area_desap" class="bloqueado" readonly data-lock="1" placeholder="Área de desapropriação (ha)"></div></div><div class="vrow"><div class="vfield grow"><label>Matrícula</label><input type="text" id="rel_matricula" data-rel-from="matricula" class="bloqueado" readonly data-lock="1" placeholder="Matrícula"></div><div class="vfield grow"><label>CIB/ITR</label><input type="text" id="rel_cib" placeholder="Ex.: 1.676.312-2"></div></div><div class="vfield grow"><label>Cartório / Registro</label><input type="text" id="rel_cartorio" placeholder="Ex.: 1º Ofício de Custódia-PE, Matrícula 1113, livro 2-F, fls. 87"></div><div class="vfield grow"><label>Segmento do traçado</label><textarea id="rel_segmento" rows="3" placeholder="Ex.: ÁREA 1: KM 179+547,34 ..."></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>3 — CADASTRO SOCIOECONÔMICO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vsub">3.1 Atividade Realizada</div><div class="vfield grow"><label>Atividade</label><input type="text" id="rel_31_atividade" placeholder="Ex.: Pesquisa socioeconômica."></div><div class="vsub">3.2 Objetivo</div><div class="vfield grow"><label>Objetivo</label><textarea id="rel_32_objetivo" rows="5" placeholder="Finalidade da pesquisa..."></textarea></div><div class="vsub">3.3 Metodologia</div><div class="vfield grow"><label>Metodologia</label><textarea id="rel_33_metodologia" rows="5" placeholder="Aplicação do questionário socioeconômico..."></textarea></div><div class="vsub">3.4 Síntese da Caracterização Socioeconômica</div><div class="vfield grow"><label>Síntese</label><textarea id="rel_34_sintese" rows="8" placeholder="Resultado do trabalho de campo..."></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>4 — PARECER SOCIAL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vfield grow"><label>Introdução do parecer</label><textarea id="rel_parecer_intro" rows="4" placeholder="Metodologias empregadas (PNAS/LOAS e Resolução nº 07)..."></textarea></div><div class="vsub">Tabela 1 — Critérios de Avaliação de Vulnerabilidade Socioeconômica (IVS/IPEA)</div><div class="rel-tabela" id="rel_tabela1"></div><div class="vactions" style="margin-top:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_addLinha(1)">+ Adicionar critério (Tabela 1)</button></div><div class="vfield grow"><label>Comentário após Tabela 1</label><textarea id="rel_tab1_coment" rows="4" placeholder="Conforme metodologia PNAS..."></textarea></div><div class="vsub">Tabela 2 — Critérios conforme Art. 3º da Resolução Normativa INFRASA nº 7/2023</div><div class="rel-tabela" id="rel_tabela2"></div><div class="vactions" style="margin-top:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_addLinha(2)">+ Adicionar critério (Tabela 2)</button></div><div class="vfield grow"><label>Comentário após Tabela 2</label><textarea id="rel_tab2_coment" rows="4" placeholder="Considerações finais do parecer..."></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>5 — CONCLUSÃO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vfield grow"><label>Conclusão</label><textarea id="rel_conclusao" rows="6" placeholder="Conclusão sobre a situação de vulnerabilidade..."></textarea></div><div class="vrow"><div class="vfield grow"><label>Local e data</label><input type="text" id="rel_local_data" placeholder="Ex.: Custódia - PE, 19 de junho de 2026"></div><div class="vfield grow"><label></label><input type="text" id="rel_vazio1" placeholder=" "></div></div><div class="vsub">Responsável técnico</div><div class="vfield grow"><label>Nome</label><input type="text" id="rel_resp_nome" placeholder="Ex.: Jaylla S. P. dos S. Monteiro"></div><div class="vrow"><div class="vfield grow"><label>Cargo/Função</label><input type="text" id="rel_resp_cargo" placeholder="Ex.: Assistente Social"></div><div class="vfield grow"><label>Registro</label><input type="text" id="rel_resp_reg" placeholder="Ex.: CRESS-PE 14780"></div></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>6 — RELATÓRIO FOTOGRÁFICO DO IMÓVEL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><label class="img-drop" id="rel_fotos_drop"><span class="ic">📷</span><span class="t">Clique ou arraste as fotografias / ortofoto</span><span class="h">Imagens • JPG ou PNG</span><input type="file" accept="image/*" multiple id="rel_fotos_file"></label><div class="fb-fotos-prev" id="rel_fotos_prev"></div></div><div class="vactions"><button class="vbtn vbtn-primary" onclick="REL_gerarPDF()">📄 Baixar PDF — Relatório (1.10) com capa</button><button class="vbtn vbtn-ghost" onclick="REL_puxarDados()">↧ Puxar dados da DESP 3 / DESP 1</button></div></div></section>
+<section class="tab-panel" id="panel-desp1-rel"><div class="wrap"><h1>1.10 · Relatório Técnico de Caracterização Socioeconômica</h1><p class="sub">Os dados são puxados da aba 1.9. Preencha os campos abaixo e gere o PDF completo com capa.</p><div class="vcard"><div class="vrow"><div class="vfield grow"><label>Processo administrativo</label><input type="text" id="rel_processo" data-rel-from="processo" class="bloqueado" readonly data-lock="1" placeholder="INFRA S.A. CTD ... - Lote ..."></div><div class="vfield grow"><label>SEI nº</label><input type="text" id="rel_sei" placeholder="Ex.: 00000.000000/0000-00"></div></div><div class="vrow"><div class="vfield grow"><label>Empreendimento / Ferrovia</label><input type="text" id="rel_ferrovia" placeholder="Ex.: Ferrovia ... (EF-...)"></div><div class="vfield grow"><label>Lote</label><input type="text" id="rel_lote" placeholder="Ex.: SPS-04"></div></div><div class="vrow"><div class="vfield grow"><label>Subtrecho</label><input type="text" id="rel_subtrecho" placeholder="Ex.: Custódia/PE – Arcoverde/PE"></div><div class="vfield grow"><label>Contrato nº</label><input type="text" id="rel_contrato" placeholder="Ex.: 000/0000"></div></div><div class="vfield grow"><label>Ordem de Serviço</label><input type="text" id="rel_os" placeholder="Ex.: INFRA 00 (0000000)"></div><div class="vfield grow"><label>Expropriado</label><input type="text" id="rel_expropriado" data-rel-from="rel_nome_prop" class="bloqueado" readonly data-lock="1" placeholder="Nome do expropriado"></div><div class="vsub">Áreas de Locação</div><div class="rel-areas" id="rel_areas"></div><div class="vactions" style="margin-top:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_addArea()">+ Adicionar área</button></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>1 — APRESENTAÇÃO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vactions" style="margin-bottom:8px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('apresentacao')">↻ Gerar texto automático</button></div><div class="vfield grow"><label>Texto de apresentação<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_apresentacao" rows="9" placeholder="Clique em 'Gerar texto automático' ou digite..."></textarea></div><div class="vsub">1.1 Referencial Normativo e Premissas Gerais</div><div class="vfield grow"><label>Premissas / medidas compensatórias</label><textarea id="rel_premissas" rows="8" placeholder="Texto padrão de premissas..."></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>2 — IDENTIFICAÇÃO E QUALIFICAÇÃO DO PROPRIETÁRIO E DO IMÓVEL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vrow"><div class="vfield grow"><label>Nome do proprietário</label><input type="text" id="rel_nome" data-rel-from="fb_nome" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>Estado civil</label><input type="text" id="rel_estcivil" data-rel-from="fb_estcivil" class="bloqueado" readonly data-lock="1" placeholder=""></div></div><div class="vrow"><div class="vfield grow"><label>RG</label><input type="text" id="rel_rg" data-rel-from="fb_rg" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>CPF</label><input type="text" id="rel_cpf" data-rel-from="fb_cpf" class="bloqueado" readonly data-lock="1" placeholder=""></div></div><div class="vfield grow"><label>Endereço</label><input type="text" id="rel_endereco" data-rel-from="fb_endereco" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vrow"><div class="vfield grow"><label>Município</label><input type="text" id="rel_municipio" data-rel-from="fb_municipio" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>CEP</label><input type="text" id="rel_cep" placeholder=""></div></div><div class="vsub">Imóvel</div><div class="vfield grow"><label>Denominação do imóvel</label><input type="text" id="rel_prop_id" data-rel-from="fb_prop_id" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vrow"><div class="vfield grow"><label>Área total (ha)</label><input type="text" id="rel_area_total" data-rel-from="fb_area_total" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>Área de desapropriação (ha)</label><input type="text" id="rel_area_desap" data-rel-from="fb_area_desap" class="bloqueado" readonly data-lock="1" placeholder=""></div></div><div class="vrow"><div class="vfield grow"><label>Matrícula / Livro / Fls.</label><input type="text" id="rel_matricula" data-rel-from="fb_matricula" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>CIB/ITR</label><input type="text" id="rel_cib" placeholder=""></div></div><div class="vfield grow"><label>Cartório / Registro</label><input type="text" id="rel_cartorio" placeholder="Ex.: 1º Ofício de ..."></div><div class="vactions" style="margin:8px 0;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('qualificacao')">↻ Gerar texto automático</button></div><div class="vfield grow"><label>Texto de qualificação<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_qualificacao" rows="6" placeholder="Clique em 'Gerar texto automático' ou digite..."></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>3 — CADASTRO SOCIOECONÔMICO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vsub">3.1 Atividade Realizada</div><div class="vactions" style="margin-bottom:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('atividade')">↻ Gerar texto</button></div><div class="vfield grow"><label>Atividade<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_31_atividade" rows="2" placeholder=""></textarea></div><div class="vsub">3.2 Objetivo</div><div class="vactions" style="margin-bottom:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('objetivo')">↻ Gerar texto</button></div><div class="vfield grow"><label>Objetivo<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_32_objetivo" rows="6" placeholder=""></textarea></div><div class="vsub">3.3 Metodologia (texto padrão)</div><div class="vfield grow"><label>Metodologia</label><textarea id="rel_33_metodologia" rows="8" placeholder=""></textarea></div><div class="vsub">3.4 Síntese da Caracterização Socioeconômica</div><div class="vactions" style="margin-bottom:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('sintese')">↻ Gerar texto</button></div><div class="vfield grow"><label>Síntese<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_34_sintese" rows="9" placeholder=""></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>4 — PARECER SOCIAL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vfield grow"><label>Introdução do parecer</label><textarea id="rel_parecer_intro" rows="4" placeholder=""></textarea></div><div class="vsub">Tabela 1 — Critérios de Avaliação de Vulnerabilidade Socioeconômica (IVS/IPEA)</div><div class="rel-tabela" id="rel_tabela1"></div><div class="vactions" style="margin-top:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_addLinha(1)">+ Adicionar critério (Tabela 1)</button></div><div class="vfield grow"><label>Comentário após Tabela 1</label><textarea id="rel_tab1_coment" rows="4" placeholder=""></textarea></div><div class="vsub">Texto normativo (Art. 2º e 3º da Resolução Normativa INFRASA nº 7/2023)</div><div class="vfield grow"><label>Texto normativo</label><textarea id="rel_texto_normativo" rows="8" placeholder=""></textarea></div><div class="vsub">Tabela 2 — Critérios conforme Art. 3º da Resolução Normativa INFRASA nº 7/2023</div><div class="rel-tabela" id="rel_tabela2"></div><div class="vactions" style="margin-top:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_addLinha(2)">+ Adicionar critério (Tabela 2)</button></div><div class="vfield grow"><label>Comentário após Tabela 2</label><textarea id="rel_tab2_coment" rows="5" placeholder=""></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>5 — CONCLUSÃO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vactions" style="margin-bottom:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('conclusao')">↻ Gerar texto</button></div><div class="vfield grow"><label>Conclusão<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_conclusao" rows="6" placeholder=""></textarea></div><div class="vrow"><div class="vfield grow"><label>Grau de vulnerabilidade</label><input type="text" id="rel_grau_vuln" placeholder="Ex.: moderada"></div><div class="vfield grow"><label>Local e data</label><input type="text" id="rel_local_data" placeholder="Ex.: Custódia - PE, 00 de mês de 0000"></div></div><div class="vsub">Responsável técnico</div><div class="vfield grow"><label>Nome</label><input type="text" id="rel_resp_nome" data-rel-from="fb_ass_nome" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vrow"><div class="vfield grow"><label>Cargo/Função</label><input type="text" id="rel_resp_cargo" data-rel-from="fb_ass_cargo" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>Registro</label><input type="text" id="rel_resp_reg" data-rel-from="fb_ass_reg" class="bloqueado" readonly data-lock="1" placeholder=""></div></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>6 — RELATÓRIO FOTOGRÁFICO DO IMÓVEL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><label class="img-drop" id="rel_fotos_drop"><span class="ic">📷</span><span class="t">Clique ou arraste as fotografias / ortofoto</span><span class="h">Imagens • JPG ou PNG</span><input type="file" accept="image/*" multiple id="rel_fotos_file"></label><div class="fb-fotos-prev" id="rel_fotos_prev"></div></div><div class="vactions"><button class="vbtn vbtn-primary" onclick="REL_gerarPDF()">📄 Baixar PDF — Relatório (1.10) com capa</button><button class="vbtn vbtn-ghost" onclick="REL_puxarDados()">↧ Puxar dados da 1.9</button><button class="vbtn vbtn-ghost" onclick="REL_gerarTodos()">↻ Gerar todos os textos automáticos</button></div></div></section>
+
 
 <section class="tab-panel" id="panel-util-foto">
 
@@ -8158,6 +8167,9 @@ function AV_gerarDescSituacao(){
     bindFotos();
     ligarMascaras();
     ligarCondicionais();
+    // aplica o estado padrão do "Puxar dados" (NÃO = campos liberados p/ digitação)
+    const sel=document.getElementById("fb_puxar");
+    if(sel && window.FB_togglePuxar){ window.FB_togglePuxar(sel.value); }
     // marca os campos que contêm grupos de checkbox p/ espaçamento extra
     document.querySelectorAll('#panel-desp1-vist .vfield').forEach(vf=>{
       if(vf.querySelector(".fb-checks")){
@@ -8492,39 +8504,121 @@ window.UFOTO_rodapeHTML=rodapeHTML;
 })();
 </script>
 <script>
-/* ===== 1.10 Relatório Técnico Socioeconômico — auto-fill, tabelas, fotos, PDF com capa ===== */
+/* ===== 1.10 Relatório Técnico Socioeconômico — v2 (puxa da 1.9, textos automáticos, PDF com capa) ===== */
 (function(){
-  // ---- Auto-fill a partir da Ficha (DESP 3) ----
-  function valorFonte(key){
-    const src=document.querySelector('#panel-vistoria [data-sync="'+key+'"]');
-    return src? src.value : "";
+  const TXT_METODOLOGIA="A aplicação do questionário socioeconômico, por meio de pesquisa qualitativa e de campo com proprietários e moradores, foi a metodologia empregada para a execução do Cadastro Socioeconômico. Os questionários contêm perguntas objetivas e subjetivas sobre as condições de moradia, acesso a equipamentos e serviços públicos, além de aspectos relacionados à qualidade de vida dos entrevistados e de seus familiares. O objetivo é coletar informações sobre o perfil socioeconômico dos afetados, suas formas de organização e realidade social. É importante destacar que, durante a ocasião, foi feita uma análise pessoal do domicílio do usuário em questão, com registros fotográficos para comprovar a veracidade de tudo o que foi relatado.";
+  const TXT_PARECER_INTRO="Para constatação da existência de situação de vulnerabilidade socioeconômica foram empregadas duas metodologias, uma baseada nas diretrizes da Política Nacional de Assistência Social (PNAS) e da LOAS (Lei nº 8.742/1993), e outra pautada nos critérios estabelecidos nos Art. 2º e 3º da Resolução nº 07.";
+  const TXT_NORMATIVO="Conforme a metodologia prevista na Política Nacional de Assistência Social (PNAS), instituída pela Resolução CNAS nº 145/2004, verifica-se que, no momento da análise, a proprietária em questão apresenta características que indiquem situação de vulnerabilidade social moderada.\n\nA segunda metodologia empregada é fundamentada nos Art. 2º e 3º da RESOLUÇÃO NORMATIVA - INFRASA Nº 7/2023 (7667755), em especial o 3º, o qual estabelece quatro critérios para identificação de situações de vulnerabilidade social, sendo que a ocorrência de quaisquer um destes caracteriza vulnerabilidade social.\n\nArt. 2º Para fins desta Resolução Normativa, consideram-se população afetada:\nI - Pessoas que sofrerão desocupação involuntária de sua habitação em função da implantação de projeto ferroviário;\nII - Pessoas que em função de projeto ferroviário terão impactadas, de forma especial e anormal, as atividades das quais dependam para sustento próprio e de suas famílias; ou\nIII - pessoas que em função de projeto ferroviário, terão impactadas, de forma integral, específica e individualizada, infraestruturas que forneçam itens de primeira necessidade (água, esgotamento sanitário, energia elétrica) às suas residências.\n§ 1º Os casos contemplados pelo inciso I são limitados aos habitantes de edificações localizadas na faixa de domínio, observadas as exceções previstas nesta Resolução.\n§ 2º É possível incluir, excepcionalmente, nos casos contemplados no inciso I, habitantes de edificações fora da faixa de domínio, desde que haja necessidade de desocupação involuntária, temporária ou permanente, de sua habitação.\n\nArt. 3º As pessoas afetadas poderão ter também sua vulnerabilidade social reconhecida por meio de cadastro socioeconômico.\n§ 1º O cadastro socioeconômico deverá detalhar a utilização da propriedade pelo núcleo familiar afetado e apontar eventuais impactos sobre terceiros, principalmente quanto a prejuízos no fornecimento de itens de primeira necessidade (Capítulo V).\n§ 2º O cadastro socioeconômico identificará situações de vulnerabilidade social, condição que estará caracterizada quando o núcleo familiar se enquadrar em, ao menos, um dos seguintes critérios:\na) quando indivíduos ou núcleos familiares forem consideradas de baixa renda, segundo critérios constantes do “Cadastro Único” administrado pelo Governo Federal;\nb) quando o empreendimento comprometer mais de 30% da única ou principal fonte de renda familiar oriunda de pequenos negócios, agricultura familiar ou locação/arrendamento para terceiros;\nc) quando se tratar da família monoparental chefiada por pessoa com baixo nível de escolaridade (até 5º ano completo – primeiro segmento do ensino fundamental) e que detenha a guarda fática ou jurídica de descendentes menores de 18 anos; ou\nd) quando habitar edificação que se enquadre no padrão RP1Q (Residência Unifamiliar Popular) da NBR 12.721 e/ou que apresente estado de conservação severamente deteriorado, assim considerado por laudo específico.\n§ 3º Os documentos que fundamentarem o cadastro socioeconômico, assim como o parecer do profissional que o realizar, serão juntados ao processo de desapropriação do imóvel correspondente.\n§ 4º Em caso de impactos negativos decorrentes do empreendimento que afetem pessoas residentes em imóveis que não são objeto de desapropriação, os documentos e parecer que trata o parágrafo anterior serão juntados em processo administrativo específico.\n§ 5º A caracterização socioeconômica observará o disposto no art. 10 da Resolução Normativa 10/2022/Direx-Valec/Presi-Valec, bem como no art. 20 da Lei 8.742, de 7 de dezembro de 1993.\n\nConsiderando o referido artigo, foi elaborada a Tabela 2 para exposição dos critérios e assinalar a ocorrência ou inexistência destes:";
+  const TXT_TAB2_COMENT="Observando a Tabela 2, é possível verificar que a proprietária do imóvel interceptado atende aos critérios estabelecidos, dessa forma, nos termos do Art. 3º da Resolução Normativa INFRASA nº 7/2023, apresenta baixo grau de vulnerabilidade social.\n\nAssim, conforme os resultados da avaliação de vulnerabilidade segundo metodologia da Política Nacional de Assistência Social (PNAS) e da Resolução Normativa INFRASA nº 7/2023, a proprietária enquadra-se em situação de vulnerabilidade social moderada.";
+  const TXT_PREMISSAS="Garantia de Conhecimento Prévio - Mitigação Social: É essencial garantir a compreensão prévia de todo o processo por parte dos atingidos. Esta é uma medida de mitigação social que assegura o direito à informação e participação; Mediação e Solução Amigável: A gestão prioriza a negociação e a solução consensual para evitar a judicialização da desapropriação, minimizando o tempo de espera; Compensação Justa: Princípio fundamental consiste em garantir que as famílias não sofram perdas patrimoniais. A indenização deve cobrir o valor real de mercado, assegurando que os recursos sejam suficientes para o restabelecimento do padrão de vida; Suporte Socioeconômico e Continuidade: O suporte socioeconômico visa garantir a continuidade das atividades desenvolvidas no imóvel, onde o expropriado consiga dar seguimento às suas atividades sem prejuízo causado pela desapropriação; Direito de Extensão e Funcionalidade da Propriedade: É garantida a escuta ativa do expropriado.";
+
+  function g(id){ const e=document.getElementById(id); return e?(e.value||"").trim():""; }
+  function set(id,v){ const e=document.getElementById(id); if(e && !e.value) e.value=v; }
+  function setF(id,v){ const e=document.getElementById(id); if(e) e.value=v; }
+  // lê um campo da aba 1.9
+  function f19(id){ const e=document.getElementById(id); return e?(e.value||"").trim():""; }
+
+  // ---- Áreas dinâmicas ----
+  const areas=[];
+  function renderAreas(){
+    const host=document.getElementById("rel_areas"); if(!host) return;
+    host.innerHTML="";
+    areas.forEach((a,i)=>{
+      const div=document.createElement("div"); div.className="rel-area-lin";
+      div.innerHTML='<span class="rel-area-lbl">Área '+(i+1)+'</span>'+
+        '<input type="text" value="'+(a||"").replace(/"/g,"&quot;")+'" placeholder="Ex.: KM 000+000,00 ao KM 000+000,00" oninput="REL_setArea('+i+',this.value)">'+
+        '<button class="rm" type="button" onclick="REL_remArea('+i+')">✕</button>';
+      host.appendChild(div);
+    });
   }
+  window.REL_addArea=function(){ areas.push(""); renderAreas(); };
+  window.REL_remArea=function(i){ areas.splice(i,1); renderAreas(); };
+  window.REL_setArea=function(i,v){ areas[i]=v; };
+  window.REL_getAreas=function(){ return areas; };
+
+  // ---- Auto-fill da 1.9 ----
+  const MAP={ // data-rel-from  ->  id na 1.9
+    "processo":"fb_processo", "rel_nome_prop":"fb_nome",
+    "fb_nome":"fb_nome","fb_estcivil":"fb_estcivil","fb_rg":"fb_rg","fb_cpf":"fb_cpf",
+    "fb_endereco":"fb_endereco","fb_municipio":"fb_municipio","fb_prop_id":"fb_prop_id",
+    "fb_area_total":"fb_area_total","fb_area_desap":"fb_area_desap","fb_matricula":"fb_matricula",
+    "fb_ass_nome":"fb_ass_nome","fb_ass_cargo":"fb_ass_cargo","fb_ass_reg":"fb_ass_reg"
+  };
   function aplicarAutoFill(){
     document.querySelectorAll('#panel-desp1-rel [data-rel-from]').forEach(dest=>{
-      const k=dest.getAttribute("data-rel-from");
-      if(dest.classList.contains("bloqueado") || !dest.value) dest.value=valorFonte(k);
+      const k=dest.getAttribute("data-rel-from"); const src=MAP[k]?f19(MAP[k]):"";
+      if(dest.classList.contains("bloqueado") || !dest.value) dest.value=src;
     });
   }
   window.REL_puxarDados=function(){
     document.querySelectorAll('#panel-desp1-rel [data-rel-from]').forEach(dest=>{
-      dest.value=valorFonte(dest.getAttribute("data-rel-from"));
+      const k=dest.getAttribute("data-rel-from"); dest.value=MAP[k]?f19(MAP[k]):"";
     });
-    alert("Dados aplicados ao Relatório 1.10.");
+    REL_gerarTodos(true);
+    alert("Dados da 1.9 aplicados ao Relatório 1.10.");
   };
   function ligarSync(){
-    document.querySelectorAll('#panel-vistoria [data-sync]').forEach(src=>{
-      const prop=()=>{ const k=src.getAttribute("data-sync");
-        document.querySelectorAll('#panel-desp1-rel [data-rel-from="'+k+'"]').forEach(d=>{ if(d.classList.contains("bloqueado")) d.value=src.value; });
-      };
+    document.querySelectorAll('#panel-desp1-vist [id^="fb_"]').forEach(src=>{
+      const prop=()=>{ document.querySelectorAll('#panel-desp1-rel [data-rel-from]').forEach(dest=>{
+        const k=dest.getAttribute("data-rel-from"); if(MAP[k]===src.id && dest.classList.contains("bloqueado")) dest.value=src.value; }); };
       src.addEventListener("input",prop); src.addEventListener("change",prop);
     });
   }
 
-  // ---- Tabelas de critérios (dinâmicas) ----
+  // ---- Geração automática de textos ----
+  function areasTexto(){
+    const a=areas.filter(x=>(x||"").trim());
+    if(!a.length) return "";
+    return a.map((x,i)=>"ÁREA "+(i+1)+": "+x).join("; ");
+  }
+  window.REL_gerarTexto=function(qual){
+    const nome=g("rel_nome")||f19("fb_nome"), estciv=g("rel_estcivil")||f19("fb_estcivil");
+    const rg=g("rel_rg"), cpf=g("rel_cpf"), end=g("rel_endereco"), mun=g("rel_municipio"), cep=g("rel_cep");
+    const imovel=g("rel_prop_id"), at=g("rel_area_total"), ad=g("rel_area_desap"), matr=g("rel_matricula"), cib=g("rel_cib"), cart=g("rel_cartorio");
+    const ferro=g("rel_ferrovia"), lote=g("rel_lote"), subtr=g("rel_subtrecho"), proc=g("rel_processo"), sei=g("rel_sei"), contr=g("rel_contrato"), os=g("rel_os");
+    const grau=g("rel_grau_vuln")||"moderada";
+
+    if(qual==="apresentacao"){
+      let t="O Contrato nº "+(contr||"____")+(sei?(" (SEI nº "+sei+")"):"")+" tem como objeto a contratação de empresa especializada em serviços de engenharia consultiva, destinada à execução de atividades relacionadas à desapropriação, ocupação temporária ou constituição de servidão administrativa de imóveis, bem como à gestão fundiária e à regularização de passivos de desapropriação. Essas atividades estão organizadas em produtos específicos, vinculados aos empreendimentos de infraestrutura que compõem o portfólio da INFRA S.A., sob responsabilidade regimental da Superintendência de Gestão Ambiental e Territorial (SUGAT), subordinada à Diretoria de Empreendimentos da estatal.\n\n";
+      t+="O presente relatório trata da condição socioeconômica do proprietário do imóvel diretamente afetado pela "+(ferro||"ferrovia")+(lote?(", lote "+lote):"")+", o qual integra o produto RELATÓRIO DE CARACTERIZAÇÃO SOCIOECONÔMICO (DESP-1)"+(os?(", solicitado por meio da Ordem de Serviço "+os):"")+".";
+      setF("rel_apresentacao",t); return;
+    }
+    if(qual==="qualificacao"){
+      let t="";
+      if(nome){ t+=nome; if(estciv) t+=", "+estciv.toLowerCase(); if(rg) t+=", portador(a) da cédula de identidade RG nº "+rg; if(cpf) t+=" e inscrito(a) no CPF sob o nº "+cpf; if(end) t+=", residente e domiciliado(a) na "+end; if(mun) t+=", "+mun; if(cep) t+=", CEP "+cep; t+=". "; }
+      if(imovel){ t+="O imóvel em questão, denominado "+imovel+(at?(", possui uma área total de "+at+" ha"):"")+(cib?(", encontrando-se cadastrado no ITR sob o CIB nº "+cib):"")+". "; }
+      if(cart){ t+="A propriedade apresenta registro formal no "+cart+(matr?(", sob a Matrícula nº "+matr):"")+". "; }
+      if(ad){ t+="A área abrangida pela atual desapropriação é de "+ad+" ha, destinada a faixa de domínio da ferrovia"+(subtr?(" no trecho "+subtr):"")+(proc?(", por meio do processo administrativo "+proc):"")+(sei?(" (SEI nº: "+sei+")"):"")+". "; }
+      const at2=areasTexto(); if(at2){ t+="O imóvel encontra-se inserido no seguinte segmento do traçado: "+at2+"."; }
+      setF("rel_qualificacao",t.trim()); return;
+    }
+    if(qual==="atividade"){ setF("rel_31_atividade","Pesquisa socioeconômica."); return; }
+    if(qual==="objetivo"){
+      let t="A presente pesquisa tem como finalidade levantar informações detalhadas sobre o componente socioeconômico das famílias impactadas pela implantação da "+(ferro||"ferrovia")+(lote?(", no Lote "+lote):"")+(subtr?(", subtrecho "+subtr):"")+(mun?(", situado no município de "+mun):"")+".\n\n";
+      t+="Esse levantamento visa subsidiar a análise e qualificação da situação socioeconômica do proprietário ou ocupante de imóvel localizado em área diretamente afetada pelo novo traçado da ferrovia, de modo a atender às exigências legais do projeto.\n\n";
+      t+="A metodologia utilizada, denominada RELATÓRIO DE CADASTRO DOCUMENTAL E SOCIOECONÔMICO (DESP-1), corresponde à etapa do processo de desapropriação para fins de utilidade pública. Consiste na coleta sistemática de informações do proprietário e da área em estudo para o empreendimento.";
+      setF("rel_32_objetivo",t); return;
+    }
+    if(qual==="sintese"){
+      let t="Este documento apresenta o resultado do trabalho de campo realizado no imóvel"+(imovel?(" denominado "+imovel):"")+(mun?(", situado na zona rural do Município de "+mun):"")+". O objetivo do levantamento foi subsidiar a INFRA S.A. na gestão fundiária do novo traçado"+(lote?(" do Lote "+lote):"")+" da "+(ferro||"ferrovia")+".\n\n";
+      t+="A finalidade deste levantamento é fornecer informações precisas e prestar os devidos esclarecimentos aos proprietários/herdeiros acerca do processo de desapropriação da área impactada pelo empreendimento. Na oportunidade, a equipe apresentou informações sobre o projeto de desapropriação vinculado à "+(ferro||"ferrovia")+".";
+      setF("rel_34_sintese",t); return;
+    }
+    if(qual==="conclusao"){
+      let t="A partir da aplicação dos Critérios de Avaliação de Vulnerabilidade Socioeconômica, em conformidade com as diretrizes da Política Nacional de Assistência Social (PNAS) e da Lei Orgânica da Assistência Social – LOAS (Lei nº 8.742/1993), bem como considerando os indicadores do IVS/IPEA e dados do Cadastro Único (MDS), fontes oficiais para identificação de situações de risco e vulnerabilidade social e os parâmetros estabelecidos no Art. 2º e 3º da Resolução Normativa INFRA S.A. nº 07/2023/DIREX-INFRASA/CONSAD-INFRASA/AG-INFRASA, conclui-se que "+(nome?("o(a) proprietário(a) "):"")+"enquadra-se em situação de vulnerabilidade social "+grau+".\n\n";
+      t+="A desapropriação não compromete a subsistência do(s) proprietário(s)/herdeiro(s) nem acarreta prejuízos significativos às suas condições de vida.";
+      setF("rel_conclusao",t); return;
+    }
+  };
+  window.REL_gerarTodos=function(silencioso){
+    ["apresentacao","qualificacao","atividade","objetivo","sintese","conclusao"].forEach(q=>REL_gerarTexto(q));
+    if(!silencioso) alert("Textos automáticos gerados. Revise e edite se necessário.");
+  };
+
+  // ---- Tabelas ----
   const tabelas={1:[],2:[]};
   function renderTab(n){
-    const host=document.getElementById("rel_tabela"+n);
-    if(!host) return;
+    const host=document.getElementById("rel_tabela"+n); if(!host) return;
     host.innerHTML="";
     tabelas[n].forEach((lin,i)=>{
       const div=document.createElement("div"); div.className="rel-lin";
@@ -8545,28 +8639,16 @@ window.UFOTO_rodapeHTML=rodapeHTML;
 
   // ---- Fotos ----
   const fotos=[];
-  function renderFotos(){
-    const host=document.getElementById("rel_fotos_prev"); if(!host) return;
-    host.innerHTML="";
-    fotos.forEach((src,i)=>{ const d=document.createElement("div"); d.className="foto";
-      d.innerHTML='<img src="'+src+'"><button class="rm" type="button" onclick="REL_remFoto('+i+')">✕</button>'; host.appendChild(d); });
-  }
-  function bindFotos(){
-    const input=document.getElementById("rel_fotos_file"), drop=document.getElementById("rel_fotos_drop");
-    if(!input) return;
-    function add(files){ [...files].forEach(f=>{ if(!f.type.startsWith("image/"))return;
-      const rd=new FileReader(); rd.onload=e=>{ const o=e.target.result;
-        (window.AV_normalizarImagem?window.AV_normalizarImagem(o):Promise.resolve(o)).then(n=>{fotos.push(n);renderFotos();}); };
-      rd.readAsDataURL(f); }); }
+  function renderFotos(){ const host=document.getElementById("rel_fotos_prev"); if(!host) return; host.innerHTML="";
+    fotos.forEach((src,i)=>{ const d=document.createElement("div"); d.className="foto"; d.innerHTML='<img src="'+src+'"><button class="rm" type="button" onclick="REL_remFoto('+i+')">✕</button>'; host.appendChild(d); }); }
+  function bindFotos(){ const input=document.getElementById("rel_fotos_file"), drop=document.getElementById("rel_fotos_drop"); if(!input) return;
+    function add(files){ [...files].forEach(f=>{ if(!f.type.startsWith("image/"))return; const rd=new FileReader(); rd.onload=e=>{ const o=e.target.result; (window.AV_normalizarImagem?window.AV_normalizarImagem(o):Promise.resolve(o)).then(n=>{fotos.push(n);renderFotos();}); }; rd.readAsDataURL(f); }); }
     input.addEventListener("change",e=>{add(e.target.files);e.target.value="";});
-    if(drop){ ["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("over");}));
-      ["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("over");}));
-      drop.addEventListener("drop",e=>add(e.dataTransfer.files)); }
+    if(drop){ ["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("over");})); ["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("over");})); drop.addEventListener("drop",e=>add(e.dataTransfer.files)); }
   }
   window.REL_remFoto=function(i){ fotos.splice(i,1); renderFotos(); };
 
-  // ---- PDF com capa (padrão DESP-1) ----
-  function v(id){ const e=document.getElementById(id); return e?(e.value||"").trim():""; }
+  // ---- PDF com capa ----
   window.REL_gerarPDF=async function(){
     if(!(window.jspdf||window.jsPDF)){ alert("Biblioteca de PDF ainda carregando. Tente novamente."); return; }
     const J=(window.jspdf&&window.jspdf.jsPDF)?window.jspdf.jsPDF:window.jsPDF;
@@ -8575,15 +8657,10 @@ window.UFOTO_rodapeHTML=rodapeHTML;
     const LI=window.__LOGO_INFRA__, LE=window.__LOGO_ENPROL__;
     function carregar(s){ return new Promise(r=>{ if(!s){r(null);return;} const im=new Image(); im.onload=()=>r(im); im.onerror=()=>r(null); im.src=s; }); }
     const imgI=await carregar(LI), imgE=await carregar(LE);
-    const END=[
-      "Av. Des. Moreira, n° 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE",
-      "Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE",
-      "Rua Araguari, nº 358, Conj.1903/1904, Barro Preto, 30.190-110, Belo Horizonte-MG",
-      "Rua Des. Mário da Silva Nunes, nº 120, Sala 201, Enseada do Suá, 29.050-240, Vitória-ES",
-      "Rua Avertano Rocha, n°192, Campina, 66.023-120, Belém-PA"];
+    const END=["Av. Des. Moreira, n° 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE","Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE","Rua Araguari, nº 358, Conj.1903/1904, Barro Preto, 30.190-110, Belo Horizonte-MG","Rua Des. Mário da Silva Nunes, nº 120, Sala 201, Enseada do Suá, 29.050-240, Vitória-ES","Rua Avertano Rocha, n°192, Campina, 66.023-120, Belém-PA"];
     const TEL=["(+55 85) 3289-6363","(+55 85) 3289-6363","(+55 31) 3253-5500","(+55 27) 3029-5540","(+55 94) 3346-8994"];
 
-    // ---------- CAPA ----------
+    // CAPA
     if(imgE){ let w=16*(imgE.width/imgE.height); pdf.addImage(imgE,"JPEG",mL,mT,w,16); }
     if(imgI){ let w=16*(imgI.width/imgI.height); pdf.addImage(imgI,"JPEG",W-mR-w,mT,w,16); }
     let y=64;
@@ -8593,109 +8670,90 @@ window.UFOTO_rodapeHTML=rodapeHTML;
     pdf.text("DIREM - DIRETORIA DE EMPREENDIMENTOS", W/2, y, {align:"center"}); y+=4.5;
     pdf.text("SUGAT – SUPERINTENDÊNCIA DE GESTÃO AMBIENTAL E TERRITORIAL", W/2, y, {align:"center"}); y+=4.5;
     pdf.text("GEDAF – GERÊNCIA DE DESAPROPRIAÇÃO E ASSUNTOS FUNDIÁRIOS", W/2, y, {align:"center"});
-    pdf.setDrawColor(20,40,70); pdf.setLineWidth(0.4); pdf.line(mL,y+3,W-mR,y+3);
-    y+=28;
-    pdf.setFontSize(19); pdf.setTextColor(20,40,70);
-    pdf.text("RELATÓRIO DE CARACTERIZAÇÃO", W/2, y, {align:"center"}); y+=8;
+    pdf.setDrawColor(20,40,70); pdf.setLineWidth(0.4); pdf.line(mL,y+3,W-mR,y+3); y+=28;
+    pdf.setFontSize(19); pdf.text("RELATÓRIO DE CARACTERIZAÇÃO", W/2, y, {align:"center"}); y+=8;
     pdf.text("SOCIOECONÔMICA", W/2, y, {align:"center"}); y+=14;
-    pdf.setFontSize(13); pdf.setTextColor(40,40,40);
-    pdf.text("DESP-1", W/2, y, {align:"center"}); y+=16;
-    pdf.setFontSize(12);
-    pdf.text((v("rel_ferrovia")||"FERROVIA TRANSNORDESTINA").toUpperCase(), W/2, y, {align:"center"}); y+=13;
-    pdf.setFont("helvetica","bold"); pdf.setFontSize(12);
-    if(v("rel_lote")) { pdf.text("FTN (Lote: "+v("rel_lote")+")", W/2, y, {align:"center"}); y+=16; }
-    pdf.setFont("helvetica","normal"); pdf.setFontSize(11);
-    if(v("rel_processo")){ pdf.text("Processo administrativo:  "+v("rel_processo"), W/2, y, {align:"center"}); y+=12; }
-    pdf.setFontSize(10);
-    if(v("rel_expropriado")){ pdf.text("EXPROPRIADO: "+v("rel_expropriado"), W/2, y, {align:"center"}); y+=10; }
+    pdf.setFontSize(13); pdf.setTextColor(40,40,40); pdf.text("DESP-1", W/2, y, {align:"center"}); y+=16;
+    pdf.setFontSize(12); pdf.text((g("rel_ferrovia")||"FERROVIA").toUpperCase(), W/2, y, {align:"center"}); y+=13;
     pdf.setFont("helvetica","bold");
-    if(v("rel_area1")){ pdf.text("LOCAÇÃO: "+v("rel_area1"), W/2, y, {align:"center"}); y+=5; }
-    if(v("rel_area2")){ pdf.text(v("rel_area2"), W/2, y, {align:"center"}); y+=5; }
-    // rodapé da capa (contrato)
-    pdf.setFont("helvetica","bold"); pdf.setFontSize(9); pdf.setTextColor(30,30,30);
-    let cy=250;
-    if(v("rel_contrato")){
-      const t="Contrato nº "+v("rel_contrato")+" – Cujo objeto é a prestação de serviços especializados de engenharia consultiva para a execução das atividades de desapropriação, ocupação temporária ou constituição de servidão administrativa de imóveis, gestão fundiária e regularização de passivos de desapropriação.";
-      pdf.setFont("helvetica","normal");
-      const ls=pdf.splitTextToSize(t, 80);
-      pdf.text(ls, W-mR-80, cy);
-    }
+    if(g("rel_lote")){ pdf.text("FTN (Lote: "+g("rel_lote")+")", W/2, y, {align:"center"}); y+=16; }
+    pdf.setFont("helvetica","normal"); pdf.setFontSize(11);
+    if(g("rel_processo")){ pdf.text("Processo administrativo:  "+g("rel_processo"), W/2, y, {align:"center"}); y+=12; }
+    pdf.setFontSize(10);
+    if(g("rel_expropriado")){ pdf.text("EXPROPRIADO: "+g("rel_expropriado"), W/2, y, {align:"center"}); y+=10; }
+    pdf.setFont("helvetica","bold");
+    const A=areas.filter(x=>(x||"").trim());
+    A.forEach((a,i)=>{ pdf.text((i===0?"LOCAÇÃO: ":"                   ")+"ÁREA "+(i+1)+": "+a, W/2, y, {align:"center"}); y+=5; });
     pdf.setFont("helvetica","bold"); pdf.setFontSize(12); pdf.setTextColor(31,111,192);
     pdf.text("DESP-1", mL, 268);
     pdf.text((new Date()).toLocaleDateString("pt-BR",{month:"long",year:"numeric"}).toUpperCase(), mL, 274);
 
-    // ---------- CORPO ----------
+    // CORPO
     function cab(){ if(imgE){let w=9*(imgE.width/imgE.height); pdf.addImage(imgE,"JPEG",mL,mT,w,9);} if(imgI){let w=9*(imgI.width/imgI.height); pdf.addImage(imgI,"JPEG",W-mR-w,mT,w,9);} pdf.setDrawColor(31,111,192); pdf.setLineWidth(0.5); pdf.line(mL,mT+11,W-mR,mT+11); }
     function rod(){ const yl=H-mB-16; pdf.setDrawColor(31,111,192); pdf.setLineWidth(0.4); pdf.line(mL,yl,W-mR,yl); pdf.setFont("helvetica","normal"); pdf.setFontSize(5.5); pdf.setTextColor(90,107,124); let yy=yl+3; for(let i=0;i<END.length;i++){ pdf.text(END[i],mL,yy); pdf.text(TEL[i]+"   comercial@enprol.com.br",W-mR,yy,{align:"right"}); yy+=2.7; } }
-    const topY=mT+16, botY=H-mB-16-3;
+    const topY=mT+16, botY=H-mB-16-3; let yc=0;
     function nova(){ pdf.addPage(); cab(); yc=topY; }
-    let yc=0;
     function ensure(h){ if(yc+h>botY){ rod(); nova(); } }
     function titulo(t){ ensure(12); pdf.setFillColor(31,111,192); pdf.rect(mL,yc-4,cw,7,"F"); pdf.setFont("helvetica","bold"); pdf.setFontSize(11); pdf.setTextColor(255,255,255); pdf.text(t,mL+3,yc+1); yc+=9; }
     function subt(t){ ensure(7); pdf.setFont("helvetica","bold"); pdf.setFontSize(10); pdf.setTextColor(23,90,159); pdf.text(t,mL,yc); yc+=5.5; }
-    function paragrafo(t){ if(!t) return; pdf.setFont("helvetica","normal"); pdf.setFontSize(9.5); pdf.setTextColor(30,43,58); const ls=pdf.splitTextToSize(t,cw); ls.forEach(l=>{ ensure(5); pdf.text(l,mL,yc); yc+=4.8; }); yc+=2; }
+    function paragrafo(t){ if(!t) return; pdf.setFont("helvetica","normal"); pdf.setFontSize(9.5); pdf.setTextColor(30,43,58); String(t).split("\n").forEach(par=>{ if(!par.trim()){ yc+=2.5; return; } const ls=pdf.splitTextToSize(par,cw); ls.forEach(l=>{ ensure(5); pdf.text(l,mL,yc); yc+=4.8; }); }); yc+=2; }
     function campo(rot,val){ if(!val) return; pdf.setFont("helvetica","bold"); pdf.setFontSize(9.5); pdf.setTextColor(70,88,108); const rw=pdf.getTextWidth(rot+": "); ensure(5); pdf.text(rot+": ",mL,yc); pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58); const ls=pdf.splitTextToSize(val,cw-rw); pdf.text(ls,mL+rw,yc); yc+=ls.length*4.8+1; }
-
-    nova();
-    titulo("1. APRESENTAÇÃO"); paragrafo(v("rel_apresentacao"));
-    subt("1.1 Referencial Normativo e Premissas Gerais"); paragrafo(v("rel_premissas"));
-    titulo("2. IDENTIFICAÇÃO E QUALIFICAÇÃO DO PROPRIETÁRIO E DO IMÓVEL");
-    paragrafo(v("rel_qualificacao"));
-    campo("Denominação do imóvel", v("rel_prop_id"));
-    campo("Área total (ha)", v("rel_area_total")); campo("Área de desapropriação (ha)", v("rel_area_desap"));
-    campo("Matrícula", v("rel_matricula")); campo("CIB/ITR", v("rel_cib"));
-    campo("Cartório / Registro", v("rel_cartorio")); paragrafo(v("rel_segmento"));
-    titulo("3. CADASTRO SOCIOECONÔMICO");
-    subt("3.1 Atividade Realizada"); paragrafo(v("rel_31_atividade"));
-    subt("3.2 Objetivo"); paragrafo(v("rel_32_objetivo"));
-    subt("3.3 Metodologia"); paragrafo(v("rel_33_metodologia"));
-    subt("3.4 Síntese da Caracterização Socioeconômica"); paragrafo(v("rel_34_sintese"));
-    titulo("4. PARECER SOCIAL"); paragrafo(v("rel_parecer_intro"));
-    // tabela 1 e 2
-    function desenharTabela(rotulo, arr){
-      if(!arr || !arr.length) return;
-      subt(rotulo);
-      arr.forEach((lin,idx)=>{
-        pdf.setFont("helvetica","normal"); pdf.setFontSize(9); pdf.setTextColor(30,43,58);
-        const critLs=pdf.splitTextToSize((idx+1)+". "+(lin.crit||""), cw-40);
+    function desenharTabela(rotulo, arr){ if(!arr||!arr.length) return; subt(rotulo);
+      arr.forEach((lin,idx)=>{ pdf.setFont("helvetica","normal"); pdf.setFontSize(9); pdf.setTextColor(30,43,58);
+        const critLs=pdf.splitTextToSize((idx+1)+". "+(lin.crit||""), cw-32);
         const obsLs=lin.obs? pdf.splitTextToSize("Obs.: "+lin.obs, cw-6):[];
         ensure(critLs.length*4.4 + obsLs.length*4.2 + 3);
-        pdf.text(critLs, mL, yc);
-        pdf.setFont("helvetica","bold"); pdf.text("["+(lin.resp||"—")+"]", W-mR-30, yc);
+        pdf.text(critLs, mL, yc); pdf.setFont("helvetica","bold"); pdf.text("["+(lin.resp||"—")+"]", W-mR-24, yc);
         yc+=critLs.length*4.4;
         if(obsLs.length){ pdf.setFont("helvetica","italic"); pdf.setFontSize(8.5); pdf.setTextColor(90,100,115); pdf.text(obsLs, mL+3, yc); yc+=obsLs.length*4.2; }
-        yc+=1.5;
-      });
-      yc+=2;
-    }
+        yc+=1.5; }); yc+=2; }
+
+    nova();
+    titulo("1. APRESENTAÇÃO"); paragrafo(g("rel_apresentacao"));
+    subt("1.1 Referencial Normativo e Premissas Gerais Acerca das Opções de Medidas Compensatórias"); paragrafo(g("rel_premissas"));
+    titulo("2. IDENTIFICAÇÃO E QUALIFICAÇÃO DO PROPRIETÁRIO E DO IMÓVEL"); paragrafo(g("rel_qualificacao"));
+    campo("Denominação do imóvel", g("rel_prop_id")); campo("Área total (ha)", g("rel_area_total")); campo("Área de desapropriação (ha)", g("rel_area_desap"));
+    campo("Matrícula", g("rel_matricula")); campo("CIB/ITR", g("rel_cib")); campo("Cartório / Registro", g("rel_cartorio"));
+    titulo("3. CADASTRO SOCIOECONÔMICO");
+    subt("3.1 Atividade Realizada"); paragrafo(g("rel_31_atividade"));
+    subt("3.2 Objetivo"); paragrafo(g("rel_32_objetivo"));
+    subt("3.3 Metodologia"); paragrafo(g("rel_33_metodologia"));
+    subt("3.4 Síntese da Caracterização Socioeconômica"); paragrafo(g("rel_34_sintese"));
+    titulo("4. PARECER SOCIAL"); paragrafo(g("rel_parecer_intro"));
     desenharTabela("Tabela 1 — Critérios de Vulnerabilidade Socioeconômica (IVS/IPEA)", tabelas[1]);
-    paragrafo(v("rel_tab1_coment"));
+    paragrafo(g("rel_tab1_coment"));
+    paragrafo(g("rel_texto_normativo"));
     desenharTabela("Tabela 2 — Critérios conforme Art. 3º da Resolução Normativa INFRASA nº 7/2023", tabelas[2]);
-    paragrafo(v("rel_tab2_coment"));
-    titulo("5. CONCLUSÃO"); paragrafo(v("rel_conclusao"));
+    paragrafo(g("rel_tab2_coment"));
+    titulo("5. CONCLUSÃO"); paragrafo(g("rel_conclusao"));
     yc+=6; ensure(30);
-    if(v("rel_local_data")){ pdf.setFont("helvetica","normal"); pdf.setFontSize(9.5); pdf.setTextColor(30,43,58); pdf.text(v("rel_local_data"), W/2, yc, {align:"center"}); yc+=16; }
+    if(g("rel_local_data")){ pdf.setFont("helvetica","normal"); pdf.setFontSize(9.5); pdf.setTextColor(30,43,58); pdf.text(g("rel_local_data"), W/2, yc, {align:"center"}); yc+=16; }
     pdf.setDrawColor(60,60,60); pdf.line(W/2-40, yc, W/2+40, yc); yc+=4;
-    pdf.setFont("helvetica","bold"); if(v("rel_resp_nome")){ pdf.text(v("rel_resp_nome"), W/2, yc, {align:"center"}); yc+=4.5; }
+    pdf.setFont("helvetica","bold"); if(g("rel_resp_nome")){ pdf.text(g("rel_resp_nome"), W/2, yc, {align:"center"}); yc+=4.5; }
     pdf.setFont("helvetica","normal");
-    if(v("rel_resp_cargo")){ pdf.text(v("rel_resp_cargo"), W/2, yc, {align:"center"}); yc+=4.5; }
-    if(v("rel_resp_reg")){ pdf.text(v("rel_resp_reg"), W/2, yc, {align:"center"}); yc+=4.5; }
-    // fotos
-    if(fotos.length){
-      rod(); nova(); titulo("6. RELATÓRIO FOTOGRÁFICO DO IMÓVEL");
-      campo("Nº do Processo / Lote", v("rel_processo")); campo("Nome do Expropriado", v("rel_expropriado"));
-      yc+=2; const fw=cw, fh=fw*0.62;
-      for(let i=0;i<fotos.length;i++){ if(yc+fh>botY){ rod(); nova(); } try{ pdf.addImage(fotos[i],"JPEG",mL,yc,fw,fh); }catch(e){} yc+=fh+4;
-        pdf.setFont("helvetica","italic"); pdf.setFontSize(8); pdf.setTextColor(90,100,115); pdf.text("Fonte: Enprol Engenharia", mL, yc); yc+=6; }
-    }
+    if(g("rel_resp_cargo")){ pdf.text(g("rel_resp_cargo"), W/2, yc, {align:"center"}); yc+=4.5; }
+    if(g("rel_resp_reg")){ pdf.text(g("rel_resp_reg"), W/2, yc, {align:"center"}); yc+=4.5; }
+    if(fotos.length){ rod(); nova(); titulo("6. RELATÓRIO FOTOGRÁFICO DO IMÓVEL");
+      campo("Nº do Processo / Lote", g("rel_processo")); campo("Nome do Expropriado", g("rel_expropriado")); yc+=2;
+      const fw=cw, fh=fw*0.62;
+      for(let i=0;i<fotos.length;i++){ if(yc+fh>botY){ rod(); nova(); } try{ pdf.addImage(fotos[i],"JPEG",mL,yc,fw,fh); }catch(e){} yc+=fh+4; pdf.setFont("helvetica","italic"); pdf.setFontSize(8); pdf.setTextColor(90,100,115); pdf.text("Fonte: Enprol Engenharia", mL, yc); yc+=6; } }
     rod();
     pdf.save("Relatorio_Socioeconomico_DESP-1_1.10.pdf");
   };
 
+  function preencherFixos(){
+    setF("rel_33_metodologia", TXT_METODOLOGIA);
+    setF("rel_parecer_intro", TXT_PARECER_INTRO);
+    setF("rel_texto_normativo", TXT_NORMATIVO);
+    setF("rel_tab2_coment", TXT_TAB2_COMENT);
+    setF("rel_premissas", TXT_PREMISSAS);
+  }
   function init(){
     ligarSync(); aplicarAutoFill(); bindFotos();
+    if(!areas.length){ areas.push(""); renderAreas(); }
     if(!tabelas[1].length){ REL_addLinha(1); REL_addLinha(1); }
     if(!tabelas[2].length){ REL_addLinha(2); REL_addLinha(2); }
+    preencherFixos();
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
