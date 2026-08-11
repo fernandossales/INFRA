@@ -7639,16 +7639,22 @@ function AV_gerarDescSituacao(){
       } else if(node.classList.contains("vfield")){
         const lbl=node.querySelector("label");
         const rot=lbl?lbl.textContent.trim():"";
+        // identifica se este campo compartilha uma linha (.vrow) com outros
+        const vrow=node.closest(".vrow");
+        const rowId = vrow ? ("row"+([...painel.querySelectorAll(".vrow")].indexOf(vrow))) : null;
         const checks=node.querySelector(".fb-checks");
         if(checks){
-          const marcados=[...checks.querySelectorAll("input[type=checkbox]:checked")].map(c=>c.value||c.nextSibling&&c.nextSibling.textContent.trim());
-          atual.itens.push({tipo:"campo", rotulo:rot, valor: marcados.length?marcados.join(", "):"—"});
+          const todas=[...checks.querySelectorAll("input[type=checkbox]")].map(c=>{
+            const txt=(c.value||"").trim() || (c.parentElement?c.parentElement.textContent.trim():"");
+            return txt+" ("+(c.checked?"X":"  ")+")";
+          });
+          atual.itens.push({tipo:"checks", rotulo:rot, valor: todas.join("    ")});
         } else {
           const campo=node.querySelector("input, textarea, select");
           if(campo && campo.type==="file") return;
           const val=valCampo(campo);
           const isArea = campo && campo.tagName==="TEXTAREA";
-          if(rot) atual.itens.push({tipo: isArea?"texto":"campo", rotulo:rot, valor:val});
+          if(rot) atual.itens.push({tipo: isArea?"texto":"campo", rotulo:rot, valor:val, linha:rowId});
         }
       }
     });
@@ -7731,24 +7737,49 @@ function AV_gerarDescSituacao(){
         pdf.text(sec.titulo, mL+3, y+0.8);
         y+=8;
       }
-      sec.itens.forEach(it=>{
+      for(let ii=0; ii<sec.itens.length; ii++){
+        const it=sec.itens[ii];
         if(it.tipo==="sub"){
           garantir(8);
           pdf.setFont("helvetica","bold"); pdf.setFontSize(9); pdf.setTextColor(23,90,159);
           pdf.text(it.texto, mL, y+1); y+=5.5;
         } else if(it.tipo==="campo"){
+          // agrupa campos consecutivos com o mesmo id de linha (.vrow) lado a lado
+          let grupo=[it];
+          if(it.linha){
+            while(ii+1<sec.itens.length && sec.itens[ii+1].tipo==="campo" && sec.itens[ii+1].linha===it.linha){
+              grupo.push(sec.itens[ii+1]); ii++;
+            }
+          }
+          const colW=contentW/grupo.length;
+          // calcula altura máxima necessária no grupo
+          let maxL=1;
+          grupo.forEach(g=>{
+            const rotW=pdf.getTextWidth(g.rotulo+": ");
+            const ls=pdf.splitTextToSize(g.valor||"—", colW-rotW-3);
+            g._linhas=ls; maxL=Math.max(maxL, ls.length);
+          });
+          garantir(maxL*4.4+2);
+          grupo.forEach((g,ci)=>{
+            const x=mL+ci*colW;
+            pdf.setFont("helvetica","bold"); pdf.setFontSize(8.5); pdf.setTextColor(70,88,108);
+            const rot=g.rotulo+": ";
+            const rotW=pdf.getTextWidth(rot);
+            pdf.text(rot, x, y);
+            pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58);
+            pdf.text(g._linhas, x+rotW, y);
+          });
+          y+=maxL*4.4+1.5;
+        } else if(it.tipo==="checks"){
+          // rótulo em negrito, opções (com marcação) na linha seguinte
           pdf.setFont("helvetica","bold"); pdf.setFontSize(8.5); pdf.setTextColor(70,88,108);
-          const rot=it.rotulo+": ";
-          const rotW=pdf.getTextWidth(rot);
-          pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58);
-          const val=it.valor||"—";
-          const linhas=pdf.splitTextToSize(val, contentW-rotW-2);
-          garantir(linhas.length*4.4+2);
-          pdf.setFont("helvetica","bold"); pdf.setTextColor(70,88,108);
-          pdf.text(rot, mL, y);
-          pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58);
-          pdf.text(linhas, mL+rotW, y);
-          y+=linhas.length*4.4+1.5;
+          const linhasR=pdf.splitTextToSize(it.rotulo+":", contentW);
+          garantir(linhasR.length*4.4+4);
+          pdf.text(linhasR, mL, y); y+=linhasR.length*4.4;
+          pdf.setFont("helvetica","normal"); pdf.setFontSize(8.5); pdf.setTextColor(30,43,58);
+          const opts=pdf.splitTextToSize(it.valor||"—", contentW);
+          opts.forEach(ln=>{ garantir(4.4); pdf.text(ln, mL+3, y); y+=4.4; });
+          y+=2;
         } else if(it.tipo==="texto"){
           pdf.setFont("helvetica","bold"); pdf.setFontSize(8.5); pdf.setTextColor(70,88,108);
           garantir(6); pdf.text(it.rotulo+":", mL, y); y+=4.4;
@@ -7763,7 +7794,7 @@ function AV_gerarDescSituacao(){
           it.valores.forEach(ln=>{ garantir(4.4); pdf.text(ln, mL+3, y); y+=4.4; });
           y+=1.5;
         }
-      });
+      }
       y+=2;
     });
 
