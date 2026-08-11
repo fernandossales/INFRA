@@ -1662,6 +1662,359 @@
   #panel-util-foto .config label{ font-size:12px; font-weight:700; color:#5a6b7c; text-transform:uppercase; letter-spacing:.4px; }
   #panel-util-foto .config .campo input{ border:1px solid #9aa7b5; border-radius:7px; padding:8px 10px; font-size:14px; color:#243447; font-family:inherit; }
   #panel-util-foto .paginas{ max-width:900px; margin:0 auto; display:flex; flex-direction:column; gap:20px; }
+
+  /* ===== 1.10 Relatório Técnico — form styling ===== */
+  #panel-desp1-rel{
+    --azul:#1F6FC0; --azul-esc:#175a9f; --azul-inf:#0a4d7c;
+    --borda:#d3dbe4; --borda-forte:#b3bfcc; --texto:#243447;
+    --bg:#eef2f6; --card:#ffffff; --label:#5a6b7c; --suave:#f7f9fc;
+    font-family:"Segoe UI", Arial, Helvetica, sans-serif;
+    background:var(--bg); color:var(--texto); padding:26px 20px 80px;
+  }
+  #panel-desp1-rel *{box-sizing:border-box;}
+  #panel-desp1-rel .vwrap{max-width:1080px; margin:0 auto;}
+  #panel-desp1-rel .doc-head{margin-bottom:18px;}
+  #panel-desp1-rel h1{font-size:23px; margin:0 0 4px; color:var(--azul-esc); letter-spacing:.3px;}
+  #panel-desp1-rel .sub{font-size:13.5px; color:var(--label); margin:0;}
+  #panel-desp1-rel .vsec{
+    font-size:14px; font-weight:800; letter-spacing:.4px; text-transform:uppercase;
+    color:#fff; background:linear-gradient(180deg,#2478c9,var(--azul));
+    padding:9px 16px; border-radius:9px 9px 0 0; margin:22px 0 0;
+    box-shadow:0 2px 8px rgba(31,111,192,.22);
+  }
+  #panel-desp1-rel .vcard{
+    background:var(--card); border:1px solid var(--borda);
+    border-radius:0 0 12px 12px; padding:18px 18px 20px; margin-bottom:8px;
+    box-shadow:0 8px 22px rgba(30,50,80,.07);
+  }
+  #panel-desp1-rel .vsub{
+    font-size:12.5px; font-weight:700; color:var(--azul-esc);
+    letter-spacing:.3px; margin:16px 0 8px; padding-bottom:4px;
+    border-bottom:1px solid var(--borda); display:flex; align-items:center; justify-content:space-between;
+  }
+  #panel-desp1-rel .vsub:first-child{margin-top:0;}
+  #panel-desp1-rel .vrow{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:10px;}
+  #panel-desp1-rel .vfield{display:flex; flex-direction:column; gap:4px; min-width:150px;}
+  #panel-desp1-rel .vfield.grow{flex:1; min-width:220px;}
+  #panel-desp1-rel label,
+  #panel-vistoria .vlbl, #panel-avaliacao .vlbl{
+    font-size:11px; font-weight:700; color:var(--label); text-transform:uppercase; letter-spacing:.4px;
+  }
+  #panel-desp1-rel .vlbl{display:block; margin:14px 0 5px;}
+  #panel-desp1-rel input[type=text], #panel-avaliacao input[type=date], #panel-avaliacao input[type=number], #panel-avaliacao select, #panel-avaliacao textarea{
+    width:100%; border:1px solid var(--borda-forte); border-radius:7px;
+    padding:8px 11px; font-size:13.5px; color:var(--texto); background:#fff;
+    font-family:inherit; outline:none; transition:border-color .15s, box-shadow .15s;
+  }
+  #panel-desp1-rel textarea{resize:vertical; line-height:1.45;}
+  #panel-desp1-rel input:focus, #panel-avaliacao select:focus, #panel-avaliacao textarea:focus{
+    border-color:var(--azul); box-shadow:0 0 0 3px rgba(31,111,192,.12);
+  }
+  #panel-desp1-rel .mini-add{
+    border:1px solid var(--azul); background:#eaf3fc; color:var(--azul-esc);
+    font-size:11.5px; font-weight:700; padding:4px 12px; border-radius:14px; cursor:pointer;
+    text-transform:none; letter-spacing:0; transition:background .15s;
+  }
+  #panel-desp1-rel .mini-add:hover{background:#d8ebfb;}
+  #panel-desp1-rel .vactions{
+    position:sticky; bottom:0; margin-top:20px;
+    background:linear-gradient(180deg, rgba(238,242,246,0), var(--bg) 40%);
+    padding:14px 0 4px; display:flex; gap:10px; flex-wrap:wrap;
+  }
+  #panel-desp1-rel .vbtn{
+    border:none; padding:11px 22px; font-size:14px; font-weight:700; border-radius:9px; cursor:pointer;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  #panel-desp1-rel .vbtn-primary{background:var(--azul); color:#fff; box-shadow:0 3px 10px rgba(31,111,192,.3);}
+  #panel-desp1-rel .vbtn-primary:hover{background:var(--azul-esc);}
+  #panel-desp1-rel .vbtn-ghost{background:#fff; color:var(--texto); border:1px solid var(--borda-forte);}
+  #panel-desp1-rel .auto-tag{
+    font-size:9px; font-weight:800; background:#e3f0e6; color:#159a3c;
+    padding:1px 6px; border-radius:8px; letter-spacing:.3px; text-transform:uppercase; margin-left:5px;
+  }
+  #panel-desp1-rel .av-estacas-view{display:flex; flex-direction:column; gap:6px;}
+  #panel-desp1-rel .av-estaca-item{
+    background:var(--suave); border:1px solid var(--borda); border-radius:8px;
+    padding:8px 12px; font-size:13px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  }
+  #panel-desp1-rel .av-estaca-item b{color:var(--azul-esc); min-width:62px;}
+  #panel-desp1-rel .av-estaca-item .km{color:var(--texto);}
+  #panel-desp1-rel .av-estaca-item .tag{
+    margin-left:auto; font-size:10px; font-weight:700; color:#fff; background:var(--azul);
+    padding:2px 9px; border-radius:10px;
+  }
+  #panel-desp1-rel .img-drop{
+    display:flex; flex-direction:column; align-items:center; gap:5px;
+    border:2px dashed var(--borda-forte); border-radius:12px; padding:26px 16px;
+    cursor:pointer; background:var(--suave); transition:border-color .15s, background .15s; text-align:center;
+  }
+  #panel-desp1-rel .img-drop:hover, #panel-avaliacao .img-drop.over{border-color:var(--azul); background:#eaf3fc;}
+  #panel-desp1-rel .img-drop .ic{font-size:30px;}
+  #panel-desp1-rel .img-drop .t{font-size:13.5px; font-weight:600; color:var(--texto);}
+  #panel-desp1-rel .img-drop .h{font-size:11.5px; color:var(--label);}
+  #panel-desp1-rel .img-drop input{display:none;}
+  #panel-desp1-rel .img-preview{margin-top:12px; display:none;}
+  #panel-desp1-rel .img-preview.show{display:block;}
+  #panel-desp1-rel .img-preview img{max-width:100%; border-radius:10px; border:1px solid var(--borda); box-shadow:0 4px 14px rgba(30,50,80,.12);}
+  #panel-desp1-rel .img-preview .rm-img{
+    margin-top:8px; border:1px solid var(--borda-forte); background:#fff; color:#c0392b;
+    font-size:12px; font-weight:700; padding:5px 14px; border-radius:8px; cursor:pointer;
+  }
+  #panel-desp1-rel .av-area-aval{
+    background:#fff9e8; border:1px solid #e7d38a; border-radius:9px; padding:12px 14px; margin-bottom:12px;
+  }
+  #panel-desp1-rel .av-area-aval label{color:#8a6d1a; margin-bottom:5px;}
+  #panel-desp1-rel .av-area-aval input{max-width:200px; border-color:#e0b400;}
+  #panel-desp1-rel .hint-inline{display:block; font-size:11px; color:#a08028; margin-top:5px; text-transform:none; letter-spacing:0; font-weight:400;}
+  #panel-desp1-rel .gleba-linha{
+    display:flex; gap:10px; align-items:flex-end; margin-bottom:10px; flex-wrap:wrap;
+    background:var(--suave); border:1px solid var(--borda); border-radius:9px; padding:11px 12px;
+  }
+  #panel-desp1-rel .gleba-linha .rot{font-size:11px; font-weight:800; color:var(--azul-esc); align-self:center; min-width:70px;}
+  #panel-desp1-rel .gleba-linha .cel{display:flex; flex-direction:column; gap:4px;}
+  #panel-desp1-rel .gleba-linha .cel span{font-size:10px; font-weight:700; color:var(--label); text-transform:uppercase;}
+  #panel-desp1-rel .gleba-linha .cel.classe{min-width:100px;}
+  #panel-desp1-rel .gleba-linha .cel.area{min-width:110px;}
+  #panel-desp1-rel .gleba-linha .cel.fator{flex:1; min-width:200px;}
+  #panel-desp1-rel .gleba-linha .cel.pct{min-width:90px;}
+  #panel-desp1-rel .gleba-linha .pct-val{
+    font-size:15px; font-weight:800; color:var(--azul-esc);
+    padding:7px 0; text-align:center; background:#eaf3fc; border-radius:7px;
+  }
+  #panel-desp1-rel .gleba-linha .rm{
+    border:none; background:#fdecec; color:#c0392b; font-weight:700;
+    width:30px; height:34px; border-radius:7px; cursor:pointer; font-size:15px; align-self:flex-end;
+  }
+  #panel-desp1-rel .gleba-linha .rm:hover{background:#f8d7d7;}
+  #panel-desp1-rel .ccu-formula{
+    background:linear-gradient(180deg,#f0f7ff,#e9f2fc); border:1px solid #bcd6f0;
+    border-radius:10px; padding:14px 18px; font-family:"Consolas","Courier New",monospace; font-size:14px; color:var(--azul-inf);
+  }
+  #panel-desp1-rel .ccu-formula .linha3{font-weight:800; font-size:16px; margin-top:4px; color:var(--azul-esc);}
+  #panel-desp1-rel .na-calc{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    background:#f0f7ff; border:1px solid #bcd6f0; border-radius:10px; padding:12px 16px; font-weight:700; color:var(--azul-esc);
+  }
+  #panel-desp1-rel .na-calc input, #panel-avaliacao .na-calc select{max-width:120px; font-weight:700;}
+  #panel-desp1-rel .na-calc .resultado{max-width:140px; background:#eaf3fc; border-color:var(--azul); color:var(--azul-inf); font-size:15px;}
+  #panel-desp1-rel table.memoria{width:100%; border-collapse:collapse; font-size:12.5px; margin-top:4px;}
+  #panel-desp1-rel table.memoria th{background:var(--azul); color:#fff; padding:8px 10px; text-align:left; font-weight:700;}
+  #panel-desp1-rel table.memoria td{border:1px solid var(--borda); padding:7px 10px; vertical-align:middle;}
+  #panel-desp1-rel table.memoria td:first-child{font-weight:700; color:var(--azul-esc); background:#fbfcfe;}
+  #panel-desp1-rel table.memoria input, #panel-avaliacao table.memoria select{max-width:120px; padding:5px 8px;}
+  #panel-desp1-rel table.memoria span{font-weight:700;}
+  #panel-desp1-rel .vtn-box{margin-top:14px; background:#fff4e6; border:1px solid #f0c891; border-radius:10px; padding:14px 16px;}
+  #panel-desp1-rel .vtn-formula{font-family:"Consolas","Courier New",monospace; font-size:12px; color:#8a5a1a; line-height:1.5;}
+  #panel-desp1-rel .vtn-result{margin-top:8px; font-size:16px; color:var(--texto);}
+  #panel-desp1-rel .vtn-result strong{color:#c0700a; font-size:20px;}
+  #panel-desp1-rel .calc-line{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px;}
+  #panel-desp1-rel .calc-line label{flex:1; min-width:240px;}
+  #panel-desp1-rel .calc-line input{max-width:150px;}
+  #panel-desp1-rel .calc-line strong{color:var(--azul-esc); font-size:16px; min-width:120px;}
+  #panel-desp1-rel table.resumo{width:100%; border-collapse:collapse; font-size:13px;}
+  #panel-desp1-rel table.resumo td{border-bottom:1px solid var(--borda); padding:8px 12px;}
+  #panel-desp1-rel table.resumo td.v{text-align:right; width:200px;}
+  #panel-desp1-rel table.resumo td.v input{max-width:150px; text-align:right; margin-left:auto;}
+  #panel-desp1-rel table.resumo tr.sub-tot td{background:#f0f5fb; font-weight:700; color:var(--azul-esc);}
+  #panel-desp1-rel table.resumo tr.total td{background:#e9eff6; color:var(--azul-esc); font-weight:800; font-size:14px; border-top:2px solid var(--azul-esc);}
+  #panel-desp1-rel table.resumo tr.total strong{color:var(--azul-esc);}
+  #panel-desp1-rel ol.anexos-list{margin:0; padding-left:22px; font-size:13px; color:var(--texto); line-height:1.9;}
+  #panel-desp1-rel .vsec.acc{
+    display:flex; align-items:center; justify-content:space-between;
+    cursor:pointer; user-select:none;
+  }
+  #panel-desp1-rel .vsec.acc .acc-chevron{font-size:13px; transition:transform .2s;}
+  #panel-desp1-rel .vsec.acc.fechado{border-radius:9px;}
+  #panel-desp1-rel .vsec.acc.fechado .acc-chevron{transform:rotate(-90deg);}
+  #panel-desp1-rel .vcard.oculto{display:none;}
+  #panel-desp1-rel input.bloqueado, #panel-avaliacao select.bloqueado,
+  #panel-vistoria input.bloqueado{
+    background:#eef1f4 !important; color:#5a6b7c !important; cursor:not-allowed;
+    border-color:#d3dbe4 !important;
+  }
+  #panel-desp1-rel .ocupante-sel{
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    background:#eef4fa; border:1px solid #cfe0f0; border-radius:8px;
+    padding:10px 14px; margin-bottom:14px;
+  }
+  #panel-desp1-rel .ocup-lbl{font-weight:700; color:var(--azul-esc); font-size:12px; text-transform:none; letter-spacing:0;}
+  #panel-desp1-rel .ocup-opt{display:flex; align-items:center; gap:6px; font-size:13px; color:var(--texto); text-transform:none; letter-spacing:0; font-weight:500; cursor:pointer;}
+  #panel-desp1-rel .ocup-opt input{width:15px; height:15px;}
+  #panel-desp1-rel .antes-depois-sel{
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    background:#fff4e6; border:1px solid #f0c891; border-radius:8px;
+    padding:10px 14px; margin-bottom:12px;
+  }
+  #panel-desp1-rel .ad-lbl{font-weight:700; color:#8a5a1a; font-size:12px; text-transform:none; letter-spacing:0;}
+  #panel-desp1-rel .ad-opt{display:flex; align-items:center; gap:6px; font-size:13px; color:var(--texto); text-transform:none; letter-spacing:0; font-weight:500; cursor:pointer;}
+  #panel-desp1-rel .ad-opt input{width:15px; height:15px;}
+  #panel-desp1-rel .area-restante{
+    background:#f0f5fb; border:1px solid #cfe0f0; border-radius:8px;
+    padding:8px 14px; margin:10px 0 14px; font-size:13px; color:var(--texto);
+  }
+  #panel-desp1-rel .area-restante strong{color:var(--azul-esc);}
+  #panel-desp1-rel .depois-box{
+    background:#fdf3e8; border:1px solid #f0c891; border-radius:10px;
+    padding:14px 16px; margin:12px 0;
+  }
+  #panel-desp1-rel .depois-box h4{margin:0 0 10px; color:#8a5a1a; font-size:13px;}
+  #panel-desp1-rel .desval-result{
+    background:#fff; border:2px solid #c0700a; border-radius:8px; padding:12px 16px; margin-top:12px;
+  }
+  #panel-desp1-rel .desval-result .v{font-size:18px; font-weight:800; color:#c0700a;}
+  #panel-desp1-rel .na-tabela-wrap{overflow-x:auto; margin-bottom:16px;}
+  #panel-desp1-rel table.na-tabela{width:100%; border-collapse:collapse; font-size:12px; min-width:720px;}
+  #panel-desp1-rel table.na-tabela th{background:var(--azul); color:#fff; padding:6px 8px; text-align:center; font-weight:700; border:1px solid #fff; line-height:1.25;}
+  #panel-desp1-rel table.na-tabela th.grp-ccu{background:#175a9f;}
+  #panel-desp1-rel table.na-tabela th.grp-na{background:#159a3c;}
+  #panel-desp1-rel table.na-tabela td{border:1px solid var(--borda); padding:5px 8px; text-align:center; vertical-align:middle;}
+  #panel-desp1-rel table.na-tabela td.classe{font-weight:700; color:var(--azul-esc); background:#f0f5fb;}
+  #panel-desp1-rel table.na-tabela tr.total td{background:#e3f0fc; font-weight:800; color:var(--azul-esc);}
+  #panel-desp1-rel table.na-tabela td.na-area-preenchida{background:#fff9e8;}
+  #panel-desp1-rel table.na-tabela .sit-cell{cursor:pointer; transition:background .12s;}
+  #panel-desp1-rel table.na-tabela .sit-cell:hover{background:#eaf7ee;}
+  #panel-desp1-rel table.na-tabela .sit-cell.sel{background:#159a3c; color:#fff; font-weight:700;}
+  #panel-desp1-rel table.na-tabela .sit-na{font-weight:700; color:#159a3c;}
+  #panel-desp1-rel .hint-auto{font-size:10.5px; font-weight:600; color:#159a3c; text-transform:none; letter-spacing:0;}
+  #panel-desp1-rel table.na-tabela td.area-edit{padding:2px;}
+  #panel-desp1-rel table.na-tabela td.area-edit input.na-area{
+    width:100%; border:1px solid var(--borda-forte); border-radius:5px;
+    padding:4px 6px; font-size:12px; text-align:center; color:var(--texto); background:#fff;
+  }
+  #panel-desp1-rel table.na-tabela td.area-edit input.na-area:focus{border-color:var(--azul); outline:none; box-shadow:0 0 0 2px rgba(31,111,192,.15);}
+  #panel-desp1-rel table.na-tabela td.area-edit.na-area-preenchida input.na-area{background:#fff9e8; font-weight:600;}
+  #panel-desp1-rel .gleba-linha .g-classe-disp{text-align:center; font-weight:700;}
+  #panel-desp1-rel .gleba-vazia{padding:14px; text-align:center; color:#8a97a6; font-style:italic; background:var(--suave); border-radius:8px;}
+  #panel-desp1-rel .gleba-bloco{flex-direction:column; align-items:stretch; gap:10px;}
+  #panel-desp1-rel .gleba-topo{display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;}
+  #panel-desp1-rel .gleba-selecoes{display:flex; gap:12px; flex-wrap:wrap;}
+  #panel-desp1-rel .gleba-selecoes .cel{flex:1; min-width:240px;}
+  #panel-desp1-rel .cel.selfator, #panel-avaliacao .cel.selcaract{display:flex; flex-direction:column; gap:4px;}
+  #panel-desp1-rel .cel.selfator span, #panel-avaliacao .cel.selcaract span,
+  #panel-avaliacao .cel.fator.full span{font-size:10px; font-weight:700; color:var(--label); text-transform:uppercase; letter-spacing:.3px;}
+  #panel-desp1-rel .cel.fator.full{display:flex; flex-direction:column; gap:4px;}
+  #panel-desp1-rel .g-fatorlim, #panel-avaliacao .g-caract{
+    width:100%; border:1px solid var(--borda-forte); border-radius:7px; padding:7px 9px; font-size:12.5px; background:#fff; color:var(--texto);
+  }
+  #panel-desp1-rel .g-fatorlim:focus, #panel-avaliacao .g-caract:focus{border-color:var(--azul); outline:none; box-shadow:0 0 0 2px rgba(31,111,192,.15);}
+  #panel-desp1-rel .import-amostra{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:14px 0;
+    background:#f0f5fb; border:1px solid #cfe0f0; border-radius:9px; padding:12px 16px;
+  }
+  #panel-desp1-rel .import-hint{font-size:12px; color:var(--label);}
+  #panel-desp1-rel .imovel-avaliando{margin:12px 0;}
+  #panel-desp1-rel .ia-grid{display:flex; gap:14px; flex-wrap:wrap;}
+  #panel-desp1-rel .ia-tabela{flex:2; min-width:420px;}
+  #panel-desp1-rel .ia-mapa{flex:1; min-width:240px; display:flex; flex-direction:column;}
+  #panel-desp1-rel .ia-titulo{
+    background:#1F6FC0; color:#fff; font-weight:800; text-align:center;
+    padding:7px; font-size:13px; letter-spacing:.4px; border-radius:6px 6px 0 0;
+  }
+  #panel-desp1-rel table.ia-tab{width:100%; border-collapse:collapse; font-size:12.5px;}
+  #panel-desp1-rel table.ia-tab td{border:1px solid #c3d3e2; padding:6px 9px; text-align:center; vertical-align:middle;}
+  #panel-desp1-rel table.ia-tab tr.ia-sub td{background:#175a9f; color:#fff; font-weight:700; text-align:center;}
+  #panel-desp1-rel table.ia-tab tr.ia-cols td{background:#eef4fa; font-weight:700; color:var(--azul-esc);}
+  #panel-desp1-rel table.ia-tab td.ia-lbl{background:#f7f9fc; font-weight:700; color:var(--texto); text-align:center;}
+  #panel-desp1-rel table.ia-tab td.ia-eq{font-size:10.5px; text-align:center; line-height:1.5; color:#243447;}
+  #panel-desp1-rel table.ia-tab td.ia-destaque{font-weight:800; color:var(--azul-esc); background:#eaf3fc;}
+  #panel-desp1-rel table.ia-tab td.ia-centro{text-align:center;}
+  #panel-desp1-rel .ia-mapa .img-drop{flex:1; border-radius:0 0 6px 6px; margin:0;}
+  #panel-desp1-rel .bnf-sub{font-weight:800; color:var(--azul-esc); margin:14px 0 6px; font-size:13px; border-left:4px solid var(--azul); padding-left:8px;}
+  #panel-desp1-rel .bnf-tab-wrap{overflow-x:auto; margin-bottom:8px;}
+  #panel-desp1-rel table.bnf-tab{width:100%; border-collapse:collapse; font-size:11.5px; min-width:760px;}
+  #panel-desp1-rel table.bnf-tab th{background:var(--azul); color:#fff; padding:6px 7px; text-align:center; font-weight:700; border:1px solid #fff; line-height:1.2;}
+  #panel-desp1-rel table.bnf-tab td{border:1px solid var(--borda); padding:3px 5px; vertical-align:middle;}
+  #panel-desp1-rel table.bnf-tab textarea.bnf-disc{width:100%; min-width:200px; min-height:38px; border:1px solid var(--borda-forte); border-radius:5px; padding:5px; font-size:11px; resize:vertical; font-family:inherit;}
+  #panel-desp1-rel table.bnf-tab input{width:100%; border:1px solid var(--borda-forte); border-radius:5px; padding:5px 6px; font-size:11.5px; text-align:center;}
+  #panel-desp1-rel table.bnf-tab input:focus, #panel-avaliacao table.bnf-tab textarea:focus{border-color:var(--azul); outline:none; box-shadow:0 0 0 2px rgba(31,111,192,.12);}
+  #panel-desp1-rel table.bnf-tab .bnf-vtotal{font-weight:700; color:var(--azul-esc); text-align:right; white-space:nowrap;}
+  #panel-desp1-rel table.bnf-tab tfoot .bnf-tot-lbl{text-align:right; font-weight:800; background:#eef4fa; color:var(--azul-esc);}
+  #panel-desp1-rel table.bnf-tab tfoot .bnf-tot{font-weight:800; background:#e3f0fc; color:var(--azul-esc); text-align:right; white-space:nowrap;}
+  #panel-desp1-rel .bnf-rm{border:none; background:#fbe9e9; color:#c0392b; border-radius:5px; width:26px; height:26px; cursor:pointer; font-weight:700;}
+  #panel-desp1-rel .bnf-rm:hover{background:#f5d5d5;}
+  #panel-desp1-rel .bnf-add{background:#eef4fa; border:1px dashed var(--azul); color:var(--azul-esc); border-radius:7px; padding:7px 14px; font-size:12px; font-weight:600; cursor:pointer; margin-top:4px;}
+  #panel-desp1-rel .bnf-add:hover{background:#e3f0fc;}
+  #panel-desp1-rel .bnf-total-geral{margin-top:16px; padding:12px 16px; background:#e3f0fc; border:2px solid var(--azul); border-radius:9px; font-size:14px; font-weight:700; color:var(--azul-esc); text-align:right;}
+  #panel-desp1-rel .bnf-nota{font-size:11px; color:var(--label); margin-top:8px; font-style:italic;}
+  #panel-desp1-rel .bnf-col-dep{width:110px;}
+  #panel-desp1-rel .bnf-col-un{width:70px;}
+  #panel-desp1-rel .bnf-col-qtd{width:80px;}
+  #panel-desp1-rel .bnf-col-vu{width:100px;}
+  #panel-desp1-rel input::placeholder, #panel-avaliacao textarea::placeholder{
+    font-style:italic; color:#9aa7b5; opacity:1;
+  }
+  #panel-desp1-rel{ padding-bottom:96px; }
+  #panel-desp1-rel .vlbl{
+    font-size:11px; font-weight:700; color:var(--label); text-transform:uppercase; letter-spacing:.4px;
+  }
+  #panel-desp1-rel select:focus, #panel-avaliacao textarea:focus{
+    border-color:var(--azul); box-shadow:0 0 0 3px rgba(31,111,192,.12);
+  }
+  #panel-desp1-rel .img-drop.over{border-color:var(--azul); background:#eaf3fc;}
+  #panel-desp1-rel .na-calc select{max-width:120px; font-weight:700;}
+  #panel-desp1-rel table.memoria select{max-width:120px; padding:5px 8px;}
+  #panel-desp1-rel select.bloqueado,
+  #panel-vistoria input.bloqueado{
+    background:#eef1f4 !important; color:#5a6b7c !important; cursor:not-allowed;
+    border-color:#d3dbe4 !important;
+  }
+  #panel-desp1-rel .cel.selcaract{display:flex; flex-direction:column; gap:4px;}
+  #panel-desp1-rel .cel.selcaract span,
+  #panel-avaliacao .cel.fator.full span{font-size:10px; font-weight:700; color:var(--label); text-transform:uppercase; letter-spacing:.3px;}
+  #panel-desp1-rel .g-caract{
+    width:100%; border:1px solid var(--borda-forte); border-radius:7px; padding:7px 9px; font-size:12.5px; background:#fff; color:var(--texto);
+  }
+  #panel-desp1-rel .g-caract:focus{border-color:var(--azul); outline:none; box-shadow:0 0 0 2px rgba(31,111,192,.15);}
+  #panel-desp1-rel table.bnf-tab textarea:focus{border-color:var(--azul); outline:none; box-shadow:0 0 0 2px rgba(31,111,192,.12);}
+  #panel-desp1-rel textarea::placeholder{
+    font-style:italic; color:#9aa7b5; opacity:1;
+  }
+  #panel-desp1-rel [data-from]').forEach(el=>{
+      const key = el.getAttribute("data-from");
+      const src = document.querySelector('#panel-vistoria [data-sync="'+key+'"]');
+      if(src){ el.value = src.value; }
+  #panel-desp1-rel [data-from="'+key+'"]').forEach(el=> el.value = src.value);
+        recalc();
+      };
+      src.addEventListener("input", propagar);
+      src.addEventListener("change", propagar);
+    });
+  }
+
+  // ---------------- Estacas (view) sincronizadas ----------------
+  window.AV_syncEstacas = function(){
+    const host = document.getElementById("av_estacas");
+    if(!host) return;
+    const estacas = (typeof window.FV_estacas==="function") ? window.FV_estacas() : [];
+    if(!estacas.length){ host.innerHTML = '<div class="av-estaca-item"><span class="km">Nenhuma área cadastrada na Ficha de Vistoria.</span></div>'; return; }
+  #panel-desp1-rel .vbtn-primary");
+    const orig=btn?btn.innerHTML:""; if(btn){btn.disabled=true; btn.innerHTML="⏳ Gerando documento...";}
+  #panel-desp1-rel .vsec.acc, #panel-desp1-vist .vsec.acc").forEach(h2=>{
+    if(!h2.classList.contains("fechado")){
+      h2.classList.add("fechado");
+      let el=h2.nextElementSibling;
+      while(el && !el.classList.contains("vcard")) el=el.nextElementSibling;
+      if(el) el.classList.add("oculto");
+    }
+  #panel-desp1-rel [id], #panel-desp1-vist [id]").forEach(el=>{
+      const tag = el.tagName;
+      if(tag!=="INPUT" && tag!=="TEXTAREA" && tag!=="SELECT") return;
+      if(el.type==="file") return;
+      if(el.type==="checkbox" || el.type==="radio"){ dados[el.id] = {__chk:el.checked}
+
+  #panel-desp1-rel select{ appearance:auto; cursor:pointer; width:100%; border:1px solid var(--borda-forte); border-radius:7px; padding:8px 11px; font-size:13.5px; }
+  #panel-desp1-rel .rel-tabela{ display:flex; flex-direction:column; gap:6px; margin-top:6px; }
+  #panel-desp1-rel .rel-lin{ display:flex; gap:8px; align-items:flex-start; }
+  #panel-desp1-rel .rel-lin .crit{ flex:1; }
+  #panel-desp1-rel .rel-lin .resp{ flex:0 0 90px; }
+  #panel-desp1-rel .rel-lin .obs{ flex:1.2; }
+  #panel-desp1-rel .rel-lin textarea{ width:100%; border:1px solid var(--borda-forte); border-radius:7px; padding:7px 9px; font-size:13px; font-family:inherit; resize:vertical; }
+  #panel-desp1-rel .rel-lin select{ width:100%; }
+  #panel-desp1-rel .rel-lin .rm{ flex:0 0 auto; border:none; background:#f3d6d6; color:#a33; border-radius:6px; width:28px; height:28px; cursor:pointer; }
+  #panel-desp1-rel .fb-fotos-prev{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+  #panel-desp1-rel .fb-fotos-prev img{ width:130px; height:100px; object-fit:cover; border-radius:8px; border:1px solid #d6dee7; }
+  #panel-desp1-rel .fb-fotos-prev .foto{ position:relative; }
+  #panel-desp1-rel .fb-fotos-prev .rm{ position:absolute; top:4px; right:4px; background:rgba(160,40,40,.9); color:#fff; border:none; border-radius:50%; width:22px; height:22px; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -3038,30 +3391,8 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
 
 
 
-<section class="tab-panel" id="panel-desp1-rel">
-<div class="wrap">
-  <h1>1.10 · Relatório Técnico de Caracterização Socioeconômica</h1>
-  <p class="sub">Carregue o PDF do Relatório Técnico de Caracterização Socioeconômica.</p>
-  <div class="grid">
-    <div class="card">
-      <h2>1.10 Relatório Técnico de Caracterização Socioeconômica</h2>
-      <p class="desc">Carregue o(s) PDF(s) na ordem desejada.</p>
-      <label class="drop" id="drop-110">
-        <span class="ic">📊</span>
-        <span class="t">Clique ou arraste os PDFs</span>
-        <span class="h">Vários arquivos • apenas .pdf</span>
-        <input type="file" accept="application/pdf" multiple id="file-110">
-      </label>
-      <ul class="lista" id="lista-110"></ul>
-      <div class="acoes">
-        <button class="btn btn-primary" id="ger-110" disabled onclick="DESP1_gerar('110')">📎 Unir e baixar</button>
-        <button class="btn btn-ghost" onclick="DESP1_limpar('110')">Limpar</button>
-      </div>
-      <div class="status" id="st-110"></div>
-    </div>
-  </div>
-</div>
-  </section>
+<section class="tab-panel" id="panel-desp1-rel"><div class="wrap"><h1>1.10 · Relatório Técnico de Caracterização Socioeconômica</h1><p class="sub">Preencha os campos. Os dados marcados são puxados da DESP 3 / DESP 1. Ao final, gere o PDF completo com capa.</p><div class="vcard"><div class="vrow"><div class="vfield grow"><label>Processo administrativo</label><input type="text" id="rel_processo" placeholder="Ex.: INFRA S.A. CTD 001 - SPS-04 – FTN"></div><div class="vfield grow"><label>SEI nº</label><input type="text" id="rel_sei" placeholder="Ex.: 50050.003131/2026-79"></div></div><div class="vrow"><div class="vfield grow"><label>Empreendimento / Ferrovia</label><input type="text" id="rel_ferrovia" placeholder="Ex.: Ferrovia Transnordestina – FTN (EF-232)"></div><div class="vfield grow"><label>Lote</label><input type="text" id="rel_lote" placeholder="Ex.: SPS-04"></div></div><div class="vrow"><div class="vfield grow"><label>Contrato nº</label><input type="text" id="rel_contrato" placeholder="Ex.: 037/2024"></div><div class="vfield grow"><label>Ordem de Serviço</label><input type="text" id="rel_os" placeholder="Ex.: INFRA 33 (10665856)"></div></div><div class="vrow"><div class="vfield grow"><label>Locação — Área 1</label><input type="text" id="rel_area1" placeholder="Ex.: KM 179+547,34 ao KM 180+307,52"></div><div class="vfield grow"><label>Locação — Área 2</label><input type="text" id="rel_area2" placeholder="Ex.: KM 180+322,35 ao KM 180+632,98"></div></div><div class="vfield grow"><label>Expropriado</label><input type="text" id="rel_expropriado" placeholder="Ex.: Espólio de Luiz Gonzaga de Morais"></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>1 — APRESENTAÇÃO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vfield grow"><label>Texto de apresentação</label><textarea id="rel_apresentacao" rows="8" placeholder="Descrição do contrato, objeto e finalidade do relatório..."></textarea></div><div class="vsub">1.1 Referencial Normativo e Premissas Gerais</div><div class="vfield grow"><label>Premissas / medidas compensatórias</label><textarea id="rel_premissas" rows="8" placeholder="Garantia de conhecimento prévio, mediação, compensação justa, suporte socioeconômico..."></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>2 — IDENTIFICAÇÃO E QUALIFICAÇÃO DO PROPRIETÁRIO E DO IMÓVEL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vfield grow"><label>Nome do proprietário / espólio</label><input type="text" id="rel_nome" data-rel-from="nome" class="bloqueado" readonly data-lock="1" placeholder="Nome do proprietário / espólio"></div><div class="vrow"><div class="vfield grow"><label>RG</label><input type="text" id="rel_rg" data-rel-from="rg" class="bloqueado" readonly data-lock="1" placeholder="RG"></div><div class="vfield grow"><label>CPF</label><input type="text" id="rel_cpf" data-rel-from="cpf" inputmode="numeric" maxlength="14" class="bloqueado mask-cpf" readonly data-lock="1" placeholder="CPF"></div></div><div class="vfield grow"><label>Endereço</label><input type="text" id="rel_endereco" data-rel-from="endereco" class="bloqueado" readonly data-lock="1" placeholder="Endereço"></div><div class="vrow"><div class="vfield grow"><label>Município</label><input type="text" id="rel_municipio" data-rel-from="municipio" class="bloqueado" readonly data-lock="1" placeholder="Município"></div><div class="vfield grow"><label>UF</label><input type="text" id="rel_uf" data-rel-from="uf" class="bloqueado" readonly data-lock="1" placeholder="UF"></div></div><div class="vfield grow"><label>Qualificação completa (texto)</label><textarea id="rel_qualificacao" rows="5" placeholder="Ex.: Espólio de Luiz Gonzaga de Morais, representado pela herdeira..."></textarea></div><div class="vsub">Imóvel</div><div class="vfield grow"><label>Denominação do imóvel</label><input type="text" id="rel_prop_id" data-rel-from="prop_id" class="bloqueado" readonly data-lock="1" placeholder="Denominação do imóvel"></div><div class="vrow"><div class="vfield grow"><label>Área total (ha)</label><input type="text" id="rel_area_total" data-rel-from="area_total" class="bloqueado" readonly data-lock="1" placeholder="Área total (ha)"></div><div class="vfield grow"><label>Área de desapropriação (ha)</label><input type="text" id="rel_area_desap" data-rel-from="area_desap" class="bloqueado" readonly data-lock="1" placeholder="Área de desapropriação (ha)"></div></div><div class="vrow"><div class="vfield grow"><label>Matrícula</label><input type="text" id="rel_matricula" data-rel-from="matricula" class="bloqueado" readonly data-lock="1" placeholder="Matrícula"></div><div class="vfield grow"><label>CIB/ITR</label><input type="text" id="rel_cib" placeholder="Ex.: 1.676.312-2"></div></div><div class="vfield grow"><label>Cartório / Registro</label><input type="text" id="rel_cartorio" placeholder="Ex.: 1º Ofício de Custódia-PE, Matrícula 1113, livro 2-F, fls. 87"></div><div class="vfield grow"><label>Segmento do traçado</label><textarea id="rel_segmento" rows="3" placeholder="Ex.: ÁREA 1: KM 179+547,34 ..."></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>3 — CADASTRO SOCIOECONÔMICO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vsub">3.1 Atividade Realizada</div><div class="vfield grow"><label>Atividade</label><input type="text" id="rel_31_atividade" placeholder="Ex.: Pesquisa socioeconômica."></div><div class="vsub">3.2 Objetivo</div><div class="vfield grow"><label>Objetivo</label><textarea id="rel_32_objetivo" rows="5" placeholder="Finalidade da pesquisa..."></textarea></div><div class="vsub">3.3 Metodologia</div><div class="vfield grow"><label>Metodologia</label><textarea id="rel_33_metodologia" rows="5" placeholder="Aplicação do questionário socioeconômico..."></textarea></div><div class="vsub">3.4 Síntese da Caracterização Socioeconômica</div><div class="vfield grow"><label>Síntese</label><textarea id="rel_34_sintese" rows="8" placeholder="Resultado do trabalho de campo..."></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>4 — PARECER SOCIAL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vfield grow"><label>Introdução do parecer</label><textarea id="rel_parecer_intro" rows="4" placeholder="Metodologias empregadas (PNAS/LOAS e Resolução nº 07)..."></textarea></div><div class="vsub">Tabela 1 — Critérios de Avaliação de Vulnerabilidade Socioeconômica (IVS/IPEA)</div><div class="rel-tabela" id="rel_tabela1"></div><div class="vactions" style="margin-top:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_addLinha(1)">+ Adicionar critério (Tabela 1)</button></div><div class="vfield grow"><label>Comentário após Tabela 1</label><textarea id="rel_tab1_coment" rows="4" placeholder="Conforme metodologia PNAS..."></textarea></div><div class="vsub">Tabela 2 — Critérios conforme Art. 3º da Resolução Normativa INFRASA nº 7/2023</div><div class="rel-tabela" id="rel_tabela2"></div><div class="vactions" style="margin-top:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_addLinha(2)">+ Adicionar critério (Tabela 2)</button></div><div class="vfield grow"><label>Comentário após Tabela 2</label><textarea id="rel_tab2_coment" rows="4" placeholder="Considerações finais do parecer..."></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>5 — CONCLUSÃO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vfield grow"><label>Conclusão</label><textarea id="rel_conclusao" rows="6" placeholder="Conclusão sobre a situação de vulnerabilidade..."></textarea></div><div class="vrow"><div class="vfield grow"><label>Local e data</label><input type="text" id="rel_local_data" placeholder="Ex.: Custódia - PE, 19 de junho de 2026"></div><div class="vfield grow"><label></label><input type="text" id="rel_vazio1" placeholder=" "></div></div><div class="vsub">Responsável técnico</div><div class="vfield grow"><label>Nome</label><input type="text" id="rel_resp_nome" placeholder="Ex.: Jaylla S. P. dos S. Monteiro"></div><div class="vrow"><div class="vfield grow"><label>Cargo/Função</label><input type="text" id="rel_resp_cargo" placeholder="Ex.: Assistente Social"></div><div class="vfield grow"><label>Registro</label><input type="text" id="rel_resp_reg" placeholder="Ex.: CRESS-PE 14780"></div></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>6 — RELATÓRIO FOTOGRÁFICO DO IMÓVEL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><label class="img-drop" id="rel_fotos_drop"><span class="ic">📷</span><span class="t">Clique ou arraste as fotografias / ortofoto</span><span class="h">Imagens • JPG ou PNG</span><input type="file" accept="image/*" multiple id="rel_fotos_file"></label><div class="fb-fotos-prev" id="rel_fotos_prev"></div></div><div class="vactions"><button class="vbtn vbtn-primary" onclick="REL_gerarPDF()">📄 Baixar PDF — Relatório (1.10) com capa</button><button class="vbtn vbtn-ghost" onclick="REL_puxarDados()">↧ Puxar dados da DESP 3 / DESP 1</button></div></div></section>
+
 <section class="tab-panel" id="panel-util-foto">
 
 
@@ -7187,7 +7518,7 @@ function AV_gerarDescSituacao(){
   function coletarCampos(){
     const dados = {};
     // todos os campos com id nas abas Ficha e Avaliação (e afins)
-    document.querySelectorAll("#panel-vistoria [id], #panel-avaliacao [id], #panel-desp1-vist [id]").forEach(el=>{
+    document.querySelectorAll("#panel-vistoria [id], #panel-avaliacao [id], #panel-desp1-vist [id], #panel-desp1-rel [id]").forEach(el=>{
       const tag = el.tagName;
       if(tag!=="INPUT" && tag!=="TEXTAREA" && tag!=="SELECT") return;
       if(el.type==="file") return;
@@ -8158,6 +8489,215 @@ window.UFOTO_limparTudo=limparTudo;
 window.UFOTO_removerFoto=removerFoto; window.UFOTO_setLeg=setLeg;
 window.UFOTO_render=render;
 window.UFOTO_rodapeHTML=rodapeHTML;
+})();
+</script>
+<script>
+/* ===== 1.10 Relatório Técnico Socioeconômico — auto-fill, tabelas, fotos, PDF com capa ===== */
+(function(){
+  // ---- Auto-fill a partir da Ficha (DESP 3) ----
+  function valorFonte(key){
+    const src=document.querySelector('#panel-vistoria [data-sync="'+key+'"]');
+    return src? src.value : "";
+  }
+  function aplicarAutoFill(){
+    document.querySelectorAll('#panel-desp1-rel [data-rel-from]').forEach(dest=>{
+      const k=dest.getAttribute("data-rel-from");
+      if(dest.classList.contains("bloqueado") || !dest.value) dest.value=valorFonte(k);
+    });
+  }
+  window.REL_puxarDados=function(){
+    document.querySelectorAll('#panel-desp1-rel [data-rel-from]').forEach(dest=>{
+      dest.value=valorFonte(dest.getAttribute("data-rel-from"));
+    });
+    alert("Dados aplicados ao Relatório 1.10.");
+  };
+  function ligarSync(){
+    document.querySelectorAll('#panel-vistoria [data-sync]').forEach(src=>{
+      const prop=()=>{ const k=src.getAttribute("data-sync");
+        document.querySelectorAll('#panel-desp1-rel [data-rel-from="'+k+'"]').forEach(d=>{ if(d.classList.contains("bloqueado")) d.value=src.value; });
+      };
+      src.addEventListener("input",prop); src.addEventListener("change",prop);
+    });
+  }
+
+  // ---- Tabelas de critérios (dinâmicas) ----
+  const tabelas={1:[],2:[]};
+  function renderTab(n){
+    const host=document.getElementById("rel_tabela"+n);
+    if(!host) return;
+    host.innerHTML="";
+    tabelas[n].forEach((lin,i)=>{
+      const div=document.createElement("div"); div.className="rel-lin";
+      div.innerHTML=
+        '<textarea class="crit" rows="2" placeholder="Critério de análise" oninput="REL_setCel('+n+','+i+',\'crit\',this.value)">'+(lin.crit||"")+'</textarea>'+
+        '<select class="resp" onchange="REL_setCel('+n+','+i+',\'resp\',this.value)">'+
+          ['','Sim','Não','N/A'].map(o=>'<option'+(lin.resp===o?' selected':'')+'>'+o+'</option>').join('')+
+        '</select>'+
+        '<textarea class="obs" rows="2" placeholder="Observações" oninput="REL_setCel('+n+','+i+',\'obs\',this.value)">'+(lin.obs||"")+'</textarea>'+
+        '<button class="rm" type="button" onclick="REL_remLinha('+n+','+i+')">✕</button>';
+      host.appendChild(div);
+    });
+  }
+  window.REL_addLinha=function(n){ tabelas[n].push({crit:"",resp:"",obs:""}); renderTab(n); };
+  window.REL_remLinha=function(n,i){ tabelas[n].splice(i,1); renderTab(n); };
+  window.REL_setCel=function(n,i,c,v){ if(tabelas[n][i]) tabelas[n][i][c]=v; };
+  window.REL_getTabela=function(n){ return tabelas[n]; };
+
+  // ---- Fotos ----
+  const fotos=[];
+  function renderFotos(){
+    const host=document.getElementById("rel_fotos_prev"); if(!host) return;
+    host.innerHTML="";
+    fotos.forEach((src,i)=>{ const d=document.createElement("div"); d.className="foto";
+      d.innerHTML='<img src="'+src+'"><button class="rm" type="button" onclick="REL_remFoto('+i+')">✕</button>'; host.appendChild(d); });
+  }
+  function bindFotos(){
+    const input=document.getElementById("rel_fotos_file"), drop=document.getElementById("rel_fotos_drop");
+    if(!input) return;
+    function add(files){ [...files].forEach(f=>{ if(!f.type.startsWith("image/"))return;
+      const rd=new FileReader(); rd.onload=e=>{ const o=e.target.result;
+        (window.AV_normalizarImagem?window.AV_normalizarImagem(o):Promise.resolve(o)).then(n=>{fotos.push(n);renderFotos();}); };
+      rd.readAsDataURL(f); }); }
+    input.addEventListener("change",e=>{add(e.target.files);e.target.value="";});
+    if(drop){ ["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("over");}));
+      ["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("over");}));
+      drop.addEventListener("drop",e=>add(e.dataTransfer.files)); }
+  }
+  window.REL_remFoto=function(i){ fotos.splice(i,1); renderFotos(); };
+
+  // ---- PDF com capa (padrão DESP-1) ----
+  function v(id){ const e=document.getElementById(id); return e?(e.value||"").trim():""; }
+  window.REL_gerarPDF=async function(){
+    if(!(window.jspdf||window.jsPDF)){ alert("Biblioteca de PDF ainda carregando. Tente novamente."); return; }
+    const J=(window.jspdf&&window.jspdf.jsPDF)?window.jspdf.jsPDF:window.jsPDF;
+    const pdf=new J({orientation:"portrait",unit:"mm",format:"a4"});
+    const W=210,H=297,mL=18,mR=18,mT=14,mB=14,cw=W-mL-mR;
+    const LI=window.__LOGO_INFRA__, LE=window.__LOGO_ENPROL__;
+    function carregar(s){ return new Promise(r=>{ if(!s){r(null);return;} const im=new Image(); im.onload=()=>r(im); im.onerror=()=>r(null); im.src=s; }); }
+    const imgI=await carregar(LI), imgE=await carregar(LE);
+    const END=[
+      "Av. Des. Moreira, n° 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE",
+      "Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE",
+      "Rua Araguari, nº 358, Conj.1903/1904, Barro Preto, 30.190-110, Belo Horizonte-MG",
+      "Rua Des. Mário da Silva Nunes, nº 120, Sala 201, Enseada do Suá, 29.050-240, Vitória-ES",
+      "Rua Avertano Rocha, n°192, Campina, 66.023-120, Belém-PA"];
+    const TEL=["(+55 85) 3289-6363","(+55 85) 3289-6363","(+55 31) 3253-5500","(+55 27) 3029-5540","(+55 94) 3346-8994"];
+
+    // ---------- CAPA ----------
+    if(imgE){ let w=16*(imgE.width/imgE.height); pdf.addImage(imgE,"JPEG",mL,mT,w,16); }
+    if(imgI){ let w=16*(imgI.width/imgI.height); pdf.addImage(imgI,"JPEG",W-mR-w,mT,w,16); }
+    let y=64;
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(15); pdf.setTextColor(20,40,70);
+    pdf.text("INFRA S.A.", W/2, y, {align:"center"}); y+=7;
+    pdf.setFontSize(9);
+    pdf.text("DIREM - DIRETORIA DE EMPREENDIMENTOS", W/2, y, {align:"center"}); y+=4.5;
+    pdf.text("SUGAT – SUPERINTENDÊNCIA DE GESTÃO AMBIENTAL E TERRITORIAL", W/2, y, {align:"center"}); y+=4.5;
+    pdf.text("GEDAF – GERÊNCIA DE DESAPROPRIAÇÃO E ASSUNTOS FUNDIÁRIOS", W/2, y, {align:"center"});
+    pdf.setDrawColor(20,40,70); pdf.setLineWidth(0.4); pdf.line(mL,y+3,W-mR,y+3);
+    y+=28;
+    pdf.setFontSize(19); pdf.setTextColor(20,40,70);
+    pdf.text("RELATÓRIO DE CARACTERIZAÇÃO", W/2, y, {align:"center"}); y+=8;
+    pdf.text("SOCIOECONÔMICA", W/2, y, {align:"center"}); y+=14;
+    pdf.setFontSize(13); pdf.setTextColor(40,40,40);
+    pdf.text("DESP-1", W/2, y, {align:"center"}); y+=16;
+    pdf.setFontSize(12);
+    pdf.text((v("rel_ferrovia")||"FERROVIA TRANSNORDESTINA").toUpperCase(), W/2, y, {align:"center"}); y+=13;
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(12);
+    if(v("rel_lote")) { pdf.text("FTN (Lote: "+v("rel_lote")+")", W/2, y, {align:"center"}); y+=16; }
+    pdf.setFont("helvetica","normal"); pdf.setFontSize(11);
+    if(v("rel_processo")){ pdf.text("Processo administrativo:  "+v("rel_processo"), W/2, y, {align:"center"}); y+=12; }
+    pdf.setFontSize(10);
+    if(v("rel_expropriado")){ pdf.text("EXPROPRIADO: "+v("rel_expropriado"), W/2, y, {align:"center"}); y+=10; }
+    pdf.setFont("helvetica","bold");
+    if(v("rel_area1")){ pdf.text("LOCAÇÃO: "+v("rel_area1"), W/2, y, {align:"center"}); y+=5; }
+    if(v("rel_area2")){ pdf.text(v("rel_area2"), W/2, y, {align:"center"}); y+=5; }
+    // rodapé da capa (contrato)
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(9); pdf.setTextColor(30,30,30);
+    let cy=250;
+    if(v("rel_contrato")){
+      const t="Contrato nº "+v("rel_contrato")+" – Cujo objeto é a prestação de serviços especializados de engenharia consultiva para a execução das atividades de desapropriação, ocupação temporária ou constituição de servidão administrativa de imóveis, gestão fundiária e regularização de passivos de desapropriação.";
+      pdf.setFont("helvetica","normal");
+      const ls=pdf.splitTextToSize(t, 80);
+      pdf.text(ls, W-mR-80, cy);
+    }
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(12); pdf.setTextColor(31,111,192);
+    pdf.text("DESP-1", mL, 268);
+    pdf.text((new Date()).toLocaleDateString("pt-BR",{month:"long",year:"numeric"}).toUpperCase(), mL, 274);
+
+    // ---------- CORPO ----------
+    function cab(){ if(imgE){let w=9*(imgE.width/imgE.height); pdf.addImage(imgE,"JPEG",mL,mT,w,9);} if(imgI){let w=9*(imgI.width/imgI.height); pdf.addImage(imgI,"JPEG",W-mR-w,mT,w,9);} pdf.setDrawColor(31,111,192); pdf.setLineWidth(0.5); pdf.line(mL,mT+11,W-mR,mT+11); }
+    function rod(){ const yl=H-mB-16; pdf.setDrawColor(31,111,192); pdf.setLineWidth(0.4); pdf.line(mL,yl,W-mR,yl); pdf.setFont("helvetica","normal"); pdf.setFontSize(5.5); pdf.setTextColor(90,107,124); let yy=yl+3; for(let i=0;i<END.length;i++){ pdf.text(END[i],mL,yy); pdf.text(TEL[i]+"   comercial@enprol.com.br",W-mR,yy,{align:"right"}); yy+=2.7; } }
+    const topY=mT+16, botY=H-mB-16-3;
+    function nova(){ pdf.addPage(); cab(); yc=topY; }
+    let yc=0;
+    function ensure(h){ if(yc+h>botY){ rod(); nova(); } }
+    function titulo(t){ ensure(12); pdf.setFillColor(31,111,192); pdf.rect(mL,yc-4,cw,7,"F"); pdf.setFont("helvetica","bold"); pdf.setFontSize(11); pdf.setTextColor(255,255,255); pdf.text(t,mL+3,yc+1); yc+=9; }
+    function subt(t){ ensure(7); pdf.setFont("helvetica","bold"); pdf.setFontSize(10); pdf.setTextColor(23,90,159); pdf.text(t,mL,yc); yc+=5.5; }
+    function paragrafo(t){ if(!t) return; pdf.setFont("helvetica","normal"); pdf.setFontSize(9.5); pdf.setTextColor(30,43,58); const ls=pdf.splitTextToSize(t,cw); ls.forEach(l=>{ ensure(5); pdf.text(l,mL,yc); yc+=4.8; }); yc+=2; }
+    function campo(rot,val){ if(!val) return; pdf.setFont("helvetica","bold"); pdf.setFontSize(9.5); pdf.setTextColor(70,88,108); const rw=pdf.getTextWidth(rot+": "); ensure(5); pdf.text(rot+": ",mL,yc); pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58); const ls=pdf.splitTextToSize(val,cw-rw); pdf.text(ls,mL+rw,yc); yc+=ls.length*4.8+1; }
+
+    nova();
+    titulo("1. APRESENTAÇÃO"); paragrafo(v("rel_apresentacao"));
+    subt("1.1 Referencial Normativo e Premissas Gerais"); paragrafo(v("rel_premissas"));
+    titulo("2. IDENTIFICAÇÃO E QUALIFICAÇÃO DO PROPRIETÁRIO E DO IMÓVEL");
+    paragrafo(v("rel_qualificacao"));
+    campo("Denominação do imóvel", v("rel_prop_id"));
+    campo("Área total (ha)", v("rel_area_total")); campo("Área de desapropriação (ha)", v("rel_area_desap"));
+    campo("Matrícula", v("rel_matricula")); campo("CIB/ITR", v("rel_cib"));
+    campo("Cartório / Registro", v("rel_cartorio")); paragrafo(v("rel_segmento"));
+    titulo("3. CADASTRO SOCIOECONÔMICO");
+    subt("3.1 Atividade Realizada"); paragrafo(v("rel_31_atividade"));
+    subt("3.2 Objetivo"); paragrafo(v("rel_32_objetivo"));
+    subt("3.3 Metodologia"); paragrafo(v("rel_33_metodologia"));
+    subt("3.4 Síntese da Caracterização Socioeconômica"); paragrafo(v("rel_34_sintese"));
+    titulo("4. PARECER SOCIAL"); paragrafo(v("rel_parecer_intro"));
+    // tabela 1 e 2
+    function desenharTabela(rotulo, arr){
+      if(!arr || !arr.length) return;
+      subt(rotulo);
+      arr.forEach((lin,idx)=>{
+        pdf.setFont("helvetica","normal"); pdf.setFontSize(9); pdf.setTextColor(30,43,58);
+        const critLs=pdf.splitTextToSize((idx+1)+". "+(lin.crit||""), cw-40);
+        const obsLs=lin.obs? pdf.splitTextToSize("Obs.: "+lin.obs, cw-6):[];
+        ensure(critLs.length*4.4 + obsLs.length*4.2 + 3);
+        pdf.text(critLs, mL, yc);
+        pdf.setFont("helvetica","bold"); pdf.text("["+(lin.resp||"—")+"]", W-mR-30, yc);
+        yc+=critLs.length*4.4;
+        if(obsLs.length){ pdf.setFont("helvetica","italic"); pdf.setFontSize(8.5); pdf.setTextColor(90,100,115); pdf.text(obsLs, mL+3, yc); yc+=obsLs.length*4.2; }
+        yc+=1.5;
+      });
+      yc+=2;
+    }
+    desenharTabela("Tabela 1 — Critérios de Vulnerabilidade Socioeconômica (IVS/IPEA)", tabelas[1]);
+    paragrafo(v("rel_tab1_coment"));
+    desenharTabela("Tabela 2 — Critérios conforme Art. 3º da Resolução Normativa INFRASA nº 7/2023", tabelas[2]);
+    paragrafo(v("rel_tab2_coment"));
+    titulo("5. CONCLUSÃO"); paragrafo(v("rel_conclusao"));
+    yc+=6; ensure(30);
+    if(v("rel_local_data")){ pdf.setFont("helvetica","normal"); pdf.setFontSize(9.5); pdf.setTextColor(30,43,58); pdf.text(v("rel_local_data"), W/2, yc, {align:"center"}); yc+=16; }
+    pdf.setDrawColor(60,60,60); pdf.line(W/2-40, yc, W/2+40, yc); yc+=4;
+    pdf.setFont("helvetica","bold"); if(v("rel_resp_nome")){ pdf.text(v("rel_resp_nome"), W/2, yc, {align:"center"}); yc+=4.5; }
+    pdf.setFont("helvetica","normal");
+    if(v("rel_resp_cargo")){ pdf.text(v("rel_resp_cargo"), W/2, yc, {align:"center"}); yc+=4.5; }
+    if(v("rel_resp_reg")){ pdf.text(v("rel_resp_reg"), W/2, yc, {align:"center"}); yc+=4.5; }
+    // fotos
+    if(fotos.length){
+      rod(); nova(); titulo("6. RELATÓRIO FOTOGRÁFICO DO IMÓVEL");
+      campo("Nº do Processo / Lote", v("rel_processo")); campo("Nome do Expropriado", v("rel_expropriado"));
+      yc+=2; const fw=cw, fh=fw*0.62;
+      for(let i=0;i<fotos.length;i++){ if(yc+fh>botY){ rod(); nova(); } try{ pdf.addImage(fotos[i],"JPEG",mL,yc,fw,fh); }catch(e){} yc+=fh+4;
+        pdf.setFont("helvetica","italic"); pdf.setFontSize(8); pdf.setTextColor(90,100,115); pdf.text("Fonte: Enprol Engenharia", mL, yc); yc+=6; }
+    }
+    rod();
+    pdf.save("Relatorio_Socioeconomico_DESP-1_1.10.pdf");
+  };
+
+  function init(){
+    ligarSync(); aplicarAutoFill(); bindFotos();
+    if(!tabelas[1].length){ REL_addLinha(1); REL_addLinha(1); }
+    if(!tabelas[2].length){ REL_addLinha(2); REL_addLinha(2); }
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
 </script>
 </body>
