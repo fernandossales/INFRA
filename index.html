@@ -8737,7 +8737,28 @@ window.UFOTO_rodapeHTML=rodapeHTML;
     function ensure(h){ if(yc+h>botY){ rod(); nova(); } }
     function titulo(t){ ensure(12); pdf.setFillColor(31,111,192); pdf.rect(mL,yc-4,cw,7,"F"); pdf.setFont("helvetica","bold"); pdf.setFontSize(11); pdf.setTextColor(255,255,255); pdf.text(t,mL+3,yc+1); yc+=9; }
     function subt(t){ ensure(7); pdf.setFont("helvetica","bold"); pdf.setFontSize(10); pdf.setTextColor(23,90,159); pdf.text(t,mL,yc); yc+=5.5; }
-    function paragrafo(t){ if(!t) return; pdf.setFont("helvetica","normal"); pdf.setFontSize(9.5); pdf.setTextColor(30,43,58); String(t).split("\n").forEach(par=>{ if(!par.trim()){ yc+=2.5; return; } const ls=pdf.splitTextToSize(par,cw); ls.forEach((l,idx)=>{ ensure(5); const ultima=(idx===ls.length-1); if(ultima){ pdf.text(l,mL,yc); } else { pdf.text(l,mL,yc,{maxWidth:cw, align:"justify"}); } yc+=4.8; }); }); yc+=2; }
+    function paragrafo(t){
+      if(!t) return;
+      pdf.setFont("helvetica","normal"); pdf.setFontSize(9.5); pdf.setTextColor(30,43,58);
+      String(t).split("\n").forEach(par=>{
+        if(!par.trim()){ yc+=2.5; return; }
+        const ls=pdf.splitTextToSize(par, cw);
+        // desenha bloco justificado deixando a última linha alinhada à esquerda
+        ls.forEach((l,idx)=>{
+          ensure(5);
+          const ehUltima=(idx===ls.length-1);
+          // não justifica linhas muito curtas nem a última (evita espaçamento esticado)
+          const larg=pdf.getTextWidth(l);
+          if(ehUltima || larg < cw*0.55){
+            pdf.text(l, mL, yc);
+          } else {
+            pdf.text(l, mL, yc, {maxWidth:cw, align:"justify"});
+          }
+          yc+=4.8;
+        });
+      });
+      yc+=2;
+    }
     function campo(rot,val){ if(!val) return; pdf.setFont("helvetica","bold"); pdf.setFontSize(9.5); pdf.setTextColor(70,88,108); const rw=pdf.getTextWidth(rot+": "); ensure(5); pdf.text(rot+": ",mL,yc); pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58); const ls=pdf.splitTextToSize(val,cw-rw); pdf.text(ls,mL+rw,yc); yc+=ls.length*4.8+1; }
     function desenharTabela(rotulo, arr, comNA){
       if(!arr||!arr.length) return; subt(rotulo);
