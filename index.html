@@ -1969,40 +1969,6 @@
   #panel-desp1-rel textarea::placeholder{
     font-style:italic; color:#9aa7b5; opacity:1;
   }
-  #panel-desp1-rel [data-from]').forEach(el=>{
-      const key = el.getAttribute("data-from");
-      const src = document.querySelector('#panel-vistoria [data-sync="'+key+'"]');
-      if(src){ el.value = src.value; }
-  #panel-desp1-rel [data-from="'+key+'"]').forEach(el=> el.value = src.value);
-        recalc();
-      };
-      src.addEventListener("input", propagar);
-      src.addEventListener("change", propagar);
-    });
-  }
-
-  // ---------------- Estacas (view) sincronizadas ----------------
-  window.AV_syncEstacas = function(){
-    const host = document.getElementById("av_estacas");
-    if(!host) return;
-    const estacas = (typeof window.FV_estacas==="function") ? window.FV_estacas() : [];
-    if(!estacas.length){ host.innerHTML = '<div class="av-estaca-item"><span class="km">Nenhuma área cadastrada na Ficha de Vistoria.</span></div>'; return; }
-  #panel-desp1-rel .vbtn-primary");
-    const orig=btn?btn.innerHTML:""; if(btn){btn.disabled=true; btn.innerHTML="⏳ Gerando documento...";}
-  #panel-desp1-rel .vsec.acc, #panel-desp1-vist .vsec.acc").forEach(h2=>{
-    if(!h2.classList.contains("fechado")){
-      h2.classList.add("fechado");
-      let el=h2.nextElementSibling;
-      while(el && !el.classList.contains("vcard")) el=el.nextElementSibling;
-      if(el) el.classList.add("oculto");
-    }
-  #panel-desp1-rel [id], #panel-desp1-vist [id]").forEach(el=>{
-      const tag = el.tagName;
-      if(tag!=="INPUT" && tag!=="TEXTAREA" && tag!=="SELECT") return;
-      if(el.type==="file") return;
-      if(el.type==="checkbox" || el.type==="radio"){ dados[el.id] = {__chk:el.checked}
-
-  #panel-desp1-rel select{ appearance:auto; cursor:pointer; width:100%; border:1px solid var(--borda-forte); border-radius:7px; padding:8px 11px; font-size:13.5px; }
   #panel-desp1-rel .rel-tabela{ display:flex; flex-direction:column; gap:6px; margin-top:6px; }
   #panel-desp1-rel .rel-lin{ display:flex; gap:8px; align-items:flex-start; }
   #panel-desp1-rel .rel-lin .crit{ flex:1; }
@@ -2033,6 +1999,31 @@
   #panel-desp1-rel .rel-ivs-tab td.x{ width:44px; text-align:center; font-weight:700; color:#243447; }
   #panel-desp1-rel .rel-ivs-tab tr.mk td{ background:#fff7c2; }
   #panel-desp1-rel .rel-ivs-tab tr.mk td.x{ background:#ffe94d; }
+
+  /* 1.10 — Tabelas de critérios em grade (estilo documento) */
+  #panel-desp1-rel .rel-tabela{ overflow-x:auto; margin-top:6px; }
+  #panel-desp1-rel .rel-grid{ border-collapse:collapse; width:100%; font-size:13px; }
+  #panel-desp1-rel .rel-grid th, #panel-desp1-rel .rel-grid td{ border:1px solid #b7c2ce; padding:0; vertical-align:middle; }
+  #panel-desp1-rel .rel-grid thead th{ background:#eaf2fb; color:var(--azul-esc); font-weight:700; text-align:center; padding:7px 6px; font-size:12.5px; }
+  #panel-desp1-rel .rel-grid th.c-crit{ text-align:left; }
+  #panel-desp1-rel .rel-grid .c-crit{ width:auto; min-width:220px; }
+  #panel-desp1-rel .rel-grid .c-resp{ width:46px; text-align:center; }
+  #panel-desp1-rel .rel-grid .c-obs{ width:200px; }
+  #panel-desp1-rel .rel-grid .c-rm{ width:32px; text-align:center; }
+  #panel-desp1-rel .rel-grid textarea.crit, #panel-desp1-rel .rel-grid textarea.obs{
+    width:100%; border:none; background:transparent; padding:7px 8px; font-size:13px;
+    font-family:inherit; color:#243447; resize:vertical; outline:none; min-height:44px; line-height:1.35;
+  }
+  #panel-desp1-rel .rel-grid textarea.crit:focus, #panel-desp1-rel .rel-grid textarea.obs:focus{ background:#f5f9fe; }
+  #panel-desp1-rel .rel-grid .rel-mk{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:26px; height:26px; border:1px solid #b7c2ce; border-radius:5px;
+    cursor:pointer; font-weight:700; color:#243447; background:#fff; user-select:none; transition:background .12s;
+  }
+  #panel-desp1-rel .rel-grid .rel-mk:hover{ background:#eef5fc; }
+  #panel-desp1-rel .rel-grid .rel-mk.on{ background:#1F6FC0; color:#fff; border-color:#1a5a9f; }
+  #panel-desp1-rel .rel-grid .rm{ border:none; background:transparent; color:#c0392b; cursor:pointer; font-size:14px; padding:4px; }
+  #panel-desp1-rel .rel-grid .rm:hover{ color:#e04b39; }
 </style>
 </head>
 <body>
@@ -8628,21 +8619,35 @@ window.UFOTO_rodapeHTML=rodapeHTML;
   const tabelas={1:[],2:[]};
   function renderTab(n){
     const host=document.getElementById("rel_tabela"+n); if(!host) return;
-    host.innerHTML="";
+    const comNA = (n===1);  // Tabela 1 tem coluna N/A; Tabela 2 só Sim/Não
+    const cols = comNA ? ["Sim","Não","N/A"] : ["Sim","Não"];
+    let h='<table class="rel-grid"><thead><tr>'+
+      '<th class="c-crit">Critérios de Análise</th>'+
+      cols.map(c=>'<th class="c-resp">'+c+'</th>').join('')+
+      '<th class="c-obs">Observações</th>'+
+      '<th class="c-rm"></th></tr></thead><tbody>';
     tabelas[n].forEach((lin,i)=>{
-      const div=document.createElement("div"); div.className="rel-lin";
-      div.innerHTML=
-        '<textarea class="crit" rows="2" placeholder="Critério de análise" oninput="REL_setCel('+n+','+i+',\'crit\',this.value)">'+(lin.crit||"")+'</textarea>'+
-        '<select class="resp" onchange="REL_setCel('+n+','+i+',\'resp\',this.value)">'+
-          ['','Sim','Não','N/A'].map(o=>'<option'+(lin.resp===o?' selected':'')+'>'+o+'</option>').join('')+
-        '</select>'+
-        '<textarea class="obs" rows="2" placeholder="Observações" oninput="REL_setCel('+n+','+i+',\'obs\',this.value)">'+(lin.obs||"")+'</textarea>'+
-        '<button class="rm" type="button" onclick="REL_remLinha('+n+','+i+')">✕</button>';
-      host.appendChild(div);
+      h+='<tr>';
+      h+='<td class="c-crit"><textarea class="crit" rows="2" placeholder="Critério de análise" oninput="REL_setCel('+n+','+i+',\'crit\',this.value)">'+(lin.crit||"")+'</textarea></td>';
+      cols.forEach(c=>{
+        const on=(lin.resp===c);
+        h+='<td class="c-resp"><span class="rel-mk'+(on?' on':'')+'" onclick="REL_marcar('+n+','+i+',\''+c+'\')">'+(on?'X':'')+'</span></td>';
+      });
+      h+='<td class="c-obs"><textarea class="obs" rows="2" placeholder="Observações" oninput="REL_setCel('+n+','+i+',\'obs\',this.value)">'+(lin.obs||"")+'</textarea></td>';
+      h+='<td class="c-rm"><button class="rm" type="button" title="Remover" onclick="REL_remLinha('+n+','+i+')">✕</button></td>';
+      h+='</tr>';
     });
+    h+='</tbody></table>';
+    host.innerHTML=h;
   }
+  window.REL_marcar=function(n,i,c){
+    if(!tabelas[n][i]) return;
+    tabelas[n][i].resp = (tabelas[n][i].resp===c) ? "" : c;  // clicar de novo desmarca
+    renderTab(n);
+    if(n===1) atualizarIVS();
+  };
   window.REL_addLinha=function(n){ tabelas[n].push({crit:"",resp:"",obs:""}); renderTab(n); };
-  window.REL_remLinha=function(n,i){ tabelas[n].splice(i,1); renderTab(n); };
+  window.REL_remLinha=function(n,i){ tabelas[n].splice(i,1); renderTab(n); if(n===1) atualizarIVS(); };
   window.REL_setCel=function(n,i,c,v){ if(tabelas[n][i]) tabelas[n][i][c]=v; if(n===1 && c==="resp") atualizarIVS(); };
 
   // ---- Classificação do IVS (Tabela 1) ----
