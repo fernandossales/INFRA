@@ -8701,33 +8701,53 @@ window.UFOTO_rodapeHTML=rodapeHTML;
     const END=["Av. Des. Moreira, n° 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE","Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE","Rua Araguari, nº 358, Conj.1903/1904, Barro Preto, 30.190-110, Belo Horizonte-MG","Rua Des. Mário da Silva Nunes, nº 120, Sala 201, Enseada do Suá, 29.050-240, Vitória-ES","Rua Avertano Rocha, n°192, Campina, 66.023-120, Belém-PA"];
     const TEL=["(+55 85) 3289-6363","(+55 85) 3289-6363","(+55 31) 3253-5500","(+55 27) 3029-5540","(+55 94) 3346-8994"];
 
-    // CAPA
-    if(imgE){ let w=16*(imgE.width/imgE.height); pdf.addImage(imgE,"JPEG",mL,mT,w,16); }
-    if(imgI){ let w=16*(imgI.width/imgI.height); pdf.addImage(imgI,"JPEG",W-mR-w,mT,w,16); }
-    let y=64;
+    // CAPA — modelo DESP-1 com faixa azul lateral esquerda
+    const faixaW = 45;                 // largura da faixa azul (mm)
+    const cxL = faixaW + 8;            // início da área de conteúdo
+    const cxC = cxL + (W - cxL - mR)/2; // centro horizontal da área de conteúdo
+    // faixa azul vertical
+    pdf.setFillColor(60,90,130); pdf.rect(0, 0, faixaW, H, "F");
+    // logos no topo (na área branca)
+    if(imgE){ let w=15*(imgE.width/imgE.height); pdf.addImage(imgE,"JPEG",cxL,mT,w,15); }
+    if(imgI){ let w=15*(imgI.width/imgI.height); pdf.addImage(imgI,"JPEG",W-mR-w,mT,w,15); }
+    let y=48;
     pdf.setFont("helvetica","bold"); pdf.setFontSize(15); pdf.setTextColor(20,40,70);
-    pdf.text("INFRA S.A.", W/2, y, {align:"center"}); y+=7;
+    pdf.text("INFRA S.A.", cxC, y, {align:"center"}); y+=7;
     pdf.setFontSize(9);
-    pdf.text("DIREM - DIRETORIA DE EMPREENDIMENTOS", W/2, y, {align:"center"}); y+=4.5;
-    pdf.text("SUGAT – SUPERINTENDÊNCIA DE GESTÃO AMBIENTAL E TERRITORIAL", W/2, y, {align:"center"}); y+=4.5;
-    pdf.text("GEDAF – GERÊNCIA DE DESAPROPRIAÇÃO E ASSUNTOS FUNDIÁRIOS", W/2, y, {align:"center"});
-    pdf.setDrawColor(20,40,70); pdf.setLineWidth(0.4); pdf.line(mL,y+3,W-mR,y+3); y+=28;
-    pdf.setFontSize(19); pdf.text("RELATÓRIO DE CARACTERIZAÇÃO", W/2, y, {align:"center"}); y+=8;
-    pdf.text("SOCIOECONÔMICA", W/2, y, {align:"center"}); y+=14;
-    pdf.setFontSize(13); pdf.setTextColor(40,40,40); pdf.text("DESP-1", W/2, y, {align:"center"}); y+=16;
-    pdf.setFontSize(12); pdf.text((g("rel_ferrovia")||"FERROVIA").toUpperCase(), W/2, y, {align:"center"}); y+=13;
+    pdf.text("DIREM - DIRETORIA DE EMPREENDIMENTOS", cxC, y, {align:"center"}); y+=4.5;
+    pdf.text("SUGAT – SUPERINTENDÊNCIA DE GESTÃO AMBIENTAL E TERRITORIAL", cxC, y, {align:"center"}); y+=4.5;
+    pdf.text("GEDAF – GERÊNCIA DE DESAPROPRIAÇÃO E ASSUNTOS FUNDIÁRIOS", cxC, y, {align:"center"});
+    pdf.setDrawColor(20,40,70); pdf.setLineWidth(0.4); pdf.line(cxL, y+3, W-mR, y+3); y+=26;
+    pdf.setFontSize(19); pdf.text("RELATÓRIO DE CARACTERIZAÇÃO", cxC, y, {align:"center"}); y+=8;
+    pdf.text("SOCIOECONÔMICA", cxC, y, {align:"center"}); y+=14;
+    pdf.setFontSize(13); pdf.setTextColor(40,40,40); pdf.text("DESP-1", cxC, y, {align:"center"}); y+=16;
+    // ferrovia (pode ter 2 linhas)
+    pdf.setFontSize(12); pdf.setFont("helvetica","normal");
+    const ferroTxt=(g("rel_ferrovia")||"FERROVIA").toUpperCase();
+    const ferroLs=pdf.splitTextToSize(ferroTxt, W-cxL-mR-6);
+    ferroLs.forEach(l=>{ pdf.text(l, cxC, y, {align:"center"}); y+=6.5; });
+    y+=6;
     pdf.setFont("helvetica","bold");
-    if(g("rel_lote")){ pdf.text("FTN (Lote: "+g("rel_lote")+")", W/2, y, {align:"center"}); y+=16; }
+    if(g("rel_lote")){ pdf.text("FTN (Lote: "+g("rel_lote")+")", cxC, y, {align:"center"}); y+=16; }
     pdf.setFont("helvetica","normal"); pdf.setFontSize(11);
-    if(g("rel_processo")){ pdf.text("Processo administrativo:  "+g("rel_processo"), W/2, y, {align:"center"}); y+=12; }
+    if(g("rel_processo")){ pdf.text("Processo administrativo:  "+g("rel_processo"), cxC, y, {align:"center"}); y+=13; }
     pdf.setFontSize(10);
-    if(g("rel_expropriado")){ pdf.text("EXPROPRIADO: "+g("rel_expropriado"), W/2, y, {align:"center"}); y+=10; }
+    if(g("rel_expropriado")){ pdf.text("EXPROPRIADO: "+g("rel_expropriado"), cxC, y, {align:"center"}); y+=8; }
     pdf.setFont("helvetica","bold");
     const A=areas.filter(x=>(x||"").trim());
-    A.forEach((a,i)=>{ pdf.text((i===0?"LOCAÇÃO: ":"                   ")+"ÁREA "+(i+1)+": "+a, W/2, y, {align:"center"}); y+=5; });
-    pdf.setFont("helvetica","bold"); pdf.setFontSize(12); pdf.setTextColor(31,111,192);
-    pdf.text("DESP-1", mL, 268);
-    pdf.text((new Date()).toLocaleDateString("pt-BR",{month:"long",year:"numeric"}).toUpperCase(), mL, 274);
+    A.forEach((a,i)=>{ pdf.text((i===0?"LOCAÇÃO: ":"")+"ÁREA "+(i+1)+": "+a, cxC, y, {align:"center"}); y+=5; });
+    // texto do contrato no canto inferior direito
+    if(g("rel_contrato")){
+      const ct="Contrato nº "+g("rel_contrato")+" – Cujo objeto é a prestação de serviços especializados de engenharia consultiva para a execução das atividades de desapropriação, ocupação temporária ou constituição de servidão administrativa de imóveis, gestão fundiária e regularização de passivos de desapropriação.";
+      pdf.setFont("helvetica","normal"); pdf.setFontSize(7.5); pdf.setTextColor(40,40,40);
+      const ctLs=pdf.splitTextToSize(ct, 78);
+      let cy=250; ctLs.forEach(l=>{ pdf.text(l, W-mR-78, cy); cy+=3.2; });
+    }
+    // DESP-1 + data dentro da faixa azul (branco)
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(14); pdf.setTextColor(255,255,255);
+    pdf.text("DESP-1", faixaW/2, 250, {align:"center"});
+    const dataCapa=(new Date()).toLocaleDateString("pt-BR",{month:"long",year:"numeric"}).toUpperCase().replace(" DE ","/");
+    pdf.setFontSize(13); pdf.text(dataCapa, faixaW/2, 258, {align:"center"});
 
     // CORPO
     function cab(){ if(imgE){let w=9*(imgE.width/imgE.height); pdf.addImage(imgE,"JPEG",mL,mT,w,9);} if(imgI){let w=9*(imgI.width/imgI.height); pdf.addImage(imgI,"JPEG",W-mR-w,mT,w,9);} pdf.setDrawColor(31,111,192); pdf.setLineWidth(0.5); pdf.line(mL,mT+11,W-mR,mT+11); }
