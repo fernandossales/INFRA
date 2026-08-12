@@ -9042,6 +9042,39 @@ window.UFOTO_rodapeHTML=rodapeHTML;
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
 </script>
+
+<script>
+/* ===== Correlações DESP 1 (Anexo B) -> DESP 3 (Ficha de Vistoria) ===== */
+(function(){
+  const MAPA={"fv_processo": "fb_processo", "fv_data": "fb_data", "fv_ambientais": "fb_21_amb", "fv_localizacao": "fb_22_loc", "fv_fisicas": "fb_23_fis", "fv_infra": "fb_241_infra", "fv_terra": "fb_242_terra", "fv_hidro": "fb_243_hidro", "fv_rural_comp": "fb_244_comp", "fv_urb_infra": "fb_251_infra", "fv_urb_topo": "fb_252_topo", "fv_urb_dist": "fb_253_dist", "fv_urb_comp": "fb_254_comp", "fv_ben_nr": "fb_31_nrep", "fv_ben_nr1": "fb_311", "fv_ben_comp2": "fb_312", "fv_ben_r": "fb_32_rep", "fv_ben_r1": "fb_321", "fv_ben_comp4": "fb_322", "fv_obras": "fb_51_obras", "fv_outras": "fb_52_ativ"};  // destino(DESP3) : origem(DESP1 Anexo B)
+  function set(destId, v){ const e=document.getElementById(destId); if(e && e.value!==v){ e.value=v; e.dispatchEvent(new Event("input",{bubbles:true})); } }
+  function sincronizar(){
+    Object.keys(MAPA).forEach(dest=>{
+      const src=document.getElementById(MAPA[dest]);
+      if(src){ const v=src.value||""; if(v) set(dest, v); }
+    });
+  }
+  function ligar(){
+    // escuta mudanças em todos os campos de origem (DESP 1 Anexo B)
+    Object.values(MAPA).forEach(srcId=>{
+      const e=document.getElementById(srcId);
+      if(e && !e._corrBound){ e._corrBound=true;
+        e.addEventListener("input", sincronizar);
+        e.addEventListener("change", sincronizar);
+      }
+    });
+    // envolve o montador de processo
+    const antigo=window.FB_montarProcesso;
+    if(typeof antigo==="function" && !antigo._corrWrapped){
+      window.FB_montarProcesso=function(){ const r=antigo.apply(this,arguments); sincronizar(); return r; };
+      window.FB_montarProcesso._corrWrapped=true;
+    }
+    sincronizar();
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", ligar); else ligar();
+  window.CORR_sync=sincronizar;
+})();
+</script>
 </body>
 
 
