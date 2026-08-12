@@ -1468,7 +1468,7 @@
   /* ===== 1.9 Anexo B — grupos de checkbox e ajustes ===== */
   #panel-desp1-vist .fb-checks{ display:flex; flex-wrap:wrap; gap:12px 20px; padding:8px 0 0; margin-bottom:0; }
   #panel-desp1-vist .fb-chk input{ width:17px; height:17px; cursor:pointer; accent-color:#1F6FC0; }
-  #panel-desp1-vist .vfield{ margin-bottom:26px; }
+  
   /* espaço extra após campos que contêm grupos de checkbox */
   #panel-desp1-vist .vfield.fb-field{ margin-bottom:38px; }
   #panel-desp1-vist .vsub{ margin-top:22px !important; }
@@ -2117,6 +2117,7 @@
 <aside class="app-sidebar" id="appSidebar">
   <div class="sb-main">
     <button class="sb-grp-btn" data-secao="infra" data-grupo="desp1" onclick="SB_abrirGrupo(this)">DESP 1</button>
+    <button class="sb-grp-btn" data-secao="infra" data-grupo="desp2" onclick="SB_abrirGrupo(this)">DESP 2</button>
     <button class="sb-grp-btn ativa" data-secao="infra" data-grupo="laudo" onclick="SB_abrirGrupo(this)">DESP 3</button>
     <button class="sb-grp-btn" data-secao="utilitarios" data-grupo="utilitarios" onclick="SB_abrirGrupo(this)" style="display:none;">Ferramentas</button>
     <button class="sb-grp-btn" data-secao="saneagua" data-grupo="saneagua" onclick="SB_abrirGrupo(this)" style="display:none;">SANEAGO</button>
@@ -2126,6 +2127,10 @@
       <div class="sb-grp">Documentação</div>
       <button class="sb-link" data-alvo="panel-desp1-vist" onclick="trocarAba(this)">Ficha de Vistoria e Cadastro Socioeconômico (Anexo B)</button>
       <button class="sb-link" data-alvo="panel-desp1-rel" onclick="trocarAba(this)">Relatório Técnico de Caracterização Socioeconômica</button>
+    </div>
+    <div class="sb-sub-grupo" data-grupo="desp2" style="display:none;">
+      <div class="sb-grp">Documentação</div>
+      <button class="sb-link" data-alvo="panel-desp2-info" onclick="trocarAba(this)">Em breve</button>
     </div>
     <div class="sb-sub-grupo" data-grupo="laudo">
       <div class="sb-grp">Documentos</div>
@@ -2155,6 +2160,15 @@
 </aside>
 <div class="app-main">
 <main>
+  <section class="tab-panel" id="panel-desp2-info">
+    <div class="wrap">
+      <h1>DESP 2 · Documentação</h1>
+      <p class="sub">Esta seção está em desenvolvimento.</p>
+      <div class="vcard">
+        <p style="color:#5a6b7c; font-size:14px; line-height:1.6;">Os documentos e formulários da DESP 2 serão disponibilizados em breve. A estrutura da aba já está preparada para receber os painéis assim que forem definidos.</p>
+      </div>
+    </div>
+  </section>
   <section class="tab-panel" id="panel-ccu">
 <div class="toolbar">
   <button class="btn btn-verde" onclick="CCU_gerarPDF()">📄 Gerar PDF Unificado</button>
