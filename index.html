@@ -8284,9 +8284,10 @@ function AV_gerarDescSituacao(){
       for(let ii=0; ii<sec.itens.length; ii++){
         const it=sec.itens[ii];
         if(it.tipo==="sub"){
-          garantir(8);
-          pdf.setFont("helvetica","bold"); pdf.setFontSize(9); pdf.setTextColor(23,90,159);
-          pdf.text(it.texto, mL, y+1); y+=5.5;
+          garantir(9);
+          pdf.setFillColor(218,232,246); pdf.rect(mL, y-4, contentW, 6.2, "F");
+          pdf.setFont("helvetica","bold"); pdf.setFontSize(9); pdf.setTextColor(26,58,92);
+          pdf.text(it.texto, mL+2.5, y+0.6); y+=8;
         } else if(it.tipo==="campo"){
           // agrupa campos consecutivos com o mesmo id de linha (.vrow) lado a lado
           let grupo=[it];
@@ -8306,11 +8307,11 @@ function AV_gerarDescSituacao(){
           garantir(maxL*4.4+2);
           grupo.forEach((g,ci)=>{
             const x=mL+ci*colW;
-            pdf.setFont("helvetica","bold"); pdf.setFontSize(8.5); pdf.setTextColor(70,88,108);
+            pdf.setFont("helvetica","normal"); pdf.setFontSize(8.5); pdf.setTextColor(107,120,135);
             const rot=g.rotulo+": ";
             const rotW=pdf.getTextWidth(rot);
             pdf.text(rot, x, y);
-            pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58);
+            pdf.setFont("helvetica","bold"); pdf.setTextColor(30,43,58);
             pdf.text(g._linhas, x+rotW, y);
           });
           y+=maxL*4.4+1.5;
@@ -9068,7 +9069,7 @@ window.UFOTO_rodapeHTML=rodapeHTML;
     function nova(){ pdf.addPage(); cab(); yc=topY; }
     function ensure(h){ if(yc+h>botY){ rod(); nova(); } }
     function titulo(t){ ensure(12); pdf.setFillColor(31,111,192); pdf.rect(mL,yc-4,cw,7,"F"); pdf.setFont("helvetica","bold"); pdf.setFontSize(11); pdf.setTextColor(255,255,255); pdf.text(t,mL+3,yc+1); yc+=9; }
-    function subt(t){ ensure(7); pdf.setFont("helvetica","bold"); pdf.setFontSize(10); pdf.setTextColor(23,90,159); pdf.text(t,mL,yc); yc+=5.5; }
+    function subt(t){ ensure(9); pdf.setFillColor(218,232,246); pdf.rect(mL,yc-4,cw,6.5,"F"); pdf.setFont("helvetica","bold"); pdf.setFontSize(10); pdf.setTextColor(26,58,92); pdf.text(t,mL+3,yc+0.6); yc+=8; }
     function paragrafo(t, opts){
       if(!t) return;
       opts=opts||{};
@@ -9103,7 +9104,7 @@ window.UFOTO_rodapeHTML=rodapeHTML;
       const bloco='"'+String(t).trim()+'"';
       paragrafo(bloco, {italico:true, indent:8, fontSize:9});
     }
-    function campo(rot,val){ if(!val) return; pdf.setFont("helvetica","bold"); pdf.setFontSize(9.5); pdf.setTextColor(70,88,108); const rw=pdf.getTextWidth(rot+": "); ensure(5); pdf.text(rot+": ",mL,yc); pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58); const ls=pdf.splitTextToSize(val,cw-rw); pdf.text(ls,mL+rw,yc); yc+=ls.length*4.8+1; }
+    function campo(rot,val){ if(!val) return; pdf.setFont("helvetica","normal"); pdf.setFontSize(9.5); pdf.setTextColor(107,120,135); const rw=pdf.getTextWidth(rot+": "); ensure(5); pdf.text(rot+": ",mL,yc); pdf.setFont("helvetica","bold"); pdf.setTextColor(30,43,58); const ls=pdf.splitTextToSize(val,cw-rw); pdf.text(ls,mL+rw,yc); yc+=ls.length*4.8+1; }
     function desenharTabela(rotulo, arr, comNA){
       if(!arr||!arr.length) return; subt(rotulo);
       // larguras das colunas
