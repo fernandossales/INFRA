@@ -8184,7 +8184,9 @@ function AV_gerarDescSituacao(){
       if(node.classList.contains("vsec")){
         push(); atual.titulo=node.textContent.replace(/[▾▸►]/g,"").trim();
       } else if(node.classList.contains("vsub")){
-        atual.itens.push({tipo:"sub", texto:node.textContent.trim()});
+        const t=node.textContent.trim();
+        if(/Montar Processo/i.test(t)) return;  // seção de controle: não vai para o PDF
+        atual.itens.push({tipo:"sub", texto:t});
       } else if(node.classList.contains("fb-familia")){
         // composição familiar
         const linhas=[];
@@ -8209,7 +8211,8 @@ function AV_gerarDescSituacao(){
         } else {
           const campo=node.querySelector("input, textarea, select");
           if(campo && campo.type==="file") return;
-          if(campo && campo.id==="fb_puxar") return;  // não incluir "Puxar dados da DESP 3?" no PDF
+          const idsControle=["fb_puxar","fb_proc_ctd","fb_proc_lote","fb_proc_ferrovia","fb_proc_preview"];
+          if(campo && idsControle.indexOf(campo.id)>=0) return;  // campos de controle: não vão para o PDF
           const val=valCampo(campo);
           const isArea = campo && campo.tagName==="TEXTAREA";
           if(rot) atual.itens.push({tipo: isArea?"texto":"campo", rotulo:rot, valor:val, linha:rowId});
@@ -8249,8 +8252,8 @@ function AV_gerarDescSituacao(){
 
     function cabecalho(){
       const hLogo=10;
-      if(imgI){ let w=hLogo*(imgI.width/imgI.height); pdf.addImage(imgI,"JPEG",mL,mT,w,hLogo); }
-      if(imgE){ let w=hLogo*(imgE.width/imgE.height); pdf.addImage(imgE,"JPEG",W-mR-w,mT,w,hLogo); }
+      if(imgE){ let w=hLogo*(imgE.width/imgE.height); pdf.addImage(imgE,"JPEG",mL,mT,w,hLogo); }
+      if(imgI){ let w=hLogo*(imgI.width/imgI.height); pdf.addImage(imgI,"JPEG",W-mR-w,mT,w,hLogo); }
       pdf.setDrawColor(31,111,192); pdf.setLineWidth(0.6);
       pdf.line(mL, mT+hLogo+3, W-mR, mT+hLogo+3);
     }
@@ -8311,24 +8314,43 @@ function AV_gerarDescSituacao(){
             }
           }
           const colW=contentW/grupo.length;
-          // calcula altura máxima necessária no grupo
-          let maxL=1;
+          // para cada campo: decide se valor cabe ao lado do rótulo ou vai para a linha de baixo
+          let maxAltura=1;
           grupo.forEach(g=>{
+            pdf.setFont("helvetica","normal"); pdf.setFontSize(8.5);
             const rotW=pdf.getTextWidth(g.rotulo+": ");
-            const ls=pdf.splitTextToSize(g.valor||"—", colW-rotW-3);
-            g._linhas=ls; maxL=Math.max(maxL, ls.length);
+            const espacoLado = colW - rotW - 2;
+            const val = g.valor||"";
+            // largura mínima aceitável para o valor ao lado (senão desce)
+            if(espacoLado >= 22 && rotW < colW*0.72){
+              g._modo="lado";
+              g._linhas = pdf.splitTextToSize(val, Math.max(espacoLado, 10));
+              g._rotW = rotW;
+              g._alt = g._linhas.length;
+            } else {
+              g._modo="abaixo";
+              g._linhas = pdf.splitTextToSize(val, colW-2);
+              g._alt = 1 + (val? g._linhas.length : 0);
+            }
+            maxAltura=Math.max(maxAltura, g._alt);
           });
-          garantir(maxL*4.4+2);
+          garantir(maxAltura*4.4+2);
           grupo.forEach((g,ci)=>{
             const x=mL+ci*colW;
             pdf.setFont("helvetica","normal"); pdf.setFontSize(8.5); pdf.setTextColor(107,120,135);
-            const rot=g.rotulo+": ";
-            const rotW=pdf.getTextWidth(rot);
-            pdf.text(rot, x, y);
-            pdf.setFont("helvetica","bold"); pdf.setTextColor(30,43,58);
-            pdf.text(g._linhas, x+rotW, y);
+            if(g._modo==="lado"){
+              pdf.text(g.rotulo+": ", x, y);
+              pdf.setFont("helvetica","bold"); pdf.setTextColor(30,43,58);
+              if(g.valor) pdf.text(g._linhas, x+g._rotW, y);
+            } else {
+              pdf.text(g.rotulo+": ", x, y);
+              if(g.valor){
+                pdf.setFont("helvetica","bold"); pdf.setTextColor(30,43,58);
+                pdf.text(g._linhas, x, y+4.2);
+              }
+            }
           });
-          y+=maxL*4.4+1.5;
+          y+=maxAltura*4.4+1.5;
         } else if(it.tipo==="checks"){
           // rótulo em negrito, opções (com marcação) na linha seguinte
           pdf.setFont("helvetica","bold"); pdf.setFontSize(8.5); pdf.setTextColor(70,88,108);
