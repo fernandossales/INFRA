@@ -7623,14 +7623,20 @@ function AV_gerarDescSituacao(){
         pushSecao();
         atual.titulo=node.textContent.replace(/[▾▸►]/g,"").trim();
       } else if(node.classList.contains("vsub")){
-        atual.itens.push({tipo:"sub", texto:node.textContent.trim()});
+        const t=node.textContent.trim();
+        if(/Montar Processo/i.test(t)) return;  // não faz parte do documento
+        atual.itens.push({tipo:"sub", texto:t});
       } else if(node.tagName==="LABEL"){
         // o campo associado costuma ser o input/textarea/select irmão dentro do mesmo .vfield
         const wrap=node.closest(".vfield") || node.parentElement;
         const campo=wrap? wrap.querySelector("input, textarea, select") : null;
-        const rot=node.textContent.replace(/\s*auto\s*/i,"").trim();
+        // pular campos de controle (não fazem parte do documento)
+        const idIgnorar=["fb_puxar","fb_proc_ctd","fb_proc_lote","fb_proc_ferrovia","fb_proc_preview","fb_processo"];
+        if(campo && idIgnorar.indexOf(campo.id)>=0) return;
+        const rot=node.textContent.replace(/\s*auto\s*/i,"").replace(/Montar Processo.*/i,"").trim();
+        if(!rot) return;
         const val=txtCampo(campo);
-        if(rot) atual.itens.push({tipo:"campo", rotulo:rot, valor:val});
+        atual.itens.push({tipo:"campo", rotulo:rot, valor:val});
       } else if(node.tagName==="TEXTAREA"){
         // textareas sem label próximo (blocos de texto livre)
         if(!node.closest(".vfield")){
@@ -7656,7 +7662,7 @@ function AV_gerarDescSituacao(){
     return '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">'+
       '<head><meta charset="utf-8"><title>'+esc(titulo)+'</title>'+
       '<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->'+
-      '<style>@page{size:21cm 29.7cm;margin:2cm 2cm;} body{font-family:Arial,sans-serif;font-size:11pt;color:#222;} '+
+      '<style>@page{size:21cm 29.7cm;margin:2cm 2cm;} body{font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#222;} '+
       'table{border-collapse:collapse;width:100%;} td,th{border:1px solid #b9c4d0;padding:4pt 6pt;font-size:10pt;vertical-align:top;} '+
       'p{margin:0 0 6pt;text-align:justify;line-height:1.4;} .sec{background:#DAE8F6;color:#1A3A5C;font-weight:bold;text-align:center;padding:5pt;font-size:11pt;margin:12pt 0 0;} '+
       '.sub{color:#2A4D6E;font-weight:bold;font-size:11pt;margin:10pt 0 4pt;} .rot{color:#5A6B7C;font-weight:bold;} .cit{font-style:italic;margin-left:1cm;}</style>'+
@@ -7672,19 +7678,27 @@ function AV_gerarDescSituacao(){
   }
   async function gerarWord(painelId, nomeArquivo){
     const dados=coletarConteudo(painelId);
-    let c='<div style="text-align:center;font-size:14pt;font-weight:bold;color:#0F2A44;margin-bottom:10pt;">'+esc((dados.titulo||"Documento").toUpperCase())+'</div>';
+    let c='<div style="text-align:center;font-size:13pt;font-weight:bold;color:#0F2A44;background:#DAE8F6;padding:4pt;margin-bottom:10pt;">'+esc((dados.titulo||"Documento").toUpperCase())+'</div>';
     dados.secoes.forEach(sec=>{
       if(sec.titulo) c+='<div class="sec">'+esc(sec.titulo)+'</div>';
-      // agrupa campos em tabela dentro da seção
-      let emTabela=false;
       sec.itens.forEach(it=>{
-        if(it.tipo==="sub"){ if(emTabela){ c+='</table>'; emTabela=false; } c+='<div class="sub">'+esc(it.texto)+'</div>'; }
-        else if(it.tipo==="campo"){ if(!emTabela){ c+='<table>'; emTabela=true; } c+='<tr><td style="width:32%;" class="rot">'+esc(it.rotulo)+'</td><td>'+esc(it.valor||"—")+'</td></tr>'; }
-        else if(it.tipo==="texto"){ if(emTabela){ c+='</table>'; emTabela=false; } c+='<p>'+esc(it.valor||"").replace(/\n/g,"<br>")+'</p>'; }
-        else if(it.tipo==="lista"){ if(emTabela){ c+='</table>'; emTabela=false; } c+='<p class="rot">'+esc(it.rotulo)+':</p>'; (it.valores||[]).forEach(v=>{ c+='<p style="margin-left:0.5cm;">'+esc(v)+'</p>'; }); }
+        if(it.tipo==="sub"){ c+='<div class="sub">'+esc(it.texto)+'</div>'; }
+        else if(it.tipo==="campo"){
+          // rótulo + valor na mesma linha; valor em negrito; omite campos vazios
+          const v=(it.valor||"").trim();
+          c+='<p style="margin:1pt 0;text-align:left;"><span class="rot">'+esc(it.rotulo)+':</span> '+(v?'<b>'+esc(v)+'</b>':'')+'</p>';
+        }
+        else if(it.tipo==="texto"){ const v=(it.valor||"").trim(); if(v) c+='<p><b>'+esc(v).replace(/\n/g,"<br>")+'</b></p>'; }
+        else if(it.tipo==="lista"){ c+='<p class="rot">'+esc(it.rotulo)+':</p>'; (it.valores||[]).forEach(v=>{ if((v||"").trim()) c+='<p style="margin-left:0.5cm;"><b>'+esc(v)+'</b></p>'; }); }
       });
-      if(emTabela) c+='</table>';
     });
+    // rodapé com os endereços ENPROL
+    c+='<div style="border-top:1px solid #0D3B66;margin-top:14pt;padding-top:4pt;font-size:7.5pt;color:#333;line-height:1.4;">'+
+      'Av. Des. Moreira, n° 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE &nbsp; (+55 85) 3289-6363<br>'+
+      'Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE &nbsp; (+55 85) 3289-6363<br>'+
+      'Rua Araguari, nº 358, Conj.1903/1904, Barro Preto, 30.190-110, Belo Horizonte-MG &nbsp; (+55 31) 3253-5500<br>'+
+      'Rua Des. Mário da Silva Nunes, nº 120, Sala 201, Enseada do Suá, 29.050-240, Vitória-ES &nbsp; (+55 27) 3029-5540<br>'+
+      'Rua Avertano Rocha, n°192, Campina, 66.023-120, Belém-PA &nbsp; (+55 94) 3346-8994 &nbsp; comercial@enprol.com.br</div>';
     WORD_baixar(nomeArquivo, WORD_htmlDoc(dados.titulo||"Documento", c));
   }
   window.WORD_htmlDoc = WORD_htmlDoc;
