@@ -8066,9 +8066,202 @@ function AV_gerarDescSituacao(){
   window.FB_remFoto=function(i){ fotos.splice(i,1); renderFotos(); };
   window.FB_getFotos=function(){ return fotos; };
 
-  // ---- Word do Anexo B ----
+  // ---- Word do Anexo B (fiel ao MODELO) ----
   window.WORD_anexoB = function(){
-    if(window.WORD_gerarPainel){ window.WORD_gerarPainel("panel-desp1-vist","Ficha_Anexo_B_1.9.docx"); }
+    const D = window.docx;
+    if(!D){ alert("Biblioteca Word ainda carregando. Tente novamente em instantes."); return; }
+    const {Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,WidthType,AlignmentType,TabStopType,ShadingType,ImageRun,Header,Footer,BorderStyle}=D;
+    const NAVY="1F3864", BAND="DEEAF6", BLK="000000", SZ=22, FONT="Calibri";
+    const TW=(mm)=>Math.round(mm*56.7);
+    const gvW=(id)=>{const e=document.getElementById(id);if(!e)return"";if(e.tagName==="SELECT"){const o=e.options[e.selectedIndex];return (o&&o.value)?o.text.trim():"";}return (e.value||"").trim();};
+    const chkW=(id)=>{const e=document.getElementById(id);return !!(e&&e.checked);};
+    const snW=(id)=>{const v=gvW(id);if(/sim/i.test(v))return"SIM";if(/n[aã]o/i.test(v))return"NÃO";return v;};
+    const famW=()=>(window.FB_getFamilia?window.FB_getFamilia():[])||[];
+    const R=(t,o)=>new TextRun(Object.assign({text:String(t==null?"":t),size:SZ,font:FONT},o||{}));
+    const K=[];
+    const P=(children,o)=>new Paragraph(Object.assign({children:children,spacing:{after:0,line:264}},o||{}));
+    const banda=(t)=>K.push(new Paragraph({shading:{type:ShadingType.CLEAR,color:"auto",fill:BAND},spacing:{before:140,after:60},children:[R(t,{bold:true,color:NAVY})]}));
+    const h2=(t)=>K.push(P([R(t,{bold:true,color:NAVY})],{spacing:{before:100,after:20,line:264}}));
+    const h2iu=(num,name)=>K.push(P([R(num+" ",{bold:true,color:NAVY}),R(name,{bold:true,italics:true,underline:{},color:NAVY})],{spacing:{before:100,after:20,line:264}}));
+    function rv(label,val,o){o=o||{};const runs=[R(label,{color:o.navy?NAVY:BLK,bold:!!o.navy})];if(o.tab){runs.push(new TextRun({text:"\t"}));}else{runs.push(R(" "));}if(val)runs.push(R(val,{bold:true}));const pp={children:runs,spacing:{after:0,line:264}};if(o.tab)pp.tabStops=[{type:TabStopType.LEFT,position:o.tab}];if(o.ind)pp.indent={left:o.ind};K.push(new Paragraph(pp));}
+    function line2(l1,v1,l2,v2,t1,t2){K.push(new Paragraph({spacing:{after:0,line:264},tabStops:[{type:TabStopType.LEFT,position:t1},{type:TabStopType.LEFT,position:t2}],children:[R(l1),new TextRun({text:"\t"}),R(v1,{bold:true}),new TextRun({text:"\t"}),R(l2),R(" "),R(v2,{bold:true})]}));}
+    const para=(val,ind)=>K.push(new Paragraph({alignment:AlignmentType.JUSTIFIED,spacing:{after:60,line:264},indent:ind?{left:ind}:undefined,children:[R(val,{bold:true})]}));
+    const paraReg=(t,o)=>{o=o||{};K.push(new Paragraph({spacing:{after:0,line:264},indent:o.ind?{left:o.ind}:undefined,children:[R(t,{italics:!!o.i})]}));};
+    function checks(opts,ids,o){o=o||{};if(o.vert){opts.forEach((op,k)=>{const on=chkW(ids[k]);K.push(P([R(op+" ( "+(on?"X":"  ")+" )",{bold:on})]));});return;}const runs=[];opts.forEach((op,k)=>{const on=chkW(ids[k]);runs.push(R(op+" ( "+(on?"X":"  ")+" )   ",{bold:on}));});K.push(P(runs));}
+    function simnao(id){const v=gvW(id);const s=/sim/i.test(v),n=/n[aã]o/i.test(v);return [R("SIM ( "+(s?"X":"  ")+" )   ",{bold:s}),R("NÃO ( "+(n?"X":"  ")+" )",{bold:n})];}
+    function cell(text,o){o=o||{};return new TableCell({width:{size:o.w||10,type:WidthType.PERCENTAGE},children:[new Paragraph({alignment:o.center?AlignmentType.CENTER:AlignmentType.LEFT,spacing:{after:0,line:240},children:[R(text,{bold:!!o.bold})]})]});}
+    function tabelaFamilia(){const d=famW();const trs=[new TableRow({children:[cell("",{w:6,center:true}),cell("NOME",{w:74,bold:true,center:true}),cell("IDADE",{w:20,bold:true,center:true})]})];
+      for(let i=0;i<8;i++){const p=d[i]||{};trs.push(new TableRow({children:[cell(String(i+1),{w:6,center:true}),cell((p.nome||"").toUpperCase(),{w:74,bold:true}),cell(p.idade||"",{w:20,bold:true})]}));}
+      K.push(new Table({width:{size:100,type:WidthType.PERCENTAGE},rows:trs}));K.push(new Paragraph({spacing:{after:40},children:[R("")]}));}
+
+    // ---------- TÍTULO ----------
+    K.push(new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:0,line:264},children:[R("FICHA DE VISTORIA E CADASTRO SOCIOECONÔMICO",{bold:true,size:24})]}));
+    K.push(new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:120,line:264},children:[R("(ANEXO B)",{bold:true,size:22})]}));
+    const proc=gvW("fb_processo")||gvW("fb_proc_preview");
+    K.push(P([R("PROCESSO Nº: "),R(proc,{bold:true})]));
+    K.push(new Paragraph({spacing:{after:120,line:264},tabStops:[{type:TabStopType.RIGHT,position:TW(180)}],children:[R("NOME DO APLICADOR (A): "),R((gvW("fb_aplicador")||"").toUpperCase(),{bold:true}),new TextRun({text:"\t"}),R("Data: "),R(gvW("fb_data"),{bold:true})]}));
+
+    // ---------- 1 - IDENTIFICAÇÃO ----------
+    banda("1 - IDENTIFICAÇÃO");
+    K.push(P([R("1.1 Documentos dominiais (SIM/NÃO):",{bold:true,color:NAVY}),R("  "),R(snW("fb_11_dom"),{bold:true}),R("    Quais? "),R(gvW("fb_11_quais"),{bold:true})]));
+    K.push(P([R("1.2 Notificação Proprietário (SIM/NÃO):",{bold:true,color:NAVY}),R("  "),R(snW("fb_12_notif"),{bold:true})]));
+    K.push(new Paragraph({spacing:{after:40},children:[R("")]}));
+    K.push(P([R("1.3 Proprietário(a) (SIM/NÃO):",{bold:true,color:NAVY}),R("  "),R((gvW("fb_nome")?"SIM":""),{bold:true}),R("   "),R("(Se sim, preencher item 1.3.1; se não, item 1.3.2)",{italics:true})]));
+    rv("1.3.1 Nome:",gvW("fb_nome"),{tab:TW(34)});
+    line2("RG:",gvW("fb_rg"),"CPF:",gvW("fb_cpf"),TW(34),TW(112));
+    rv("Estado Civil (Casado, solteiro, viúvo, divorciado ou união estável):",gvW("fb_estcivil"));
+    rv("Cônjuge:",gvW("fb_conjuge"),{tab:TW(34)});
+    rv("Endereço:",gvW("fb_endereco"),{tab:TW(34)});
+    line2("Município:",gvW("fb_municipio"),"Telefone:",gvW("fb_telefone"),TW(34),TW(112));
+    rv("1.3.2 Informante (nome):",gvW("fb_inf_nome"),{tab:TW(44)});
+    rv("Grau de parentesco:",gvW("fb_411_par"),{tab:TW(44)});
+    rv("Dados comprobatório:",gvW("fb_inf_dados"),{tab:TW(44)});
+    K.push(new Paragraph({spacing:{after:40},children:[R("")]}));
+    h2("1.4 Propriedade");
+    rv("Identificação:",gvW("fb_prop_id"),{tab:TW(30)});
+    rv("Endereço:",gvW("fb_prop_end"),{tab:TW(30)});
+    rv("Município:",gvW("fb_prop_mun"),{tab:TW(30)});
+    line2("Área Total (ha):",gvW("fb_area_total"),"Área de desapropriação (ha):",gvW("fb_area_desap"),TW(30),TW(100));
+    line2("Matrícula:",gvW("fb_matricula"),"Cartório:",gvW("fb_cartorio"),TW(30),TW(100));
+    K.push(new Paragraph({spacing:{after:40},children:[R("")]}));
+    h2("1.5 Observações:");
+    para(gvW("fb_15_obs"));
+
+    // ---------- 2 - CARACTERIZAÇÃO DO IMÓVEL ----------
+    banda("2 - CARACTERIZAÇÃO DO IMÓVEL");
+    h2("2.1 Ambientais:");para(gvW("fb_21_amb"));
+    h2("2.2 Localização:");para(gvW("fb_22_loc"));
+    h2("2.3 Características Físicas:");para(gvW("fb_23_fis"));
+    h2iu("2.4","IMÓVEL RURAL:");
+    rv("2.4.1 Infraestrutura:","",{ind:TW(4)});para(gvW("fb_241_infra"),TW(4));
+    rv("2.4.2 Características da terra:",gvW("fb_242_terra"),{ind:TW(4),tab:TW(56)});
+    rv("2.4.3 Hidrografia / Vazão (m³ ou L/s):",gvW("fb_243_hidro"),{ind:TW(4),tab:TW(70)});
+    rv("2.4.4 Informações Complementares:","",{ind:TW(4)});para(gvW("fb_244_comp"),TW(4));
+    h2iu("2.5","IMÓVEL URBANO:");
+    rv("2.5.1 Infraestrutura:",gvW("fb_251_infra"),{ind:TW(4),tab:TW(46)});
+    rv("2.5.2 Topográfica:",gvW("fb_252_topo"),{ind:TW(4),tab:TW(46)});
+    rv("2.5.3 Distância do centro:",gvW("fb_253_dist"),{ind:TW(4),tab:TW(46)});
+    rv("2.5.4 Informações Complementares:",gvW("fb_254_comp"),{ind:TW(4),tab:TW(60)});
+
+    // ---------- 3 - DESCRIÇÃO DAS BENFEITORIAS ----------
+    banda("3 - DESCRIÇÃO DAS BENFEITORIAS");
+    h2("3.1 NÃO REPRODUTIVAS:");para(gvW("fb_31_nrep"));
+    rv("3.1.1 Benfeitorias não reprodutivas da faixa não edificante:","",{ind:TW(4)});para(gvW("fb_311"),TW(4));
+    rv("3.1.2 informações complementares:","",{ind:TW(4)});para(gvW("fb_312"),TW(4));
+    h2("3.2. REPRODUTIVAS:");para(gvW("fb_32_rep"));
+    rv("3.2.1 Benfeitorias reprodutivas da faixa não edificante:","",{ind:TW(4)});para(gvW("fb_321"),TW(4));
+    rv("3.2.2 informações complementares:","",{ind:TW(4)});para(gvW("fb_322"),TW(4));
+
+    // ---------- 4 - CARACTERIZAÇÃO SOCIOECONÔMICA ----------
+    banda("4 - CARACTERIZAÇÃO SOCIOECONÔMICA");
+    h2("4.1     IDENTIFICAÇÃO");
+    K.push(P([R("Proprietário(a) do imóvel (SIM/NÃO): "),R(snW("fb_41_prop"),{bold:true}),R("   Se NÃO preencher também item 4.1.1.")],{indent:{left:TW(2)}}));
+    rv("Nome:",gvW("fb_41_nome"),{ind:TW(2),tab:TW(34)});
+    rv("4.1.1  Grau de parentesco:",gvW("fb_411_par"),{ind:TW(2),tab:TW(44)});
+    h2("4.2     NATURALIDADE");
+    rv("Do município (1), outro município (2) ou outro estado (3):",(function(){const v=gvW("fb_42_nat");const m=v.match(/\((\d)\)/);return m?m[1]:v;})(),{ind:TW(2)});
+    rv("Qual?",gvW("fb_42_qual"),{ind:TW(2),tab:TW(60)});
+    rv("Há quanto tempo reside na comunidade?",gvW("fb_42_tempo"),{ind:TW(2),tab:TW(60)});
+    h2("4.3     NÍVEL DE ESCOLARIDADE");
+    paraReg("(Analfabeto(a), alfabetizado(a), ensino fundamental, ensino médio, ensino técnico e ensino superior).",{ind:TW(2)});
+    para(gvW("fb_43_esc"),TW(8));
+    h2("4.4     DADOS PROFISSIONAIS");
+    rv("Trabalha (SIM/NÃO):",snW("fb_44_trab"),{ind:TW(6),tab:TW(44)});
+    rv("Empresa em que trabalha:",gvW("fb_44_empresa"),{ind:TW(6),tab:TW(44)});
+    rv("Tempo de trabalho:",gvW("fb_44_tempo"),{ind:TW(6),tab:TW(44)});
+    rv("Profissão:",gvW("fb_44_prof"),{ind:TW(6),tab:TW(44)});
+    rv("Remuneração:",gvW("fb_44_remun"),{ind:TW(6),tab:TW(44)});
+    rv("Renda familiar:",gvW("fb_44_renda"),{ind:TW(6),tab:TW(44)});
+    h2("4.5     COMPOSIÇÃO FAMILIAR");
+    tabelaFamilia();
+    K.push(new Paragraph({spacing:{after:0,line:264},tabStops:[{type:TabStopType.RIGHT,position:TW(180)}],children:[R("4.5.1 OS FILHOS OU FAMILIARES ESTUDAM NA ESCOLA DO BAIRRO (SIM/NÃO)"),new TextRun({text:"\t"}),R(snW("fb_451"),{bold:true})]}));
+    rv("Em qual bairro?",gvW("fb_451_bairro"),{ind:TW(4),tab:TW(36)});
+    K.push(new Paragraph({spacing:{before:40,after:0,line:264},tabStops:[{type:TabStopType.RIGHT,position:TW(180)}],children:[R("4.5.2 RESIDE NA MORADIA ALGUMA PESSOA COM DEFICIÊNCIA (SIM/NÃO)"),new TextRun({text:"\t"}),R(snW("fb_452"),{bold:true})]}));
+    rv("Qual?",gvW("fb_452_qual"),{ind:TW(4),tab:TW(20)});
+    K.push(new Paragraph({spacing:{before:40,after:0,line:264},tabStops:[{type:TabStopType.RIGHT,position:TW(180)}],children:[R("4.5.3 RECEBE BPC – BENEFÍCIO DE PRESTAÇÃO CONTINUADA (SIM/NÃO)"),new TextRun({text:"\t"}),R(snW("fb_453_bpc"),{bold:true})]}));
+    paraReg("4.5.4 DAS DOENÇAS ABAIXO CITADAS, QUAIS AS QUE ACONTECEM COM MAIS FREQUÊNCIA NA FAMÍLIA:");
+    checks(["ALERGIA","DESNUTRIÇÃO","DIARREIA","DOENÇA RESPIRATÓRIA","VERMINOSE"],["fb_454_0","fb_454_1","fb_454_2","fb_454_3","fb_454_4"]);
+
+    h2("4.6     SITUAÇÃO DA MORADIA");
+    paraReg("4.6.1 TIPO DO IMÓVEL:");checks(["TERRENO","COMÉRCIO","CASA RESIDENCIAL","CASA ABANDONADA","OUTROS"],["fb_461_tipo_0","fb_461_tipo_1","fb_461_tipo_2","fb_461_tipo_3","fb_461_tipo_4"]);
+    rv("OUTROS:",gvW("fb_461_outros"),{tab:TW(22)});
+    paraReg("4.6.2  FORMA DE OCUPAÇÃO DA MORADIA:");checks(["PRÓPRIA","ALUGADA","CEDIDA"],["fb_462_ocup_0","fb_462_ocup_1","fb_462_ocup_2"]);
+    paraReg("4.6.3  NÚMERO DE FAMÍLIAS NA RESIDÊNCIA:");checks(["UMA FAMÍLIA","DUAS FAMÍLIAS","MAIS DE DUAS FAMÍLIAS"],["fb_463_fam_0","fb_463_fam_1","fb_463_fam_2"]);
+    paraReg("4.6.4  ESTADO DE CONSERVAÇÃO DO IMÓVEL:");checks(["BOM","REGULAR","RUIM"],["fb_464_cons_0","fb_464_cons_1","fb_464_cons_2"]);
+    paraReg("4.6.5  CARACTERÍSTICA DA CONSTRUÇÃO:");checks(["ALVENARIA","MADEIRA","MISTO"],["fb_465_constr_0","fb_465_constr_1","fb_465_constr_2"]);
+    rv("4.6.6  NÚMERO DE CÔMODOS:",gvW("fb_466_comodos"),{tab:TW(52)});
+    rv("OBS.:","");para(gvW("fb_46_obs"),TW(4));
+    paraReg("4.6.7  SITUAÇÃO DO IMÓVEL:");checks(["COM ESCRITURA","SEM ESCRITURA","COMPROVANTE DE COMPRA E VENDA","POSSEIRO"],["fb_467_sit_0","fb_467_sit_1","fb_467_sit_2","fb_467_sit_3"]);
+
+    h2("4.7     INFRAESTRUTURA DO IMOVÉL:");
+    paraReg("4.7.1  ABASTECIMENTO DE ÁGUA:");checks(["REDE PÚBLICA","POÇO","FONTE","CEDIDO POR VIZINHO","RIO"],["fb_471_agua_0","fb_471_agua_1","fb_471_agua_2","fb_471_agua_3","fb_471_agua_4"]);
+    paraReg("4.7.2  ENERGIA ELÉTRICA:");checks(["COM PADRÃO","SEM PADRÃO"],["fb_472_energia_0","fb_472_energia_1"]);
+    paraReg("4.7.3  ELIMINAÇÃO DE DEJETOS:");checks(["REDE DE ESGOTO","FOSSA SÉPTICA","VALA A CÉU ABERTO"],["fb_473_dejetos_0","fb_473_dejetos_1","fb_473_dejetos_2"]);
+    paraReg("4.7.4  DESTINO DADO AO LIXO DOMÉSTICO:");checks(["COLETA PÚBLICA","QUEIMADO","ENTERRADO","JOGADO EM TERRENO BALDIO"],["fb_474_lixo_0","fb_474_lixo_1","fb_474_lixo_2","fb_474_lixo_3"]);
+
+    h2("4.8  DOS SENTIDOS DE IDENTIFICAÇÃO (AUTORRECONHECIMENTO)");
+    paraReg("*APLICÁVEL SOMENTE AS COMUNIDADES TRADICIONAIS",{i:true});
+    paraReg("4.8.1  O SR. OU A SRA. SE AUTO RECONHECE COMO:");
+    checks(["A) QUILOMBOLA","B) INDÍGENA","C) COMUNIDADE TRADICIONAL"],["fb_481_0","fb_481_1","fb_481_2"],{vert:true});
+    (function(){const on=chkW("fb_481_3");K.push(P([R("D) OUTROS ( "+(on?"X":"  ")+" ) – ESPECIFICAR: ",{bold:on}),R(gvW("fb_481_esp"),{bold:true})]));})();
+
+    h2("4.9 APROVEITAMENTO DA TERRA:");
+    paraReg("4.9.1  USO DAS TERRAS:");
+    checks(["SECA","CHUVA"],["fb_491_uso_0","fb_491_uso_1"]);
+    (function(){const on=chkW("fb_491_uso_2");K.push(P([R("PLANTIO ( "+(on?"X":"  ")+" ) CARACTERIZAR: ",{bold:on}),R(gvW("fb_491_plantio"),{bold:true})]));})();
+    (function(){const on=chkW("fb_491_uso_3");K.push(P([R("CRIAÇÃO DE ANIMAIS ( "+(on?"X":"  ")+" ) CARACTERIZAR: ",{bold:on}),R(gvW("fb_491_criacao"),{bold:true})]));})();
+    paraReg("4.9.2  O QUE É PRODUZIDO NA PROPRIEDADE:");
+    checks(["EXTRATIVISMO","AGRICULTURA","PECUÁRIA"],["fb_492_prod_0","fb_492_prod_1","fb_492_prod_2"],{vert:true});
+    paraReg("4.9.3 QUAIS IMPACTOS CONCEBIDOS PELA COMUNIDADE SOBRE A CONSTRUÇÃO DA FERROVIA, E QUAL A SUA OPINIÃO?");
+    para(gvW("fb_493_impactos"));
+
+    h2("4.10  OUTRAS INFORMAÇÕES");
+    paraReg("4.10.1 QUAIS AS EXPECTATIVAS FUTURAS DA FAMÍLIA EM RELAÇÃO A MORADIA ATUAL E PÓS DESAPROPRIAÇÃO:");
+    checks(["CONTINUAR MORANDO NAS REDONDEZAS DA LOCALIDADE","CONSTRUIR EM OUTRO LOCAL FORA DA LOCALIDADE"],["fb_4101_0","fb_4101_1"],{vert:true});
+    (function(){const on=chkW("fb_4101_2");K.push(P([R("OUTRA ( "+(on?"X":"  ")+" ): ",{bold:on}),R(gvW("fb_4101_outra"),{bold:true})]));})();
+    K.push(P([R("4.10.2 A FAMÍLIA RECEBE ALGUM BENEFÍCIO DO GOVERNO FEDERAL: ")].concat(simnao("fb_4102"))));
+    rv("QUAL:",gvW("fb_4102_qual"),{tab:TW(16)});
+    K.push(P([R("4.10.3 A FAMÍLIA PARTICIPA DE ALGUM PROGRAMA DO MUNICÍPIO: ")].concat(simnao("fb_4103"))));
+    rv("QUAL:",gvW("fb_4103_qual"),{tab:TW(16)});
+    K.push(P([R("4.10.4 A FAMÍLIA PARTICIPA DE PROJETOS E ORGANIZAÇÕES DA COMUNIDADE: ")].concat(simnao("fb_4104"))));
+    rv("QUAL:",gvW("fb_4104_qual"),{tab:TW(16)});
+    paraReg("4.10.5 DADOS RELATIVOS SOBRE SAÚDE, EDUCAÇÃO, SEGURANÇA COMUNITÁRIA E QUESTÕES SOCIAIS, SITUAÇÕES DE VULNERABILIDADES RELACIONADAS A FAMÍLIA E SEUS MEMBROS:");
+    para(gvW("fb_4105"));
+
+    // ---------- 5 - INFORMAÇÕES COMPLEMENTARES ----------
+    banda("5 - INFORMAÇÕES COMPLEMENTARES (PROPRIEDADE)");
+    rv("5.1 Obras e Melhorias das Terras:",gvW("fb_51_obras"),{navy:true,tab:TW(64)});
+    rv("5.2 Outras Atividades:",gvW("fb_52_ativ"),{navy:true,tab:TW(64)});
+    rv("5.3 Observações:",gvW("fb_53_obs"),{navy:true,tab:TW(64)});
+    h2("5.4 Fotografias do imóvel:");
+    (function(){ const fotos=(window.FB_getFotos?window.FB_getFotos():[])||[];
+      function b64u8(d){try{const b=atob(d.split(",")[1]);const u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u;}catch(e){return null;}}
+      for(let i=0;i<fotos.length;i+=2){ const cells=[];
+        for(let j=i;j<Math.min(i+2,fotos.length);j++){ const u=b64u8(fotos[j]); const kid = u?[new Paragraph({children:[new ImageRun({data:u,transformation:{width:250,height:180}})]})]:[new Paragraph({children:[R("")]})];
+          cells.push(new TableCell({width:{size:50,type:WidthType.PERCENTAGE},borders:{top:{style:BorderStyle.NONE},bottom:{style:BorderStyle.NONE},left:{style:BorderStyle.NONE},right:{style:BorderStyle.NONE}},children:kid})); }
+        if(cells.length===1) cells.push(new TableCell({width:{size:50,type:WidthType.PERCENTAGE},borders:{top:{style:BorderStyle.NONE},bottom:{style:BorderStyle.NONE},left:{style:BorderStyle.NONE},right:{style:BorderStyle.NONE}},children:[new Paragraph({children:[R("")]})]}));
+        K.push(new Table({width:{size:100,type:WidthType.PERCENTAGE},borders:{top:{style:BorderStyle.NONE},bottom:{style:BorderStyle.NONE},left:{style:BorderStyle.NONE},right:{style:BorderStyle.NONE},insideHorizontal:{style:BorderStyle.NONE},insideVertical:{style:BorderStyle.NONE}},rows:[new TableRow({children:cells})]}));
+      }
+    })();
+    K.push(new Paragraph({spacing:{before:120},children:[R("")]}));
+    h2("Assinatura do(a) vistoriador(a)");
+    rv("Nome do(a) vistoriador(a):",gvW("fb_ass_nome"),{tab:TW(52)});
+    rv("Cargo/Função:",gvW("fb_ass_cargo"),{tab:TW(52)});
+    rv("Registro (CRESS/CREA):",gvW("fb_ass_reg"),{tab:TW(52)});
+
+    // ---------- cabeçalho (logos) e rodapé (endereços) ----------
+    function b64u8(d){if(!d)return null;try{const b=atob(d.split(",")[1]);const u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u;}catch(e){return null;}}
+    const uE=b64u8(window.__LOGO_ENPROL__), uI=b64u8(window.__LOGO_INFRA__);
+    const headerCells=[
+      new TableCell({width:{size:50,type:WidthType.PERCENTAGE},borders:{top:{style:BorderStyle.NONE},bottom:{style:BorderStyle.NONE},left:{style:BorderStyle.NONE},right:{style:BorderStyle.NONE}},children:[new Paragraph({children: uE?[new ImageRun({data:uE,transformation:{width:120,height:34}})]:[R("")]})]}),
+      new TableCell({width:{size:50,type:WidthType.PERCENTAGE},borders:{top:{style:BorderStyle.NONE},bottom:{style:BorderStyle.NONE},left:{style:BorderStyle.NONE},right:{style:BorderStyle.NONE}},children:[new Paragraph({alignment:AlignmentType.RIGHT,children: uI?[new ImageRun({data:uI,transformation:{width:120,height:34}})]:[R("")]})]})
+    ];
+    const headerTbl=new Table({width:{size:100,type:WidthType.PERCENTAGE},borders:{top:{style:BorderStyle.NONE},bottom:{style:BorderStyle.NONE},left:{style:BorderStyle.NONE},right:{style:BorderStyle.NONE},insideHorizontal:{style:BorderStyle.NONE},insideVertical:{style:BorderStyle.NONE}},rows:[new TableRow({children:headerCells})]});
+    const END=["Av. Des. Moreira, nº 1300, T. Norte, Conj. 1016/1021, Aldeota, 60.170-002, Fortaleza-CE","Rua Idelfonso Freire, nº 106, Sala 202, Centro, 56.506-520, Arcoverde-PE","Rua Pedro Batista Ferreira, nº 278, Centro, 76.500-000, Santa Terezinha de Goiás-GO","Rua Nilo Peçanha, nº 25, 1º Andar, Sala 07, Centro, 47.640-000, Santa Maria da Vitória-BA","Rua Irmã Ambrosina, nº 249, Conj 03 e 04, Centro, 61.760-405, Eusébio-CE","Rua dos Timbiras, nº 2213, Conj.1206/1209, Lourdes, 30.140-069, Belo Horizonte-MG"];
+    const footPars=END.map(l=>new Paragraph({spacing:{after:0,line:200},tabStops:[{type:TabStopType.RIGHT,position:TW(180)}],children:[new TextRun({text:l,size:12,color:"5A6B7C",font:FONT}),new TextRun({text:"\t(+55 85) 3289-6363   comercial@enprol.com.br",size:12,color:"5A6B7C",font:FONT})]}));
+
+    const doc=new Document({sections:[{properties:{page:{margin:{top:720,bottom:720,left:850,right:720}}},headers:{default:new Header({children:[headerTbl,new Paragraph({border:{bottom:{color:"1F6FC0",space:1,style:BorderStyle.SINGLE,size:6}},children:[R("")]})]})},footers:{default:new Footer({children:footPars})},children:K}]});
+    Packer.toBlob(doc).then(blob=>{const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="Ficha_Anexo_B_1.9.docx";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);});
   };
 
   // ---- Puxar dados SIM/NÃO: bloqueia (espelho) ou libera (edição manual) ----
@@ -8273,123 +8466,257 @@ function AV_gerarDescSituacao(){
     function novaPagina(){ pdf.addPage(); cabecalho(); y=topY; }
     function garantir(alturaNecessaria){ if(y+alturaNecessaria>botY){ rodape(); novaPagina(); } }
 
+    // ===================== ESTILO / PRIMITIVAS (padrão do modelo Word) =====================
+    const FS=10, LH=4.7;                         // fonte base e altura de linha
+    const NAVY=[31,56,100], BAND=[222,234,246], BLK=[0,0,0];
+    const RX=W-mR;
+    function C(c){ pdf.setTextColor(c[0],c[1],c[2]); }
+    function F(s){ pdf.setFont("helvetica", s); }
+    function gv(id){ const e=document.getElementById(id); if(!e) return ""; if(e.tagName==="SELECT"){ const o=e.options[e.selectedIndex]; return (o&&o.value)?o.text.trim():""; } return (e.value||"").trim(); }
+    function chk(id){ const e=document.getElementById(id); return !!(e&&e.checked); }
+    function sn(id){ const v=gv(id); if(/sim/i.test(v)) return "SIM"; if(/n[aã]o/i.test(v)) return "NÃO"; return v; }
+    function fam(){ return (window.FB_getFamilia?window.FB_getFamilia():[])||[]; }
+
+    // banda de seção: faixa azul-clara + título azul-marinho em negrito ("N - TÍTULO")
+    function banda(txt){ y+=2.5; garantir(9); pdf.setFillColor(BAND[0],BAND[1],BAND[2]); pdf.rect(mL, y-4.2, contentW, 6.4, "F"); F("bold"); pdf.setFontSize(10.5); C(NAVY); pdf.text(txt, mL+1.5, y+0.6); y+=8.5; pdf.setFontSize(FS); }
+
+    // subtópico "N.N" — azul-marinho negrito
+    function h2(txt){ y+=1.2; garantir(6); F("bold"); pdf.setFontSize(FS); C(NAVY); pdf.text(txt, mL, y); y+=5.2; }
+    // subtópico N.N com nome em itálico sublinhado (2.4 / 2.5)
+    function h2iu(num,name){ y+=1.2; garantir(6); pdf.setFontSize(FS); C(NAVY); F("bold"); pdf.text(num+" ", mL, y); const wx=pdf.getTextWidth(num+" "); F("bolditalic"); pdf.text(name, mL+wx, y); const uw=pdf.getTextWidth(name); pdf.setDrawColor(NAVY[0],NAVY[1],NAVY[2]); pdf.setLineWidth(0.35); pdf.line(mL+wx, y+1, mL+wx+uw, y+1); y+=5.6; }
+
+    // rótulo (preto normal, ou azul via o.navy) + valor em negrito; valTab = coluna do valor (mm a partir da margem)
+    function rv(label, val, o){ o=o||{}; const x=mL+(o.ind||0);
+      F(o.navy?"bold":"normal"); pdf.setFontSize(FS); C(o.navy?NAVY:BLK);
+      const lw=pdf.getTextWidth(label);
+      let vx = (o.valTab!==undefined) ? Math.max(mL+o.valTab, x+lw+3) : x+lw+3;
+      const availV=Math.max(RX-vx, 20);
+      const lines = val ? pdf.splitTextToSize(String(val), availV) : [];
+      const alt=Math.max(1, lines.length);
+      garantir(alt*LH+1);
+      C(o.navy?NAVY:BLK); F(o.navy?"bold":"normal"); pdf.text(label, x, y);
+      if(val){ F("bold"); C(BLK); pdf.text(lines, vx, y); }
+      y += alt*LH + (o.gap||0);
+    }
+    // dois pares rótulo:valor na mesma linha (col esquerda / col direita)
+    function rv2(l1,v1,l2,v2){ const xL=mL, xR=mL+contentW/2; garantir(LH+1);
+      F("normal"); pdf.setFontSize(FS); C(BLK);
+      pdf.text(l1, xL, y); let w1=pdf.getTextWidth(l1+" "); if(v1){ F("bold"); pdf.text(String(v1), xL+w1, y); F("normal"); }
+      pdf.text(l2, xR, y); let w2=pdf.getTextWidth(l2+" "); if(v2){ F("bold"); pdf.text(String(v2), xR+w2, y); }
+      y+=LH+0.4;
+    }
+    // parágrafo com valor em negrito, justificado (para respostas longas)
+    function para(val, ind){ if(val===undefined||val===null) val=""; const x=mL+(ind||0); const w=RX-x;
+      F("bold"); pdf.setFontSize(FS); C(BLK);
+      const lines=pdf.splitTextToSize(String(val), w);
+      lines.forEach((ln,idx)=>{ garantir(LH); const last=(idx===lines.length-1); const lw=pdf.getTextWidth(ln);
+        if(last || lw<w*0.55){ pdf.text(ln, x, y); } else { pdf.text(ln, x, y, {maxWidth:w, align:"justify"}); }
+        y+=LH; });
+    }
+    // texto instrucional / regular (não-negrito), justificado
+    function paraReg(txt, o){ o=o||{}; const x=mL+(o.ind||0); const w=RX-x;
+      F(o.i?"italic":"normal"); pdf.setFontSize(FS); C(o.navy?NAVY:BLK);
+      const lines=pdf.splitTextToSize(String(txt||""), w);
+      lines.forEach((ln,idx)=>{ garantir(LH); pdf.text(ln, x, y); y+=LH; });
+    }
+    // linha de opções tipo checkbox: "OPÇÃO ( X )" — selecionada em negrito
+    function checks(opts, ids, o){ o=o||{}; const x=mL+(o.ind||0); pdf.setFontSize(FS); C(BLK);
+      if(o.vert){ for(let k=0;k<opts.length;k++){ const on=chk(ids[k]); garantir(LH); F(on?"bold":"normal"); pdf.text(opts[k]+" ( "+(on?"X":"  ")+" )", x, y); y+=LH; } return; }
+      let cx=x; garantir(LH);
+      for(let k=0;k<opts.length;k++){ const on=chk(ids[k]); const seg=opts[k]+" ( "+(on?"X":"  ")+" )"; F(on?"bold":"normal"); const wseg=pdf.getTextWidth(seg)+5;
+        if(cx+wseg>RX+2){ y+=LH; cx=x; garantir(LH); } pdf.text(seg, cx, y); cx+=wseg; }
+      y+=LH;
+    }
+    // SIM ( ) NÃO ( X ) a partir de um select 1-Sim/2-Não
+    function simnaoBox(id){ const v=gv(id); const s=/sim/i.test(v), n=/n[aã]o/i.test(v); pdf.setFontSize(FS); C(BLK);
+      F(s?"bold":"normal"); const t1="SIM ( "+(s?"X":"  ")+" )   "; const t2="NÃO ( "+(n?"X":"  ")+" )";
+      return {t1,t2,s,n}; }
+    // tabela de composição familiar (índice 1-8 + NOME + IDADE, com bordas)
+    function tabelaFamilia(){ const dados=fam(); const rows=8; const rh=5.6;
+      const wIdx=9, wIdade=32, wNome=contentW-wIdx-wIdade;
+      garantir((rows+1)*rh+2);
+      const x0=mL, xNome=x0+wIdx, xIdade=x0+wIdx+wNome;
+      pdf.setDrawColor(80,80,80); pdf.setLineWidth(0.2);
+      // cabeçalho (NOME / IDADE) sem borda na célula do índice
+      F("bold"); pdf.setFontSize(FS); C(BLK);
+      pdf.text("NOME", xNome+wNome/2, y+3.6, {align:"center"});
+      pdf.text("IDADE", xIdade+wIdade/2, y+3.6, {align:"center"});
+      let yTop=y+rh;
+      for(let r=0;r<rows;r++){ const yy=yTop+r*rh;
+        // bordas
+        pdf.rect(x0, yy, wIdx, rh); pdf.rect(xNome, yy, wNome, rh); pdf.rect(xIdade, yy, wIdade, rh);
+        F("normal"); C(BLK); pdf.text(String(r+1), x0+wIdx/2, yy+3.8, {align:"center"});
+        const p=dados[r];
+        if(p && ((p.nome||"").trim() || (p.idade||"").trim())){ F("bold");
+          pdf.text(String(p.nome||"").toUpperCase(), xNome+1.5, yy+3.8);
+          pdf.text(String(p.idade||""), xIdade+1.5, yy+3.8); }
+      }
+      y = yTop + rows*rh + 5;
+    }
+
+    // ===================== CABEÇALHO / TÍTULO =====================
     cabecalho();
-    // Título do documento (1ª página)
-    pdf.setFont("helvetica","bold"); pdf.setFontSize(12); pdf.setTextColor(15,42,68);
-    pdf.text("FICHA DE VISTORIA E CADASTRO SOCIOECONÔMICO (ANEXO B)", W/2, y, {align:"center", maxWidth:contentW});
-    y+=8;
-    // Processo e aplicador no topo
-    const proc=(document.getElementById("fb_processo")||{}).value||"";
-    const apl=(document.getElementById("fb_aplicador")||{}).value||"";
-    const dt=(document.getElementById("fb_data")||{}).value||"";
-    pdf.setFont("helvetica","normal"); pdf.setFontSize(8.5); pdf.setTextColor(60,72,86);
-    if(proc){ pdf.text("Processo nº: "+proc, mL, y); }
-    if(apl||dt){ pdf.text((apl?("Aplicador(a): "+apl):"")+(dt?("     Data: "+dt):""), W-mR, y, {align:"right"}); }
-    y+=6;
+    // Título (tabela de topo do modelo): título + (ANEXO B) centralizados
+    F("bold"); pdf.setFontSize(12); C(BLK);
+    pdf.text("FICHA DE VISTORIA E CADASTRO SOCIOECONÔMICO", W/2, y, {align:"center", maxWidth:contentW});
+    y+=6.2; pdf.setFontSize(11);
+    pdf.text("(ANEXO B)", W/2, y, {align:"center"});
+    y+=6.5;
+    const proc=gv("fb_processo")||gv("fb_proc_preview");
+    const apl=gv("fb_aplicador");
+    const dtv=gv("fb_data");
+    pdf.setFontSize(FS);
+    F("normal"); C(BLK); pdf.text("PROCESSO Nº: ", mL, y); let wp=pdf.getTextWidth("PROCESSO Nº: "); F("bold"); pdf.text(proc||"", mL+wp, y); y+=LH+0.6;
+    F("normal"); C(BLK); pdf.text("NOME DO APLICADOR (A): ", mL, y); let wa=pdf.getTextWidth("NOME DO APLICADOR (A): "); F("bold"); pdf.text((apl||"").toUpperCase(), mL+wa, y);
+    if(dtv){ F("normal"); C(BLK); const dl="Data: "; const dw=pdf.getTextWidth(dl); pdf.text(dl, RX-dw-pdf.getTextWidth(dtv), y); F("bold"); pdf.text(dtv, RX-pdf.getTextWidth(dtv), y); }
+    y+=LH+1.5;
 
-    const secoes=FB_coletar();
-    secoes.forEach(sec=>{
-      if(sec.titulo){
-        garantir(12);
-        // barra de seção azul
-        pdf.setFillColor(31,111,192);
-        pdf.rect(mL, y-4, contentW, 7, "F");
-        pdf.setFont("helvetica","bold"); pdf.setFontSize(10); pdf.setTextColor(255,255,255);
-        pdf.text(sec.titulo, mL+3, y+0.8);
-        y+=8;
-      }
-      for(let ii=0; ii<sec.itens.length; ii++){
-        const it=sec.itens[ii];
-        if(it.tipo==="sub"){
-          garantir(9);
-          pdf.setFillColor(218,232,246); pdf.rect(mL, y-4, contentW, 6.2, "F");
-          pdf.setFont("helvetica","bold"); pdf.setFontSize(9); pdf.setTextColor(26,58,92);
-          pdf.text(it.texto, mL+2.5, y+0.6); y+=8;
-        } else if(it.tipo==="campo"){
-          // agrupa campos consecutivos com o mesmo id de linha (.vrow) lado a lado
-          let grupo=[it];
-          if(it.linha){
-            while(ii+1<sec.itens.length && sec.itens[ii+1].tipo==="campo" && sec.itens[ii+1].linha===it.linha){
-              grupo.push(sec.itens[ii+1]); ii++;
-            }
-          }
-          const colW=contentW/grupo.length;
-          // para cada campo: decide se valor cabe ao lado do rótulo ou vai para a linha de baixo
-          let maxAltura=1;
-          grupo.forEach(g=>{
-            pdf.setFont("helvetica","normal"); pdf.setFontSize(8.5);
-            const rotW=pdf.getTextWidth(g.rotulo+": ");
-            const espacoLado = colW - rotW - 2;
-            const val = g.valor||"";
-            // largura mínima aceitável para o valor ao lado (senão desce)
-            if(espacoLado >= 22 && rotW < colW*0.72){
-              g._modo="lado";
-              g._linhas = pdf.splitTextToSize(val, Math.max(espacoLado, 10));
-              g._rotW = rotW;
-              g._alt = g._linhas.length;
-            } else {
-              g._modo="abaixo";
-              g._linhas = pdf.splitTextToSize(val, colW-2);
-              g._alt = 1 + (val? g._linhas.length : 0);
-            }
-            maxAltura=Math.max(maxAltura, g._alt);
-          });
-          garantir(maxAltura*4.4+2);
-          grupo.forEach((g,ci)=>{
-            const x=mL+ci*colW;
-            pdf.setFont("helvetica","normal"); pdf.setFontSize(8.5); pdf.setTextColor(107,120,135);
-            if(g._modo==="lado"){
-              pdf.text(g.rotulo+": ", x, y);
-              pdf.setFont("helvetica","bold"); pdf.setTextColor(30,43,58);
-              if(g.valor) pdf.text(g._linhas, x+g._rotW, y);
-            } else {
-              pdf.text(g.rotulo+": ", x, y);
-              if(g.valor){
-                pdf.setFont("helvetica","bold"); pdf.setTextColor(30,43,58);
-                pdf.text(g._linhas, x, y+4.2);
-              }
-            }
-          });
-          y+=maxAltura*4.4+1.5;
-        } else if(it.tipo==="checks"){
-          // rótulo em negrito, opções (com marcação) na linha seguinte
-          pdf.setFont("helvetica","bold"); pdf.setFontSize(8.5); pdf.setTextColor(70,88,108);
-          const linhasR=pdf.splitTextToSize(it.rotulo+":", contentW);
-          garantir(linhasR.length*4.4+4);
-          pdf.text(linhasR, mL, y); y+=linhasR.length*4.4;
-          pdf.setFont("helvetica","normal"); pdf.setFontSize(8.5); pdf.setTextColor(30,43,58);
-          const opts=pdf.splitTextToSize(it.valor||"—", contentW);
-          opts.forEach(ln=>{ garantir(4.4); pdf.text(ln, mL+3, y); y+=4.4; });
-          y+=2;
-        } else if(it.tipo==="texto"){
-          pdf.setFont("helvetica","bold"); pdf.setFontSize(8.5); pdf.setTextColor(70,88,108);
-          garantir(6); pdf.text(it.rotulo+":", mL, y); y+=4.4;
-          pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58);
-          const linhas=pdf.splitTextToSize(it.valor||"—", contentW);
-          linhas.forEach((ln,idx)=>{ garantir(4.4);
-            const ehUltima=(idx===linhas.length-1);
-            const larg=pdf.getTextWidth(ln);
-            if(ehUltima || larg < contentW*0.55){ pdf.text(ln, mL, y); }
-            else { pdf.text(ln, mL, y, {maxWidth:contentW, align:"justify"}); }
-            y+=4.4; });
-          y+=1.5;
-        } else if(it.tipo==="lista"){
-          pdf.setFont("helvetica","bold"); pdf.setFontSize(8.5); pdf.setTextColor(70,88,108);
-          garantir(6); pdf.text(it.rotulo+":", mL, y); y+=4.4;
-          pdf.setFont("helvetica","normal"); pdf.setTextColor(30,43,58);
-          it.valores.forEach(ln=>{ garantir(4.4); pdf.text(ln, mL+3, y); y+=4.4; });
-          y+=1.5;
-        }
-      }
-      y+=2;
-    });
+    // ===================== 1 - IDENTIFICAÇÃO =====================
+    banda("1 - IDENTIFICAÇÃO");
+    // 1.1 / 1.2 (navy) com valor SIM/NÃO + Quais?
+    (function(){ garantir(LH+1); F("bold"); pdf.setFontSize(FS); C(NAVY); const l="1.1 Documentos dominiais (SIM/NÃO):"; pdf.text(l, mL, y); let x=mL+pdf.getTextWidth(l)+3;
+      C(BLK); F("bold"); pdf.text(sn("fb_11_dom"), x, y); x+=pdf.getTextWidth(sn("fb_11_dom"))+6;
+      F("normal"); pdf.text("Quais? ", x, y); x+=pdf.getTextWidth("Quais? "); F("bold"); const q=gv("fb_11_quais"); const availq=RX-x; pdf.text(pdf.splitTextToSize(q,availq), x, y); y+=LH*Math.max(1,pdf.splitTextToSize(q||" ",Math.max(RX-x,20)).length); })();
+    (function(){ garantir(LH+1); F("bold"); pdf.setFontSize(FS); C(NAVY); const l="1.2 Notificação Proprietário (SIM/NÃO):"; pdf.text(l, mL, y); let x=mL+pdf.getTextWidth(l)+3; C(BLK); F("bold"); pdf.text(sn("fb_12_notif"), x, y); y+=LH; })();
+    y+=2;
+    // 1.3 Proprietário(a)
+    (function(){ garantir(LH+1); F("bold"); pdf.setFontSize(FS); C(NAVY); const l="1.3 Proprietário(a) (SIM/NÃO):"; pdf.text(l, mL, y); let x=mL+pdf.getTextWidth(l)+3; C(BLK); F("bold"); const s=(/sim/i.test(gv("fb_11_dom"))||gv("fb_nome"))?"SIM":""; pdf.text(s, x, y); x+=pdf.getTextWidth(s||"")+6; F("italic"); C(BLK); pdf.text("(Se sim, preencher item 1.3.1; se não, item 1.3.2)", x, y); y+=LH; })();
+    rv("1.3.1 Nome:", gv("fb_nome"), {valTab:34});
+    (function(){ garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); pdf.text("RG:", mL, y); F("bold"); pdf.text(gv("fb_rg"), mL+34, y);
+      F("normal"); const cl="CPF: "; const cx=mL+contentW*0.62; pdf.text("CPF:", cx, y); F("bold"); pdf.text(gv("fb_cpf"), cx+pdf.getTextWidth("CPF: "), y); y+=LH; })();
+    rv("Estado Civil (Casado, solteiro, viúvo, divorciado ou união estável):", gv("fb_estcivil"), {valTab:0});
+    rv("Cônjuge:", gv("fb_conjuge"), {valTab:34});
+    rv("Endereço:", gv("fb_endereco"), {valTab:34});
+    (function(){ garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); pdf.text("Município:", mL, y); F("bold"); pdf.text(gv("fb_municipio"), mL+34, y);
+      const tx=mL+contentW*0.62; F("normal"); pdf.text("Telefone:", tx, y); F("bold"); pdf.text(gv("fb_telefone"), tx+pdf.getTextWidth("Telefone: "), y); y+=LH; })();
+    rv("1.3.2 Informante (nome):", gv("fb_inf_nome"), {valTab:44});
+    rv("Grau de parentesco:", gv("fb_411_par"), {valTab:44});
+    rv("Dados comprobatório:", gv("fb_inf_dados"), {valTab:44});
+    y+=2;
+    // 1.4 Propriedade
+    h2("1.4 Propriedade");
+    rv("Identificação:", gv("fb_prop_id"), {valTab:30});
+    rv("Endereço:", gv("fb_prop_end"), {valTab:30});
+    rv("Município:", gv("fb_prop_mun"), {valTab:30});
+    (function(){ garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); pdf.text("Área Total (ha):", mL, y); F("bold"); pdf.text(gv("fb_area_total"), mL+30, y);
+      const tx=mL+contentW*0.52; F("normal"); pdf.text("Área de desapropriação (ha):", tx, y); F("bold"); pdf.text(gv("fb_area_desap"), tx+pdf.getTextWidth("Área de desapropriação (ha): "), y); y+=LH; })();
+    (function(){ garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); pdf.text("Matrícula:", mL, y); F("bold"); pdf.text(gv("fb_matricula"), mL+30, y);
+      const tx=mL+contentW*0.52; F("normal"); pdf.text("Cartório:", tx, y); F("bold"); pdf.text(gv("fb_cartorio"), tx+pdf.getTextWidth("Cartório: "), y); y+=LH; })();
+    y+=2;
+    // 1.5 Observações
+    h2("1.5 Observações:");
+    para(gv("fb_15_obs"));
 
-    // fotografias (5.3)
+    // ===================== 2 - CARACTERIZAÇÃO DO IMÓVEL =====================
+    banda("2 - CARACTERIZAÇÃO DO IMÓVEL");
+    h2("2.1 Ambientais:"); para(gv("fb_21_amb")); y+=1.5;
+    h2("2.2 Localização:"); para(gv("fb_22_loc")); y+=1.5;
+    h2("2.3 Características Físicas:"); para(gv("fb_23_fis")); y+=1.5;
+    h2iu("2.4","IMÓVEL RURAL:");
+    rv("2.4.1 Infraestrutura:", "", {ind:4}); para(gv("fb_241_infra"), 4); y+=1;
+    rv("2.4.2 Características da terra:", gv("fb_242_terra"), {ind:4, valTab:52});
+    rv("2.4.3 Hidrografia / Vazão (m³ ou L/s):", gv("fb_243_hidro"), {ind:4, valTab:64});
+    rv("2.4.4 Informações Complementares:", "", {ind:4}); para(gv("fb_244_comp"), 4); y+=1;
+    h2iu("2.5","IMÓVEL URBANO:");
+    rv("2.5.1 Infraestrutura:", gv("fb_251_infra"), {ind:4, valTab:44});
+    rv("2.5.2 Topográfica:", gv("fb_252_topo"), {ind:4, valTab:44});
+    rv("2.5.3 Distância do centro:", gv("fb_253_dist"), {ind:4, valTab:44});
+    rv("2.5.4 Informações Complementares:", gv("fb_254_comp"), {ind:4, valTab:56});
+
+    // ===================== 3 - DESCRIÇÃO DAS BENFEITORIAS =====================
+    banda("3 - DESCRIÇÃO DAS BENFEITORIAS");
+    h2("3.1 NÃO REPRODUTIVAS:"); para(gv("fb_31_nrep")); y+=1;
+    rv("3.1.1 Benfeitorias não reprodutivas da faixa não edificante:", "", {ind:4}); para(gv("fb_311"), 4); y+=1;
+    rv("3.1.2 informações complementares:", "", {ind:4}); para(gv("fb_312"), 4); y+=1;
+    h2("3.2. REPRODUTIVAS:"); para(gv("fb_32_rep")); y+=1;
+    rv("3.2.1 Benfeitorias reprodutivas da faixa não edificante:", "", {ind:4}); para(gv("fb_321"), 4); y+=1;
+    rv("3.2.2 informações complementares:", "", {ind:4}); para(gv("fb_322"), 4);
+
+    // ===================== 4 - CARACTERIZAÇÃO SOCIOECONÔMICA =====================
+    banda("4 - CARACTERIZAÇÃO SOCIOECONÔMICA");
+    h2("4.1     IDENTIFICAÇÃO");
+    (function(){ garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const l="Proprietário(a) do imóvel (SIM/NÃO):"; pdf.text(l, mL+2, y); let x=mL+2+pdf.getTextWidth(l)+3; F("bold"); const s=(gv("fb_41_prop")); pdf.text(sn("fb_41_prop"), x, y); x+=pdf.getTextWidth(sn("fb_41_prop")||"")+6; F("normal"); pdf.text("Se NÃO preencher também item 4.1.1.", x, y); y+=LH; })();
+    rv("Nome:", gv("fb_41_nome"), {ind:2, valTab:34});
+    rv("4.1.1  Grau de parentesco:", gv("fb_411_par"), {ind:2, valTab:44});
+    h2("4.2     NATURALIDADE");
+    rv("Do município (1), outro município (2) ou outro estado (3):", (function(){ const v=gv("fb_42_nat"); const m=v.match(/\((\d)\)/); return m?m[1]:v; })(), {ind:2, valTab:0});
+    rv("Qual?", gv("fb_42_qual"), {ind:2, valTab:60});
+    rv("Há quanto tempo reside na comunidade?", gv("fb_42_tempo"), {ind:2, valTab:60});
+    h2("4.3     NÍVEL DE ESCOLARIDADE");
+    paraReg("(Analfabeto(a), alfabetizado(a), ensino fundamental, ensino médio, ensino técnico e ensino superior).", {ind:2});
+    para(gv("fb_43_esc"), 8);
+    h2("4.4     DADOS PROFISSIONAIS");
+    rv("Trabalha (SIM/NÃO):", sn("fb_44_trab"), {ind:6, valTab:44});
+    rv("Empresa em que trabalha:", gv("fb_44_empresa"), {ind:6, valTab:44});
+    rv("Tempo de trabalho:", gv("fb_44_tempo"), {ind:6, valTab:44});
+    rv("Profissão:", gv("fb_44_prof"), {ind:6, valTab:44});
+    rv("Remuneração:", gv("fb_44_remun"), {ind:6, valTab:44});
+    rv("Renda familiar:", gv("fb_44_renda"), {ind:6, valTab:44});
+    h2("4.5     COMPOSIÇÃO FAMILIAR");
+    tabelaFamilia();
+    (function(){ garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const l="4.5.1 OS FILHOS OU FAMILIARES ESTUDAM NA ESCOLA DO BAIRRO (SIM/NÃO)"; const lines=pdf.splitTextToSize(l, contentW-24); pdf.text(lines, mL, y); F("bold"); pdf.text(sn("fb_451"), RX-pdf.getTextWidth(sn("fb_451")||"  "), y); y+=lines.length*LH; })();
+    rv("Em qual bairro?", gv("fb_451_bairro"), {ind:4, valTab:36});
+    (function(){ y+=1; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const l="4.5.2 RESIDE NA MORADIA ALGUMA PESSOA COM DEFICIÊNCIA (SIM/NÃO)"; const lines=pdf.splitTextToSize(l, contentW-24); pdf.text(lines, mL, y); F("bold"); pdf.text(sn("fb_452"), RX-pdf.getTextWidth(sn("fb_452")||"  "), y); y+=lines.length*LH; })();
+    rv("Qual?", gv("fb_452_qual"), {ind:4, valTab:20});
+    (function(){ y+=1; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const l="4.5.3 RECEBE BPC – BENEFÍCIO DE PRESTAÇÃO CONTINUADA (SIM/NÃO)"; const lines=pdf.splitTextToSize(l, contentW-24); pdf.text(lines, mL, y); F("bold"); pdf.text(sn("fb_453_bpc"), RX-pdf.getTextWidth(sn("fb_453_bpc")||"  "), y); y+=lines.length*LH; })();
+    paraReg("4.5.4 DAS DOENÇAS ABAIXO CITADAS, QUAIS AS QUE ACONTECEM COM MAIS FREQUÊNCIA NA FAMÍLIA:");
+    checks(["ALERGIA","DESNUTRIÇÃO","DIARREIA","DOENÇA RESPIRATÓRIA","VERMINOSE"], ["fb_454_0","fb_454_1","fb_454_2","fb_454_3","fb_454_4"]);
+
+    // ---- 4.6 ----
+    h2("4.6     SITUAÇÃO DA MORADIA");
+    paraReg("4.6.1 TIPO DO IMÓVEL:"); checks(["TERRENO","COMÉRCIO","CASA RESIDENCIAL","CASA ABANDONADA","OUTROS"], ["fb_461_tipo_0","fb_461_tipo_1","fb_461_tipo_2","fb_461_tipo_3","fb_461_tipo_4"]);
+    rv("OUTROS:", gv("fb_461_outros"), {valTab:22});
+    paraReg("4.6.2  FORMA DE OCUPAÇÃO DA MORADIA:"); checks(["PRÓPRIA","ALUGADA","CEDIDA"], ["fb_462_ocup_0","fb_462_ocup_1","fb_462_ocup_2"]);
+    paraReg("4.6.3  NÚMERO DE FAMÍLIAS NA RESIDÊNCIA:"); checks(["UMA FAMÍLIA","DUAS FAMÍLIAS","MAIS DE DUAS FAMÍLIAS"], ["fb_463_fam_0","fb_463_fam_1","fb_463_fam_2"]);
+    paraReg("4.6.4  ESTADO DE CONSERVAÇÃO DO IMÓVEL:"); checks(["BOM","REGULAR","RUIM"], ["fb_464_cons_0","fb_464_cons_1","fb_464_cons_2"]);
+    paraReg("4.6.5  CARACTERÍSTICA DA CONSTRUÇÃO:"); checks(["ALVENARIA","MADEIRA","MISTO"], ["fb_465_constr_0","fb_465_constr_1","fb_465_constr_2"]);
+    rv("4.6.6  NÚMERO DE CÔMODOS:", gv("fb_466_comodos"), {valTab:52});
+    rv("OBS.:", "", {}); para(gv("fb_46_obs"), 4);
+    paraReg("4.6.7  SITUAÇÃO DO IMÓVEL:"); checks(["COM ESCRITURA","SEM ESCRITURA","COMPROVANTE DE COMPRA E VENDA","POSSEIRO"], ["fb_467_sit_0","fb_467_sit_1","fb_467_sit_2","fb_467_sit_3"]);
+
+    h2("4.7     INFRAESTRUTURA DO IMOVÉL:");
+    paraReg("4.7.1  ABASTECIMENTO DE ÁGUA:"); checks(["REDE PÚBLICA","POÇO","FONTE","CEDIDO POR VIZINHO","RIO"], ["fb_471_agua_0","fb_471_agua_1","fb_471_agua_2","fb_471_agua_3","fb_471_agua_4"]);
+    paraReg("4.7.2  ENERGIA ELÉTRICA:"); checks(["COM PADRÃO","SEM PADRÃO"], ["fb_472_energia_0","fb_472_energia_1"]);
+    paraReg("4.7.3  ELIMINAÇÃO DE DEJETOS:"); checks(["REDE DE ESGOTO","FOSSA SÉPTICA","VALA A CÉU ABERTO"], ["fb_473_dejetos_0","fb_473_dejetos_1","fb_473_dejetos_2"]);
+    paraReg("4.7.4  DESTINO DADO AO LIXO DOMÉSTICO:"); checks(["COLETA PÚBLICA","QUEIMADO","ENTERRADO","JOGADO EM TERRENO BALDIO"], ["fb_474_lixo_0","fb_474_lixo_1","fb_474_lixo_2","fb_474_lixo_3"]);
+
+    h2("4.8  DOS SENTIDOS DE IDENTIFICAÇÃO (AUTORRECONHECIMENTO)");
+    paraReg("*APLICÁVEL SOMENTE AS COMUNIDADES TRADICIONAIS", {i:true});
+    paraReg("4.8.1  O SR. OU A SRA. SE AUTO RECONHECE COMO:");
+    checks(["A) QUILOMBOLA","B) INDÍGENA","C) COMUNIDADE TRADICIONAL"], ["fb_481_0","fb_481_1","fb_481_2"], {vert:true});
+    (function(){ garantir(LH+1); const on=chk("fb_481_3"); F(on?"bold":"normal"); pdf.setFontSize(FS); C(BLK); const l="D) OUTROS ( "+(on?"X":"  ")+" ) – ESPECIFICAR: "; pdf.text(l, mL, y); F("bold"); pdf.text(gv("fb_481_esp"), mL+pdf.getTextWidth(l), y); y+=LH; })();
+
+    h2("4.9 APROVEITAMENTO DA TERRA:");
+    paraReg("4.9.1  USO DAS TERRAS:");
+    checks(["SECA","CHUVA"], ["fb_491_uso_0","fb_491_uso_1"]);
+    (function(){ garantir(LH+1); const on=chk("fb_491_uso_2"); F(on?"bold":"normal"); pdf.setFontSize(FS); C(BLK); const l="PLANTIO ( "+(on?"X":"  ")+" ) CARACTERIZAR: "; pdf.text(l, mL, y); F("bold"); pdf.text(gv("fb_491_plantio"), mL+pdf.getTextWidth(l), y); y+=LH; })();
+    (function(){ garantir(LH+1); const on=chk("fb_491_uso_3"); F(on?"bold":"normal"); pdf.setFontSize(FS); C(BLK); const l="CRIAÇÃO DE ANIMAIS ( "+(on?"X":"  ")+" ) CARACTERIZAR: "; pdf.text(l, mL, y); F("bold"); pdf.text(gv("fb_491_criacao"), mL+pdf.getTextWidth(l), y); y+=LH; })();
+    paraReg("4.9.2  O QUE É PRODUZIDO NA PROPRIEDADE:");
+    checks(["EXTRATIVISMO","AGRICULTURA","PECUÁRIA"], ["fb_492_prod_0","fb_492_prod_1","fb_492_prod_2"], {vert:true});
+    paraReg("4.9.3 QUAIS IMPACTOS CONCEBIDOS PELA COMUNIDADE SOBRE A CONSTRUÇÃO DA FERROVIA, E QUAL A SUA OPINIÃO?");
+    para(gv("fb_493_impactos"));
+
+    h2("4.10  OUTRAS INFORMAÇÕES");
+    paraReg("4.10.1 QUAIS AS EXPECTATIVAS FUTURAS DA FAMÍLIA EM RELAÇÃO A MORADIA ATUAL E PÓS DESAPROPRIAÇÃO:");
+    checks(["CONTINUAR MORANDO NAS REDONDEZAS DA LOCALIDADE","CONSTRUIR EM OUTRO LOCAL FORA DA LOCALIDADE"], ["fb_4101_0","fb_4101_1"], {vert:true});
+    (function(){ garantir(LH+1); const on=chk("fb_4101_2"); F(on?"bold":"normal"); pdf.setFontSize(FS); C(BLK); const l="OUTRA ( "+(on?"X":"  ")+" ): "; pdf.text(l, mL, y); F("bold"); pdf.text(gv("fb_4101_outra"), mL+pdf.getTextWidth(l), y); y+=LH; })();
+    (function(){ y+=1; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const box=simnaoBox("fb_4102"); const l="4.10.2 A FAMÍLIA RECEBE ALGUM BENEFÍCIO DO GOVERNO FEDERAL: "; const lines=pdf.splitTextToSize(l, contentW-40); pdf.text(lines, mL, y); const lastw=pdf.getTextWidth(lines[lines.length-1]); let x=mL+lastw+2; const yy=y+(lines.length-1)*LH; F(box.s?"bold":"normal"); pdf.text(box.t1, x, yy); F(box.n?"bold":"normal"); pdf.text(box.t2, x+pdf.getTextWidth(box.t1), yy); y+=lines.length*LH; })();
+    rv("QUAL:", gv("fb_4102_qual"), {valTab:16});
+    (function(){ y+=1; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const box=simnaoBox("fb_4103"); const l="4.10.3 A FAMÍLIA PARTICIPA DE ALGUM PROGRAMA DO MUNICÍPIO: "; const lines=pdf.splitTextToSize(l, contentW-40); pdf.text(lines, mL, y); const lastw=pdf.getTextWidth(lines[lines.length-1]); let x=mL+lastw+2; const yy=y+(lines.length-1)*LH; F(box.s?"bold":"normal"); pdf.text(box.t1, x, yy); F(box.n?"bold":"normal"); pdf.text(box.t2, x+pdf.getTextWidth(box.t1), yy); y+=lines.length*LH; })();
+    rv("QUAL:", gv("fb_4103_qual"), {valTab:16});
+    (function(){ y+=1; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const box=simnaoBox("fb_4104"); const l="4.10.4 A FAMÍLIA PARTICIPA DE PROJETOS E ORGANIZAÇÕES DA COMUNIDADE: "; const lines=pdf.splitTextToSize(l, contentW-40); pdf.text(lines, mL, y); const lastw=pdf.getTextWidth(lines[lines.length-1]); let x=mL+lastw+2; const yy=y+(lines.length-1)*LH; F(box.s?"bold":"normal"); pdf.text(box.t1, x, yy); F(box.n?"bold":"normal"); pdf.text(box.t2, x+pdf.getTextWidth(box.t1), yy); y+=lines.length*LH; })();
+    rv("QUAL:", gv("fb_4104_qual"), {valTab:16});
+    paraReg("4.10.5 DADOS RELATIVOS SOBRE SAÚDE, EDUCAÇÃO, SEGURANÇA COMUNITÁRIA E QUESTÕES SOCIAIS, SITUAÇÕES DE VULNERABILIDADES RELACIONADAS A FAMÍLIA E SEUS MEMBROS:");
+    para(gv("fb_4105"));
+
+    // ===================== 5 - INFORMAÇÕES COMPLEMENTARES =====================
+    banda("5 - INFORMAÇÕES COMPLEMENTARES (PROPRIEDADE)");
+    rv("5.1 Obras e Melhorias das Terras:", gv("fb_51_obras"), {navy:true, valTab:64});
+    rv("5.2 Outras Atividades:", gv("fb_52_ativ"), {navy:true, valTab:64});
+    rv("5.3 Observações:", gv("fb_53_obs"), {navy:true, valTab:64});
+    h2("5.4 Fotografias do imóvel:");
     const fotos = (window.FB_getFotos?window.FB_getFotos():[]) || [];
     if(fotos.length){
-      rodape(); novaPagina();
-      pdf.setFont("helvetica","bold"); pdf.setFontSize(10); pdf.setTextColor(23,90,159);
-      pdf.text("5.3 Fotografias do imóvel", mL, y); y+=6;
       const fw=(contentW-6)/2, fh=fw*0.72;
       let col=0;
       for(let i=0;i<fotos.length;i++){
@@ -8401,6 +8728,12 @@ function AV_gerarDescSituacao(){
       }
       if(col===1) y+=fh+5;
     }
+    // Assinatura
+    y+=6; garantir(24);
+    h2("Assinatura do(a) vistoriador(a)");
+    rv("Nome do(a) vistoriador(a):", gv("fb_ass_nome"), {valTab:52});
+    rv("Cargo/Função:", gv("fb_ass_cargo"), {valTab:52});
+    rv("Registro (CRESS/CREA):", gv("fb_ass_reg"), {valTab:52});
 
     rodape();
     pdf.save("Ficha_Anexo_B_1.9.pdf");
