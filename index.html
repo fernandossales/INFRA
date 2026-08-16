@@ -8080,12 +8080,12 @@ function AV_gerarDescSituacao(){
     const R=(t,o)=>new TextRun(Object.assign({text:String(t==null?"":t),size:SZ,font:FONT},o||{}));
     const K=[];
     const P=(children,o)=>new Paragraph(Object.assign({children:children,spacing:{after:0,line:264}},o||{}));
-    const banda=(t)=>K.push(new Paragraph({shading:{type:ShadingType.CLEAR,color:"auto",fill:BAND},spacing:{before:140,after:60},children:[R(t,{bold:true,color:NAVY})]}));
-    const h2=(t)=>K.push(P([R(t,{bold:true,color:NAVY})],{spacing:{before:120,after:70,line:264}}));
+    const banda=(t,extra)=>K.push(new Paragraph({shading:{type:ShadingType.CLEAR,color:"auto",fill:BAND},spacing:{before:140+(extra||0),after:60},children:[R(t,{bold:true,color:NAVY})]}));
+    const h2=(t,extra)=>K.push(P([R(t,{bold:true,color:NAVY})],{spacing:{before:120+(extra||0),after:70,line:264}}));
     const h2iu=(num,name)=>K.push(P([R(num+" ",{bold:true,color:NAVY}),R(name,{bold:true,italics:true,underline:{},color:NAVY})],{spacing:{before:120,after:70,line:264}}));
-    function rv(label,val,o){o=o||{};const runs=[R(label,{color:o.navy?NAVY:BLK,bold:!!o.navy})];if(o.tab){runs.push(new TextRun({text:"\t"}));}else{runs.push(R(" "));}if(val)runs.push(R(val,{bold:true}));const pp={children:runs,spacing:{after:0,line:264}};if(o.tab)pp.tabStops=[{type:TabStopType.LEFT,position:o.tab}];if(o.ind)pp.indent={left:o.ind};K.push(new Paragraph(pp));}
+    function rv(label,val,o){o=o||{};const runs=[R(label,{color:o.navy?NAVY:BLK,bold:!!o.navy})];if(o.tab){runs.push(new TextRun({text:"\t"}));}else{runs.push(R(" "));}if(val)runs.push(R(val,{bold:true}));const pp={children:runs,spacing:{after:0,line:264}};if(o.before)pp.spacing.before=o.before;if(o.tab)pp.tabStops=[{type:TabStopType.LEFT,position:o.tab}];if(o.ind)pp.indent={left:o.ind};K.push(new Paragraph(pp));}
     function line2(l1,v1,l2,v2,t1,t2){K.push(new Paragraph({spacing:{after:0,line:264},tabStops:[{type:TabStopType.LEFT,position:t1},{type:TabStopType.LEFT,position:t2}],children:[R(l1),new TextRun({text:"\t"}),R(v1,{bold:true}),new TextRun({text:"\t"}),R(l2),R(" "),R(v2,{bold:true})]}));}
-    const para=(val,ind,naoBold)=>K.push(new Paragraph({alignment:AlignmentType.JUSTIFIED,spacing:{after:60,line:264},indent:ind?{left:ind}:undefined,children:[R(val,{bold:!naoBold})]}));
+    const para=(val,ind,naoBold)=>{ if(val==null||!String(val).trim()) return; K.push(new Paragraph({alignment:AlignmentType.JUSTIFIED,spacing:{after:60,line:264},indent:ind?{left:ind}:undefined,children:[R(val,{bold:!naoBold})]})); };
     const paraReg=(t,o)=>{o=o||{};const bf=(o.gapTop!==undefined)?o.gapTop:(/^\d/.test(String(t||"").trim())?150:0);K.push(new Paragraph({spacing:{before:bf,after:0,line:264},indent:o.ind?{left:o.ind}:undefined,children:[R(t,{italics:!!o.i})]}));};
     function checks(opts,ids,o){o=o||{};if(o.vert){opts.forEach((op,k)=>{const on=chkW(ids[k]);K.push(P([R(op+" ( "+(on?"X":"  ")+" )",{bold:on})]));});return;}const runs=[];opts.forEach((op,k)=>{const on=chkW(ids[k]);runs.push(R(op+" ( "+(on?"X":"  ")+" )   ",{bold:on}));});K.push(P(runs));}
     function simnao(id){const v=gvW(id);const s=/sim/i.test(v),n=/n[aã]o/i.test(v);return [R("SIM ( "+(s?"X":"  ")+" )   ",{bold:s}),R("NÃO ( "+(n?"X":"  ")+" )",{bold:n})];}
@@ -8104,9 +8104,8 @@ function AV_gerarDescSituacao(){
     // ---------- 1 - IDENTIFICAÇÃO ----------
     banda("1 - IDENTIFICAÇÃO");
     K.push(P([R("1.1 Documentos dominiais (SIM/NÃO):",{bold:true,color:NAVY}),R("  "),R(snW("fb_11_dom"),{bold:true}),R("    Quais? "),R(gvW("fb_11_quais"),{bold:true})]));
-    K.push(P([R("1.2 Notificação Proprietário (SIM/NÃO):",{bold:true,color:NAVY}),R("  "),R(snW("fb_12_notif"),{bold:true})]));
-    K.push(new Paragraph({spacing:{after:40},children:[R("")]}));
-    K.push(P([R("1.3 Proprietário(a) (SIM/NÃO):",{bold:true,color:NAVY}),R("  "),R((gvW("fb_nome")?"SIM":""),{bold:true}),R("   "),R("(Se sim, preencher item 1.3.1; se não, item 1.3.2)",{italics:true})]));
+    K.push(new Paragraph({spacing:{before:60,after:0,line:264},children:[R("1.2 Notificação Proprietário (SIM/NÃO):",{bold:true,color:NAVY}),R("  "),R(snW("fb_12_notif"),{bold:true})]}));
+    K.push(new Paragraph({spacing:{before:60,after:0,line:264},children:[R("1.3 Proprietário(a) (SIM/NÃO):",{bold:true,color:NAVY}),R("  "),R((gvW("fb_nome")?"SIM":""),{bold:true}),R("   "),R("(Se sim, preencher item 1.3.1; se não, item 1.3.2)",{italics:true})]}));
     rv("1.3.1 Nome:",gvW("fb_nome"),{tab:TW(34)});
     line2("RG:",gvW("fb_rg"),"CPF:",gvW("fb_cpf"),TW(34),TW(112));
     rv("Estado Civil (Casado, solteiro, viúvo, divorciado ou união estável):",gvW("fb_estcivil"));
@@ -8128,7 +8127,7 @@ function AV_gerarDescSituacao(){
     para(gvW("fb_15_obs"));
 
     // ---------- 2 - CARACTERIZAÇÃO DO IMÓVEL ----------
-    banda("2 - CARACTERIZAÇÃO DO IMÓVEL");
+    banda("2 - CARACTERIZAÇÃO DO IMÓVEL", 140);
     h2("2.1 Ambientais:");para(gvW("fb_21_amb"),0,true);
     h2("2.2 Localização:");para(gvW("fb_22_loc"),0,true);
     h2("2.3 Características Físicas:");para(gvW("fb_23_fis"),0,true);
@@ -8144,7 +8143,7 @@ function AV_gerarDescSituacao(){
     rv("2.5.4 Informações Complementares:",gvW("fb_254_comp"),{ind:TW(4),tab:TW(60)});
 
     // ---------- 3 - DESCRIÇÃO DAS BENFEITORIAS ----------
-    banda("3 - DESCRIÇÃO DAS BENFEITORIAS");
+    banda("3 - DESCRIÇÃO DAS BENFEITORIAS", 140);
     h2("3.1 NÃO REPRODUTIVAS:");para(gvW("fb_31_nrep"));
     rv("3.1.1 Benfeitorias não reprodutivas da faixa não edificante:","",{ind:TW(4)});para(gvW("fb_311"),TW(4));
     rv("3.1.2 informações complementares:","",{ind:TW(4)});para(gvW("fb_312"),TW(4));
@@ -8182,30 +8181,30 @@ function AV_gerarDescSituacao(){
     paraReg("4.5.4 DAS DOENÇAS ABAIXO CITADAS, QUAIS AS QUE ACONTECEM COM MAIS FREQUÊNCIA NA FAMÍLIA:");
     checks(["ALERGIA","DESNUTRIÇÃO","DIARREIA","DOENÇA RESPIRATÓRIA","VERMINOSE"],["fb_454_0","fb_454_1","fb_454_2","fb_454_3","fb_454_4"]);
 
-    h2("4.6     SITUAÇÃO DA MORADIA");
+    h2("4.6     SITUAÇÃO DA MORADIA", 140);
     paraReg("4.6.1 TIPO DO IMÓVEL:");checks(["TERRENO","COMÉRCIO","CASA RESIDENCIAL","CASA ABANDONADA","OUTROS"],["fb_461_tipo_0","fb_461_tipo_1","fb_461_tipo_2","fb_461_tipo_3","fb_461_tipo_4"]);
     rv("OUTROS:",gvW("fb_461_outros"),{tab:TW(22)});
     paraReg("4.6.2  FORMA DE OCUPAÇÃO DA MORADIA:");checks(["PRÓPRIA","ALUGADA","CEDIDA"],["fb_462_ocup_0","fb_462_ocup_1","fb_462_ocup_2"]);
     paraReg("4.6.3  NÚMERO DE FAMÍLIAS NA RESIDÊNCIA:");checks(["UMA FAMÍLIA","DUAS FAMÍLIAS","MAIS DE DUAS FAMÍLIAS"],["fb_463_fam_0","fb_463_fam_1","fb_463_fam_2"]);
     paraReg("4.6.4  ESTADO DE CONSERVAÇÃO DO IMÓVEL:");checks(["BOM","REGULAR","RUIM"],["fb_464_cons_0","fb_464_cons_1","fb_464_cons_2"]);
     paraReg("4.6.5  CARACTERÍSTICA DA CONSTRUÇÃO:");checks(["ALVENARIA","MADEIRA","MISTO"],["fb_465_constr_0","fb_465_constr_1","fb_465_constr_2"]);
-    rv("4.6.6  NÚMERO DE CÔMODOS:",gvW("fb_466_comodos"),{tab:TW(52)});
+    rv("4.6.6  NÚMERO DE CÔMODOS:",gvW("fb_466_comodos"),{tab:TW(52),before:150});
     rv("OBS.:","");para(gvW("fb_46_obs"),TW(4));
     paraReg("4.6.7  SITUAÇÃO DO IMÓVEL:");checks(["COM ESCRITURA","SEM ESCRITURA","COMPROVANTE DE COMPRA E VENDA","POSSEIRO"],["fb_467_sit_0","fb_467_sit_1","fb_467_sit_2","fb_467_sit_3"]);
 
-    h2("4.7     INFRAESTRUTURA DO IMOVÉL:");
+    h2("4.7     INFRAESTRUTURA DO IMOVÉL:", 140);
     paraReg("4.7.1  ABASTECIMENTO DE ÁGUA:");checks(["REDE PÚBLICA","POÇO","FONTE","CEDIDO POR VIZINHO","RIO"],["fb_471_agua_0","fb_471_agua_1","fb_471_agua_2","fb_471_agua_3","fb_471_agua_4"]);
     paraReg("4.7.2  ENERGIA ELÉTRICA:");checks(["COM PADRÃO","SEM PADRÃO"],["fb_472_energia_0","fb_472_energia_1"]);
     paraReg("4.7.3  ELIMINAÇÃO DE DEJETOS:");checks(["REDE DE ESGOTO","FOSSA SÉPTICA","VALA A CÉU ABERTO"],["fb_473_dejetos_0","fb_473_dejetos_1","fb_473_dejetos_2"]);
     paraReg("4.7.4  DESTINO DADO AO LIXO DOMÉSTICO:");checks(["COLETA PÚBLICA","QUEIMADO","ENTERRADO","JOGADO EM TERRENO BALDIO"],["fb_474_lixo_0","fb_474_lixo_1","fb_474_lixo_2","fb_474_lixo_3"]);
 
-    h2("4.8  DOS SENTIDOS DE IDENTIFICAÇÃO (AUTORRECONHECIMENTO)");
+    h2("4.8  DOS SENTIDOS DE IDENTIFICAÇÃO (AUTORRECONHECIMENTO)", 140);
     paraReg("*APLICÁVEL SOMENTE AS COMUNIDADES TRADICIONAIS",{i:true});
     paraReg("4.8.1  O SR. OU A SRA. SE AUTO RECONHECE COMO:");
     checks(["A) QUILOMBOLA","B) INDÍGENA","C) COMUNIDADE TRADICIONAL"],["fb_481_0","fb_481_1","fb_481_2"],{vert:true});
     (function(){const on=chkW("fb_481_3");K.push(P([R("D) OUTROS ( "+(on?"X":"  ")+" ) – ESPECIFICAR: ",{bold:on}),R(gvW("fb_481_esp"),{bold:true})]));})();
 
-    h2("4.9 APROVEITAMENTO DA TERRA:");
+    h2("4.9 APROVEITAMENTO DA TERRA:", 140);
     paraReg("4.9.1  USO DAS TERRAS:");
     checks(["SECA","CHUVA"],["fb_491_uso_0","fb_491_uso_1"]);
     (function(){const on=chkW("fb_491_uso_2");K.push(P([R("PLANTIO ( "+(on?"X":"  ")+" ) CARACTERIZAR: ",{bold:on}),R(gvW("fb_491_plantio"),{bold:true})]));})();
@@ -8478,15 +8477,16 @@ function AV_gerarDescSituacao(){
     function fam(){ return (window.FB_getFamilia?window.FB_getFamilia():[])||[]; }
 
     // banda de seção: faixa azul-clara + título azul-marinho em negrito ("N - TÍTULO")
-    function banda(txt){ y+=2.5; garantir(9); pdf.setFillColor(BAND[0],BAND[1],BAND[2]); pdf.rect(mL, y-4.2, contentW, 6.4, "F"); F("bold"); pdf.setFontSize(10.5); C(NAVY); pdf.text(txt, mL+1.5, y+0.6); y+=8.5; pdf.setFontSize(FS); }
+    function banda(txt, extra){ y+=2.5+(extra||0); garantir(9); pdf.setFillColor(BAND[0],BAND[1],BAND[2]); pdf.rect(mL, y-4.2, contentW, 6.4, "F"); F("bold"); pdf.setFontSize(10.5); C(NAVY); pdf.text(txt, mL+1.5, y+0.6); y+=8.5; pdf.setFontSize(FS); }
 
     // subtópico "N.N" — azul-marinho negrito
-    function h2(txt){ y+=1.6; garantir(6); F("bold"); pdf.setFontSize(FS); C(NAVY); pdf.text(txt, mL, y); y+=6.4; }
+    function h2(txt, extra){ y+=1.6+(extra||0); garantir(6); F("bold"); pdf.setFontSize(FS); C(NAVY); pdf.text(txt, mL, y); y+=6.4; }
     // subtópico N.N com nome em itálico sublinhado (2.4 / 2.5)
     function h2iu(num,name){ y+=1.2; garantir(6); pdf.setFontSize(FS); C(NAVY); F("bold"); pdf.text(num+" ", mL, y); const wx=pdf.getTextWidth(num+" "); F("bolditalic"); pdf.text(name, mL+wx, y); const uw=pdf.getTextWidth(name); pdf.setDrawColor(NAVY[0],NAVY[1],NAVY[2]); pdf.setLineWidth(0.35); pdf.line(mL+wx, y+1, mL+wx+uw, y+1); y+=5.6; }
 
     // rótulo (preto normal, ou azul via o.navy) + valor em negrito; valTab = coluna do valor (mm a partir da margem)
     function rv(label, val, o){ o=o||{}; const x=mL+(o.ind||0);
+      if(o.gapTop) y+=o.gapTop;
       F(o.navy?"bold":"normal"); pdf.setFontSize(FS); C(o.navy?NAVY:BLK);
       const lw=pdf.getTextWidth(label);
       let vx = (o.valTab!==undefined) ? Math.max(mL+o.valTab, x+lw+3) : x+lw+3;
@@ -8506,7 +8506,7 @@ function AV_gerarDescSituacao(){
       y+=LH+0.4;
     }
     // parágrafo com valor em negrito, justificado (para respostas longas)
-    function para(val, ind, naoBold){ if(val===undefined||val===null) val=""; const x=mL+(ind||0); const w=RX-x;
+    function para(val, ind, naoBold){ if(val===undefined||val===null) val=""; if(!String(val).trim()) return; const x=mL+(ind||0); const w=RX-x;
       F(naoBold?"normal":"bold"); pdf.setFontSize(FS); C(BLK);
       const lines=pdf.splitTextToSize(String(val), w);
       lines.forEach((ln,idx)=>{ garantir(LH); const last=(idx===lines.length-1); const lw=pdf.getTextWidth(ln);
@@ -8578,6 +8578,7 @@ function AV_gerarDescSituacao(){
     (function(){ garantir(LH+1); F("bold"); pdf.setFontSize(FS); C(NAVY); const l="1.1 Documentos dominiais (SIM/NÃO):"; pdf.text(l, mL, y); let x=mL+pdf.getTextWidth(l)+3;
       C(BLK); F("bold"); pdf.text(sn("fb_11_dom"), x, y); x+=pdf.getTextWidth(sn("fb_11_dom"))+6;
       F("normal"); pdf.text("Quais? ", x, y); x+=pdf.getTextWidth("Quais? "); F("bold"); const q=gv("fb_11_quais"); const availq=RX-x; pdf.text(pdf.splitTextToSize(q,availq), x, y); y+=LH*Math.max(1,pdf.splitTextToSize(q||" ",Math.max(RX-x,20)).length); })();
+    y+=2;
     (function(){ garantir(LH+1); F("bold"); pdf.setFontSize(FS); C(NAVY); const l="1.2 Notificação Proprietário (SIM/NÃO):"; pdf.text(l, mL, y); let x=mL+pdf.getTextWidth(l)+3; C(BLK); F("bold"); pdf.text(sn("fb_12_notif"), x, y); y+=LH; })();
     y+=2;
     // 1.3 Proprietário(a)
@@ -8609,7 +8610,7 @@ function AV_gerarDescSituacao(){
     para(gv("fb_15_obs"));
 
     // ===================== 2 - CARACTERIZAÇÃO DO IMÓVEL =====================
-    banda("2 - CARACTERIZAÇÃO DO IMÓVEL");
+    banda("2 - CARACTERIZAÇÃO DO IMÓVEL", 4);
     h2("2.1 Ambientais:"); para(gv("fb_21_amb"), 0, true); y+=1.5;
     h2("2.2 Localização:"); para(gv("fb_22_loc"), 0, true); y+=1.5;
     h2("2.3 Características Físicas:"); para(gv("fb_23_fis"), 0, true); y+=1.5;
@@ -8625,7 +8626,7 @@ function AV_gerarDescSituacao(){
     rv("2.5.4 Informações Complementares:", gv("fb_254_comp"), {ind:4, valTab:56});
 
     // ===================== 3 - DESCRIÇÃO DAS BENFEITORIAS =====================
-    banda("3 - DESCRIÇÃO DAS BENFEITORIAS");
+    banda("3 - DESCRIÇÃO DAS BENFEITORIAS", 4);
     h2("3.1 NÃO REPRODUTIVAS:"); para(gv("fb_31_nrep")); y+=1;
     rv("3.1.1 Benfeitorias não reprodutivas da faixa não edificante:", "", {ind:4}); para(gv("fb_311"), 4); y+=1;
     rv("3.1.2 informações complementares:", "", {ind:4}); para(gv("fb_312"), 4); y+=1;
@@ -8664,30 +8665,30 @@ function AV_gerarDescSituacao(){
     checks(["ALERGIA","DESNUTRIÇÃO","DIARREIA","DOENÇA RESPIRATÓRIA","VERMINOSE"], ["fb_454_0","fb_454_1","fb_454_2","fb_454_3","fb_454_4"]);
 
     // ---- 4.6 ----
-    h2("4.6     SITUAÇÃO DA MORADIA");
+    h2("4.6     SITUAÇÃO DA MORADIA", 4);
     paraReg("4.6.1 TIPO DO IMÓVEL:"); checks(["TERRENO","COMÉRCIO","CASA RESIDENCIAL","CASA ABANDONADA","OUTROS"], ["fb_461_tipo_0","fb_461_tipo_1","fb_461_tipo_2","fb_461_tipo_3","fb_461_tipo_4"]);
     rv("OUTROS:", gv("fb_461_outros"), {valTab:22});
     paraReg("4.6.2  FORMA DE OCUPAÇÃO DA MORADIA:"); checks(["PRÓPRIA","ALUGADA","CEDIDA"], ["fb_462_ocup_0","fb_462_ocup_1","fb_462_ocup_2"]);
     paraReg("4.6.3  NÚMERO DE FAMÍLIAS NA RESIDÊNCIA:"); checks(["UMA FAMÍLIA","DUAS FAMÍLIAS","MAIS DE DUAS FAMÍLIAS"], ["fb_463_fam_0","fb_463_fam_1","fb_463_fam_2"]);
     paraReg("4.6.4  ESTADO DE CONSERVAÇÃO DO IMÓVEL:"); checks(["BOM","REGULAR","RUIM"], ["fb_464_cons_0","fb_464_cons_1","fb_464_cons_2"]);
     paraReg("4.6.5  CARACTERÍSTICA DA CONSTRUÇÃO:"); checks(["ALVENARIA","MADEIRA","MISTO"], ["fb_465_constr_0","fb_465_constr_1","fb_465_constr_2"]);
-    rv("4.6.6  NÚMERO DE CÔMODOS:", gv("fb_466_comodos"), {valTab:52});
+    rv("4.6.6  NÚMERO DE CÔMODOS:", gv("fb_466_comodos"), {valTab:52, gapTop:3.2});
     rv("OBS.:", "", {}); para(gv("fb_46_obs"), 4);
     paraReg("4.6.7  SITUAÇÃO DO IMÓVEL:"); checks(["COM ESCRITURA","SEM ESCRITURA","COMPROVANTE DE COMPRA E VENDA","POSSEIRO"], ["fb_467_sit_0","fb_467_sit_1","fb_467_sit_2","fb_467_sit_3"]);
 
-    h2("4.7     INFRAESTRUTURA DO IMOVÉL:");
+    h2("4.7     INFRAESTRUTURA DO IMOVÉL:", 4);
     paraReg("4.7.1  ABASTECIMENTO DE ÁGUA:"); checks(["REDE PÚBLICA","POÇO","FONTE","CEDIDO POR VIZINHO","RIO"], ["fb_471_agua_0","fb_471_agua_1","fb_471_agua_2","fb_471_agua_3","fb_471_agua_4"]);
     paraReg("4.7.2  ENERGIA ELÉTRICA:"); checks(["COM PADRÃO","SEM PADRÃO"], ["fb_472_energia_0","fb_472_energia_1"]);
     paraReg("4.7.3  ELIMINAÇÃO DE DEJETOS:"); checks(["REDE DE ESGOTO","FOSSA SÉPTICA","VALA A CÉU ABERTO"], ["fb_473_dejetos_0","fb_473_dejetos_1","fb_473_dejetos_2"]);
     paraReg("4.7.4  DESTINO DADO AO LIXO DOMÉSTICO:"); checks(["COLETA PÚBLICA","QUEIMADO","ENTERRADO","JOGADO EM TERRENO BALDIO"], ["fb_474_lixo_0","fb_474_lixo_1","fb_474_lixo_2","fb_474_lixo_3"]);
 
-    h2("4.8  DOS SENTIDOS DE IDENTIFICAÇÃO (AUTORRECONHECIMENTO)");
+    h2("4.8  DOS SENTIDOS DE IDENTIFICAÇÃO (AUTORRECONHECIMENTO)", 4);
     paraReg("*APLICÁVEL SOMENTE AS COMUNIDADES TRADICIONAIS", {i:true});
     paraReg("4.8.1  O SR. OU A SRA. SE AUTO RECONHECE COMO:");
     checks(["A) QUILOMBOLA","B) INDÍGENA","C) COMUNIDADE TRADICIONAL"], ["fb_481_0","fb_481_1","fb_481_2"], {vert:true});
     (function(){ garantir(LH+1); const on=chk("fb_481_3"); F(on?"bold":"normal"); pdf.setFontSize(FS); C(BLK); const l="D) OUTROS ( "+(on?"X":"  ")+" ) – ESPECIFICAR: "; pdf.text(l, mL, y); F("bold"); pdf.text(gv("fb_481_esp"), mL+pdf.getTextWidth(l), y); y+=LH; })();
 
-    h2("4.9 APROVEITAMENTO DA TERRA:");
+    h2("4.9 APROVEITAMENTO DA TERRA:", 4);
     paraReg("4.9.1  USO DAS TERRAS:");
     checks(["SECA","CHUVA"], ["fb_491_uso_0","fb_491_uso_1"]);
     (function(){ garantir(LH+1); const on=chk("fb_491_uso_2"); F(on?"bold":"normal"); pdf.setFontSize(FS); C(BLK); const l="PLANTIO ( "+(on?"X":"  ")+" ) CARACTERIZAR: "; pdf.text(l, mL, y); F("bold"); pdf.text(gv("fb_491_plantio"), mL+pdf.getTextWidth(l), y); y+=LH; })();
