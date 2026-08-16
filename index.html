@@ -8081,12 +8081,12 @@ function AV_gerarDescSituacao(){
     const K=[];
     const P=(children,o)=>new Paragraph(Object.assign({children:children,spacing:{after:0,line:264}},o||{}));
     const banda=(t)=>K.push(new Paragraph({shading:{type:ShadingType.CLEAR,color:"auto",fill:BAND},spacing:{before:140,after:60},children:[R(t,{bold:true,color:NAVY})]}));
-    const h2=(t)=>K.push(P([R(t,{bold:true,color:NAVY})],{spacing:{before:100,after:20,line:264}}));
-    const h2iu=(num,name)=>K.push(P([R(num+" ",{bold:true,color:NAVY}),R(name,{bold:true,italics:true,underline:{},color:NAVY})],{spacing:{before:100,after:20,line:264}}));
+    const h2=(t)=>K.push(P([R(t,{bold:true,color:NAVY})],{spacing:{before:120,after:70,line:264}}));
+    const h2iu=(num,name)=>K.push(P([R(num+" ",{bold:true,color:NAVY}),R(name,{bold:true,italics:true,underline:{},color:NAVY})],{spacing:{before:120,after:70,line:264}}));
     function rv(label,val,o){o=o||{};const runs=[R(label,{color:o.navy?NAVY:BLK,bold:!!o.navy})];if(o.tab){runs.push(new TextRun({text:"\t"}));}else{runs.push(R(" "));}if(val)runs.push(R(val,{bold:true}));const pp={children:runs,spacing:{after:0,line:264}};if(o.tab)pp.tabStops=[{type:TabStopType.LEFT,position:o.tab}];if(o.ind)pp.indent={left:o.ind};K.push(new Paragraph(pp));}
     function line2(l1,v1,l2,v2,t1,t2){K.push(new Paragraph({spacing:{after:0,line:264},tabStops:[{type:TabStopType.LEFT,position:t1},{type:TabStopType.LEFT,position:t2}],children:[R(l1),new TextRun({text:"\t"}),R(v1,{bold:true}),new TextRun({text:"\t"}),R(l2),R(" "),R(v2,{bold:true})]}));}
-    const para=(val,ind)=>K.push(new Paragraph({alignment:AlignmentType.JUSTIFIED,spacing:{after:60,line:264},indent:ind?{left:ind}:undefined,children:[R(val,{bold:true})]}));
-    const paraReg=(t,o)=>{o=o||{};K.push(new Paragraph({spacing:{after:0,line:264},indent:o.ind?{left:o.ind}:undefined,children:[R(t,{italics:!!o.i})]}));};
+    const para=(val,ind,naoBold)=>K.push(new Paragraph({alignment:AlignmentType.JUSTIFIED,spacing:{after:60,line:264},indent:ind?{left:ind}:undefined,children:[R(val,{bold:!naoBold})]}));
+    const paraReg=(t,o)=>{o=o||{};const bf=(o.gapTop!==undefined)?o.gapTop:(/^\d/.test(String(t||"").trim())?150:0);K.push(new Paragraph({spacing:{before:bf,after:0,line:264},indent:o.ind?{left:o.ind}:undefined,children:[R(t,{italics:!!o.i})]}));};
     function checks(opts,ids,o){o=o||{};if(o.vert){opts.forEach((op,k)=>{const on=chkW(ids[k]);K.push(P([R(op+" ( "+(on?"X":"  ")+" )",{bold:on})]));});return;}const runs=[];opts.forEach((op,k)=>{const on=chkW(ids[k]);runs.push(R(op+" ( "+(on?"X":"  ")+" )   ",{bold:on}));});K.push(P(runs));}
     function simnao(id){const v=gvW(id);const s=/sim/i.test(v),n=/n[aã]o/i.test(v);return [R("SIM ( "+(s?"X":"  ")+" )   ",{bold:s}),R("NÃO ( "+(n?"X":"  ")+" )",{bold:n})];}
     function cell(text,o){o=o||{};return new TableCell({width:{size:o.w||10,type:WidthType.PERCENTAGE},children:[new Paragraph({alignment:o.center?AlignmentType.CENTER:AlignmentType.LEFT,spacing:{after:0,line:240},children:[R(text,{bold:!!o.bold})]})]});}
@@ -8129,9 +8129,9 @@ function AV_gerarDescSituacao(){
 
     // ---------- 2 - CARACTERIZAÇÃO DO IMÓVEL ----------
     banda("2 - CARACTERIZAÇÃO DO IMÓVEL");
-    h2("2.1 Ambientais:");para(gvW("fb_21_amb"));
-    h2("2.2 Localização:");para(gvW("fb_22_loc"));
-    h2("2.3 Características Físicas:");para(gvW("fb_23_fis"));
+    h2("2.1 Ambientais:");para(gvW("fb_21_amb"),0,true);
+    h2("2.2 Localização:");para(gvW("fb_22_loc"),0,true);
+    h2("2.3 Características Físicas:");para(gvW("fb_23_fis"),0,true);
     h2iu("2.4","IMÓVEL RURAL:");
     rv("2.4.1 Infraestrutura:","",{ind:TW(4)});para(gvW("fb_241_infra"),TW(4));
     rv("2.4.2 Características da terra:",gvW("fb_242_terra"),{ind:TW(4),tab:TW(56)});
@@ -8176,9 +8176,9 @@ function AV_gerarDescSituacao(){
     tabelaFamilia();
     K.push(new Paragraph({spacing:{after:0,line:264},tabStops:[{type:TabStopType.RIGHT,position:TW(180)}],children:[R("4.5.1 OS FILHOS OU FAMILIARES ESTUDAM NA ESCOLA DO BAIRRO (SIM/NÃO)"),new TextRun({text:"\t"}),R(snW("fb_451"),{bold:true})]}));
     rv("Em qual bairro?",gvW("fb_451_bairro"),{ind:TW(4),tab:TW(36)});
-    K.push(new Paragraph({spacing:{before:40,after:0,line:264},tabStops:[{type:TabStopType.RIGHT,position:TW(180)}],children:[R("4.5.2 RESIDE NA MORADIA ALGUMA PESSOA COM DEFICIÊNCIA (SIM/NÃO)"),new TextRun({text:"\t"}),R(snW("fb_452"),{bold:true})]}));
+    K.push(new Paragraph({spacing:{before:150,after:0,line:264},tabStops:[{type:TabStopType.RIGHT,position:TW(180)}],children:[R("4.5.2 RESIDE NA MORADIA ALGUMA PESSOA COM DEFICIÊNCIA (SIM/NÃO)"),new TextRun({text:"\t"}),R(snW("fb_452"),{bold:true})]}));
     rv("Qual?",gvW("fb_452_qual"),{ind:TW(4),tab:TW(20)});
-    K.push(new Paragraph({spacing:{before:40,after:0,line:264},tabStops:[{type:TabStopType.RIGHT,position:TW(180)}],children:[R("4.5.3 RECEBE BPC – BENEFÍCIO DE PRESTAÇÃO CONTINUADA (SIM/NÃO)"),new TextRun({text:"\t"}),R(snW("fb_453_bpc"),{bold:true})]}));
+    K.push(new Paragraph({spacing:{before:150,after:0,line:264},tabStops:[{type:TabStopType.RIGHT,position:TW(180)}],children:[R("4.5.3 RECEBE BPC – BENEFÍCIO DE PRESTAÇÃO CONTINUADA (SIM/NÃO)"),new TextRun({text:"\t"}),R(snW("fb_453_bpc"),{bold:true})]}));
     paraReg("4.5.4 DAS DOENÇAS ABAIXO CITADAS, QUAIS AS QUE ACONTECEM COM MAIS FREQUÊNCIA NA FAMÍLIA:");
     checks(["ALERGIA","DESNUTRIÇÃO","DIARREIA","DOENÇA RESPIRATÓRIA","VERMINOSE"],["fb_454_0","fb_454_1","fb_454_2","fb_454_3","fb_454_4"]);
 
@@ -8481,7 +8481,7 @@ function AV_gerarDescSituacao(){
     function banda(txt){ y+=2.5; garantir(9); pdf.setFillColor(BAND[0],BAND[1],BAND[2]); pdf.rect(mL, y-4.2, contentW, 6.4, "F"); F("bold"); pdf.setFontSize(10.5); C(NAVY); pdf.text(txt, mL+1.5, y+0.6); y+=8.5; pdf.setFontSize(FS); }
 
     // subtópico "N.N" — azul-marinho negrito
-    function h2(txt){ y+=1.2; garantir(6); F("bold"); pdf.setFontSize(FS); C(NAVY); pdf.text(txt, mL, y); y+=5.2; }
+    function h2(txt){ y+=1.6; garantir(6); F("bold"); pdf.setFontSize(FS); C(NAVY); pdf.text(txt, mL, y); y+=6.4; }
     // subtópico N.N com nome em itálico sublinhado (2.4 / 2.5)
     function h2iu(num,name){ y+=1.2; garantir(6); pdf.setFontSize(FS); C(NAVY); F("bold"); pdf.text(num+" ", mL, y); const wx=pdf.getTextWidth(num+" "); F("bolditalic"); pdf.text(name, mL+wx, y); const uw=pdf.getTextWidth(name); pdf.setDrawColor(NAVY[0],NAVY[1],NAVY[2]); pdf.setLineWidth(0.35); pdf.line(mL+wx, y+1, mL+wx+uw, y+1); y+=5.6; }
 
@@ -8506,8 +8506,8 @@ function AV_gerarDescSituacao(){
       y+=LH+0.4;
     }
     // parágrafo com valor em negrito, justificado (para respostas longas)
-    function para(val, ind){ if(val===undefined||val===null) val=""; const x=mL+(ind||0); const w=RX-x;
-      F("bold"); pdf.setFontSize(FS); C(BLK);
+    function para(val, ind, naoBold){ if(val===undefined||val===null) val=""; const x=mL+(ind||0); const w=RX-x;
+      F(naoBold?"normal":"bold"); pdf.setFontSize(FS); C(BLK);
       const lines=pdf.splitTextToSize(String(val), w);
       lines.forEach((ln,idx)=>{ garantir(LH); const last=(idx===lines.length-1); const lw=pdf.getTextWidth(ln);
         if(last || lw<w*0.55){ pdf.text(ln, x, y); } else { pdf.text(ln, x, y, {maxWidth:w, align:"justify"}); }
@@ -8515,6 +8515,7 @@ function AV_gerarDescSituacao(){
     }
     // texto instrucional / regular (não-negrito), justificado
     function paraReg(txt, o){ o=o||{}; const x=mL+(o.ind||0); const w=RX-x;
+      if(o.gapTop!==undefined) y+=o.gapTop; else if(/^\d/.test(String(txt||"").trim())) y+=3.2;  // separa sub-subtópicos numerados
       F(o.i?"italic":"normal"); pdf.setFontSize(FS); C(o.navy?NAVY:BLK);
       const lines=pdf.splitTextToSize(String(txt||""), w);
       lines.forEach((ln,idx)=>{ garantir(LH); pdf.text(ln, x, y); y+=LH; });
@@ -8609,9 +8610,9 @@ function AV_gerarDescSituacao(){
 
     // ===================== 2 - CARACTERIZAÇÃO DO IMÓVEL =====================
     banda("2 - CARACTERIZAÇÃO DO IMÓVEL");
-    h2("2.1 Ambientais:"); para(gv("fb_21_amb")); y+=1.5;
-    h2("2.2 Localização:"); para(gv("fb_22_loc")); y+=1.5;
-    h2("2.3 Características Físicas:"); para(gv("fb_23_fis")); y+=1.5;
+    h2("2.1 Ambientais:"); para(gv("fb_21_amb"), 0, true); y+=1.5;
+    h2("2.2 Localização:"); para(gv("fb_22_loc"), 0, true); y+=1.5;
+    h2("2.3 Características Físicas:"); para(gv("fb_23_fis"), 0, true); y+=1.5;
     h2iu("2.4","IMÓVEL RURAL:");
     rv("2.4.1 Infraestrutura:", "", {ind:4}); para(gv("fb_241_infra"), 4); y+=1;
     rv("2.4.2 Características da terra:", gv("fb_242_terra"), {ind:4, valTab:52});
@@ -8656,9 +8657,9 @@ function AV_gerarDescSituacao(){
     tabelaFamilia();
     (function(){ garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const l="4.5.1 OS FILHOS OU FAMILIARES ESTUDAM NA ESCOLA DO BAIRRO (SIM/NÃO)"; const lines=pdf.splitTextToSize(l, contentW-24); pdf.text(lines, mL, y); F("bold"); pdf.text(sn("fb_451"), RX-pdf.getTextWidth(sn("fb_451")||"  "), y); y+=lines.length*LH; })();
     rv("Em qual bairro?", gv("fb_451_bairro"), {ind:4, valTab:36});
-    (function(){ y+=1; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const l="4.5.2 RESIDE NA MORADIA ALGUMA PESSOA COM DEFICIÊNCIA (SIM/NÃO)"; const lines=pdf.splitTextToSize(l, contentW-24); pdf.text(lines, mL, y); F("bold"); pdf.text(sn("fb_452"), RX-pdf.getTextWidth(sn("fb_452")||"  "), y); y+=lines.length*LH; })();
+    (function(){ y+=3.2; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const l="4.5.2 RESIDE NA MORADIA ALGUMA PESSOA COM DEFICIÊNCIA (SIM/NÃO)"; const lines=pdf.splitTextToSize(l, contentW-24); pdf.text(lines, mL, y); F("bold"); pdf.text(sn("fb_452"), RX-pdf.getTextWidth(sn("fb_452")||"  "), y); y+=lines.length*LH; })();
     rv("Qual?", gv("fb_452_qual"), {ind:4, valTab:20});
-    (function(){ y+=1; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const l="4.5.3 RECEBE BPC – BENEFÍCIO DE PRESTAÇÃO CONTINUADA (SIM/NÃO)"; const lines=pdf.splitTextToSize(l, contentW-24); pdf.text(lines, mL, y); F("bold"); pdf.text(sn("fb_453_bpc"), RX-pdf.getTextWidth(sn("fb_453_bpc")||"  "), y); y+=lines.length*LH; })();
+    (function(){ y+=3.2; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const l="4.5.3 RECEBE BPC – BENEFÍCIO DE PRESTAÇÃO CONTINUADA (SIM/NÃO)"; const lines=pdf.splitTextToSize(l, contentW-24); pdf.text(lines, mL, y); F("bold"); pdf.text(sn("fb_453_bpc"), RX-pdf.getTextWidth(sn("fb_453_bpc")||"  "), y); y+=lines.length*LH; })();
     paraReg("4.5.4 DAS DOENÇAS ABAIXO CITADAS, QUAIS AS QUE ACONTECEM COM MAIS FREQUÊNCIA NA FAMÍLIA:");
     checks(["ALERGIA","DESNUTRIÇÃO","DIARREIA","DOENÇA RESPIRATÓRIA","VERMINOSE"], ["fb_454_0","fb_454_1","fb_454_2","fb_454_3","fb_454_4"]);
 
