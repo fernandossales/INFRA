@@ -9415,7 +9415,7 @@ window.UFOTO_rodapeHTML=rodapeHTML;
     const D=window.docx;
     if(!D){ alert("Biblioteca Word ainda carregando. Tente novamente em instantes."); return; }
     const {Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,WidthType,BorderStyle,AlignmentType,ImageRun,ShadingType,VerticalAlign,Header,Footer,TableLayoutType}=D;
-    const LeaderType=D.LeaderType;
+    const LeaderType=D.LeaderType, HeightRule=D.HeightRule, TabStopType=D.TabStopType;
     const FONT="Calibri", BLK="000000", GRID="808080", BLUE="3C5A82";
     const CW=10336;
     const FIX=(TableLayoutType&&TableLayoutType.FIXED)||undefined;
@@ -9474,12 +9474,12 @@ window.UFOTO_rodapeHTML=rodapeHTML;
     if(g("rel_contrato")) rightKids.push(new Paragraph({alignment:AlignmentType.RIGHT,spacing:{before:800},children:[R("Contrato nº "+g("rel_contrato")+" – Cujo objeto é a prestação de serviços especializados de engenharia consultiva para a execução das atividades de desapropriação, ocupação temporária ou constituição de servidão administrativa de imóveis, gestão fundiária e regularização de passivos de desapropriação.",{size:15})]}));
     const leftCell=new TableCell({shading:{type:ShadingType.CLEAR,fill:BLUE,color:"auto"},verticalAlign:VerticalAlign.BOTTOM,margins:{top:100,bottom:800,left:160,right:80},borders:noBorders,children:[ new Paragraph({children:[R("DESP-1",{bold:true,color:"FFFFFF",size:28})]}), new Paragraph({children:[R(mesano,{bold:true,color:"FFFFFF",size:28})]}) ]});
     const rightCell=new TableCell({verticalAlign:VerticalAlign.TOP,margins:{top:180,bottom:200,left:220,right:220},borders:noBorders,children:rightKids});
-    K.push(new Table({width:{size:CW,type:WidthType.DXA},layout:FIX,columnWidths:colw([22,78]),borders:noBorders,rows:[new TableRow({children:[leftCell,rightCell]})]}));
+    K.push(new Table({width:{size:CW,type:WidthType.DXA},layout:FIX,columnWidths:colw([22,78]),borders:noBorders,rows:[new TableRow({height:(HeightRule?{value:13750,rule:HeightRule.ATLEAST}:undefined),children:[leftCell,rightCell]})]}));
 
     // ================= ÍNDICE =================
     K.push(new Paragraph({children:[R("ÍNDICE",{bold:true,size:26})],alignment:AlignmentType.CENTER,spacing:{after:220},pageBreakBefore:true}));
-    const idx=[["1.","APRESENTAÇÃO"],["1.1.","Referencial normativo e premissas gerais acerca das opções de medidas compensatórias"],["2.","IDENTIFICAÇÃO E QUALIFICAÇÃO DO PROPRIETÁRIO E DO IMÓVEL"],["3.","CADASTRO SOCIOECONÔMICO"],["3.1.","ATIVIDADE REALIZADA"],["3.2.","OBJETIVO"],["3.3.","METODOLOGIA"],["3.4.","SÍNTESE DA CARACTERIZAÇÃO SOCIOECONÔMICA"],["4.","PARECER SOCIAL"],["5.","CONCLUSÃO"],["6.","RELATÓRIO FOTOGRÁFICO DO IMÓVEL"]];
-    idx.forEach(function(it){ const n1=(it[0].length<=2); K.push(new Paragraph({spacing:{after:n1?90:50,line:264},indent:n1?undefined:{left:mm(6)},children:[R(it[0]+"  "+it[1],{bold:n1,size:20,color:"1E2B3A"})]})); });
+    const idx=[["1.","APRESENTAÇÃO","3"],["1.1.","Referencial normativo e premissas gerais acerca das opções de medidas compensatórias","3"],["2.","IDENTIFICAÇÃO E QUALIFICAÇÃO DO PROPRIETÁRIO E DO IMÓVEL","6"],["3.","CADASTRO SOCIOECONÔMICO","7"],["3.1.","ATIVIDADE REALIZADA","7"],["3.2.","OBJETIVO","7"],["3.3.","METODOLOGIA","7"],["3.4.","SÍNTESE DA CARACTERIZAÇÃO SOCIOECONÔMICA","8"],["4.","PARECER SOCIAL","10"],["5.","CONCLUSÃO","13"],["6.","RELATÓRIO FOTOGRÁFICO DO IMÓVEL","14"]];
+    idx.forEach(function(it){ const n1=(it[0].length<=2); K.push(new Paragraph({spacing:{after:n1?100:60,line:264},indent:n1?undefined:{left:mm(6)},tabStops:[{type:TabStopType.RIGHT,position:CW,leader:(LeaderType&&LeaderType.DOT)||undefined}],children:[R(it[0]+"  "+it[1],{bold:n1,size:20,color:"1E2B3A"}),new TextRun({text:"\t"}),R(it[2],{bold:n1,size:20,color:"1E2B3A"})]})); });
 
     // ================= 1. APRESENTAÇÃO =================
     K.push(new Paragraph({children:[R("")],pageBreakBefore:true,spacing:{after:0}}));
