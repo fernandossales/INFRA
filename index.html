@@ -8732,59 +8732,59 @@ function AV_gerarDescSituacao(){
     rv("Renda familiar:", gv("fb_44_renda"), {ind:6, valTab:44});
     h2("4.5     COMPOSIÇÃO FAMILIAR");
     tabelaFamilia();
-    (function(){ garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const l="4.5.1 OS FILHOS OU FAMILIARES ESTUDAM NA ESCOLA DO BAIRRO (SIM/NÃO)"; const lines=pdf.splitTextToSize(l, contentW-24); pdf.text(lines, mL, y); F("bold"); pdf.text(sn("fb_451"), RX-pdf.getTextWidth(sn("fb_451")||"  "), y); y+=lines.length*LH; })();
+    (function(){ garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const l="4.5.1 Os filhos ou familiares estudam na escola do bairro (SIM/NÃO)"; const lines=pdf.splitTextToSize(l, contentW-24); pdf.text(lines, mL, y); F("bold"); pdf.text(sn("fb_451"), RX-pdf.getTextWidth(sn("fb_451")||"  "), y); y+=lines.length*LH; })();
     rv("Em qual bairro?", gv("fb_451_bairro"), {ind:4, valTab:36});
-    (function(){ y+=3.2; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const l="4.5.2 RESIDE NA MORADIA ALGUMA PESSOA COM DEFICIÊNCIA (SIM/NÃO)"; const lines=pdf.splitTextToSize(l, contentW-24); pdf.text(lines, mL, y); F("bold"); pdf.text(sn("fb_452"), RX-pdf.getTextWidth(sn("fb_452")||"  "), y); y+=lines.length*LH; })();
+    (function(){ y+=3.2; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const l="4.5.2 Reside na moradia alguma pessoa com deficiência (SIM/NÃO)"; const lines=pdf.splitTextToSize(l, contentW-24); pdf.text(lines, mL, y); F("bold"); pdf.text(sn("fb_452"), RX-pdf.getTextWidth(sn("fb_452")||"  "), y); y+=lines.length*LH; })();
     rv("Qual?", gv("fb_452_qual"), {ind:4, valTab:20});
-    (function(){ y+=3.2; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const l="4.5.3 RECEBE BPC – BENEFÍCIO DE PRESTAÇÃO CONTINUADA (SIM/NÃO)"; const lines=pdf.splitTextToSize(l, contentW-24); pdf.text(lines, mL, y); F("bold"); pdf.text(sn("fb_453_bpc"), RX-pdf.getTextWidth(sn("fb_453_bpc")||"  "), y); y+=lines.length*LH; })();
-    paraReg("4.5.4 DAS DOENÇAS ABAIXO CITADAS, QUAIS AS QUE ACONTECEM COM MAIS FREQUÊNCIA NA FAMÍLIA:");
-    checks(["ALERGIA","DESNUTRIÇÃO","DIARREIA","DOENÇA RESPIRATÓRIA","VERMINOSE"], ["fb_454_0","fb_454_1","fb_454_2","fb_454_3","fb_454_4"]);
+    (function(){ y+=3.2; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const l="4.5.3 Recebe BPC – Benefício de Prestação Continuada (SIM/NÃO)"; const lines=pdf.splitTextToSize(l, contentW-24); pdf.text(lines, mL, y); F("bold"); pdf.text(sn("fb_453_bpc"), RX-pdf.getTextWidth(sn("fb_453_bpc")||"  "), y); y+=lines.length*LH; })();
+    paraReg("4.5.4 Das doenças abaixo citadas, quais as que acontecem com mais frequência na família:");
+    checks(["Alergia","Desnutrição","Diarreia","Doença respiratória","Verminose"], ["fb_454_0","fb_454_1","fb_454_2","fb_454_3","fb_454_4"]);
 
     // ---- 4.6 ----
     h2("4.6     SITUAÇÃO DA MORADIA", 4);
-    paraReg("4.6.1 TIPO DO IMÓVEL:"); checks(["TERRENO","COMÉRCIO","CASA RESIDENCIAL","CASA ABANDONADA","OUTROS"], ["fb_461_tipo_0","fb_461_tipo_1","fb_461_tipo_2","fb_461_tipo_3","fb_461_tipo_4"]);
-    rv("OUTROS:", gv("fb_461_outros"), {valTab:22});
-    paraReg("4.6.2  FORMA DE OCUPAÇÃO DA MORADIA:"); checks(["PRÓPRIA","ALUGADA","CEDIDA"], ["fb_462_ocup_0","fb_462_ocup_1","fb_462_ocup_2"]);
-    paraReg("4.6.3  NÚMERO DE FAMÍLIAS NA RESIDÊNCIA:"); checks(["UMA FAMÍLIA","DUAS FAMÍLIAS","MAIS DE DUAS FAMÍLIAS"], ["fb_463_fam_0","fb_463_fam_1","fb_463_fam_2"]);
-    paraReg("4.6.4  ESTADO DE CONSERVAÇÃO DO IMÓVEL:"); checks(["BOM","REGULAR","RUIM"], ["fb_464_cons_0","fb_464_cons_1","fb_464_cons_2"]);
-    paraReg("4.6.5  CARACTERÍSTICA DA CONSTRUÇÃO:"); checks(["ALVENARIA","MADEIRA","MISTO"], ["fb_465_constr_0","fb_465_constr_1","fb_465_constr_2"]);
-    rv("4.6.6  NÚMERO DE CÔMODOS:", gv("fb_466_comodos"), {valTab:52, gapTop:3.2});
-    rv("OBS.:", "", {}); para(gv("fb_46_obs"), 4);
-    paraReg("4.6.7  SITUAÇÃO DO IMÓVEL:"); checks(["COM ESCRITURA","SEM ESCRITURA","COMPROVANTE DE COMPRA E VENDA","POSSEIRO","TÍTULO DE POSSE DO INCRA"], ["fb_467_sit_0","fb_467_sit_1","fb_467_sit_2","fb_467_sit_3","fb_467_sit_4"]);
+    paraReg("4.6.1 Tipo do imóvel:"); checks(["Terreno","Comércio","Casa residencial","Casa abandonada","Outros"], ["fb_461_tipo_0","fb_461_tipo_1","fb_461_tipo_2","fb_461_tipo_3","fb_461_tipo_4"]);
+    rv("Outros:", gv("fb_461_outros"), {valTab:22});
+    paraReg("4.6.2  Forma de ocupação da moradia:"); checks(["Própria","Alugada","Cedida"], ["fb_462_ocup_0","fb_462_ocup_1","fb_462_ocup_2"]);
+    paraReg("4.6.3  Número de famílias na residência:"); checks(["Uma família","Duas famílias","Mais de duas famílias"], ["fb_463_fam_0","fb_463_fam_1","fb_463_fam_2"]);
+    paraReg("4.6.4  Estado de conservação do imóvel:"); checks(["Bom","Regular","Ruim"], ["fb_464_cons_0","fb_464_cons_1","fb_464_cons_2"]);
+    paraReg("4.6.5  Característica da construção:"); checks(["Alvenaria","Madeira","Misto"], ["fb_465_constr_0","fb_465_constr_1","fb_465_constr_2"]);
+    rv("4.6.6  Número de cômodos:", gv("fb_466_comodos"), {valTab:52, gapTop:3.2});
+    rv("Obs.:", "", {}); para(gv("fb_46_obs"), 4);
+    paraReg("4.6.7  Situação do imóvel:"); checks(["Com escritura","Sem escritura","Comprovante de compra e venda","Posseiro","Título de posse do INCRA"], ["fb_467_sit_0","fb_467_sit_1","fb_467_sit_2","fb_467_sit_3","fb_467_sit_4"]);
 
     h2("4.7     INFRAESTRUTURA DO IMOVÉL:", 4);
-    paraReg("4.7.1  ABASTECIMENTO DE ÁGUA:"); checks(["REDE PÚBLICA","POÇO","FONTE","CEDIDO POR VIZINHO","RIO"], ["fb_471_agua_0","fb_471_agua_1","fb_471_agua_2","fb_471_agua_3","fb_471_agua_4"]);
-    paraReg("4.7.2  ENERGIA ELÉTRICA:"); checks(["COM PADRÃO","SEM PADRÃO"], ["fb_472_energia_0","fb_472_energia_1"]);
-    paraReg("4.7.3  ELIMINAÇÃO DE DEJETOS:"); checks(["REDE DE ESGOTO","FOSSA SÉPTICA","VALA A CÉU ABERTO"], ["fb_473_dejetos_0","fb_473_dejetos_1","fb_473_dejetos_2"]);
-    paraReg("4.7.4  DESTINO DADO AO LIXO DOMÉSTICO:"); checks(["COLETA PÚBLICA","QUEIMADO","ENTERRADO","JOGADO EM TERRENO BALDIO"], ["fb_474_lixo_0","fb_474_lixo_1","fb_474_lixo_2","fb_474_lixo_3"]);
+    paraReg("4.7.1  Abastecimento de água:"); checks(["Rede pública","Poço","Fonte","Cedido por vizinho","Rio"], ["fb_471_agua_0","fb_471_agua_1","fb_471_agua_2","fb_471_agua_3","fb_471_agua_4"]);
+    paraReg("4.7.2  Energia elétrica:"); checks(["Com padrão","Sem padrão"], ["fb_472_energia_0","fb_472_energia_1"]);
+    paraReg("4.7.3  Eliminação de dejetos:"); checks(["Rede de esgoto","Fossa séptica","Vala a céu aberto"], ["fb_473_dejetos_0","fb_473_dejetos_1","fb_473_dejetos_2"]);
+    paraReg("4.7.4  Destino dado ao lixo doméstico:"); checks(["Coleta pública","Queimado","Enterrado","Jogado em terreno baldio"], ["fb_474_lixo_0","fb_474_lixo_1","fb_474_lixo_2","fb_474_lixo_3"]);
 
     h2("4.8  DOS SENTIDOS DE IDENTIFICAÇÃO (AUTORRECONHECIMENTO)", 4);
-    paraReg("*APLICÁVEL SOMENTE AS COMUNIDADES TRADICIONAIS", {i:true});
-    paraReg("4.8.1  O SR. OU A SRA. SE AUTO RECONHECE COMO:");
-    checks(["A) QUILOMBOLA","B) INDÍGENA","C) COMUNIDADE TRADICIONAL"], ["fb_481_0","fb_481_1","fb_481_2"], {vert:true});
-    (function(){ garantir(LH+1); const on=chk("fb_481_3"); F(on?"bold":"normal"); pdf.setFontSize(FS); C(BLK); const l="D) OUTROS ( "+(on?"X":"  ")+" ) – ESPECIFICAR: "; pdf.text(l, mL, y); F("bold"); pdf.text(gv("fb_481_esp"), mL+pdf.getTextWidth(l), y); y+=LH; })();
+    paraReg("*Aplicável somente às comunidades tradicionais", {i:true});
+    paraReg("4.8.1  O Sr. ou a Sra. se autorreconhece como:");
+    checks(["A) Quilombola","B) Indígena","C) Comunidade tradicional"], ["fb_481_0","fb_481_1","fb_481_2"], {vert:true});
+    (function(){ garantir(LH+1); const on=chk("fb_481_3"); F(on?"bold":"normal"); pdf.setFontSize(FS); C(BLK); const l="D) Outros ( "+(on?"X":"  ")+" ) – especificar: "; pdf.text(l, mL, y); F("bold"); pdf.text(gv("fb_481_esp"), mL+pdf.getTextWidth(l), y); y+=LH; })();
 
     h2("4.9 APROVEITAMENTO DA TERRA:", 4);
-    paraReg("4.9.1  USO DAS TERRAS:");
-    checks(["SECA","CHUVA"], ["fb_491_uso_0","fb_491_uso_1"]);
-    (function(){ garantir(LH+1); const on=chk("fb_491_uso_2"); F(on?"bold":"normal"); pdf.setFontSize(FS); C(BLK); const l="PLANTIO ( "+(on?"X":"  ")+" ) CARACTERIZAR: "; pdf.text(l, mL, y); F("bold"); pdf.text(gv("fb_491_plantio"), mL+pdf.getTextWidth(l), y); y+=LH; })();
-    (function(){ garantir(LH+1); const on=chk("fb_491_uso_3"); F(on?"bold":"normal"); pdf.setFontSize(FS); C(BLK); const l="CRIAÇÃO DE ANIMAIS ( "+(on?"X":"  ")+" ) CARACTERIZAR: "; pdf.text(l, mL, y); F("bold"); pdf.text(gv("fb_491_criacao"), mL+pdf.getTextWidth(l), y); y+=LH; })();
-    paraReg("4.9.2  O QUE É PRODUZIDO NA PROPRIEDADE:");
-    checks(["EXTRATIVISMO","AGRICULTURA","PECUÁRIA"], ["fb_492_prod_0","fb_492_prod_1","fb_492_prod_2"], {vert:true});
-    paraReg("4.9.3 QUAIS IMPACTOS CONCEBIDOS PELA COMUNIDADE SOBRE A CONSTRUÇÃO DA FERROVIA, E QUAL A SUA OPINIÃO?");
+    paraReg("4.9.1  Uso das terras:");
+    checks(["Seca","Chuva"], ["fb_491_uso_0","fb_491_uso_1"]);
+    (function(){ garantir(LH+1); const on=chk("fb_491_uso_2"); F(on?"bold":"normal"); pdf.setFontSize(FS); C(BLK); const l="Plantio ( "+(on?"X":"  ")+" ) caracterizar: "; pdf.text(l, mL, y); F("bold"); pdf.text(gv("fb_491_plantio"), mL+pdf.getTextWidth(l), y); y+=LH; })();
+    (function(){ garantir(LH+1); const on=chk("fb_491_uso_3"); F(on?"bold":"normal"); pdf.setFontSize(FS); C(BLK); const l="Criação de animais ( "+(on?"X":"  ")+" ) caracterizar: "; pdf.text(l, mL, y); F("bold"); pdf.text(gv("fb_491_criacao"), mL+pdf.getTextWidth(l), y); y+=LH; })();
+    paraReg("4.9.2  O que é produzido na propriedade:");
+    checks(["Extrativismo","Agricultura","Pecuária"], ["fb_492_prod_0","fb_492_prod_1","fb_492_prod_2"], {vert:true});
+    paraReg("4.9.3 Quais impactos concebidos pela comunidade sobre a construção da ferrovia, e qual a sua opinião?");
     para(gv("fb_493_impactos"));
 
     h2("4.10  OUTRAS INFORMAÇÕES");
-    paraReg("4.10.1 QUAIS AS EXPECTATIVAS FUTURAS DA FAMÍLIA EM RELAÇÃO A MORADIA ATUAL E PÓS DESAPROPRIAÇÃO:");
-    checks(["CONTINUAR MORANDO NAS REDONDEZAS DA LOCALIDADE","CONSTRUIR EM OUTRO LOCAL FORA DA LOCALIDADE"], ["fb_4101_0","fb_4101_1"], {vert:true});
-    (function(){ garantir(LH+1); const on=chk("fb_4101_2"); F(on?"bold":"normal"); pdf.setFontSize(FS); C(BLK); const l="OUTRA ( "+(on?"X":"  ")+" ): "; pdf.text(l, mL, y); F("bold"); pdf.text(gv("fb_4101_outra"), mL+pdf.getTextWidth(l), y); y+=LH; })();
-    (function(){ y+=1; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const box=simnaoBox("fb_4102"); const l="4.10.2 A FAMÍLIA RECEBE ALGUM BENEFÍCIO DO GOVERNO FEDERAL: "; const lines=pdf.splitTextToSize(l, contentW-40); pdf.text(lines, mL, y); const lastw=pdf.getTextWidth(lines[lines.length-1]); let x=mL+lastw+2; const yy=y+(lines.length-1)*LH; F(box.s?"bold":"normal"); pdf.text(box.t1, x, yy); F(box.n?"bold":"normal"); pdf.text(box.t2, x+pdf.getTextWidth(box.t1), yy); y+=lines.length*LH; })();
-    rv("QUAL:", gv("fb_4102_qual"), {valTab:16});
-    (function(){ y+=1; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const box=simnaoBox("fb_4103"); const l="4.10.3 A FAMÍLIA PARTICIPA DE ALGUM PROGRAMA DO MUNICÍPIO: "; const lines=pdf.splitTextToSize(l, contentW-40); pdf.text(lines, mL, y); const lastw=pdf.getTextWidth(lines[lines.length-1]); let x=mL+lastw+2; const yy=y+(lines.length-1)*LH; F(box.s?"bold":"normal"); pdf.text(box.t1, x, yy); F(box.n?"bold":"normal"); pdf.text(box.t2, x+pdf.getTextWidth(box.t1), yy); y+=lines.length*LH; })();
-    rv("QUAL:", gv("fb_4103_qual"), {valTab:16});
-    (function(){ y+=1; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const box=simnaoBox("fb_4104"); const l="4.10.4 A FAMÍLIA PARTICIPA DE PROJETOS E ORGANIZAÇÕES DA COMUNIDADE: "; const lines=pdf.splitTextToSize(l, contentW-40); pdf.text(lines, mL, y); const lastw=pdf.getTextWidth(lines[lines.length-1]); let x=mL+lastw+2; const yy=y+(lines.length-1)*LH; F(box.s?"bold":"normal"); pdf.text(box.t1, x, yy); F(box.n?"bold":"normal"); pdf.text(box.t2, x+pdf.getTextWidth(box.t1), yy); y+=lines.length*LH; })();
-    rv("QUAL:", gv("fb_4104_qual"), {valTab:16});
-    paraReg("4.10.5 DADOS RELATIVOS SOBRE SAÚDE, EDUCAÇÃO, SEGURANÇA COMUNITÁRIA E QUESTÕES SOCIAIS, SITUAÇÕES DE VULNERABILIDADES RELACIONADAS A FAMÍLIA E SEUS MEMBROS:");
+    paraReg("4.10.1 Quais as expectativas futuras da família em relação à moradia atual e pós desapropriação:");
+    checks(["Continuar morando nas redondezas da localidade","Construir em outro local fora da localidade"], ["fb_4101_0","fb_4101_1"], {vert:true});
+    (function(){ garantir(LH+1); const on=chk("fb_4101_2"); F(on?"bold":"normal"); pdf.setFontSize(FS); C(BLK); const l="Outra ( "+(on?"X":"  ")+" ): "; pdf.text(l, mL, y); F("bold"); pdf.text(gv("fb_4101_outra"), mL+pdf.getTextWidth(l), y); y+=LH; })();
+    (function(){ y+=1; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const box=simnaoBox("fb_4102"); const l="4.10.2 A família recebe algum benefício do Governo Federal: "; const lines=pdf.splitTextToSize(l, contentW-40); pdf.text(lines, mL, y); const lastw=pdf.getTextWidth(lines[lines.length-1]); let x=mL+lastw+2; const yy=y+(lines.length-1)*LH; F(box.s?"bold":"normal"); pdf.text(box.t1, x, yy); F(box.n?"bold":"normal"); pdf.text(box.t2, x+pdf.getTextWidth(box.t1), yy); y+=lines.length*LH; })();
+    rv("Qual:", gv("fb_4102_qual"), {valTab:16});
+    (function(){ y+=1; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const box=simnaoBox("fb_4103"); const l="4.10.3 A família participa de algum programa do município: "; const lines=pdf.splitTextToSize(l, contentW-40); pdf.text(lines, mL, y); const lastw=pdf.getTextWidth(lines[lines.length-1]); let x=mL+lastw+2; const yy=y+(lines.length-1)*LH; F(box.s?"bold":"normal"); pdf.text(box.t1, x, yy); F(box.n?"bold":"normal"); pdf.text(box.t2, x+pdf.getTextWidth(box.t1), yy); y+=lines.length*LH; })();
+    rv("Qual:", gv("fb_4103_qual"), {valTab:16});
+    (function(){ y+=1; garantir(LH+1); F("normal"); pdf.setFontSize(FS); C(BLK); const box=simnaoBox("fb_4104"); const l="4.10.4 A família participa de projetos e organizações da comunidade: "; const lines=pdf.splitTextToSize(l, contentW-40); pdf.text(lines, mL, y); const lastw=pdf.getTextWidth(lines[lines.length-1]); let x=mL+lastw+2; const yy=y+(lines.length-1)*LH; F(box.s?"bold":"normal"); pdf.text(box.t1, x, yy); F(box.n?"bold":"normal"); pdf.text(box.t2, x+pdf.getTextWidth(box.t1), yy); y+=lines.length*LH; })();
+    rv("Qual:", gv("fb_4104_qual"), {valTab:16});
+    paraReg("4.10.5 Dados relativos sobre saúde, educação, segurança comunitária e questões sociais, situações de vulnerabilidades relacionadas à família e seus membros:");
     para(gv("fb_4105"));
 
     // ===================== 5 - INFORMAÇÕES COMPLEMENTARES =====================
