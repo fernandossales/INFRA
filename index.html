@@ -8326,12 +8326,16 @@ function AV_gerarDescSituacao(){
     h2("5.4 Fotografias do imóvel:");
     (function(){ const fotos=(window.FB_getFotos?window.FB_getFotos():[])||[];
       function b64u8(d){try{const b=atob(d.split(",")[1]);const u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u;}catch(e){return null;}}
+      const noB={top:{style:BorderStyle.NONE},bottom:{style:BorderStyle.NONE},left:{style:BorderStyle.NONE},right:{style:BorderStyle.NONE}};
+      const rows=[];
       for(let i=0;i<fotos.length;i+=2){ const cells=[];
         for(let j=i;j<Math.min(i+2,fotos.length);j++){ const u=b64u8(fotos[j]); const kid = u?[new Paragraph({children:[new ImageRun({data:u,transformation:{width:250,height:180}})]})]:[new Paragraph({children:[R("")]})];
-          cells.push(new TableCell({width:{size:50,type:WidthType.PERCENTAGE},borders:{top:{style:BorderStyle.NONE},bottom:{style:BorderStyle.NONE},left:{style:BorderStyle.NONE},right:{style:BorderStyle.NONE}},children:kid})); }
-        if(cells.length===1) cells.push(new TableCell({width:{size:50,type:WidthType.PERCENTAGE},borders:{top:{style:BorderStyle.NONE},bottom:{style:BorderStyle.NONE},left:{style:BorderStyle.NONE},right:{style:BorderStyle.NONE}},children:[new Paragraph({children:[R("")]})]}));
-        K.push(new Table({width:{size:100,type:WidthType.PERCENTAGE},borders:{top:{style:BorderStyle.NONE},bottom:{style:BorderStyle.NONE},left:{style:BorderStyle.NONE},right:{style:BorderStyle.NONE},insideHorizontal:{style:BorderStyle.NONE},insideVertical:{style:BorderStyle.NONE}},rows:[new TableRow({children:cells})]}));
+          cells.push(new TableCell({width:{size:50,type:WidthType.PERCENTAGE},borders:noB,children:kid})); }
+        if(cells.length===1) cells.push(new TableCell({width:{size:50,type:WidthType.PERCENTAGE},borders:noB,children:[new Paragraph({children:[R("")]})]}));
+        rows.push(new TableRow({children:cells}));
       }
+      // Uma única tabela (evita tabelas adjacentes que corrompem o .docx no Word)
+      if(rows.length){ K.push(new Table({width:{size:100,type:WidthType.PERCENTAGE},borders:{top:{style:BorderStyle.NONE},bottom:{style:BorderStyle.NONE},left:{style:BorderStyle.NONE},right:{style:BorderStyle.NONE},insideHorizontal:{style:BorderStyle.NONE},insideVertical:{style:BorderStyle.NONE}},rows:rows})); }
     })();
     K.push(new Paragraph({spacing:{before:120},children:[R("")]}));
     h2("Assinatura do(a) vistoriador(a)");
@@ -9402,90 +9406,128 @@ window.UFOTO_rodapeHTML=rodapeHTML;
   // Word (.doc) do Relatório com o layout aprovado (capa faixa azul + índice + seções + tabelas)
   window.REL_gerarWord=async function(opts){
     if(window.REL_syncFotos) window.REL_syncFotos();
-    if(!window.WORD_htmlDoc){ alert("Módulo Word não carregado."); return; }
-    const E=window.WORD_esc;
+    const D=window.docx;
+    if(!D){ alert("Biblioteca Word ainda carregando. Tente novamente em instantes."); return; }
+    const {Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,WidthType,BorderStyle,AlignmentType,ImageRun,ShadingType,VerticalAlign,Header,Footer}=D;
+    const FONT="Calibri", NAVY="14294A", SECBG="DAE8F6", GRID="B9C4D0", BLUE="3C5A82";
+    function b64u8(d){ if(!d) return null; try{const b=atob(d.split(",")[1]);const u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u;}catch(e){return null;} }
+    const R=(t,o)=>{o=o||{};return new TextRun({text:(t==null?"":String(t)),font:FONT,size:o.size||22,bold:!!o.bold,italics:!!o.italics,color:o.color||"222222"});};
+    const NB={style:BorderStyle.NONE,size:0,color:"FFFFFF"};
+    const noBorders={top:NB,bottom:NB,left:NB,right:NB,insideHorizontal:NB,insideVertical:NB};
+    const cellBorder={top:{style:BorderStyle.SINGLE,size:4,color:GRID},bottom:{style:BorderStyle.SINGLE,size:4,color:GRID},left:{style:BorderStyle.SINGLE,size:4,color:GRID},right:{style:BorderStyle.SINGLE,size:4,color:GRID}};
+    const tableBorders={top:{style:BorderStyle.SINGLE,size:4,color:GRID},bottom:{style:BorderStyle.SINGLE,size:4,color:GRID},left:{style:BorderStyle.SINGLE,size:4,color:GRID},right:{style:BorderStyle.SINGLE,size:4,color:GRID},insideHorizontal:{style:BorderStyle.SINGLE,size:4,color:GRID},insideVertical:{style:BorderStyle.SINGLE,size:4,color:GRID}};
+    const cellM={top:40,bottom:40,left:80,right:80};
+    const K=[];
+    function sec(t){ K.push(new Paragraph({children:[R(t,{bold:true,size:22,color:"1A3A5C"})],alignment:AlignmentType.CENTER,spacing:{before:220,after:120},shading:{type:ShadingType.CLEAR,fill:SECBG,color:"auto"}})); }
+    function sub(t){ K.push(new Paragraph({children:[R(t,{bold:true,size:22,color:"2A4D6E"})],spacing:{before:160,after:60}})); }
+    function par(t){ if(!t) return; String(t).split("\n").forEach(function(line){ if(line.trim()) K.push(new Paragraph({children:[R(line.trim())],alignment:AlignmentType.JUSTIFIED,spacing:{after:120,line:360}})); }); }
+    function hcell(t,o){o=o||{};return new TableCell({width:o.w?{size:o.w,type:WidthType.PERCENTAGE}:undefined,shading:{type:ShadingType.CLEAR,fill:SECBG,color:"auto"},borders:cellBorder,margins:cellM,children:[new Paragraph({children:[R(t,{bold:true,size:18,color:"1A3A5C"})],alignment:o.align||AlignmentType.CENTER})]});}
+    function dcell(t,o){o=o||{};return new TableCell({width:o.w?{size:o.w,type:WidthType.PERCENTAGE}:undefined,shading:o.fill?{type:ShadingType.CLEAR,fill:o.fill,color:"auto"}:undefined,borders:cellBorder,margins:cellM,children:[new Paragraph({children:[R(t,{size:18,bold:!!o.bold})],alignment:o.align||AlignmentType.LEFT})]});}
+
     const mesano = g("rel_mesano") || (new Date()).toLocaleDateString("pt-BR",{month:"long",year:"numeric"}).toUpperCase().replace(" DE ","/");
     const areasArr = (window.REL_getAreas?window.REL_getAreas():[]).map(a=> typeof a==="string"?a:( (a.ini||a.fim)?("KM "+(a.ini||"___")+" ao KM "+(a.fim||"___")+(a.tipo?(" ("+a.tipo+")"):"")):"" )).filter(x=>x);
 
-    // ---- CAPA (tabela com faixa azul lateral) ----
-    let capa='<table style="width:100%;border:none;"><tr>'+
-      '<td style="width:4.5cm;background:#3C5A82;border:none;color:#fff;vertical-align:bottom;padding:0;height:24cm;">'+
-        '<div style="padding:0 0 3cm 0.5cm;font-weight:bold;font-size:14pt;">DESP-1<br>'+E(mesano)+'</div>'+
-      '</td>'+
-      '<td style="border:none;vertical-align:top;padding:0.6cm 0.4cm;text-align:center;">'+
-        '<div style="text-align:right;font-weight:bold;color:#0D3B66;font-size:12pt;">ENPROL &nbsp; · &nbsp; INFRA S.A.</div>'+
-        '<div style="border-bottom:2px solid #0D3B66;margin:4pt 0 0;"></div>'+
-        '<div style="margin-top:2.2cm;font-size:15pt;font-weight:bold;color:#14294A;">INFRA S.A.</div>'+
-        '<div style="font-size:9pt;font-weight:bold;">DIREM - DIRETORIA DE EMPREENDIMENTOS<br>SUGAT – SUPERINTENDÊNCIA DE GESTÃO AMBIENTAL E TERRITORIAL<br>GEDAF – GERÊNCIA DE DESAPROPRIAÇÃO E ASSUNTOS FUNDIÁRIOS</div>'+
-        '<div style="border-bottom:1px solid #14294A;margin:4pt 0;"></div>'+
-        '<div style="margin-top:1.6cm;font-size:18pt;font-weight:bold;color:#14294A;">RELATÓRIO DE CARACTERIZAÇÃO SOCIOECONÔMICA</div>'+
-        '<div style="margin-top:0.5cm;font-size:13pt;font-weight:bold;">DESP-1</div>'+
-        '<div style="margin-top:0.8cm;font-size:12pt;">'+E((g("rel_ferrovia")||"FERROVIA").toUpperCase())+'</div>'+
-        (g("rel_lote")?'<div style="margin-top:0.5cm;font-size:12pt;font-weight:bold;">FTN (Lote: '+E(g("rel_lote"))+')</div>':'')+
-        (g("rel_processo")?'<div style="margin-top:0.8cm;font-size:11pt;">Processo administrativo:  '+E(g("rel_processo"))+'</div>':'')+
-        (g("rel_expropriado")?'<div style="margin-top:0.6cm;font-size:10pt;">EXPROPRIADO: '+E(g("rel_expropriado"))+'</div>':'')+
-        areasArr.map((a,i)=>'<div style="font-size:10pt;font-weight:bold;">'+(i===0?"LOCAÇÃO: ":"")+"ÁREA "+(i+1)+": "+E(a)+'</div>').join('')+
-        (g("rel_contrato")?'<div style="margin-top:2cm;font-size:8pt;text-align:right;">Contrato nº '+E(g("rel_contrato"))+' – prestação de serviços especializados de engenharia consultiva para desapropriação, ocupação temporária ou servidão administrativa, gestão fundiária e regularização de passivos.</div>':'')+
-      '</td></tr></table>'+
-      '<br clear="all" style="page-break-before:always;">';
+    // ---------- CAPA ----------
+    const cp=(kids,o)=>{o=o||{};return new Paragraph({children:kids,alignment:o.align||AlignmentType.CENTER,spacing:o.spacing||{after:80}});};
+    const rightKids=[];
+    rightKids.push(new Paragraph({children:[R("ENPROL   ·   INFRA S.A.",{bold:true,color:"0D3B66",size:24})],alignment:AlignmentType.RIGHT,border:{bottom:{style:BorderStyle.SINGLE,size:12,color:"0D3B66"}},spacing:{after:500}}));
+    rightKids.push(cp([R("INFRA S.A.",{bold:true,color:NAVY,size:30})],{spacing:{before:500,after:120}}));
+    rightKids.push(cp([R("DIREM - DIRETORIA DE EMPREENDIMENTOS",{bold:true,size:18})]));
+    rightKids.push(cp([R("SUGAT – SUPERINTENDÊNCIA DE GESTÃO AMBIENTAL E TERRITORIAL",{bold:true,size:18})]));
+    rightKids.push(cp([R("GEDAF – GERÊNCIA DE DESAPROPRIAÇÃO E ASSUNTOS FUNDIÁRIOS",{bold:true,size:18})],{spacing:{after:360}}));
+    rightKids.push(cp([R("RELATÓRIO DE CARACTERIZAÇÃO SOCIOECONÔMICA",{bold:true,color:NAVY,size:36})],{spacing:{before:360,after:160}}));
+    rightKids.push(cp([R("DESP-1",{bold:true,color:NAVY,size:26})]));
+    rightKids.push(cp([R((g("rel_ferrovia")||"FERROVIA").toUpperCase(),{size:24})],{spacing:{before:180,after:120}}));
+    if(g("rel_lote")) rightKids.push(cp([R("FTN (Lote: "+g("rel_lote")+")",{bold:true,size:24})]));
+    if(g("rel_processo")) rightKids.push(cp([R("Processo administrativo:  "+g("rel_processo"),{size:22})],{spacing:{before:200}}));
+    if(g("rel_expropriado")) rightKids.push(cp([R("EXPROPRIADO: "+g("rel_expropriado"),{size:20})],{spacing:{before:140}}));
+    areasArr.forEach((a,i)=>rightKids.push(cp([R((i===0?"LOCAÇÃO: ":"")+"ÁREA "+(i+1)+": "+a,{bold:true,size:20})])));
+    if(g("rel_contrato")) rightKids.push(new Paragraph({children:[R("Contrato nº "+g("rel_contrato")+" – prestação de serviços especializados de engenharia consultiva para desapropriação, ocupação temporária ou servidão administrativa, gestão fundiária e regularização de passivos.",{size:16})],alignment:AlignmentType.RIGHT,spacing:{before:700}}));
+    const leftCell=new TableCell({width:{size:22,type:WidthType.PERCENTAGE},shading:{type:ShadingType.CLEAR,fill:BLUE,color:"auto"},verticalAlign:VerticalAlign.BOTTOM,margins:{top:100,bottom:800,left:160,right:80},borders:noBorders,children:[ new Paragraph({children:[R("DESP-1",{bold:true,color:"FFFFFF",size:28})]}), new Paragraph({children:[R(mesano,{bold:true,color:"FFFFFF",size:28})]}) ]});
+    const rightCell=new TableCell({width:{size:78,type:WidthType.PERCENTAGE},verticalAlign:VerticalAlign.TOP,margins:{top:200,bottom:200,left:220,right:220},borders:noBorders,children:rightKids});
+    const capaRow=new TableRow({children:[leftCell,rightCell]});
+    if(D.HeightRule){ try{ capaRow.options.height={value:13400,rule:D.HeightRule.ATLEAST}; }catch(e){} }
+    K.push(new Table({width:{size:100,type:WidthType.PERCENTAGE},borders:noBorders,rows:[capaRow]}));
 
-    // ---- ÍNDICE ----
+    // ---------- ÍNDICE ----------
     const idx=[["1.","APRESENTAÇÃO"],["1.1.","Referencial normativo e premissas gerais"],["2.","IDENTIFICAÇÃO E QUALIFICAÇÃO DO PROPRIETÁRIO E DO IMÓVEL"],["3.","CADASTRO SOCIOECONÔMICO"],["3.1.","Atividade realizada"],["3.2.","Objetivo"],["3.3.","Metodologia"],["3.4.","Síntese da caracterização socioeconômica"],["4.","PARECER SOCIAL"],["5.","CONCLUSÃO"],["6.","RELATÓRIO FOTOGRÁFICO DO IMÓVEL"]];
-    let indice='<div style="text-align:center;font-size:13pt;font-weight:bold;color:#14294A;margin-bottom:10pt;">ÍNDICE</div>';
-    idx.forEach(it=>{ const nivel1=it[0].length<=2; indice+='<div style="font-size:11pt;margin:'+(nivel1?'6pt':'3pt')+' 0;'+(nivel1?'font-weight:bold;':'margin-left:0.6cm;')+'">'+E(it[0])+' '+E(it[1])+'</div>'; });
-    indice+='<br clear="all" style="page-break-before:always;">';
+    K.push(new Paragraph({children:[R("ÍNDICE",{bold:true,color:NAVY,size:26})],alignment:AlignmentType.CENTER,spacing:{after:200},pageBreakBefore:true}));
+    idx.forEach(function(it){ const n1=it[0].length<=2; K.push(new Paragraph({children:[R(it[0]+" "+it[1],{bold:n1,size:22})],spacing:{after:n1?120:60},indent:n1?undefined:{left:360}})); });
 
-    // ---- helpers de seção ----
-    function sec(t){ return '<div class="sec">'+E(t)+'</div>'; }
-    function sub(t){ return '<div class="sub">'+E(t)+'</div>'; }
-    function par(t){ if(!t)return""; return String(t).split("\n").map(p=>p.trim()?('<p>'+E(p)+'</p>'):'').join(''); }
+    // ---------- QUADRO-RESUMO ----------
+    K.push(new Paragraph({children:[R("")],pageBreakBefore:true,spacing:{after:0}}));
+    const quadro=[["ENTREVISTADO:",g("rel_expropriado")||g("rel_nome")],["EMPREENDIMENTO:",g("rel_ferrovia")],["LOTE:",g("rel_lote")],["Nº DO PROCESSO:",g("rel_processo")],["DENOMINAÇÃO DO IMÓVEL:",g("rel_prop_id")],["MATRÍCULA:",g("rel_matricula")],["ÁREA TOTAL (ha):",g("rel_area_total")],["ÁREA DE DESAPROPRIAÇÃO (ha):",g("rel_area_desap")]].filter(d=>d[1]);
+    if(quadro.length){ K.push(new Table({width:{size:100,type:WidthType.PERCENTAGE},borders:tableBorders,rows:quadro.map(function(d){ return new TableRow({children:[ new TableCell({width:{size:38,type:WidthType.PERCENTAGE},shading:{type:ShadingType.CLEAR,fill:"EAF2FB",color:"auto"},borders:cellBorder,margins:cellM,children:[new Paragraph({children:[R(d[0],{bold:true,color:"5A6B7C",size:20})]})]}), new TableCell({width:{size:62,type:WidthType.PERCENTAGE},borders:cellBorder,margins:cellM,children:[new Paragraph({children:[R(d[1],{size:20})]})]}) ]}); })})); }
+
+    // ---------- SEÇÕES ----------
+    sec("1. APRESENTAÇÃO"); par(g("rel_apresentacao"));
+    sub("1.1 Referencial Normativo e Premissas Gerais"); par(g("rel_premissas"));
+    sec("2. IDENTIFICAÇÃO E QUALIFICAÇÃO DO PROPRIETÁRIO E DO IMÓVEL"); par(g("rel_qualificacao"));
+    sec("3. CADASTRO SOCIOECONÔMICO");
+    sub("3.1 Atividade Realizada"); par(g("rel_31_atividade"));
+    sub("3.2 Objetivo"); par(g("rel_32_objetivo"));
+    sub("3.3 Metodologia"); par(g("rel_33_metodologia"));
+    sub("3.4 Síntese da Caracterização Socioeconômica"); par(g("rel_34_sintese"));
+    sec("4. PARECER SOCIAL"); par(g("rel_parecer_intro"));
+
     function tabelaCrit(arr, comNA){
-      if(!arr||!arr.length) return "";
+      if(!arr||!arr.length) return;
       const cols = comNA?["Sim","Não","N/A"]:["Sim","Não"];
-      let h='<table><tr>'+'<th style="background:#DAE8F6;text-align:left;">Critérios de Análise</th>'+cols.map(c=>'<th style="background:#DAE8F6;width:1.2cm;text-align:center;">'+c+'</th>').join('')+'<th style="background:#DAE8F6;">Observações</th></tr>';
-      arr.forEach(l=>{ h+='<tr><td>'+E(l.crit||"")+'</td>'+cols.map(c=>'<td style="text-align:center;font-weight:bold;">'+((l.resp||"")===c?"X":"")+'</td>').join('')+'<td>'+E(l.obs||"")+'</td></tr>'; });
-      return h+'</table>';
+      const head=[hcell("Critérios de Análise",{w:comNA?50:56,align:AlignmentType.LEFT})].concat(cols.map(c=>hcell(c,{w:7,align:AlignmentType.CENTER}))).concat([hcell("Observações",{w:comNA?22:23,align:AlignmentType.LEFT})]);
+      const rows=[new TableRow({tableHeader:true,children:head})];
+      arr.forEach(function(l){ rows.push(new TableRow({children:[dcell(l.crit||"",{align:AlignmentType.LEFT})].concat(cols.map(c=>dcell(((l.resp||"")===c)?"X":"",{align:AlignmentType.CENTER,bold:true}))).concat([dcell(l.obs||"",{align:AlignmentType.LEFT})]) })); });
+      K.push(new Table({width:{size:100,type:WidthType.PERCENTAGE},borders:tableBorders,rows:rows}));
     }
     function tabelaIVS(){
       const sims=(window.REL_getTabela?window.REL_getTabela(1):[]).filter(l=>(l.resp||"")==="Sim").length;
       let faixa; if(sims===0)faixa=0; else if(sims<=2)faixa=1; else if(sims<=5)faixa=2; else faixa=3;
       const linhas=[["Sem respostas Sim → Ausência de vulnerabilidade"],["1 a 2 respostas Sim → Baixa vulnerabilidade"],["3 a 5 respostas Sim → Vulnerabilidade moderada"],["6 a 8 respostas Sim → Alta vulnerabilidade"]];
-      let h='<div class="sub">Classificação do IVS:</div><table>';
-      linhas.forEach((l,i)=>{ const mk=i===faixa; h+='<tr><td style="width:1.2cm;text-align:center;font-weight:bold;'+(mk?'background:#FFE94D;':'')+'">'+(mk?"X":"")+'</td><td'+(mk?' style="background:#FFF7C2;"':'')+'>'+E(l[0])+'</td></tr>'; });
-      return h+'</table>';
+      sub("Classificação do IVS:");
+      K.push(new Table({width:{size:100,type:WidthType.PERCENTAGE},borders:tableBorders,rows:linhas.map(function(l,i){ const mk=i===faixa; return new TableRow({children:[ new TableCell({width:{size:8,type:WidthType.PERCENTAGE},shading:mk?{type:ShadingType.CLEAR,fill:"FFE94D",color:"auto"}:undefined,borders:cellBorder,margins:cellM,children:[new Paragraph({children:[R(mk?"X":"",{bold:true,size:18})],alignment:AlignmentType.CENTER})]}), new TableCell({borders:cellBorder,margins:cellM,shading:mk?{type:ShadingType.CLEAR,fill:"FFF7C2",color:"auto"}:undefined,children:[new Paragraph({children:[R(l[0],{size:18})]})]}) ]}); })}));
+    }
+    sub("Tabela 1 — Critérios de Avaliação de Vulnerabilidade Socioeconômica (IVS/IPEA)");
+    tabelaCrit(window.REL_getTabela?window.REL_getTabela(1):[], true);
+    tabelaIVS(); par(g("rel_tab1_coment"));
+    (function(){ const tn=g("rel_texto_normativo"); if(!tn)return; const iA=tn.search(/Art\.\s*2/); const fecho="Considerando o referido artigo"; const iF=tn.indexOf(fecho);
+      if(iA<0){ par(tn); return; }
+      par(tn.slice(0,iA).trim());
+      const arts=(iF>iA)?tn.slice(iA,iF).trim():tn.slice(iA).trim();
+      arts.split("\n").forEach(function(line){ if(line.trim()) K.push(new Paragraph({children:[R(line.trim(),{italics:true})],alignment:AlignmentType.JUSTIFIED,indent:{left:567},spacing:{after:80,line:360}})); });
+      if(iF>iA) par(tn.slice(iF).trim());
+    })();
+    sub("Tabela 2 — Critérios conforme Art. 3º da Resolução Normativa INFRASA nº 7/2023");
+    tabelaCrit(window.REL_getTabela?window.REL_getTabela(2):[], false); par(g("rel_tab2_coment"));
+    sec("5. CONCLUSÃO"); par(g("rel_conclusao"));
+
+    // ---------- ASSINATURA ----------
+    if(g("rel_local_data")) K.push(new Paragraph({children:[R(g("rel_local_data"))],alignment:AlignmentType.CENTER,spacing:{before:500,after:220}}));
+    K.push(new Paragraph({children:[R("____________________________________")],alignment:AlignmentType.CENTER,spacing:{after:40}}));
+    if(g("rel_resp_nome")) K.push(new Paragraph({children:[R(g("rel_resp_nome"),{bold:true})],alignment:AlignmentType.CENTER,spacing:{after:0}}));
+    if(g("rel_resp_cargo")) K.push(new Paragraph({children:[R(g("rel_resp_cargo"))],alignment:AlignmentType.CENTER,spacing:{after:0}}));
+    if(g("rel_resp_reg")) K.push(new Paragraph({children:[R(g("rel_resp_reg"))],alignment:AlignmentType.CENTER,spacing:{after:0}}));
+
+    // ---------- 6. RELATÓRIO FOTOGRÁFICO ----------
+    const fts=(window.REL_getFotos?window.REL_getFotos():[])||[];
+    if(fts.length){
+      K.push(new Paragraph({children:[R("6. RELATÓRIO FOTOGRÁFICO DO IMÓVEL",{bold:true,size:22,color:"1A3A5C"})],alignment:AlignmentType.CENTER,pageBreakBefore:true,spacing:{after:160},shading:{type:ShadingType.CLEAR,fill:SECBG,color:"auto"}}));
+      const frows=[];
+      for(let i=0;i<fts.length;i+=2){ const cells=[];
+        for(let j=i;j<Math.min(i+2,fts.length);j++){ const u=b64u8(fts[j]); const kid=u?[new Paragraph({alignment:AlignmentType.CENTER,children:[new ImageRun({data:u,transformation:{width:250,height:180}})]})]:[new Paragraph({children:[R("")]})]; cells.push(new TableCell({width:{size:50,type:WidthType.PERCENTAGE},borders:noBorders,children:kid})); }
+        if(cells.length===1) cells.push(new TableCell({width:{size:50,type:WidthType.PERCENTAGE},borders:noBorders,children:[new Paragraph({children:[R("")]})]}));
+        frows.push(new TableRow({children:cells}));
+      }
+      K.push(new Table({width:{size:100,type:WidthType.PERCENTAGE},borders:noBorders,rows:frows}));
     }
 
-    let corpo=capa+indice;
-    // quadro-resumo
-    corpo+='<table>';
-    [["ENTREVISTADO:",g("rel_expropriado")||g("rel_nome")],["EMPREENDIMENTO:",g("rel_ferrovia")],["LOTE:",g("rel_lote")],["Nº DO PROCESSO:",g("rel_processo")],["DENOMINAÇÃO DO IMÓVEL:",g("rel_prop_id")],["MATRÍCULA:",g("rel_matricula")],["ÁREA TOTAL (ha):",g("rel_area_total")],["ÁREA DE DESAPROPRIAÇÃO (ha):",g("rel_area_desap")]].filter(d=>d[1]).forEach(d=>{ corpo+='<tr><td style="width:35%;background:#EAF2FB;" class="rot">'+E(d[0])+'</td><td>'+E(d[1])+'</td></tr>'; });
-    corpo+='</table>';
+    // ---------- CABEÇALHO (logos) / RODAPÉ ----------
+    const uE=b64u8(window.__LOGO_ENPROL__), uI=b64u8(window.__LOGO_INFRA__);
+    const headerTbl=new Table({width:{size:100,type:WidthType.PERCENTAGE},borders:noBorders,rows:[new TableRow({children:[ new TableCell({width:{size:50,type:WidthType.PERCENTAGE},borders:noBorders,children:[new Paragraph({children: uE?[new ImageRun({data:uE,transformation:{width:120,height:34}})]:[R("")]})]}), new TableCell({width:{size:50,type:WidthType.PERCENTAGE},borders:noBorders,children:[new Paragraph({alignment:AlignmentType.RIGHT,children: uI?[new ImageRun({data:uI,transformation:{width:120,height:34}})]:[R("")]})]}) ]})]});
+    const runHeader=new Header({children:[headerTbl,new Paragraph({border:{bottom:{color:"1F6FC0",space:1,style:BorderStyle.SINGLE,size:6}},children:[R("")]})]});
+    const emptyHeader=new Header({children:[new Paragraph({children:[R("")]})]});
+    const foot=new Footer({children:[new Paragraph({alignment:AlignmentType.CENTER,children:[R("DESP-1 · Relatório de Caracterização Socioeconômica",{size:14,color:"5A6B7C"})]})]});
 
-    corpo+=sec("1. APRESENTAÇÃO")+par(g("rel_apresentacao"));
-    corpo+=sub("1.1 Referencial Normativo e Premissas Gerais")+par(g("rel_premissas"));
-    corpo+=sec("2. IDENTIFICAÇÃO E QUALIFICAÇÃO DO PROPRIETÁRIO E DO IMÓVEL")+par(g("rel_qualificacao"));
-    corpo+=sec("3. CADASTRO SOCIOECONÔMICO");
-    corpo+=sub("3.1 Atividade Realizada")+par(g("rel_31_atividade"));
-    corpo+=sub("3.2 Objetivo")+par(g("rel_32_objetivo"));
-    corpo+=sub("3.3 Metodologia")+par(g("rel_33_metodologia"));
-    corpo+=sub("3.4 Síntese da Caracterização Socioeconômica")+par(g("rel_34_sintese"));
-    corpo+=sec("4. PARECER SOCIAL")+par(g("rel_parecer_intro"));
-    corpo+=sub("Tabela 1 — Critérios de Avaliação de Vulnerabilidade Socioeconômica (IVS/IPEA)")+tabelaCrit(window.REL_getTabela?window.REL_getTabela(1):[], true);
-    corpo+=tabelaIVS()+par(g("rel_tab1_coment"));
-    // texto normativo com artigos em itálico
-    (function(){ const tn=g("rel_texto_normativo"); if(!tn)return; const iA=tn.search(/Art\.\s*2/); const fecho="Considerando o referido artigo"; const iF=tn.indexOf(fecho);
-      if(iA<0){ corpo+=par(tn); return; }
-      corpo+=par(tn.slice(0,iA).trim());
-      const arts=(iF>iA)?tn.slice(iA,iF).trim():tn.slice(iA).trim();
-      corpo+='<p class="cit" style="font-style:italic;">'+E(arts).replace(/\n/g,"<br>")+'</p>';
-      if(iF>iA) corpo+=par(tn.slice(iF).trim());
-    })();
-    corpo+=sub("Tabela 2 — Critérios conforme Art. 3º da Resolução Normativa INFRASA nº 7/2023")+tabelaCrit(window.REL_getTabela?window.REL_getTabela(2):[], false)+par(g("rel_tab2_coment"));
-    corpo+=sec("5. CONCLUSÃO")+par(g("rel_conclusao"));
-    corpo+='<div style="text-align:center;margin-top:1cm;">'+E(g("rel_local_data"))+'<br><br>____________________________________<br><b>'+E(g("rel_resp_nome"))+'</b><br>'+E(g("rel_resp_cargo"))+'<br>'+E(g("rel_resp_reg"))+'</div>';
-
-    const _html=window.WORD_htmlDoc("Relatório de Caracterização Socioeconômica", corpo, true);
-    const _blob=window.WORD_blob(_html); const _nome="Relatorio_Socioeconomico_DESP-1.doc";
+    const doc=new Document({sections:[{properties:{titlePage:true, page:{margin:{top:720,bottom:720,left:850,right:720}}}, headers:{default:runHeader, first:emptyHeader}, footers:{default:foot, first:foot}, children:K}]});
+    const _blob=await Packer.toBlob(doc); const _nome="Relatorio_Socioeconomico_DESP-1.docx";
     if(opts&&opts.retornar) return {blob:_blob, nome:_nome};
     await window.FS_salvar(_blob, _nome);
   };
