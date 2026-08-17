@@ -3596,13 +3596,13 @@ A Nota Agronômica (N.A.) varia de 0,00 a 1,00, sendo que valores mais próximos
 <div class="vsub">4.9 — Aproveitamento da Terra</div><div class="vfield grow"><label>4.9.1 Uso das terras</label><div class="fb-checks"><label class="fb-chk"><input type="checkbox" id="fb_491_uso_0" value="Seca"> Seca</label><label class="fb-chk"><input type="checkbox" id="fb_491_uso_1" value="Chuva"> Chuva</label><label class="fb-chk"><input type="checkbox" id="fb_491_uso_2" value="Plantio"> Plantio</label><label class="fb-chk"><input type="checkbox" id="fb_491_uso_3" value="Criação de animais"> Criação de animais</label></div></div><div class="vfield grow" id="fb_491_plantio_wrap" style="display:none;"><label>Plantio — especificar</label><textarea id="fb_491_plantio" rows="2" placeholder="Ex.: Imbuzeiro, acerola, milho, feijão e pastagem"></textarea></div><div class="vfield grow" id="fb_491_criacao_wrap" style="display:none;"><label>Criação de animais — especificar</label><textarea id="fb_491_criacao" rows="2" placeholder="Descrição da criação de animais"></textarea></div><div class="vfield grow"><label>4.9.2 O que é produzido na propriedade</label><div class="fb-checks"><label class="fb-chk"><input type="checkbox" id="fb_492_prod_0" value="Extrativismo"> Extrativismo</label><label class="fb-chk"><input type="checkbox" id="fb_492_prod_1" value="Agricultura"> Agricultura</label><label class="fb-chk"><input type="checkbox" id="fb_492_prod_2" value="Pecuária"> Pecuária</label></div></div><div class="vfield grow"><label>4.9.3 Quais impactos concebidos pela comunidade sobre a construção da ferrovia, e qual sua opinião?</label><textarea id="fb_493_impactos" rows="4" placeholder="Percepção da comunidade sobre a ferrovia..."></textarea></div>
 <div class="vsub">4.10 — Outras Informações</div><div class="vfield grow"><label>4.10.1 Quais as expectativas futuras da família em relação à moradia atual e pós desapropriação</label><div class="fb-checks"><label class="fb-chk"><input type="checkbox" id="fb_4101_0" value="Continuar morando nas redondezas da localidade"> Continuar morando nas redondezas da localidade</label><label class="fb-chk"><input type="checkbox" id="fb_4101_1" value="Construir em outro local fora da localidade"> Construir em outro local fora da localidade</label><label class="fb-chk"><input type="checkbox" id="fb_4101_2" value="Outra"> Outra</label></div></div><div class="vfield grow"><label>Outra (especificar)</label><input type="text" id="fb_4101_outra" placeholder="Especificar"></div><div class="vrow"><div class="vfield grow"><label>4.10.2 A família recebe algum benefício do Governo Federal</label><select id="fb_4102"><option value="">Selecione</option><option>1 - Sim</option><option>2 - Não</option></select></div><div class="vfield grow"><label>Qual?</label><input type="text" id="fb_4102_qual" placeholder="Qual benefício"></div></div><div class="vrow"><div class="vfield grow"><label>4.10.3 A família participa de algum programa do município</label><select id="fb_4103"><option value="">Selecione</option><option>1 - Sim</option><option>2 - Não</option></select></div><div class="vfield grow"><label>Qual?</label><input type="text" id="fb_4103_qual" placeholder="Qual programa"></div></div><div class="vrow"><div class="vfield grow"><label>4.10.4 A família participa de projetos e organizações da comunidade</label><select id="fb_4104"><option value="">Selecione</option><option>1 - Sim</option><option>2 - Não</option></select></div><div class="vfield grow"><label>Qual?</label><input type="text" id="fb_4104_qual" placeholder="Qual projeto/organização"></div></div><div class="vfield grow"><label>4.10.5 Dados relativos sobre saúde, educação, segurança comunitária e questões sociais, situações de vulnerabilidades relacionadas à família e seus membros</label><textarea id="fb_4105" rows="6" placeholder="Relato da abordagem social..."></textarea></div></div>
 <h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>5 — INFORMAÇÕES COMPLEMENTARES (PROPRIEDADE)</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vfield grow"><label>5.1 Obras e Melhorias das Terras</label><input type="text" id="fb_51_obras" placeholder="Ex.: AUSENTES"></div><div class="vfield grow"><label>5.2 Outras Atividades</label><input type="text" id="fb_52_ativ" placeholder="Ex.: NÃO HÁ"></div><div class="vsub">5.3 Fotografias do imóvel</div><label class="img-drop" id="fb_fotos_drop"><span class="ic">📷</span><span class="t">Clique ou arraste as fotografias do imóvel</span><span class="h">Várias imagens • JPG ou PNG</span><input type="file" accept="image/*" multiple id="fb_fotos_file"></label><div class="fb-fotos-prev" id="fb_fotos_prev"></div><div class="vsub">Assinatura do(a) vistoriador(a)</div><div class="vfield grow"><label>Nome do(a) vistoriador(a)</label><input type="text" id="fb_ass_nome" placeholder="Nome"></div><div class="vrow"><div class="vfield grow"><label>Cargo/Função</label><input type="text" id="fb_ass_cargo" placeholder="Ex.: Assistente Social"></div><div class="vfield grow"><label>Registro (CRESS/CREA)</label><input type="text" id="fb_ass_reg" placeholder="Ex.: CRESS-PE 14780"></div></div></div>
-<div class="vactions"><button class="vbtn vbtn-primary" onclick="WORD_anexoB()">📝 Baixar Word — Anexo B (1.9)</button><button class="vbtn vbtn-primary" onclick="FB_gerarPDF()">📄 Baixar PDF — Anexo B (1.9)</button><button class="vbtn vbtn-primary" onclick="FB_baixarConjunto()">📦 Baixar conjunto (Word + PDF)</button><button class="vbtn vbtn-ghost" onclick="FB_puxarDESP3()">↧ Puxar dados da DESP 3</button></div>
+<div class="vactions"><div class="dl-menu"><button class="vbtn vbtn-primary" type="button" onclick="DLM_toggle(this)">⬇️ Download ▾</button><div class="dl-drop"><button type="button" onclick="DLM_run(this,WORD_anexoB)">📝 Word — Anexo B (1.9)</button><button type="button" onclick="DLM_run(this,FB_gerarPDF)">📄 PDF — Anexo B (1.9)</button><button type="button" onclick="DLM_run(this,FB_baixarConjunto)">📦 Conjunto (Word + PDF)</button><button type="button" onclick="DLM_run(this,DRL_gerarPDF)">📑 Baixar DRL (PDF)</button><button type="button" onclick="DLM_run(this,DRL_gerarWord)">📑 Baixar DRL (Word)</button></div></div><button class="vbtn vbtn-ghost" onclick="FB_puxarDESP3()">↧ Puxar dados da DESP 3</button></div>
 </div>
 </section>
 
 
 
-<section class="tab-panel" id="panel-desp1-rel"><div class="wrap"><h1>Relatório Técnico de Caracterização Socioeconômica</h1><p class="sub">Os dados são puxados da aba 1.9. Preencha os campos abaixo e gere o PDF completo com capa.</p><div class="vcard"><div class="vrow"><div class="vfield grow"><label>Processo administrativo</label><input type="text" id="rel_processo" data-rel-from="processo" class="bloqueado" readonly data-lock="1" placeholder="INFRA S.A. CTD ... - Lote ..."></div><div class="vfield grow"><label>SEI nº</label><input type="text" id="rel_sei" value="50050.003131/2026-79" placeholder="Ex.: 00000.000000/0000-00"></div></div><div class="vrow"><div class="vfield grow"><label>Empreendimento / Ferrovia</label><input type="text" id="rel_ferrovia" value="FERROVIA TRANSNORDESTINA EF-232 – FTN" placeholder="Ex.: Ferrovia ... (EF-...)"></div><div class="vfield grow"><label>Lote</label><input type="text" id="rel_lote" class="bloqueado" readonly placeholder="Ex.: SPS-04"></div></div><div class="vrow"><div class="vfield grow"><label>Subtrecho</label><input type="text" id="rel_subtrecho" value="Custódia/PE a Arcoverde/PE" placeholder="Ex.: Custódia/PE – Arcoverde/PE"></div><div class="vfield grow"><label>Contrato nº</label><input type="text" id="rel_contrato" value="037/2024" placeholder="Ex.: 000/0000"></div></div><div class="vrow"><div class="vfield grow"><label>Ordem de Serviço</label><input type="text" id="rel_os" value="INFRA 33 (10665856), Despacho 275 Solicitação de OS - FTN (10643430), Despacho 04/2026 (10749193,) Despacho 13/2026 (10791872), Plano de Trabalho 4 TRANSNORDESTINA (10614462)" placeholder="Ex.: INFRA 00 (0000000)"></div><div class="vfield grow"><label>Mês/Ano da capa</label><input type="text" id="rel_mesano" placeholder="Ex.: JULHO/2026"></div></div><div class="vfield grow"><label>Expropriado</label><input type="text" id="rel_expropriado" data-rel-from="rel_nome_prop" class="bloqueado" readonly data-lock="1" placeholder="Nome do expropriado"></div><div class="vsub">Áreas de Locação</div><div class="rel-areas" id="rel_areas"></div><div class="vactions" style="margin-top:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_addArea()">+ Adicionar área</button></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>1 — APRESENTAÇÃO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vactions" style="margin-bottom:8px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('apresentacao')">↻ Gerar texto automático</button></div><div class="vfield grow"><label>Texto de apresentação<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_apresentacao" rows="9" placeholder="Clique em 'Gerar texto automático' ou digite..."></textarea></div><div class="vsub">1.1 Referencial Normativo e Premissas Gerais</div><div class="vfield grow"><label>Premissas / medidas compensatórias</label><textarea id="rel_premissas" rows="8" placeholder="Texto padrão de premissas..."></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>2 — IDENTIFICAÇÃO E QUALIFICAÇÃO DO PROPRIETÁRIO E DO IMÓVEL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vrow"><div class="vfield grow"><label>Nome do proprietário</label><input type="text" id="rel_nome" data-rel-from="fb_nome" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>Estado civil</label><input type="text" id="rel_estcivil" data-rel-from="fb_estcivil" class="bloqueado" readonly data-lock="1" placeholder=""></div></div><div class="vrow"><div class="vfield grow"><label>RG</label><input type="text" id="rel_rg" data-rel-from="fb_rg" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>CPF</label><input type="text" id="rel_cpf" data-rel-from="fb_cpf" class="bloqueado" readonly data-lock="1" placeholder=""></div></div><div class="vfield grow"><label>Endereço</label><input type="text" id="rel_endereco" data-rel-from="fb_endereco" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vrow"><div class="vfield grow"><label>Município</label><input type="text" id="rel_municipio" data-rel-from="fb_municipio" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>CEP</label><input type="text" id="rel_cep" data-rel-from="fb_cep" class="bloqueado" readonly data-lock="1" placeholder=""></div></div><div class="vsub">Imóvel</div><div class="vfield grow"><label>Denominação do imóvel</label><input type="text" id="rel_prop_id" data-rel-from="fb_prop_id" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vrow"><div class="vfield grow"><label>Área total (ha)</label><input type="text" id="rel_area_total" data-rel-from="fb_area_total" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>Área de desapropriação (ha)</label><input type="text" id="rel_area_desap" data-rel-from="fb_area_desap" class="bloqueado" readonly data-lock="1" placeholder=""></div></div><div class="vrow"><div class="vfield grow"><label>Matrícula / Livro / Fls.</label><input type="text" id="rel_matricula" data-rel-from="fb_matricula" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>CIB/ITR</label><input type="text" id="rel_cib" data-rel-from="fb_cib" class="bloqueado" readonly data-lock="1" placeholder=""></div></div><div class="vfield grow"><label>Cartório / Registro</label><input type="text" id="rel_cartorio" data-rel-from="fb_cartorio" class="bloqueado" readonly data-lock="1" placeholder="Ex.: 1º Ofício de ..."></div><div class="vactions" style="margin:8px 0;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('qualificacao')">↻ Gerar texto automático</button></div><div class="vfield grow"><label>Texto de qualificação<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_qualificacao" rows="6" placeholder="Clique em 'Gerar texto automático' ou digite..."></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>3 — CADASTRO SOCIOECONÔMICO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vsub">3.1 Atividade Realizada</div><div class="vactions" style="margin-bottom:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('atividade')">↻ Gerar texto</button></div><div class="vfield grow"><label>Atividade<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_31_atividade" rows="2" placeholder=""></textarea></div><div class="vsub">3.2 Objetivo</div><div class="vactions" style="margin-bottom:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('objetivo')">↻ Gerar texto</button></div><div class="vfield grow"><label>Objetivo<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_32_objetivo" rows="6" placeholder=""></textarea></div><div class="vsub">3.3 Metodologia (texto padrão)</div><div class="vfield grow"><label>Metodologia</label><textarea id="rel_33_metodologia" rows="8" placeholder=""></textarea></div><div class="vsub">3.4 Síntese da Caracterização Socioeconômica</div><div class="vactions" style="margin-bottom:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('sintese')">↻ Gerar texto</button></div><div class="vfield grow"><label>Síntese<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_34_sintese" rows="9" placeholder=""></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>4 — PARECER SOCIAL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vfield grow"><label>Introdução do parecer</label><textarea id="rel_parecer_intro" rows="4" placeholder=""></textarea></div><div class="vsub">Tabela 1 — Critérios de Avaliação de Vulnerabilidade Socioeconômica (IVS/IPEA)</div><div class="rel-tabela" id="rel_tabela1"></div><div class="vactions" style="margin-top:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_addLinha(1)">+ Adicionar critério (Tabela 1)</button></div><div class="rel-ivs" id="rel_ivs"></div><div class="vfield grow"><label>Comentário após Tabela 1</label><textarea id="rel_tab1_coment" rows="4" placeholder=""></textarea></div><div class="vsub">Texto normativo (Art. 2º e 3º da Resolução Normativa INFRASA nº 7/2023)</div><div class="vfield grow"><label>Texto normativo</label><textarea id="rel_texto_normativo" rows="8" placeholder=""></textarea></div><div class="vsub">Tabela 2 — Critérios conforme Art. 3º da Resolução Normativa INFRASA nº 7/2023</div><div class="rel-tabela" id="rel_tabela2"></div><div class="vactions" style="margin-top:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_addLinha(2)">+ Adicionar critério (Tabela 2)</button></div><div class="vfield grow"><label>Comentário após Tabela 2</label><textarea id="rel_tab2_coment" rows="5" placeholder=""></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>5 — CONCLUSÃO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vactions" style="margin-bottom:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('conclusao')">↻ Gerar texto</button></div><div class="vfield grow"><label>Conclusão<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_conclusao" rows="6" placeholder=""></textarea></div><div class="vrow"><div class="vfield grow"><label>Grau de vulnerabilidade</label><input type="text" id="rel_grau_vuln" placeholder="Ex.: moderada"></div><div class="vfield grow"><label>Local e data</label><input type="text" id="rel_local_data" placeholder="Ex.: Custódia - PE, 00 de mês de 0000"></div></div><div class="vsub">Responsável técnico</div><div class="vfield grow"><label>Nome</label><input type="text" id="rel_resp_nome" data-rel-from="fb_ass_nome" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vrow"><div class="vfield grow"><label>Cargo/Função</label><input type="text" id="rel_resp_cargo" data-rel-from="fb_ass_cargo" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>Registro</label><input type="text" id="rel_resp_reg" data-rel-from="fb_ass_reg" class="bloqueado" readonly data-lock="1" placeholder=""></div></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>6 — RELATÓRIO FOTOGRÁFICO DO IMÓVEL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><label class="img-drop" id="rel_fotos_drop"><span class="ic">📷</span><span class="t">Clique ou arraste as fotografias / ortofoto</span><span class="h">Imagens • JPG ou PNG</span><input type="file" accept="image/*" multiple id="rel_fotos_file"></label><div class="fb-fotos-prev" id="rel_fotos_prev"></div></div><div class="vactions"><button class="vbtn vbtn-primary" onclick="REL_gerarPDF()">📄 Baixar PDF — Relatório (1.10) com capa</button><button class="vbtn vbtn-primary" onclick="REL_gerarWord()">📝 Baixar Word — Relatório (1.10)</button><button class="vbtn vbtn-primary" onclick="REL_baixarConjunto()">📦 Baixar conjunto (Word + PDF)</button><button class="vbtn vbtn-ghost" onclick="REL_puxarDados()">↧ Puxar dados da 1.9</button><button class="vbtn vbtn-ghost" onclick="REL_gerarTodos()">↻ Gerar todos os textos automáticos</button></div></div></section>
+<section class="tab-panel" id="panel-desp1-rel"><div class="wrap"><h1>Relatório Técnico de Caracterização Socioeconômica</h1><p class="sub">Os dados são puxados da aba 1.9. Preencha os campos abaixo e gere o PDF completo com capa.</p><div class="vcard"><div class="vrow"><div class="vfield grow"><label>Processo administrativo</label><input type="text" id="rel_processo" data-rel-from="processo" class="bloqueado" readonly data-lock="1" placeholder="INFRA S.A. CTD ... - Lote ..."></div><div class="vfield grow"><label>SEI nº</label><input type="text" id="rel_sei" value="50050.003131/2026-79" placeholder="Ex.: 00000.000000/0000-00"></div></div><div class="vrow"><div class="vfield grow"><label>Empreendimento / Ferrovia</label><input type="text" id="rel_ferrovia" value="FERROVIA TRANSNORDESTINA EF-232 – FTN" placeholder="Ex.: Ferrovia ... (EF-...)"></div><div class="vfield grow"><label>Lote</label><input type="text" id="rel_lote" class="bloqueado" readonly placeholder="Ex.: SPS-04"></div></div><div class="vrow"><div class="vfield grow"><label>Subtrecho</label><input type="text" id="rel_subtrecho" value="Custódia/PE a Arcoverde/PE" placeholder="Ex.: Custódia/PE – Arcoverde/PE"></div><div class="vfield grow"><label>Contrato nº</label><input type="text" id="rel_contrato" value="037/2024" placeholder="Ex.: 000/0000"></div></div><div class="vrow"><div class="vfield grow"><label>Ordem de Serviço</label><input type="text" id="rel_os" value="INFRA 33 (10665856), Despacho 275 Solicitação de OS - FTN (10643430), Despacho 04/2026 (10749193,) Despacho 13/2026 (10791872), Plano de Trabalho 4 TRANSNORDESTINA (10614462)" placeholder="Ex.: INFRA 00 (0000000)"></div><div class="vfield grow"><label>Mês/Ano da capa</label><input type="text" id="rel_mesano" placeholder="Ex.: JULHO/2026"></div></div><div class="vfield grow"><label>Expropriado</label><input type="text" id="rel_expropriado" data-rel-from="rel_nome_prop" class="bloqueado" readonly data-lock="1" placeholder="Nome do expropriado"></div><div class="vsub">Áreas de Locação</div><div class="rel-areas" id="rel_areas"></div><div class="vactions" style="margin-top:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_addArea()">+ Adicionar área</button></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>1 — APRESENTAÇÃO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vactions" style="margin-bottom:8px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('apresentacao')">↻ Gerar texto automático</button></div><div class="vfield grow"><label>Texto de apresentação<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_apresentacao" rows="9" placeholder="Clique em 'Gerar texto automático' ou digite..."></textarea></div><div class="vsub">1.1 Referencial Normativo e Premissas Gerais</div><div class="vfield grow"><label>Premissas / medidas compensatórias</label><textarea id="rel_premissas" rows="8" placeholder="Texto padrão de premissas..."></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>2 — IDENTIFICAÇÃO E QUALIFICAÇÃO DO PROPRIETÁRIO E DO IMÓVEL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vrow"><div class="vfield grow"><label>Nome do proprietário</label><input type="text" id="rel_nome" data-rel-from="fb_nome" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>Estado civil</label><input type="text" id="rel_estcivil" data-rel-from="fb_estcivil" class="bloqueado" readonly data-lock="1" placeholder=""></div></div><div class="vrow"><div class="vfield grow"><label>RG</label><input type="text" id="rel_rg" data-rel-from="fb_rg" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>CPF</label><input type="text" id="rel_cpf" data-rel-from="fb_cpf" class="bloqueado" readonly data-lock="1" placeholder=""></div></div><div class="vfield grow"><label>Endereço</label><input type="text" id="rel_endereco" data-rel-from="fb_endereco" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vrow"><div class="vfield grow"><label>Município</label><input type="text" id="rel_municipio" data-rel-from="fb_municipio" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>CEP</label><input type="text" id="rel_cep" data-rel-from="fb_cep" class="bloqueado" readonly data-lock="1" placeholder=""></div></div><div class="vsub">Imóvel</div><div class="vfield grow"><label>Denominação do imóvel</label><input type="text" id="rel_prop_id" data-rel-from="fb_prop_id" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vrow"><div class="vfield grow"><label>Área total (ha)</label><input type="text" id="rel_area_total" data-rel-from="fb_area_total" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>Área de desapropriação (ha)</label><input type="text" id="rel_area_desap" data-rel-from="fb_area_desap" class="bloqueado" readonly data-lock="1" placeholder=""></div></div><div class="vrow"><div class="vfield grow"><label>Matrícula / Livro / Fls.</label><input type="text" id="rel_matricula" data-rel-from="fb_matricula" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>CIB/ITR</label><input type="text" id="rel_cib" data-rel-from="fb_cib" class="bloqueado" readonly data-lock="1" placeholder=""></div></div><div class="vfield grow"><label>Cartório / Registro</label><input type="text" id="rel_cartorio" data-rel-from="fb_cartorio" class="bloqueado" readonly data-lock="1" placeholder="Ex.: 1º Ofício de ..."></div><div class="vactions" style="margin:8px 0;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('qualificacao')">↻ Gerar texto automático</button></div><div class="vfield grow"><label>Texto de qualificação<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_qualificacao" rows="6" placeholder="Clique em 'Gerar texto automático' ou digite..."></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>3 — CADASTRO SOCIOECONÔMICO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vsub">3.1 Atividade Realizada</div><div class="vactions" style="margin-bottom:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('atividade')">↻ Gerar texto</button></div><div class="vfield grow"><label>Atividade<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_31_atividade" rows="2" placeholder=""></textarea></div><div class="vsub">3.2 Objetivo</div><div class="vactions" style="margin-bottom:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('objetivo')">↻ Gerar texto</button></div><div class="vfield grow"><label>Objetivo<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_32_objetivo" rows="6" placeholder=""></textarea></div><div class="vsub">3.3 Metodologia (texto padrão)</div><div class="vfield grow"><label>Metodologia</label><textarea id="rel_33_metodologia" rows="8" placeholder=""></textarea></div><div class="vsub">3.4 Síntese da Caracterização Socioeconômica</div><div class="vactions" style="margin-bottom:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('sintese')">↻ Gerar texto</button></div><div class="vfield grow"><label>Síntese<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_34_sintese" rows="9" placeholder=""></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>4 — PARECER SOCIAL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vfield grow"><label>Introdução do parecer</label><textarea id="rel_parecer_intro" rows="4" placeholder=""></textarea></div><div class="vsub">Tabela 1 — Critérios de Avaliação de Vulnerabilidade Socioeconômica (IVS/IPEA)</div><div class="rel-tabela" id="rel_tabela1"></div><div class="vactions" style="margin-top:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_addLinha(1)">+ Adicionar critério (Tabela 1)</button></div><div class="rel-ivs" id="rel_ivs"></div><div class="vfield grow"><label>Comentário após Tabela 1</label><textarea id="rel_tab1_coment" rows="4" placeholder=""></textarea></div><div class="vsub">Texto normativo (Art. 2º e 3º da Resolução Normativa INFRASA nº 7/2023)</div><div class="vfield grow"><label>Texto normativo</label><textarea id="rel_texto_normativo" rows="8" placeholder=""></textarea></div><div class="vsub">Tabela 2 — Critérios conforme Art. 3º da Resolução Normativa INFRASA nº 7/2023</div><div class="rel-tabela" id="rel_tabela2"></div><div class="vactions" style="margin-top:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_addLinha(2)">+ Adicionar critério (Tabela 2)</button></div><div class="vfield grow"><label>Comentário após Tabela 2</label><textarea id="rel_tab2_coment" rows="5" placeholder=""></textarea></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>5 — CONCLUSÃO</span><span class="acc-chevron">▾</span></h2><div class="vcard"><div class="vactions" style="margin-bottom:6px;"><button class="vbtn vbtn-ghost" type="button" onclick="REL_gerarTexto('conclusao')">↻ Gerar texto</button></div><div class="vfield grow"><label>Conclusão<span class="hint-auto"> (gerado automaticamente — editável)</span></label><textarea id="rel_conclusao" rows="6" placeholder=""></textarea></div><div class="vrow"><div class="vfield grow"><label>Grau de vulnerabilidade</label><input type="text" id="rel_grau_vuln" placeholder="Ex.: moderada"></div><div class="vfield grow"><label>Local e data</label><input type="text" id="rel_local_data" placeholder="Ex.: Custódia - PE, 00 de mês de 0000"></div></div><div class="vsub">Responsável técnico</div><div class="vfield grow"><label>Nome</label><input type="text" id="rel_resp_nome" data-rel-from="fb_ass_nome" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vrow"><div class="vfield grow"><label>Cargo/Função</label><input type="text" id="rel_resp_cargo" data-rel-from="fb_ass_cargo" class="bloqueado" readonly data-lock="1" placeholder=""></div><div class="vfield grow"><label>Registro</label><input type="text" id="rel_resp_reg" data-rel-from="fb_ass_reg" class="bloqueado" readonly data-lock="1" placeholder=""></div></div></div><h2 class="vsec acc" onclick="FV_toggleSec(this)"><span>6 — RELATÓRIO FOTOGRÁFICO DO IMÓVEL</span><span class="acc-chevron">▾</span></h2><div class="vcard"><label class="img-drop" id="rel_fotos_drop"><span class="ic">📷</span><span class="t">Clique ou arraste as fotografias / ortofoto</span><span class="h">Imagens • JPG ou PNG</span><input type="file" accept="image/*" multiple id="rel_fotos_file"></label><div id="rel_fotos_aviso" style="display:none;margin:8px 0 2px;padding:9px 13px;background:#f0f5fb;border:1px solid #cfe0f0;border-radius:8px;font-size:12.5px;color:#22303f;">🔗 As fotografias são <b>vinculadas à Ficha de Vistoria (5.3)</b> e replicadas automaticamente. Para alterar, edite as imagens na Ficha de Vistoria.</div><div class="fb-fotos-prev" id="rel_fotos_prev"></div></div><div class="vactions"><div class="dl-menu"><button class="vbtn vbtn-primary" type="button" onclick="DLM_toggle(this)">⬇️ Download ▾</button><div class="dl-drop"><button type="button" onclick="DLM_run(this,REL_gerarPDF)">📄 PDF — Relatório (1.10) com capa</button><button type="button" onclick="DLM_run(this,REL_gerarWord)">📝 Word — Relatório (1.10)</button><button type="button" onclick="DLM_run(this,REL_baixarConjunto)">📦 Conjunto (Word + PDF)</button><button type="button" onclick="DLM_run(this,DRL_gerarPDF)">📑 Baixar DRL (PDF)</button><button type="button" onclick="DLM_run(this,DRL_gerarWord)">📑 Baixar DRL (Word)</button></div></div><button class="vbtn vbtn-ghost" onclick="REL_puxarDados()">↧ Puxar dados da 1.9</button><button class="vbtn vbtn-ghost" onclick="REL_gerarTodos()">↻ Gerar todos os textos automáticos</button></div></div></section>
 
 <section class="tab-panel" id="panel-desp1-parecer">
   <div class="wrap">
@@ -5097,6 +5097,21 @@ window.FOTO_rodapeHTML=rodapeHTML;
   }
 
   window.FV_addEstaca = function(){ novaLinha("",""); };
+
+  // Item 2: recebe as Áreas de Locação (DESP 1) e reconstrói as estacas da DESP 3 (sem duplicar)
+  window.FV_setEstacas = function(arr){
+    const host=document.getElementById("fv_estacas");
+    if(!host) return;
+    const list = (Array.isArray(arr)&&arr.length) ? arr : [{ini:"",fim:"",tipo:""}];
+    host.dataset.init="1";
+    host.innerHTML="";
+    list.forEach(e=>{
+      novaLinha(e.ini||"", e.fim||"", e.tipo||"");
+      const sel=host.querySelector(".estaca-linha:last-child .e-tipo");
+      if(sel && e.tipo){ sel.value=e.tipo; sel.dataset.tocado="1"; }
+    });
+    render();
+  };
 
   // init
   document.addEventListener("DOMContentLoaded", ()=>{
@@ -8105,13 +8120,16 @@ function AV_gerarDescSituacao(){
   const fotos = [];
   function renderFotos(){
     const host=document.getElementById("fb_fotos_prev");
-    if(!host) return;
-    host.innerHTML="";
-    fotos.forEach((src,i)=>{
-      const d=document.createElement("div"); d.className="foto";
-      d.innerHTML='<img src="'+src+'"><button class="rm" type="button" onclick="FB_remFoto('+i+')">✕</button>';
-      host.appendChild(d);
-    });
+    if(host){
+      host.innerHTML="";
+      fotos.forEach((src,i)=>{
+        const d=document.createElement("div"); d.className="foto";
+        d.innerHTML='<img src="'+src+'"><button class="rm" type="button" onclick="FB_remFoto('+i+')">✕</button>';
+        host.appendChild(d);
+      });
+    }
+    // Item 1: replica automaticamente as fotos para o Relatório Técnico
+    if(window.REL_syncFotos) window.REL_syncFotos();
   }
   function bindFotos(){
     const input=document.getElementById("fb_fotos_file");
@@ -8807,11 +8825,16 @@ function AV_gerarDescSituacao(){
       if(col===1) y+=fh+5;
     }
     // Assinatura
-    y+=6; garantir(24);
+    y+=6; garantir(46);
     h2("Assinatura do(a) vistoriador(a)");
-    rv("Nome do(a) vistoriador(a):", gv("fb_ass_nome"), {valTab:52});
-    rv("Cargo/Função:", gv("fb_ass_cargo"), {valTab:52});
-    rv("Registro (CRESS/CREA):", gv("fb_ass_reg"), {valTab:52});
+    y+=5;
+    if(gv("fb_data")){ F("normal"); C(BLK); pdf.setFontSize(FS); pdf.text(gv("fb_data"), W/2, y, {align:"center"}); }
+    y+=18;
+    pdf.setDrawColor(60,60,60); pdf.setLineWidth(0.3); pdf.line(W/2-40, y, W/2+40, y); y+=5;
+    F("bold"); C(BLK); pdf.setFontSize(FS); if(gv("fb_ass_nome")){ pdf.text(gv("fb_ass_nome"), W/2, y, {align:"center"}); y+=LH+0.6; }
+    F("normal");
+    if(gv("fb_ass_cargo")){ pdf.text(gv("fb_ass_cargo"), W/2, y, {align:"center"}); y+=LH+0.6; }
+    if(gv("fb_ass_reg")){ pdf.text(gv("fb_ass_reg"), W/2, y, {align:"center"}); y+=LH+0.6; }
 
     rodape();
     const _blob=pdf.output("blob"); if(opts&&opts.retornar) return {blob:_blob, nome:"Ficha_Anexo_B_1.9.pdf"}; await FS_salvar(_blob, "Ficha_Anexo_B_1.9.pdf");
@@ -9194,11 +9217,14 @@ window.UFOTO_rodapeHTML=rodapeHTML;
       host.appendChild(div);
     });
   }
-  window.REL_addArea=function(){ areas.push({ini:"",fim:"",tipo:"Faixa de Domínio"}); renderAreas(); };
-  window.REL_remArea=function(i){ areas.splice(i,1); renderAreas(); };
-  window.REL_setArea=function(i,campo,v){ if(typeof areas[i]!=="object"){ areas[i]={ini:"",fim:"",tipo:"Faixa de Domínio"}; } areas[i][campo]=v; };
+  // Item 2: envia as Áreas de Locação para a DESP 3 (Áreas — Estacas Km), com correspondência direta
+  function syncDESP3(){ if(window.FV_setEstacas){ window.FV_setEstacas(areas.map(a=> (typeof a==="object"&&a)?{ini:a.ini||"",fim:a.fim||"",tipo:a.tipo||""}:{ini:"",fim:"",tipo:""})); } }
+  window.REL_syncDESP3=syncDESP3;
+  window.REL_addArea=function(){ areas.push({ini:"",fim:"",tipo:"Faixa de Domínio"}); renderAreas(); syncDESP3(); };
+  window.REL_remArea=function(i){ areas.splice(i,1); renderAreas(); syncDESP3(); };
+  window.REL_setArea=function(i,campo,v){ if(typeof areas[i]!=="object"){ areas[i]={ini:"",fim:"",tipo:"Faixa de Domínio"}; } areas[i][campo]=v; syncDESP3(); };
   window.REL_getAreas=function(){ return areas; };
-  window.REL_setAreas=function(arr){ areas.length=0; (Array.isArray(arr)?arr:[]).forEach(a=>areas.push(a)); renderAreas(); };
+  window.REL_setAreas=function(arr){ areas.length=0; (Array.isArray(arr)?arr:[]).forEach(a=>areas.push(a)); renderAreas(); syncDESP3(); };
   // texto formatado de uma área: "KM 939+921,31 ao KM 940+002,28 (Faixa de Domínio)"
   function areaTexto(a){
     if(typeof a==="string") return a;
@@ -9354,20 +9380,28 @@ window.UFOTO_rodapeHTML=rodapeHTML;
   window.REL_getTabela=function(n){ return tabelas[n]; };
   window.REL_setTabela=function(n,arr){ tabelas[n]=Array.isArray(arr)?arr:[]; renderTab(n); if(n===1 && typeof atualizarIVS==="function") atualizarIVS(); };
 
-  // ---- Fotos ----
+  // ---- Fotos (vinculadas à Ficha de Vistoria 5.3 — item 1) ----
   const fotos=[];
   function renderFotos(){ const host=document.getElementById("rel_fotos_prev"); if(!host) return; host.innerHTML="";
-    fotos.forEach((src,i)=>{ const d=document.createElement("div"); d.className="foto"; d.innerHTML='<img src="'+src+'"><button class="rm" type="button" onclick="REL_remFoto('+i+')">✕</button>'; host.appendChild(d); }); }
-  function bindFotos(){ const input=document.getElementById("rel_fotos_file"), drop=document.getElementById("rel_fotos_drop"); if(!input) return;
-    function add(files){ [...files].forEach(f=>{ if(!f.type.startsWith("image/"))return; const rd=new FileReader(); rd.onload=e=>{ const o=e.target.result; (window.AV_normalizarImagem?window.AV_normalizarImagem(o):Promise.resolve(o)).then(n=>{fotos.push(n);renderFotos();}); }; rd.readAsDataURL(f); }); }
-    input.addEventListener("change",e=>{add(e.target.files);e.target.value="";});
-    if(drop){ ["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("over");})); ["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("over");})); drop.addEventListener("drop",e=>add(e.dataTransfer.files)); }
-  }
-  window.REL_remFoto=function(i){ fotos.splice(i,1); renderFotos(); };
+    fotos.forEach((src,i)=>{ const d=document.createElement("div"); d.className="foto"; d.innerHTML='<img src="'+src+'">'; host.appendChild(d); }); }
+  // Espelha as fotos da Ficha de Vistoria e bloqueia o upload manual aqui.
+  window.REL_syncFotos=function(){
+    const fb=(window.FB_getFotos?window.FB_getFotos():[])||[];
+    fotos.length=0; fb.forEach(s=>fotos.push(s));
+    const input=document.getElementById("rel_fotos_file"), drop=document.getElementById("rel_fotos_drop"), aviso=document.getElementById("rel_fotos_aviso");
+    if(input) input.disabled=true;
+    if(drop){ drop.style.opacity="0.5"; drop.style.pointerEvents="none"; drop.title="Fotos vinculadas à Ficha de Vistoria (5.3)"; }
+    if(aviso) aviso.style.display="block";
+    renderFotos();
+  };
+  window.REL_getFotos=function(){ return fotos; };
+  function bindFotos(){ const drop=document.getElementById("rel_fotos_drop"); if(drop){ drop.style.opacity="0.5"; drop.style.pointerEvents="none"; } if(window.REL_syncFotos) window.REL_syncFotos(); }
+  window.REL_remFoto=function(i){ /* bloqueado: fotos vêm da Ficha de Vistoria */ };
 
   // ---- PDF com capa ----
   // Word (.doc) do Relatório com o layout aprovado (capa faixa azul + índice + seções + tabelas)
   window.REL_gerarWord=async function(opts){
+    if(window.REL_syncFotos) window.REL_syncFotos();
     if(!window.WORD_htmlDoc){ alert("Módulo Word não carregado."); return; }
     const E=window.WORD_esc;
     const mesano = g("rel_mesano") || (new Date()).toLocaleDateString("pt-BR",{month:"long",year:"numeric"}).toUpperCase().replace(" DE ","/");
@@ -9457,6 +9491,7 @@ window.UFOTO_rodapeHTML=rodapeHTML;
   };
 
   window.REL_gerarPDF=async function(opts){
+    if(window.REL_syncFotos) window.REL_syncFotos();
     if(!(window.jspdf||window.jsPDF)){ alert("Biblioteca de PDF ainda carregando. Tente novamente."); return; }
     const J=(window.jspdf&&window.jspdf.jsPDF)?window.jspdf.jsPDF:window.jsPDF;
     const pdf=new J({orientation:"portrait",unit:"mm",format:"a4"});
@@ -9794,7 +9829,7 @@ window.UFOTO_rodapeHTML=rodapeHTML;
     paragrafo(g("rel_tab2_coment"));
     titulo("5. CONCLUSÃO"); paragrafo(g("rel_conclusao"));
     yc+=10; ensure(34);
-    if(g("rel_local_data")){ pdf.setFont(FONT,"normal"); pdf.setFontSize(11); pdf.setTextColor(0,0,0); pdf.text(g("rel_local_data"), W/2, yc, {align:"right"}); yc+=20; }
+    if(g("rel_local_data")){ pdf.setFont(FONT,"normal"); pdf.setFontSize(11); pdf.setTextColor(0,0,0); pdf.text(g("rel_local_data"), W/2, yc, {align:"center"}); yc+=20; }
     pdf.setDrawColor(60,60,60); pdf.setLineWidth(0.3); pdf.line(W/2-40, yc, W/2+40, yc); yc+=4.5;
     pdf.setFont(FONT,"bold"); pdf.setFontSize(11); pdf.setTextColor(0,0,0); if(g("rel_resp_nome")){ pdf.text(g("rel_resp_nome"), W/2, yc, {align:"center"}); yc+=5; }
     pdf.setFont(FONT,"normal");
@@ -9955,6 +9990,98 @@ window.UFOTO_rodapeHTML=rodapeHTML;
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
+</script>
+<style id="dlm-style">
+.dl-menu{position:relative;display:inline-block;}
+.dl-drop{position:absolute;top:calc(100% + 6px);left:0;background:#fff;border:1px solid #d7e0ea;border-radius:10px;box-shadow:0 10px 28px rgba(20,41,74,.18);padding:6px;min-width:252px;z-index:200;display:none;}
+.dl-drop.open{display:block;}
+.dl-drop button{display:block;width:100%;text-align:left;background:none;border:none;padding:9px 12px;border-radius:7px;font-size:13px;font-family:inherit;color:#22303f;cursor:pointer;white-space:nowrap;}
+.dl-drop button:hover{background:#eef4fb;color:#14294a;}
+</style>
+<script>
+/* ===== Menu unificado de Download (item 3) ===== */
+window.DLM_toggle=function(btn){ var m=btn.parentElement.querySelector('.dl-drop'); if(!m) return; var open=m.classList.contains('open'); document.querySelectorAll('.dl-drop.open').forEach(function(x){x.classList.remove('open');}); if(!open) m.classList.add('open'); };
+window.DLM_run=function(btn,fn){ var m=btn.closest('.dl-drop'); if(m) m.classList.remove('open'); try{ if(typeof fn==='function') fn(); else if(typeof fn==='string' && typeof window[fn]==='function') window[fn](); }catch(e){ console.error(e); alert('Erro ao gerar o arquivo: '+(e&&e.message?e.message:e)); } };
+document.addEventListener('click',function(e){ if(!e.target.closest('.dl-menu')) document.querySelectorAll('.dl-drop.open').forEach(function(x){x.classList.remove('open');}); });
+
+/* ===== Geração do DRL — Declaração de Respeito de Limites (itens 3 e 4) ===== */
+window.DRL_dados=function(){
+  function v(){ for(var i=0;i<arguments.length;i++){ var e=document.getElementById(arguments[i]); if(e){ var val=((e.value!=null?e.value:e.textContent)||"").trim(); if(val) return val; } } return ""; }
+  function ano(){ var d=v('rel_local_data','fb_data'); var m=d&&d.match(/(19|20)\d{2}/); return m?m[0]:""; }
+  return {
+    nome: v('rel_nome','fb_nome'),
+    cpf: v('fb_cpf','rel_cpf'),
+    denom: v('rel_prop_id','av_denom'),
+    matricula: v('fb_matricula','rel_matricula'),
+    municipio: v('fb_prop_mun','fb_municipio','rel_municipio','av_comarca'),
+    uf: v('fb_prop_uf','fb_uf'),
+    incra: v('av_incra','av_geo_cod'),
+    ano: ano()
+  };
+};
+function DRL_bl(x){ return (x&&(''+x).trim())?(''+x).trim():'____________'; }
+function DRL_paragrafo(d){
+  return 'Eu, '+DRL_bl(d.nome)+', inscrito(a) no Cadastro de Pessoa Física – CPF nº '+DRL_bl(d.cpf)+
+    ', proprietário(a) e/ou possuidor(a) do imóvel denominado '+DRL_bl(d.denom)+', matrícula(s) nº(s) '+DRL_bl(d.matricula)+
+    ' da comarca de '+DRL_bl(d.municipio)+'- '+DRL_bl(d.uf)+' cadastrado no INCRA sob o código nº '+DRL_bl(d.incra)+
+    ', declaro, sob as penas da lei, que foram respeitados os limites das divisas in loco com os confrontantes abaixo relacionados durante a execução dos trabalhos técnicos na citada propriedade, não havendo qualquer litígio entre as partes.';
+}
+window.DRL_gerarPDF=async function(){
+  if(!window.jspdf){ alert('Biblioteca de PDF ainda carregando. Tente novamente em instantes.'); return; }
+  var jsPDF=window.jspdf.jsPDF; var pdf=new jsPDF({unit:'mm',format:'a4'});
+  var W=210, mL=25, mR=25, RW=W-mL-mR; var y=34;
+  var d=window.DRL_dados();
+  pdf.setLineHeightFactor(1.5);
+  pdf.setFont('helvetica','bold'); pdf.setFontSize(13);
+  pdf.text('DECLARAÇÃO DE RESPEITO DE LIMITES', W/2, y, {align:'center'}); y+=16;
+  pdf.setFont('helvetica','normal'); pdf.setFontSize(11);
+  var lines=pdf.splitTextToSize(DRL_paragrafo(d), RW);
+  pdf.text(lines, mL, y, {align:'justify', maxWidth:RW}); y+=lines.length*5.9+8;
+  pdf.setFont('helvetica','bold'); pdf.text('Confrontantes da Área Abrangida:', mL, y); y+=13;
+  pdf.text('Confrontantes da Área Remanescente:', mL, y); y+=24;
+  pdf.setFont('helvetica','normal');
+  pdf.text('_________________________________________________', W/2, y, {align:'center'}); y+=6;
+  pdf.setFont('helvetica','bold'); pdf.text(DRL_bl(d.nome), W/2, y, {align:'center'}); y+=6;
+  pdf.setFont('helvetica','normal'); pdf.text('CPF nº: '+DRL_bl(d.cpf), W/2, y, {align:'center'}); y+=18;
+  pdf.text('De acordo:', mL, y); y+=16;
+  for(var k=0;k<3;k++){ pdf.text('__________________________________________________', W/2, y, {align:'center'}); y+=15; }
+  y+=3;
+  pdf.setFont('helvetica','bold'); pdf.text('Anexos:', mL, y); y+=6;
+  pdf.setFont('helvetica','normal'); pdf.text('Planta planimétrica', mL, y); y+=5.5; pdf.text('Memorial descritivo', mL, y); y+=18;
+  pdf.text(DRL_bl(d.municipio)+' – '+DRL_bl(d.uf)+', ________ de __________________ de '+(d.ano||'________'), mL, y);
+  var blob=pdf.output('blob');
+  await window.FS_salvar(blob, 'DRL_Declaracao_Respeito_Limites.pdf');
+};
+window.DRL_gerarWord=async function(){
+  if(!window.WORD_htmlDoc){ alert('Módulo Word ainda carregando. Tente novamente em instantes.'); return; }
+  var E=window.WORD_esc, d=window.DRL_dados();
+  function b(x){ return (x&&(''+x).trim())?'<b>'+E((''+x).trim())+'</b>':'____________'; }
+  var par='Eu, '+b(d.nome)+', inscrito(a) no Cadastro de Pessoa Física – CPF nº '+b(d.cpf)+
+    ', proprietário(a) e/ou possuidor(a) do imóvel denominado '+b(d.denom)+', matrícula(s) nº(s) '+b(d.matricula)+
+    ' da comarca de '+b(d.municipio)+'- '+b(d.uf)+' cadastrado no INCRA sob o código nº '+b(d.incra)+
+    ', declaro, sob as penas da lei, que foram respeitados os limites das divisas in loco com os confrontantes abaixo relacionados durante a execução dos trabalhos técnicos na citada propriedade, não havendo qualquer litígio entre as partes.';
+  var nome=(d.nome&&d.nome.trim())?E(d.nome.trim()):'____________';
+  var cpf=(d.cpf&&d.cpf.trim())?E(d.cpf.trim()):'____________';
+  var mun=(d.municipio&&d.municipio.trim())?E(d.municipio.trim()):'____________';
+  var uf=(d.uf&&d.uf.trim())?E(d.uf.trim()):'____';
+  var c=''+
+    '<div style="text-align:center;font-weight:bold;font-size:13pt;margin-bottom:20pt;">DECLARAÇÃO DE RESPEITO DE LIMITES</div>'+
+    '<p style="text-align:justify;line-height:1.5;">'+par+'</p>'+
+    '<p style="margin-top:16pt;"><b>Confrontantes da Área Abrangida:</b></p>'+
+    '<p style="margin-top:14pt;"><b>Confrontantes da Área Remanescente:</b></p>'+
+    '<p style="text-align:center;margin-top:48pt;">_________________________________________________</p>'+
+    '<p style="text-align:center;margin:0;"><b>'+nome+'</b></p>'+
+    '<p style="text-align:center;margin:0;">CPF nº: '+cpf+'</p>'+
+    '<p style="margin-top:28pt;">De acordo:</p>'+
+    '<p style="text-align:center;margin-top:26pt;">__________________________________________________</p>'+
+    '<p style="text-align:center;margin-top:24pt;">__________________________________________________</p>'+
+    '<p style="text-align:center;margin-top:24pt;">__________________________________________________</p>'+
+    '<p style="margin-top:28pt;"><b>Anexos:</b></p>'+
+    '<p style="margin:0;">Planta planimétrica</p>'+
+    '<p style="margin:0;">Memorial descritivo</p>'+
+    '<p style="margin-top:32pt;">'+mun+' – '+uf+', ________ de __________________ de '+(d.ano?E(d.ano):'________')+'</p>';
+  await window.WORD_baixar('DRL_Declaracao_Respeito_Limites', window.WORD_htmlDoc('Declaração de Respeito de Limites', c, true));
+};
 </script>
 </body>
 
