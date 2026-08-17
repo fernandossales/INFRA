@@ -2190,7 +2190,7 @@ window.REL_baixarConjunto = async function(){
       <button class="top-tab" data-secao="saneagua" onclick="TOP_abrir(this)">SANEAGO</button>
       <button class="top-tab" data-secao="utilitarios" onclick="TOP_abrir(this)">UTILITÁRIOS</button>
     </nav>
-    <button class="btn-cad" id="btnSalvarCad" onclick="CAD_salvar()" title="Salvar cadastro (Ficha + Avaliação)">💾 Salvar</button>
+    <button class="btn-cad" id="btnSalvarCad" onclick="CAD_salvar()" title="Salvar todas as abas em um arquivo .json">💾 Salvar</button>
     <button class="btn-cad" id="btnAbrirCad" onclick="document.getElementById('cad_abrir_file').click()" title="Abrir cadastro">📂 Abrir</button>
     <input type="file" id="cad_abrir_file" accept=".json" style="display:none" onchange="CAD_abrir(this)">
     <button class="btn-unir" id="btnUnirTudo" onclick="unirTudo()">
@@ -7785,8 +7785,8 @@ function AV_gerarDescSituacao(){
 
   function coletarCampos(){
     const dados = {};
-    // todos os campos com id nas abas Ficha e Avaliação (e afins)
-    document.querySelectorAll("#panel-vistoria [id], #panel-avaliacao [id], #panel-desp1-vist [id], #panel-desp1-rel [id]").forEach(el=>{
+    // TODAS as abas: qualquer campo com id dentro de um painel (panel-*)
+    document.querySelectorAll('[id^="panel-"] [id]').forEach(el=>{
       const tag = el.tagName;
       if(tag!=="INPUT" && tag!=="TEXTAREA" && tag!=="SELECT") return;
       if(el.type==="file") return;
@@ -7812,7 +7812,7 @@ function AV_gerarDescSituacao(){
     return out;
   }
 
-  window.CAD_salvar = function(){
+  window.CAD_salvar = async function(){
     try{
       const pacote = {
         _app: "ENPROL-Ferramentas-Anexos",
@@ -7821,17 +7821,19 @@ function AV_gerarDescSituacao(){
         campos: coletarCampos(),
         estacas: coletarEstacas(),
         na: coletarNA(),
-        imagens: (window.__AV_IMAGENS__ || {})
+        imagens: (window.__AV_IMAGENS__ || {}),
+        familia: (window.FB_getFamilia?window.FB_getFamilia():[]),
+        relAreas: (window.REL_getAreas?window.REL_getAreas():[]),
+        relTabelas: { "1":(window.REL_getTabela?window.REL_getTabela(1):[]), "2":(window.REL_getTabela?window.REL_getTabela(2):[]) }
       };
       const nomeBase = (document.getElementById("av_nome") && document.getElementById("av_nome").value.trim())
         || (document.getElementById("fv_processo") && document.getElementById("fv_processo").value.trim())
+        || (document.getElementById("fb_processo") && document.getElementById("fb_processo").value.trim())
         || "cadastro";
       const nomeArq = "Cadastro_" + nomeBase.replace(/[^\w\-]+/g,"_").slice(0,40) + ".json";
       const blob = new Blob([JSON.stringify(pacote, null, 2)], {type:"application/json"});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a"); a.href=url; a.download=nomeArq;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      setTimeout(()=>URL.revokeObjectURL(url), 1500);
+      if(window.FS_salvar){ await window.FS_salvar(blob, nomeArq); }
+      else { const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download=nomeArq; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(()=>URL.revokeObjectURL(url),1500); }
     }catch(e){ alert("Não foi possível salvar o cadastro: "+e.message); }
   };
 
@@ -7904,7 +7906,10 @@ function AV_gerarDescSituacao(){
       try{
         restaurarEstacas(pacote.estacas);
         restaurarNA(pacote.na);
-        restaurarCampos(pacote.campos);   // depois das estacas/NA para recalcular com tudo
+        if(pacote.familia && window.FB_setFamilia) window.FB_setFamilia(pacote.familia);
+        if(pacote.relAreas && window.REL_setAreas) window.REL_setAreas(pacote.relAreas);
+        if(pacote.relTabelas && window.REL_setTabela){ window.REL_setTabela(1, pacote.relTabelas["1"]||pacote.relTabelas[1]||[]); window.REL_setTabela(2, pacote.relTabelas["2"]||pacote.relTabelas[2]||[]); }
+        restaurarCampos(pacote.campos);   // depois das estacas/NA/família para recalcular com tudo
         restaurarImagens(pacote.imagens);
         if(typeof window.AV_recalcular==="function") window.AV_recalcular();
         alert("Cadastro carregado com sucesso.");
@@ -9193,6 +9198,7 @@ window.UFOTO_rodapeHTML=rodapeHTML;
   window.REL_remArea=function(i){ areas.splice(i,1); renderAreas(); };
   window.REL_setArea=function(i,campo,v){ if(typeof areas[i]!=="object"){ areas[i]={ini:"",fim:"",tipo:"Faixa de Domínio"}; } areas[i][campo]=v; };
   window.REL_getAreas=function(){ return areas; };
+  window.REL_setAreas=function(arr){ areas.length=0; (Array.isArray(arr)?arr:[]).forEach(a=>areas.push(a)); renderAreas(); };
   // texto formatado de uma área: "KM 939+921,31 ao KM 940+002,28 (Faixa de Domínio)"
   function areaTexto(a){
     if(typeof a==="string") return a;
@@ -9346,6 +9352,7 @@ window.UFOTO_rodapeHTML=rodapeHTML;
   }
   window.REL_atualizarIVS=atualizarIVS;
   window.REL_getTabela=function(n){ return tabelas[n]; };
+  window.REL_setTabela=function(n,arr){ tabelas[n]=Array.isArray(arr)?arr:[]; renderTab(n); if(n===1 && typeof atualizarIVS==="function") atualizarIVS(); };
 
   // ---- Fotos ----
   const fotos=[];
